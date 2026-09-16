@@ -53,7 +53,7 @@ export default function PeauPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-white flex items-center justify-center">
+      <main className="app-background min-h-screen flex items-center justify-center">
         <div className="text-sm text-[#777]">
           Préparation de votre programme…
         </div>
@@ -62,7 +62,7 @@ export default function PeauPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white text-[#171717] pb-12">
+    <main className="app-background min-h-screen text-[#171717] pb-12">
       <div className="mx-auto max-w-3xl px-5 pt-6">
 
         <header className="flex items-center justify-between mb-7">

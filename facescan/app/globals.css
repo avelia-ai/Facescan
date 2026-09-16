@@ -101,3 +101,22 @@ a {
     animation: none;
   }
 }
+
+.app-background {
+  min-height: 100%;
+  background:
+    linear-gradient(
+      180deg,
+      #103d53 0%,
+      #174f66 11%,
+      #256d7f 22%,
+      #438895 34%,
+      #649da5 47%,
+      #87b2b5 59%,
+      #a9c6c5 69%,
+      #c4d7d4 78%,
+      #dce8e5 87%,
+      #edf2f0 94%,
+      #f3f5f4 100%
+    );
+}

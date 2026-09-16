@@ -280,7 +280,7 @@ export default function ScannerPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white text-[#17202a]">
+    <main className="app-background min-h-screen text-[#17202a]">
       {/* Header */}
       <header className="flex items-center justify-between px-5 py-5 md:px-8">
         <Link

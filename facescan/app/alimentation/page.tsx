@@ -113,7 +113,7 @@ export default function AlimentationPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white px-4 pb-24 pt-6 text-[#183d48] sm:px-6">
+    <main className="app-background min-h-screen px-4 pb-24 pt-6 text-[#183d48] sm:px-6">
       <div className="mx-auto max-w-5xl">
         <Link
           href="/conseils"

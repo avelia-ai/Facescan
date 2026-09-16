@@ -284,7 +284,7 @@ export default function ResultatsPage() {
       : "Votre équilibre général";
 
   return (
-    <main className="min-h-screen bg-white pb-28 text-[#14252d]">
+    <main className="app-background min-h-screen pb-28 text-[#14252d]">
       <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
 
         {/* HEADER */}

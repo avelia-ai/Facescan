@@ -137,7 +137,7 @@ export default function ProfilPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white text-[#17202a] pb-28">
+    <main className="app-background min-h-screen text-[#17202a] pb-28">
       <div className="mx-auto w-full max-w-5xl px-5 sm:px-8">
         <header className="flex items-center justify-between pt-7 sm:pt-9">
           <div className="flex items-center gap-3">

@@ -110,7 +110,7 @@ function IndicateurContent() {
   const maxHistory = Math.max(...current.history);
 
   return (
-    <main className="min-h-screen bg-white text-[#172a31] pb-28">
+    <main className="app-background min-h-screen text-[#172a31] pb-28">
       <div className="mx-auto w-full max-w-5xl px-5 sm:px-8">
         {/* Header */}
         <header className="flex items-center justify-between pt-7 sm:pt-9">
@@ -477,7 +477,7 @@ function IndicateurContent() {
 export default function IndicateurPage() {
   return (
     <Suspense
-      fallback={<div className="min-h-screen bg-white" />}
+      fallback={<div className="app-background min-h-screen" />}
     >
       <IndicateurContent />
     </Suspense>
