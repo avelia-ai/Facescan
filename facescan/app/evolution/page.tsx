@@ -119,7 +119,7 @@ export default function EvolutionPage() {
             <p className="text-sm font-semibold tracking-tight">
               Mon évolution
             </p>
-            <p className="mt-0.5 text-[10px] text-[#6f8587]">
+            <p className="mt-0.5 text-[10px] text-white/70">
               Votre progression dans le temps
             </p>
           </div>
@@ -137,7 +137,7 @@ export default function EvolutionPage() {
       <section className="mx-auto max-w-6xl px-5 pt-8 md:px-8">
         {/* Intro */}
         <div className="mb-8">
-          <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-[#668083]">
+          <p className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-white/70">
             Votre progression
           </p>
 
@@ -145,7 +145,7 @@ export default function EvolutionPage() {
             Votre évolution
           </h1>
 
-          <p className="mt-3 max-w-xl text-sm leading-6 text-[#587174]">
+          <p className="mt-3 max-w-xl text-sm leading-6 text-white/75">
             Comparez vos analyses dans le temps et observez les tendances qui
             se dessinent progressivement.
           </p>
