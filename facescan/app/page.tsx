@@ -402,7 +402,12 @@ export default function HomePage() {
   if (loading) {
     return (
       
-<main className="min-h-screen bg-white">
+<main className="relative min-h-screen bg-white">
+          <div
+            data-facescan-top-gradient="true"
+            className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[520px] bg-[linear-gradient(180deg,#0d3850_0%,#124b63_15%,#216d80_30%,#4d919b_45%,#83b2b5_59%,#b1cbca_71%,#d6e3e0_82%,rgba(243,245,244,0)_100%)]"
+          />
+
         <div className="mx-auto flex min-h-screen max-w-md items-center justify-center px-5">
           <div className="text-sm font-medium text-[#64747b]">
             Préparation de votre espace Otavio…
@@ -423,10 +428,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-white pb-28">
       <div className="mx-auto max-w-md px-5 pt-6">
-        <header className="relative -mx-5 -mt-6 overflow-hidden px-5 pb-8 pt-5 sm:-mx-8 sm:px-8 sm:pt-6">
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#0f3a51_0%,#154f67_16%,#236f82_32%,#4c909b_48%,#7fb0b5_63%,#aac9c9_75%,#cfe0de_87%,rgba(243,245,244,0.96)_95%,#f3f5f4_100%)]" />
-          <div className="pointer-events-none absolute -right-20 -top-16 h-52 w-52 rounded-full bg-[#72d9d1]/20 blur-3xl" />
-          <div className="pointer-events-none absolute -left-20 top-8 h-44 w-44 rounded-full bg-[#8a9cf1]/12 blur-3xl" />
+        <header className="relative z-10 -mx-5 -mt-6 px-5 pb-6 pt-5 sm:-mx-8 sm:px-8 sm:pt-6">
 
           <div className="relative flex items-center justify-between gap-4">
             <div className="flex min-w-0 items-center gap-3">
