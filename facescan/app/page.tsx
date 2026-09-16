@@ -569,7 +569,7 @@ export default function HomePage() {
                 <div className="shrink-0">
                   <div className="relative h-20 w-20 overflow-hidden rounded-[22px] border border-white/90 bg-white shadow-[0_12px_30px_rgba(35,92,96,0.12)]">
                     <video
-                      src="/otavio/premier-scan.mp4"
+                      src="/otavio/video-accueil.mp4"
                       autoPlay
                       muted
                       loop
