@@ -69,7 +69,7 @@ export default function SommeilPage() {
             <p className="text-[11px] uppercase tracking-[0.18em] text-[#7b8580]">
               Otavio
             </p>
-            <h1 className="text-xl font-semibold">Sommeil</h1>
+            <h1 className="text-xl font-semibold text-white">Sommeil</h1>
           </div>
 
           <div className="h-10 w-10 rounded-full bg-[#e8f1ed] flex items-center justify-center">

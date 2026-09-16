@@ -98,7 +98,7 @@ export default function ObjectifsPage() {
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#668083]">
                 Otavio
               </p>
-              <h1 className="mt-1 text-2xl font-semibold tracking-[-0.03em]">
+              <h1 className="mt-1 text-2xl font-semibold tracking-[-0.03em] text-white">
                 Mes objectifs
               </h1>
             </div>

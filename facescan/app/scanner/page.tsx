@@ -308,7 +308,7 @@ export default function ScannerPage() {
             Analyse visuelle
           </p>
 
-          <h1 className="text-3xl font-semibold tracking-[-0.03em] md:text-4xl">
+          <h1 className="text-3xl font-semibold tracking-[-0.03em] md:text-4xl text-white">
             Votre visage, aujourd&apos;hui.
           </h1>
 

@@ -132,7 +132,7 @@ export default function AlimentationPage() {
             Alimentation
           </p>
 
-          <h1 className="mt-1 text-3xl font-semibold tracking-[-0.04em]">
+          <h1 className="mt-1 text-3xl font-semibold tracking-[-0.04em] text-white">
             Votre programme alimentaire
           </h1>
 

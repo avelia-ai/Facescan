@@ -246,7 +246,7 @@ export default function NotificationsPage() {
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#8a867f]">
                 Otavio
               </p>
-              <h1 className="mt-1 text-2xl font-semibold tracking-[-0.03em]">
+              <h1 className="mt-1 text-2xl font-semibold tracking-[-0.03em] text-white">
                 Notifications
               </h1>
             </div>

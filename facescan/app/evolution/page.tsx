@@ -141,7 +141,7 @@ export default function EvolutionPage() {
             Votre progression
           </p>
 
-          <h1 className="text-3xl font-semibold tracking-[-0.035em] md:text-4xl">
+          <h1 className="text-3xl font-semibold tracking-[-0.035em] md:text-4xl text-white">
             Votre évolution
           </h1>
 

@@ -302,7 +302,7 @@ export default function ResultatsPage() {
               <p className="text-[9px] font-bold uppercase tracking-[0.24em] text-[#168f91]">
                 FACESCAN
               </p>
-              <h1 className="mt-1 text-2xl font-semibold tracking-[-0.04em]">
+              <h1 className="mt-1 text-2xl font-semibold tracking-[-0.04em] text-white">
                 Résultats
               </h1>
             </div>

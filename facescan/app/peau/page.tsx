@@ -77,7 +77,7 @@ export default function PeauPage() {
             <p className="text-[11px] uppercase tracking-[0.18em] text-[#7b8580]">
               Otavio
             </p>
-            <h1 className="text-xl font-semibold">Peau</h1>
+            <h1 className="text-xl font-semibold text-white">Peau</h1>
           </div>
 
           <div className="h-10 w-10 rounded-full bg-[#edf4f1] flex items-center justify-center">

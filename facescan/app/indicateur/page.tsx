@@ -127,7 +127,7 @@ function IndicateurContent() {
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#759095]">
                 Otavio · Indicateur
               </p>
-              <h1 className="mt-1 text-2xl font-semibold tracking-[-0.035em] text-[#102f3a]">
+              <h1 className="mt-1 text-2xl font-semibold tracking-[-0.035em] text-[#102f3a] text-white">
                 {current.title}
               </h1>
             </div>

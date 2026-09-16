@@ -153,7 +153,7 @@ export default function ProfilPage() {
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6f8587]">
                 Otavio
               </p>
-              <h1 className="mt-1 text-2xl font-semibold tracking-[-0.03em]">
+              <h1 className="mt-1 text-2xl font-semibold tracking-[-0.03em] text-white">
                 Mon profil
               </h1>
             </div>
