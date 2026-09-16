@@ -113,11 +113,11 @@ export default function AlimentationPage() {
   }
 
   return (
-    <main className="app-background min-h-screen px-4 pb-24 pt-6 text-[#183d48] sm:px-6">
+    <main className="app-background min-h-screen px-4 pb-24 pt-6 text-white sm:px-6">
       <div className="mx-auto max-w-5xl">
         <Link
           href="/conseils"
-          className="inline-flex items-center gap-2 rounded-full border border-[#cbdcd5] bg-white px-3 py-1.5 text-[11px] font-medium text-[#587174] shadow-[0_5px_16px_rgba(40,90,75,0.04)] transition hover:-translate-y-0.5"
+          className="inline-flex items-center gap-2 rounded-full border border-[#cbdcd5] bg-white px-3 py-1.5 text-[11px] font-medium text-white/75 shadow-[0_5px_16px_rgba(40,90,75,0.04)] transition hover:-translate-y-0.5"
         >
           <ArrowLeft size={15} />
           Retour aux conseils
@@ -136,7 +136,7 @@ export default function AlimentationPage() {
             Votre programme alimentaire
           </h1>
 
-          <p className="mt-3 max-w-2xl text-[13px] leading-6 text-[#6f8587]">
+          <p className="mt-3 max-w-2xl text-[13px] leading-6 text-white/70">
             Un programme construit à partir de votre profil, de vos
             préférences et de vos contraintes.
           </p>
