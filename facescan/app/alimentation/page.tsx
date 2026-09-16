@@ -117,7 +117,7 @@ export default function AlimentationPage() {
       <div className="mx-auto max-w-5xl">
         <Link
           href="/conseils"
-          className="inline-flex items-center gap-2 rounded-full border border-[#cbdcd5] bg-white px-3 py-1.5 text-[11px] font-medium text-white/75 shadow-[0_5px_16px_rgba(40,90,75,0.04)] transition hover:-translate-y-0.5"
+          className="inline-flex items-center gap-2 rounded-full border border-[#cbdcd5] bg-white px-3 py-1.5 text-[11px] font-medium text-[#183d48] shadow-[0_5px_16px_rgba(40,90,75,0.04)] transition hover:-translate-y-0.5"
         >
           <ArrowLeft size={15} />
           Retour aux conseils
