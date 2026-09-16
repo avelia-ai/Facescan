@@ -569,7 +569,7 @@ export default function HomePage() {
                 <div className="shrink-0">
                   <div className="relative h-20 w-20 overflow-hidden rounded-[22px] border border-white/90 bg-white shadow-[0_12px_30px_rgba(35,92,96,0.12)]">
                     <video
-                      src="/otavio/video-accueil.mp4"
+                      src="/otavio/premier-scan.mp4"
                       autoPlay
                       muted
                       loop
@@ -821,8 +821,8 @@ export default function HomePage() {
         </section>
 
         <section className="mt-7">
-          <div className="flex items-end justify-between">
-            <div>
+          <div className="flex items-center justify-between gap-4">
+            <div className="min-w-0">
               <p className="text-sm font-semibold text-[#287f72]">
                 Vos priorités
               </p>
@@ -830,15 +830,27 @@ export default function HomePage() {
               <h2 className="mt-1 text-xl font-semibold tracking-tight text-[#183d48]">
                 Ce qui compte pour vous
               </h2>
+
+              <button
+                type="button"
+                onClick={() => router.push("/objectifs")}
+                className="mt-2 text-xs font-semibold text-[#168f91]"
+              >
+                Modifier
+              </button>
             </div>
 
-            <button
-              type="button"
-              onClick={() => router.push("/objectifs")}
-              className="text-xs font-semibold text-[#168f91]"
-            >
-              Modifier
-            </button>
+            <div className="relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-[22px] border border-white/90 bg-[#dce8e5] shadow-[0_8px_22px_rgba(25,68,80,0.12)]">
+              <video
+                src="/otavio/video-accueil.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 h-full w-full object-cover"
+                aria-label="Otavio"
+              />
+            </div>
           </div>
 
           <div className="mt-4 space-y-3">
