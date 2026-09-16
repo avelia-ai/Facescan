@@ -403,11 +403,6 @@ export default function HomePage() {
     return (
       
 <main className="relative min-h-screen bg-white">
-          <div
-            data-facescan-top-gradient="true"
-            className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[520px] bg-[linear-gradient(180deg,#0d3850_0%,#124b63_15%,#216d80_30%,#4d919b_45%,#83b2b5_59%,#b1cbca_71%,#d6e3e0_82%,rgba(243,245,244,0)_100%)]"
-          />
-
         <div className="mx-auto flex min-h-screen max-w-md items-center justify-center px-5">
           <div className="text-sm font-medium text-[#64747b]">
             Préparation de votre espace Otavio…
@@ -426,9 +421,9 @@ export default function HomePage() {
   const completedToday = dailyTasks.filter((task) => task.completed).length;
 
   return (
-    <main className="min-h-screen bg-white pb-28">
-      <div className="mx-auto max-w-md px-5 pt-6">
-        <header className="relative z-10 -mx-5 -mt-6 px-5 pb-6 pt-5 sm:-mx-8 sm:px-8 sm:pt-6">
+    <main className="relative min-h-screen overflow-hidden bg-[linear-gradient(180deg,#103d53_0%,#174f66_11%,#256d7f_22%,#438895_34%,#649da5_47%,#87b2b5_59%,#a9c6c5_69%,#c4d7d4_78%,#dce8e5_87%,#edf2f0_94%,#f3f5f4_100%)] pb-28">
+      <div className="relative mx-auto max-w-md px-5 pt-6">
+        <header className="relative -mx-5 -mt-6 px-5 pb-4 pt-5 sm:-mx-8 sm:px-8 sm:pt-6">
 
           <div className="relative flex items-center justify-between gap-4">
             <div className="flex min-w-0 items-center gap-3">
