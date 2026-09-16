@@ -572,7 +572,7 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="min-w-0 pt-0.5">
+                <div className="min-w-0 flex-1 pt-0.5">
                   <div className="inline-flex items-center gap-2 rounded-full border border-[#cfe6e3] bg-white/75 px-3 py-1.5 shadow-sm">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#168f91]" />
                     <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#277d80]">
@@ -583,13 +583,13 @@ export default function HomePage() {
                   <h2 className="mt-3 text-[21px] font-semibold leading-tight tracking-tight text-[#183d48]">
                     Faites votre premier scan
                   </h2>
-
-                  <p className="mt-2 text-sm leading-5 text-[#617078]">
-                    Votre scan va établir votre point de départ et permettre à
-                    Otavio de personnaliser votre accompagnement.
-                  </p>
                 </div>
               </div>
+
+              <p className="relative mt-4 max-w-[340px] text-sm leading-5 text-[#617078]">
+                Votre scan va établir votre point de départ et permettre à
+                Otavio de personnaliser votre accompagnement.
+              </p>
 
               <button
                 type="button"
