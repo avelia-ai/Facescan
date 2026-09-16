@@ -430,7 +430,7 @@ export default function HomePage() {
 
           <div className="relative flex items-center justify-between gap-4">
             <div className="flex min-w-0 items-center gap-3">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[17px] border border-white/25 bg-white/95 shadow-[0_10px_28px_rgba(12,51,65,0.18)]">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[17px] bg-transparent">
                 <img
                   src="/logo-otavio.png"
                   alt="Otavio"
