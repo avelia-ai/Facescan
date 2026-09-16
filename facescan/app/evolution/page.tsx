@@ -104,9 +104,9 @@ export default function EvolutionPage() {
   const scoreChange = currentScore - firstScore;
 
   return (
-    <main className="app-background min-h-screen text-white pb-24 lg:pb-10">
+    <main className="app-background min-h-screen text-[#17202a] pb-24 lg:pb-10">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-transparent backdrop-blur-xl text-white">
+      <header className="sticky top-0 z-40 border-b border-white/10 bg-transparent backdrop-blur-xl">
         <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between px-5 md:px-8">
           <Link
             href="/"
