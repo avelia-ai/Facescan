@@ -423,38 +423,48 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-white pb-28">
       <div className="mx-auto max-w-md px-5 pt-6">
-        <header className="relative overflow-hidden rounded-[30px] border border-[#cfc7b9] bg-[linear-gradient(135deg,rgba(239,248,243,0.95)_0%,rgba(255,253,249,0.98)_58%,rgba(255,245,237,0.9)_100%)] px-5 py-4 shadow-[0_14px_34px_rgba(70,55,40,0.055)]">
-          <div className="pointer-events-none absolute -right-10 -top-12 h-28 w-28 rounded-full bg-[#dcefe4]/70 blur-2xl" />
-          <div className="pointer-events-none absolute -bottom-14 left-16 h-24 w-24 rounded-full bg-[#f8dfd2]/55 blur-2xl" />
+        <header className="relative px-1 pb-2 pt-1">
+          <div className="pointer-events-none absolute -left-8 -top-8 h-24 w-24 rounded-full bg-[#dff2eb]/45 blur-3xl" />
+          <div className="pointer-events-none absolute right-0 -top-4 h-20 w-20 rounded-full bg-[#f6e6de]/35 blur-3xl" />
 
           <div className="relative flex items-center justify-between gap-4">
-            <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#6f8278]">
-                Bonjour
-              </p>
-              <h1 className="mt-1 text-[25px] font-semibold tracking-tight text-[#183c36]">
-                {firstName}
-              </h1>
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[16px] bg-white/85 shadow-[0_8px_24px_rgba(61,75,69,0.08)]">
+                <img
+                  src="/logo-otavio.png"
+                  alt="Otavio"
+                  className="h-full w-full object-contain"
+                />
+              </div>
+
+              <div className="min-w-0">
+                <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#7c8b82]">
+                  Bonjour
+                </p>
+                <h1 className="mt-0.5 truncate text-[23px] font-semibold tracking-[-0.02em] text-[#183c36]">
+                  {firstName}
+                </h1>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex shrink-0 items-center gap-1.5">
               <button
                 type="button"
                 onClick={() => router.push("/profil")}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-white/80 bg-white/75 text-[#345c50] shadow-[0_8px_20px_rgba(70,55,40,0.07)] backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-white hover:shadow-[0_10px_24px_rgba(70,55,40,0.1)]"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/65 text-[#416358] transition hover:bg-white hover:shadow-[0_8px_20px_rgba(70,55,40,0.08)]"
                 aria-label="Mon profil"
               >
-                <User size={19} strokeWidth={1.8} />
+                <User size={18} strokeWidth={1.7} />
               </button>
 
               <button
                 type="button"
                 onClick={handleSignOut}
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-[#efdcd4]/90 bg-[#fff8f4]/80 text-[#b45a48] shadow-[0_8px_20px_rgba(111,72,58,0.06)] backdrop-blur-md transition hover:-translate-y-0.5 hover:bg-[#fff1eb] hover:shadow-[0_10px_24px_rgba(111,72,58,0.1)]"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/50 text-[#a66a5c] transition hover:bg-[#fff7f3] hover:shadow-[0_8px_20px_rgba(111,72,58,0.08)]"
                 aria-label="Se déconnecter"
                 title="Se déconnecter"
               >
-                <LogOut size={18} strokeWidth={1.8} />
+                <LogOut size={17} strokeWidth={1.7} />
               </button>
             </div>
           </div>
