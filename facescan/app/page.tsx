@@ -423,13 +423,14 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-white pb-28">
       <div className="mx-auto max-w-md px-5 pt-6">
-        <header className="relative px-1 pb-2 pt-1">
-          <div className="pointer-events-none absolute -left-8 -top-8 h-24 w-24 rounded-full bg-[#dff2eb]/45 blur-3xl" />
-          <div className="pointer-events-none absolute right-0 -top-4 h-20 w-20 rounded-full bg-[#f6e6de]/35 blur-3xl" />
+        <header className="relative -mx-5 overflow-hidden px-5 pb-10 pt-6 sm:-mx-8 sm:px-8">
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#123f55_0%,#165c70_24%,#4d8f9a_52%,#b9d3d2_78%,#f3f5f4_100%)]" />
+          <div className="pointer-events-none absolute -right-16 -top-14 h-48 w-48 rounded-full bg-[#72d9d1]/20 blur-3xl" />
+          <div className="pointer-events-none absolute -left-16 top-10 h-40 w-40 rounded-full bg-[#8a9cf1]/15 blur-3xl" />
 
           <div className="relative flex items-center justify-between gap-4">
             <div className="flex min-w-0 items-center gap-3">
-              <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[16px] bg-white/85 shadow-[0_8px_24px_rgba(61,75,69,0.08)]">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[17px] border border-white/25 bg-white/95 shadow-[0_10px_28px_rgba(12,51,65,0.18)]">
                 <img
                   src="/logo-otavio.png"
                   alt="Otavio"
@@ -438,10 +439,10 @@ export default function HomePage() {
               </div>
 
               <div className="min-w-0">
-                <p className="text-[10px] font-medium uppercase tracking-[0.16em] text-[#7c8b82]">
+                <p className="text-[10px] font-medium uppercase tracking-[0.18em] text-white/65">
                   Bonjour
                 </p>
-                <h1 className="mt-0.5 truncate text-[23px] font-semibold tracking-[-0.02em] text-[#183c36]">
+                <h1 className="mt-0.5 truncate text-[24px] font-semibold tracking-[-0.025em] text-white">
                   {firstName}
                 </h1>
               </div>
@@ -451,7 +452,7 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => router.push("/profil")}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/65 text-[#416358] transition hover:bg-white hover:shadow-[0_8px_20px_rgba(70,55,40,0.08)]"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/12 text-white/90 backdrop-blur-md transition hover:bg-white/20"
                 aria-label="Mon profil"
               >
                 <User size={18} strokeWidth={1.7} />
@@ -460,7 +461,7 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={handleSignOut}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/50 text-[#a66a5c] transition hover:bg-[#fff7f3] hover:shadow-[0_8px_20px_rgba(111,72,58,0.08)]"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/10 text-white/80 backdrop-blur-md transition hover:bg-white/20"
                 aria-label="Se déconnecter"
                 title="Se déconnecter"
               >
