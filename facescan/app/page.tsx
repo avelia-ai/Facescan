@@ -423,10 +423,10 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-white pb-28">
       <div className="mx-auto max-w-md px-5 pt-6">
-        <header className="relative -mx-5 overflow-hidden px-5 pb-10 pt-6 sm:-mx-8 sm:px-8">
-          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#123f55_0%,#165c70_24%,#4d8f9a_52%,#b9d3d2_78%,#f3f5f4_100%)]" />
-          <div className="pointer-events-none absolute -right-16 -top-14 h-48 w-48 rounded-full bg-[#72d9d1]/20 blur-3xl" />
-          <div className="pointer-events-none absolute -left-16 top-10 h-40 w-40 rounded-full bg-[#8a9cf1]/15 blur-3xl" />
+        <header className="relative -mx-5 -mt-6 overflow-hidden px-5 pb-14 pt-8 sm:-mx-8 sm:px-8 sm:pt-8">
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,#0f3a51_0%,#154f67_20%,#236f82_39%,#57969f_57%,#9fc5c5_73%,#d7e5e3_87%,#f3f5f4_100%)]" />
+          <div className="pointer-events-none absolute -right-20 -top-16 h-56 w-56 rounded-full bg-[#72d9d1]/22 blur-3xl" />
+          <div className="pointer-events-none absolute -left-20 top-12 h-48 w-48 rounded-full bg-[#8a9cf1]/14 blur-3xl" />
 
           <div className="relative flex items-center justify-between gap-4">
             <div className="flex min-w-0 items-center gap-3">
