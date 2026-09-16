@@ -557,42 +557,48 @@ export default function HomePage() {
               <div className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full bg-[#9ee7dc]/25 blur-3xl" />
               <div className="pointer-events-none absolute -bottom-12 -left-10 h-28 w-28 rounded-full bg-[#a9b2f7]/20 blur-3xl" />
 
-              <div className="relative flex flex-col items-center text-center">
-                <div className="relative flex h-24 w-24 items-center justify-center rounded-full border border-[#ffffff]/90 bg-white/75 shadow-[0_14px_35px_rgba(35,92,96,0.10)] backdrop-blur-md">
-                  <div className="absolute inset-2 rounded-full border border-[#8edfd3]/70" />
-                  <div className="absolute inset-5 rounded-full border border-[#c5bff7]/50" />
-                  <ScanFace
-                    size={34}
-                    strokeWidth={1.5}
-                    className="relative text-[#247f84]"
-                  />
+              <div className="relative flex items-start gap-4">
+                <div className="shrink-0">
+                  <div className="relative h-20 w-20 overflow-hidden rounded-[22px] border border-white/90 bg-white shadow-[0_12px_30px_rgba(35,92,96,0.12)]">
+                    <video
+                      src="/otavio/premier-scan.mp4"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                  </div>
                 </div>
 
-                <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#cfe6e3] bg-white/75 px-3 py-1.5 shadow-sm">
-                  <span className="h-1.5 w-1.5 rounded-full bg-[#168f91]" />
-                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#277d80]">
-                    Votre première étape
-                  </span>
+                <div className="min-w-0 pt-0.5">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-[#cfe6e3] bg-white/75 px-3 py-1.5 shadow-sm">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#168f91]" />
+                    <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#277d80]">
+                      Votre première étape
+                    </span>
+                  </div>
+
+                  <h2 className="mt-3 text-[21px] font-semibold leading-tight tracking-tight text-[#183d48]">
+                    Faites votre premier scan
+                  </h2>
+
+                  <p className="mt-2 text-sm leading-5 text-[#617078]">
+                    Votre scan va établir votre point de départ et permettre à
+                    Otavio de personnaliser votre accompagnement.
+                  </p>
                 </div>
-
-                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[#183d48]">
-                  Faites votre premier scan
-                </h2>
-
-                <p className="mx-auto mt-2 max-w-[290px] text-sm leading-5 text-[#617078]">
-                  Votre scan va établir votre point de départ et permettre à
-                  Otavio de personnaliser votre accompagnement.
-                </p>
-
-                <button
-                  type="button"
-                  onClick={() => router.push("/scanner")}
-                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#183d48] px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(24,61,72,0.18)] transition hover:-translate-y-0.5 hover:bg-[#214d59] hover:shadow-[0_14px_28px_rgba(24,61,72,0.22)]"
-                >
-                  <ScanFace size={17} strokeWidth={1.8} />
-                  Faire mon premier scan
-                </button>
               </div>
+
+              <button
+                type="button"
+                onClick={() => router.push("/scanner")}
+                className="relative mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#183d48] px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(24,61,72,0.18)] transition hover:-translate-y-0.5 hover:bg-[#214d59] hover:shadow-[0_14px_28px_rgba(24,61,72,0.22)]"
+              >
+                <ScanFace size={17} strokeWidth={1.8} />
+                Faire mon premier scan
+              </button>
             </div>
 
             <div className="border-t border-[#e0e8e7] px-5 py-4">
