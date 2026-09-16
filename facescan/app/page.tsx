@@ -553,33 +553,52 @@ export default function HomePage() {
           </button>
         ) : (
           <section className="mt-7 overflow-hidden rounded-[30px] border border-[#b8cecf] bg-white shadow-[0_16px_40px_rgba(16,47,58,0.07)]">
-            <div className="relative aspect-[16/7] overflow-hidden bg-white">
-              <video
-                src="/otavio/profile.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                className="absolute inset-0 h-full w-full object-contain scale-[0.97]"
-              />
+            <div className="relative overflow-hidden bg-[linear-gradient(135deg,#edf8f5_0%,#f9fcfb_55%,#eef3ff_100%)] px-5 py-7">
+              <div className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full bg-[#9ee7dc]/25 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-12 -left-10 h-28 w-28 rounded-full bg-[#a9b2f7]/20 blur-3xl" />
+
+              <div className="relative flex flex-col items-center text-center">
+                <div className="relative flex h-24 w-24 items-center justify-center rounded-full border border-[#ffffff]/90 bg-white/75 shadow-[0_14px_35px_rgba(35,92,96,0.10)] backdrop-blur-md">
+                  <div className="absolute inset-2 rounded-full border border-[#8edfd3]/70" />
+                  <div className="absolute inset-5 rounded-full border border-[#c5bff7]/50" />
+                  <ScanFace
+                    size={34}
+                    strokeWidth={1.5}
+                    className="relative text-[#247f84]"
+                  />
+                </div>
+
+                <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#cfe6e3] bg-white/75 px-3 py-1.5 shadow-sm">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#168f91]" />
+                  <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#277d80]">
+                    Votre première étape
+                  </span>
+                </div>
+
+                <h2 className="mt-3 text-2xl font-semibold tracking-tight text-[#183d48]">
+                  Faites votre premier scan
+                </h2>
+
+                <p className="mx-auto mt-2 max-w-[290px] text-sm leading-5 text-[#617078]">
+                  Votre scan va établir votre point de départ et permettre à
+                  Otavio de personnaliser votre accompagnement.
+                </p>
+
+                <button
+                  type="button"
+                  onClick={() => router.push("/scanner")}
+                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#183d48] px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(24,61,72,0.18)] transition hover:-translate-y-0.5 hover:bg-[#214d59] hover:shadow-[0_14px_28px_rgba(24,61,72,0.22)]"
+                >
+                  <ScanFace size={17} strokeWidth={1.8} />
+                  Faire mon premier scan
+                </button>
+              </div>
             </div>
 
-            <div className="px-5 py-4">
-              <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-[#168f91]" />
-                <span className="text-xs font-semibold uppercase tracking-[0.12em] text-[#168f91]">
-                  Otavio
-                </span>
-              </div>
-
-              <h2 className="mt-2 text-xl font-semibold tracking-tight text-[#183d48]">
-                Bienvenue {firstName}
-              </h2>
-
-              <p className="mt-1 text-sm leading-5 text-[#617078]">
-                Votre profil est prêt. Faites votre premier scan pour que je
-                puisse établir votre point de départ.
+            <div className="border-t border-[#e0e8e7] px-5 py-4">
+              <p className="text-xs leading-5 text-[#728087]">
+                Quelques secondes suffisent pour obtenir vos premiers
+                indicateurs visuels.
               </p>
             </div>
           </section>
