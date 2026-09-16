@@ -104,55 +104,20 @@ a {
 
 .app-background {
   min-height: 100%;
-  background:
+  background-color: #f3f5f4;
+  background-image:
     linear-gradient(
       180deg,
       #103d53 0%,
-      #174f66 11%,
-      #256d7f 22%,
-      #438895 34%,
-      #649da5 47%,
-      #87b2b5 59%,
-      #a9c6c5 69%,
-      #c4d7d4 78%,
-      #dce8e5 87%,
-      #edf2f0 94%,
-      #f3f5f4 100%
+      #174f66 16%,
+      #256d7f 34%,
+      #438895 50%,
+      #649da5 64%,
+      #8db4b6 76%,
+      #b9cfcd 86%,
+      #dce8e5 94%,
+      rgba(243, 245, 244, 0) 100%
     );
-}
-
-/* Lisibilité du contenu sur le fond global FaceScan */
-.app-background {
-  position: relative;
-  isolation: isolate;
-}
-
-.app-background::before {
-  content: "";
-  position: absolute;
-  inset: 115px 0 0 0;
-  z-index: -1;
-  pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(243, 245, 244, 0.10) 0%,
-    rgba(243, 245, 244, 0.28) 22%,
-    rgba(243, 245, 244, 0.52) 48%,
-    rgba(243, 245, 244, 0.72) 72%,
-    rgba(243, 245, 244, 0.84) 100%
-  );
-  border-radius: 0;
-}
-
-.app-background h1,
-.app-background h2,
-.app-background h3,
-.app-background h4 {
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.35);
-}
-
-.app-background p,
-.app-background span,
-.app-background li {
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.20);
+  background-repeat: no-repeat;
+  background-size: 100% 430px;
 }

@@ -421,10 +421,7 @@ export default function HomePage() {
   const completedToday = dailyTasks.filter((task) => task.completed).length;
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#f3f5f4] pb-28">
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[430px] bg-[linear-gradient(180deg,#103d53_0%,#174f66_16%,#256d7f_34%,#438895_50%,#649da5_64%,#8db4b6_76%,#b9cfcd_86%,#dce8e5_94%,rgba(243,245,244,0)_100%)]"
-      />
+    <main className="app-background relative min-h-screen overflow-hidden pb-28">
       <div className="relative z-10 mx-auto max-w-md px-5 pt-6">
         <header className="relative -mx-5 -mt-6 px-5 pb-4 pt-5 sm:-mx-8 sm:px-8 sm:pt-6">
 

@@ -106,7 +106,7 @@ export default function EvolutionPage() {
   return (
     <main className="app-background min-h-screen text-[#17202a] pb-24 lg:pb-10">
       {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-[#dce5e4] bg-white/92 backdrop-blur-xl">
+      <header className="sticky top-0 z-40 border-b border-white/10 bg-transparent backdrop-blur-xl">
         <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between px-5 md:px-8">
           <Link
             href="/"
