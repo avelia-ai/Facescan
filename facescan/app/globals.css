@@ -120,3 +120,39 @@ a {
       #f3f5f4 100%
     );
 }
+
+/* Lisibilité du contenu sur le fond global FaceScan */
+.app-background {
+  position: relative;
+  isolation: isolate;
+}
+
+.app-background::before {
+  content: "";
+  position: absolute;
+  inset: 115px 0 0 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(243, 245, 244, 0.10) 0%,
+    rgba(243, 245, 244, 0.28) 22%,
+    rgba(243, 245, 244, 0.52) 48%,
+    rgba(243, 245, 244, 0.72) 72%,
+    rgba(243, 245, 244, 0.84) 100%
+  );
+  border-radius: 0;
+}
+
+.app-background h1,
+.app-background h2,
+.app-background h3,
+.app-background h4 {
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.35);
+}
+
+.app-background p,
+.app-background span,
+.app-background li {
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.20);
+}
