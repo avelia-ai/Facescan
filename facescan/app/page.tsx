@@ -1044,13 +1044,29 @@ export default function HomePage() {
         </Link>
 
         <section className="mt-7">
-          <p className="text-sm font-semibold text-[#287f72]">
-            Votre quotidien
-          </p>
+          <div className="flex items-center justify-between gap-4">
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-[#287f72]">
+                Votre quotidien
+              </p>
 
-          <h2 className="mt-1 text-xl font-semibold tracking-tight text-[#183d48]">
-            Les habitudes qui comptent
-          </h2>
+              <h2 className="mt-1 text-xl font-semibold tracking-tight text-[#183d48]">
+                Les habitudes qui comptent
+              </h2>
+            </div>
+
+            <div className="relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-[22px] border border-white/90 bg-[#dce8e5] shadow-[0_8px_22px_rgba(25,68,80,0.12)]">
+              <video
+                src="/otavio/video-quotidien.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 h-full w-full object-cover"
+                aria-label="Otavio"
+              />
+            </div>
+          </div>
 
           <div className="mt-4 grid grid-cols-2 gap-3">
             <Link
