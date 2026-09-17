@@ -840,238 +840,19 @@ export default function HomePage() {
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0">
               <p className="text-sm font-semibold text-[#287f72]">
-                Vos priorités
-              </p>
-
-              <h2 className="mt-1 text-xl font-semibold tracking-tight text-[#183d48]">
-                Ce qui compte pour vous
-              </h2>
-
-              <button
-                type="button"
-                onClick={() => router.push("/objectifs")}
-                className="mt-2 text-xs font-semibold text-[#168f91]"
-              >
-                Modifier
-              </button>
-            </div>
-
-            <div className="relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-[22px] border border-white/90 bg-[#dce8e5] shadow-[0_8px_22px_rgba(25,68,80,0.12)]">
-              <video
-                src="/otavio/video-accueil.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="absolute inset-0 h-full w-full object-cover"
-                aria-label="Otavio"
-              />
-            </div>
-          </div>
-
-          <div className="mt-4 space-y-3">
-            {goals.length > 0 ? (
-              goals.map((goal, index) => (
-                <div
-                  key={`${goal}-${index}`}
-                  className={`flex items-center gap-4 rounded-[26px] border bg-[linear-gradient(145deg,#ffffff_0%,#fcfdfc_100%)] p-4 shadow-[0_10px_28px_rgba(36,78,70,0.055)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(36,78,70,0.08)] ${
-                    index === 0
-                      ? "border-[#9fd6cb] bg-[linear-gradient(135deg,#f8fdfb_0%,#f0faf6_100%)] shadow-[0_12px_30px_rgba(40,127,114,0.08)]"
-                      : "border-[#d9e2e0]"
-                  }`}
-                >
-                  <div
-                    className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[18px] shadow-[0_5px_14px_rgba(36,78,70,0.06)] ${
-                      index === 0
-                        ? "bg-[linear-gradient(135deg,#e8f8f2_0%,#cfe9df_100%)] text-[#287f72] shadow-[0_7px_18px_rgba(40,127,114,0.13)]"
-                        : index === 1
-                          ? "bg-[linear-gradient(135deg,#eefafb_0%,#dff2f3_100%)] text-[#168f91]"
-                          : "bg-[linear-gradient(135deg,#f5f3fb_0%,#ece9f6_100%)] text-[#6b66a8]"
-                    }`}
-                  >
-                    {index === 0 ? (
-                      <Target size={18} />
-                    ) : index === 1 ? (
-                      <Droplets size={18} />
-                    ) : (
-                      <Sparkles size={18} />
-                    )}
-                  </div>
-
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-semibold text-[#183d48]">
-                      {getGoalLabel(goal)}
-                    </p>
-
-                    {index === 0 && (
-                      <p className="mt-1 text-xs text-[#7b898f]">
-                        Votre priorité principale
-                      </p>
-                    )}
-                  </div>
-
-                  <ChevronRight
-                    size={17}
-                    className="text-[#9aa7ad]"
-                  />
-                </div>
-              ))
-            ) : (
-              <div className="rounded-[24px] border border-[#b8cecf] bg-white p-5 text-sm text-[#68777e]">
-                Vos objectifs apparaîtront ici.
-              </div>
-            )}
-          </div>
-        </section>
-
-        {xpFeedback !== null && (
-          <div className="mt-5 flex items-center justify-center">
-            <div className="rounded-full bg-[#e5faf7] px-4 py-2.5 text-sm font-semibold text-[#287f72] shadow-sm animate-pulse">
-              +{xpFeedback} XP pour Otavio
-            </div>
-          </div>
-        )}
-
-        {stageUp && (
-          <div className="mt-3 rounded-2xl border border-[#cfcaf8] bg-[#eeecff] px-4 py-3 text-center shadow-sm">
-            <p className="text-sm font-semibold text-[#5d55bd]">
-              ✨ Otavio évolue !
-            </p>
-            <p className="mt-1 text-xs text-[#726bb0]">
-              Nouveau stade débloqué : {otavioProgress.name}
-            </p>
-          </div>
-        )}
-
-        <section className="mt-7">
-          <div className="flex items-end justify-between">
-            <div>
-              <p className="text-sm font-semibold text-[#287f72]">
-                Aujourd’hui
-              </p>
-
-              <h2 className="mt-1 text-xl font-semibold tracking-tight text-[#183d48]">
-                Votre programme
-              </h2>
-            </div>
-
-            <span className="text-xs font-medium text-[#8a989e]">
-              {dailyTasks.filter((task) => task.completed).length} /{" "}
-              {dailyTasks.length || 4} complété
-              {dailyTasks.filter((task) => task.completed).length > 1
-                ? "s"
-                : ""}
-            </span>
-          </div>
-
-          <div className="mt-4 space-y-3">
-            {dailyTasks.map((task) => (
-              <button
-                key={task.id}
-                type="button"
-                onClick={() => toggleDailyTask(task)}
-                disabled={taskLoading}
-                className={`flex w-full items-center gap-4 rounded-[26px] border p-4 text-left shadow-[0_10px_28px_rgba(36,78,70,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(36,78,70,0.09)] ${
-                  task.completed
-                    ? "border-[#9fd6cb] bg-[linear-gradient(135deg,#f5fcfa_0%,#edf8f4_100%)]"
-                    : "border-[#cddbd9] bg-[linear-gradient(135deg,#ffffff_0%,#fcfdfc_100%)]"
-                }`}
-              >
-                <div
-                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${
-                    task.completed
-                      ? "bg-[linear-gradient(135deg,#168f91_0%,#287f72_100%)] text-white shadow-[0_6px_16px_rgba(22,143,145,0.22)]"
-                      : "bg-[linear-gradient(135deg,#e7f8f3_0%,#d7eee7_100%)] text-[#287f72]"
-                  }`}
-                >
-                  {task.task_key === "scan" ? (
-                    <ScanFace size={19} />
-                  ) : task.task_key === "hydration" ? (
-                    <Droplets size={19} />
-                  ) : task.task_key === "routine" ? (
-                    <Sparkles size={19} />
-                  ) : (
-                    <Moon size={19} />
-                  )}
-                </div>
-
-                <div className="min-w-0 flex-1">
-                  <p
-                    className={`text-sm font-semibold ${
-                      task.completed
-                        ? "text-[#52736f]"
-                        : "text-[#183d48]"
-                    }`}
-                  >
-                    {task.title}
-                  </p>
-
-                  <p className="mt-1 text-xs leading-5 text-[#7b898f]">
-                    {task.description}
-                  </p>
-                </div>
-
-                <div
-                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 text-xs font-bold ${
-                    task.completed
-                      ? "border-[#168f91] bg-[#168f91] text-white"
-                      : "border-[#b9cdca] bg-white text-transparent"
-                  }`}
-                >
-                  ✓
-                </div>
-              </button>
-            ))}
-          </div>
-
-          {dailyTasks.length === 0 && (
-            <div className="mt-4 rounded-[24px] border border-[#b8cecf] bg-white p-5 text-sm text-[#718088]">
-              Préparation de votre programme…
-            </div>
-          )}
-        </section>
-
-        <Link
-          href="/alimentation"
-          className="relative mt-5 block overflow-hidden rounded-[28px] border border-[#a8c8b5] bg-white shadow-[0_16px_38px_rgba(43,70,58,0.08)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_42px_rgba(43,70,58,0.11)]"
-        >
-          <div className="relative flex items-center justify-between bg-[linear-gradient(135deg,#eaf6ee_0%,#d8ebdf_72%,#cfe7d8_100%)] px-5 py-3.5">
-            <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/80 text-[#39775b]">
-                <Utensils size={18} />
-              </div>
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#39775b]">
-                  Alimentation
-                </p>
-                <p className="text-sm font-semibold text-[#244d3c]">
-                  Mon programme alimentaire
-                </p>
-              </div>
-            </div>
-            <ArrowRight size={18} className="text-[#39775b]" />
-          </div>
-
-          <div className="px-5 py-4">
-            <p className="text-xs leading-5 text-[#718088]">
-              Votre menu personnalisé, vos recettes et vos adaptations.
-            </p>
-          </div>
-        </Link>
-
-        <section className="mt-7">
-          <div className="flex items-center justify-between gap-4">
-            <div className="min-w-0">
-              <p className="text-sm font-semibold text-[#287f72]">
                 Votre quotidien
               </p>
 
-              <h2 className="mt-1 text-xl font-semibold tracking-tight text-[#183d48]">
+              <h2 className="mt-1 text-xl font-semibold tracking-[-0.025em] text-[#183d48]">
                 Les habitudes qui comptent
               </h2>
+
+              <p className="mt-1.5 text-xs leading-5 text-[#718088]">
+                Les leviers que vous pouvez suivre au quotidien.
+              </p>
             </div>
 
-            <div className="relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-[22px] border border-white/90 bg-[#dce8e5] shadow-[0_8px_22px_rgba(25,68,80,0.12)]">
+            <div className="relative h-[74px] w-[74px] shrink-0 overflow-hidden rounded-[22px] border border-white/90 bg-[#dce8e5] shadow-[0_9px_24px_rgba(25,68,80,0.12)]">
               <video
                 src="/otavio/video-quotidien.mp4"
                 autoPlay
@@ -1084,82 +865,167 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-3">
+          <div className="mt-5 space-y-3">
+
+            {/* Sommeil */}
             <Link
               href="/sommeil"
-              className="relative block overflow-hidden rounded-[28px] border border-[#b8b7d8] bg-white shadow-[0_14px_34px_rgba(64,59,90,0.07)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_38px_rgba(64,59,90,0.10)]"
+              className="group relative block overflow-hidden rounded-[26px] border border-[#c9c7e2] bg-white shadow-[0_12px_32px_rgba(64,59,90,0.07)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(64,59,90,0.11)]"
             >
-              <div className="bg-[linear-gradient(135deg,#f5f4fd_0%,#e8e7f7_72%,#dfdef2_100%)] px-4 py-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/80 text-[#5d5b9d]">
-                    <Moon size={18} />
+              <div className="flex items-stretch">
+                <div className="flex w-[88px] shrink-0 items-center justify-center bg-[linear-gradient(160deg,#f5f4fd_0%,#e7e6f6_100%)]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-[17px] bg-white/85 text-[#5d5b9d] shadow-[0_6px_16px_rgba(93,91,157,0.10)]">
+                    <Moon size={21} strokeWidth={1.8} />
                   </div>
-                  <ArrowRight size={16} className="text-[#5d5b9d]" />
                 </div>
-                <p className="mt-3 text-sm font-bold text-[#454574]">
-                  Sommeil
-                </p>
-              </div>
 
-              <div className="px-4 py-4">
-                <p className="text-xs leading-5 text-[#7b898f]">
-                  {profile?.sleep_quality
-                    ? profile.sleep_quality === "tres_bonne"
-                      ? "Très bonne qualité déclarée"
-                      : profile.sleep_quality === "bonne"
-                        ? "Bonne qualité déclarée"
-                        : "À suivre progressivement"
-                    : "Votre suivi du sommeil sera personnalisé."}
-                </p>
+                <div className="min-w-0 flex-1 px-4 py-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7774a7]">
+                        Récupération
+                      </p>
+
+                      <p className="mt-1 text-[17px] font-semibold tracking-[-0.02em] text-[#39395f]">
+                        Sommeil
+                      </p>
+                    </div>
+
+                    <ChevronRight
+                      size={17}
+                      className="mt-1 shrink-0 text-[#aaa9c7] transition-transform group-hover:translate-x-0.5"
+                    />
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <span className="rounded-full bg-[#f1f0fa] px-2.5 py-1 text-[10px] font-semibold text-[#5d5b9d]">
+                      {profile?.sleep_quality
+                        ? profile.sleep_quality === "tres_bonne"
+                          ? "Très bonne qualité"
+                          : profile.sleep_quality === "bonne"
+                            ? "Bonne qualité"
+                            : "À suivre"
+                        : "Personnalisation en cours"}
+                    </span>
+
+                    <span className="text-[10px] text-[#89909a]">
+                      Suivi quotidien
+                    </span>
+                  </div>
+
+                  <p className="mt-2 text-xs leading-5 text-[#7b898f]">
+                    {profile?.sleep_quality
+                      ? "Votre qualité de sommeil est prise en compte dans vos recommandations."
+                      : "Votre sommeil sera intégré progressivement à votre accompagnement."}
+                  </p>
+                </div>
               </div>
             </Link>
 
+            {/* Nutrition */}
             <Link
               href="/alimentation"
-              className="relative block overflow-hidden rounded-[28px] border border-[#d8aa9c] bg-[#fffdfb] shadow-[0_14px_34px_rgba(111,72,58,0.07)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_38px_rgba(111,72,58,0.10)]"
+              className="group relative block overflow-hidden rounded-[26px] border border-[#dfb7aa] bg-white shadow-[0_12px_32px_rgba(111,72,58,0.07)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(111,72,58,0.11)]"
             >
-              <div className="bg-[linear-gradient(135deg,#fff5f0_0%,#fae5dc_72%,#f5d9cf_100%)] px-4 py-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/80 text-[#b76b58]">
-                    <Utensils size={18} />
+              <div className="flex items-stretch">
+                <div className="flex w-[88px] shrink-0 items-center justify-center bg-[linear-gradient(160deg,#fff5f0_0%,#f8dfd5_100%)]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-[17px] bg-white/85 text-[#b76b58] shadow-[0_6px_16px_rgba(183,107,88,0.10)]">
+                    <Utensils size={21} strokeWidth={1.8} />
                   </div>
-                  <ArrowRight size={16} className="text-[#b76b58]" />
                 </div>
-                <p className="mt-3 text-sm font-bold text-[#8d5042]">
-                  Nutrition
-                </p>
-              </div>
 
-              <div className="px-4 py-4">
-                <p className="text-xs leading-5 text-[#7b898f]">
-                  {profile?.eating_style
-                    ? `${profile.eating_style}${profile.meals_per_day ? ` · ${profile.meals_per_day} repas` : ""}`
-                    : "Vos préférences alimentaires seront utilisées pour vos recommandations."}
-                </p>
+                <div className="min-w-0 flex-1 px-4 py-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#b76b58]">
+                        Alimentation
+                      </p>
+
+                      <p className="mt-1 text-[17px] font-semibold tracking-[-0.02em] text-[#77463b]">
+                        Nutrition
+                      </p>
+                    </div>
+
+                    <ChevronRight
+                      size={17}
+                      className="mt-1 shrink-0 text-[#d29b8b] transition-transform group-hover:translate-x-0.5"
+                    />
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <span className="rounded-full bg-[#fcf0eb] px-2.5 py-1 text-[10px] font-semibold text-[#a35f4d]">
+                      {profile?.eating_style
+                        ? profile.eating_style
+                        : "Profil alimentaire"}
+                    </span>
+
+                    {profile?.meals_per_day ? (
+                      <span className="rounded-full bg-[#f8f4f1] px-2.5 py-1 text-[10px] font-semibold text-[#8b7770]">
+                        {profile.meals_per_day} repas / jour
+                      </span>
+                    ) : null}
+                  </div>
+
+                  <p className="mt-2 text-xs leading-5 text-[#7b898f]">
+                    Votre alimentation, vos préférences et vos repas servent à personnaliser vos recommandations.
+                  </p>
+                </div>
               </div>
             </Link>
 
-            <div className="col-span-2 flex items-center gap-4 overflow-hidden rounded-[28px] border border-[#9fc7c3] bg-white shadow-[0_14px_34px_rgba(35,90,84,0.06)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_38px_rgba(35,90,84,0.09)]">
-              <div className="flex h-full min-h-[92px] w-20 shrink-0 items-center justify-center bg-[linear-gradient(135deg,#ebfaf6_0%,#d6eee8_100%)] text-[#168f91]">
-                <Activity size={23} />
-              </div>
+            {/* Activité */}
+            <Link
+              href="/indicateur"
+              className="group relative block overflow-hidden rounded-[26px] border border-[#a9d1cb] bg-white shadow-[0_12px_32px_rgba(35,90,84,0.06)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(35,90,84,0.10)]"
+            >
+              <div className="flex items-stretch">
+                <div className="flex w-[88px] shrink-0 items-center justify-center bg-[linear-gradient(160deg,#ebfaf6_0%,#d7eee8_100%)]">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-[17px] bg-white/85 text-[#168f91] shadow-[0_6px_16px_rgba(22,143,145,0.10)]">
+                    <Activity size={21} strokeWidth={1.8} />
+                  </div>
+                </div>
 
-              <div className="min-w-0 flex-1 py-4 pr-4">
-                <p className="text-sm font-semibold text-[#183d48]">
-                  Activité
-                </p>
+                <div className="min-w-0 flex-1 px-4 py-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#168f91]">
+                        Mouvement
+                      </p>
 
-                <p className="mt-1 text-xs leading-5 text-[#7b898f]">
-                  {profile?.activity_level
-                    ? "Votre niveau d’activité est enregistré."
-                    : "Votre niveau d’activité sera pris en compte."}
-                </p>
+                      <p className="mt-1 text-[17px] font-semibold tracking-[-0.02em] text-[#21585d]">
+                        Activité
+                      </p>
+                    </div>
+
+                    <ChevronRight
+                      size={17}
+                      className="mt-1 shrink-0 text-[#8bb6b3] transition-transform group-hover:translate-x-0.5"
+                    />
+                  </div>
+
+                  <div className="mt-3 flex flex-wrap items-center gap-2">
+                    <span className="rounded-full bg-[#eaf8f6] px-2.5 py-1 text-[10px] font-semibold text-[#168f91]">
+                      {profile?.activity_level
+                        ? profile.activity_level
+                        : "À personnaliser"}
+                    </span>
+
+                    <span className="text-[10px] text-[#89909a]">
+                      Suivi de progression
+                    </span>
+                  </div>
+
+                  <p className="mt-2 text-xs leading-5 text-[#7b898f]">
+                    Votre niveau d’activité aide à ajuster votre accompagnement et vos recommandations.
+                  </p>
+                </div>
               </div>
-            </div>
+            </Link>
+
           </div>
         </section>
 
-        <section className="relative mt-7 overflow-hidden rounded-[28px] border border-[#e5d7a8] bg-[linear-gradient(135deg,#fffdf7_0%,#fff9e9_58%,#f7fbf7_100%)] p-5 shadow-[0_14px_34px_rgba(120,100,45,0.08)]">
+      <section className="relative mt-7 overflow-hidden rounded-[28px] border border-[#e5d7a8] bg-[linear-gradient(135deg,#fffdf7_0%,#fff9e9_58%,#f7fbf7_100%)] p-5 shadow-[0_14px_34px_rgba(120,100,45,0.08)]">
           <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-[#f4d76a]/20 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-12 left-16 h-24 w-24 rounded-full bg-[#dcefe4]/35 blur-3xl" />
 
