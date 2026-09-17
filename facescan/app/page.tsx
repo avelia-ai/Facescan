@@ -113,6 +113,7 @@ export default function HomePage() {
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [firstName, setFirstName] = useState("vous");
+  const [todayLabel, setTodayLabel] = useState("");
   const [loading, setLoading] = useState(true);
   const [hasScan, setHasScan] = useState(false);
   const [scanCount, setScanCount] = useState(0);
@@ -145,6 +146,15 @@ export default function HomePage() {
       }
 
       setFirstName(getFirstName(user.email));
+
+      setTodayLabel(
+        new Intl.DateTimeFormat("fr-FR", {
+          weekday: "long",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }).format(new Date())
+      );
 
       const { data } = await supabase
         .from("profiles")
@@ -442,6 +452,12 @@ export default function HomePage() {
                 <h1 className="mt-0.5 truncate text-[24px] font-semibold tracking-[-0.025em] text-white">
                   {firstName}
                 </h1>
+
+                {todayLabel && (
+                  <p className="mt-0.5 text-[10px] font-medium capitalize tracking-[0.01em] text-white/60">
+                    {todayLabel}
+                  </p>
+                )}
               </div>
             </div>
 
