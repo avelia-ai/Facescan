@@ -519,50 +519,428 @@ const RECIPES: OtavioRecipe[] = [
     preferences: ["rapide", "vegan", "vegetarien"],
     proteinLevel: "modere",
   },
+  {
+    id: "overnight-avoine-banane",
+    name: "Overnight oats banane et graines de chia",
+    mealType: "petit_dejeuner",
+    ingredients: [
+      { name: "Flocons d’avoine", quantity: 50, unit: "g" },
+      { name: "Boisson végétale sans sucre", quantity: 150, unit: "ml" },
+      { name: "Banane", quantity: 1, unit: "unité" },
+      { name: "Graines de chia", quantity: 10, unit: "g" },
+    ],
+    instructions: [
+      "Mélanger les flocons d’avoine, la boisson végétale et les graines de chia.",
+      "Laisser reposer au réfrigérateur pendant la nuit.",
+      "Ajouter la banane coupée au moment de servir.",
+    ],
+    prepTime: 5,
+    servings: 1,
+    tags: ["rapide", "fibre", "sans-cuisson"],
+    dietary: ["vegetarien", "vegan"],
+    allergens: [],
+    budget: "economique",
+    goals: ["equilibre", "energie", "digestion"],
+    preferences: ["rapide", "vegan", "vegetarien"],
+    proteinLevel: "modere",
+  },
+  {
+    id: "oeufs-pain-tomate",
+    name: "Œufs brouillés, pain complet et tomate",
+    mealType: "petit_dejeuner",
+    ingredients: [
+      { name: "Œufs", quantity: 2, unit: "unités" },
+      { name: "Pain complet", quantity: 60, unit: "g" },
+      { name: "Tomate", quantity: 120, unit: "g" },
+      { name: "Herbes", quantity: 1, unit: "portion" },
+    ],
+    instructions: [
+      "Faire griller le pain.",
+      "Cuire les œufs brouillés à feu doux.",
+      "Servir avec la tomate et les herbes.",
+    ],
+    prepTime: 10,
+    servings: 1,
+    tags: ["proteines", "rapide", "complet"],
+    dietary: ["vegetarien"],
+    allergens: ["œuf"],
+    budget: "economique",
+    goals: ["proteines", "energie", "equilibre"],
+    preferences: ["rapide", "simple"],
+    proteinLevel: "eleve",
+  },
+  {
+    id: "fromage-blanc-fruits-noix",
+    name: "Fromage blanc, poire et noix",
+    mealType: "petit_dejeuner",
+    ingredients: [
+      { name: "Fromage blanc", quantity: 150, unit: "g" },
+      { name: "Poire", quantity: 1, unit: "unité" },
+      { name: "Noix", quantity: 15, unit: "g" },
+      { name: "Flocons d’avoine", quantity: 30, unit: "g" },
+    ],
+    instructions: [
+      "Verser le fromage blanc dans un bol.",
+      "Ajouter la poire coupée.",
+      "Ajouter les flocons d’avoine et les noix concassées.",
+    ],
+    prepTime: 5,
+    servings: 1,
+    tags: ["rapide", "fibre", "proteines"],
+    dietary: ["vegetarien"],
+    allergens: ["lait", "fruits à coque"],
+    budget: "standard",
+    goals: ["equilibre", "proteines", "digestion"],
+    preferences: ["rapide", "simple"],
+    proteinLevel: "modere",
+  },
+  {
+    id: "chia-fruits-rouges",
+    name: "Pudding de chia aux fruits rouges",
+    mealType: "petit_dejeuner",
+    ingredients: [
+      { name: "Graines de chia", quantity: 25, unit: "g" },
+      { name: "Boisson végétale sans sucre", quantity: 200, unit: "ml" },
+      { name: "Fruits rouges", quantity: 100, unit: "g" },
+      { name: "Flocons d’avoine", quantity: 25, unit: "g" },
+    ],
+    instructions: [
+      "Mélanger les graines de chia et la boisson végétale.",
+      "Laisser épaissir au réfrigérateur pendant au moins 2 heures.",
+      "Ajouter les fruits rouges et les flocons d’avoine.",
+    ],
+    prepTime: 5,
+    servings: 1,
+    tags: ["fibre", "sans-cuisson", "rapide"],
+    dietary: ["vegetarien", "vegan"],
+    allergens: [],
+    budget: "standard",
+    goals: ["equilibre", "digestion", "energie"],
+    preferences: ["vegan", "rapide"],
+    proteinLevel: "modere",
+  },
+  {
+    id: "poulet-semoule-legumes",
+    name: "Poulet, semoule complète et légumes",
+    mealType: "dejeuner",
+    ingredients: [
+      { name: "Blanc de poulet", quantity: 150, unit: "g" },
+      { name: "Semoule complète", quantity: 70, unit: "g" },
+      { name: "Courgette", quantity: 120, unit: "g" },
+      { name: "Carotte", quantity: 100, unit: "g" },
+      { name: "Huile d’olive", quantity: 10, unit: "g" },
+    ],
+    instructions: [
+      "Préparer la semoule selon les indications du paquet.",
+      "Faire cuire le poulet à la poêle.",
+      "Cuire les légumes puis assembler le tout avec un filet d’huile.",
+    ],
+    prepTime: 20,
+    servings: 1,
+    tags: ["proteines", "complet", "equilibre"],
+    dietary: [],
+    allergens: [],
+    budget: "standard",
+    goals: ["proteines", "equilibre", "energie"],
+    preferences: ["complet", "simple"],
+    proteinLevel: "eleve",
+  },
+  {
+    id: "riz-dinde-poivrons",
+    name: "Riz complet, dinde et poivrons",
+    mealType: "dejeuner",
+    ingredients: [
+      { name: "Escalope de dinde", quantity: 150, unit: "g" },
+      { name: "Riz complet", quantity: 70, unit: "g" },
+      { name: "Poivron", quantity: 120, unit: "g" },
+      { name: "Courgette", quantity: 100, unit: "g" },
+      { name: "Huile d’olive", quantity: 10, unit: "g" },
+    ],
+    instructions: [
+      "Cuire le riz complet.",
+      "Faire revenir la dinde avec les poivrons.",
+      "Ajouter la courgette puis servir avec le riz.",
+    ],
+    prepTime: 20,
+    servings: 1,
+    tags: ["proteines", "complet", "equilibre"],
+    dietary: [],
+    allergens: [],
+    budget: "standard",
+    goals: ["proteines", "energie", "equilibre"],
+    preferences: ["simple", "complet"],
+    proteinLevel: "eleve",
+  },
+  {
+    id: "tofu-nouilles-legumes",
+    name: "Tofu, nouilles de riz et légumes",
+    mealType: "dejeuner",
+    ingredients: [
+      { name: "Tofu ferme", quantity: 150, unit: "g" },
+      { name: "Nouilles de riz", quantity: 70, unit: "g" },
+      { name: "Carotte", quantity: 100, unit: "g" },
+      { name: "Courgette", quantity: 120, unit: "g" },
+      { name: "Sauce soja", quantity: 10, unit: "ml" },
+    ],
+    instructions: [
+      "Cuire les nouilles de riz.",
+      "Faire dorer le tofu à la poêle.",
+      "Ajouter les légumes puis mélanger avec les nouilles et la sauce soja.",
+    ],
+    prepTime: 15,
+    servings: 1,
+    tags: ["rapide", "vegetal", "proteines"],
+    dietary: ["vegetarien", "vegan"],
+    allergens: ["soja"],
+    budget: "standard",
+    goals: ["proteines", "equilibre", "energie"],
+    preferences: ["vegan", "vegetarien", "rapide"],
+    proteinLevel: "eleve",
+  },
+  {
+    id: "salade-poulet-avocat",
+    name: "Salade de poulet, avocat et crudités",
+    mealType: "dejeuner",
+    ingredients: [
+      { name: "Blanc de poulet", quantity: 140, unit: "g" },
+      { name: "Avocat", quantity: 70, unit: "g" },
+      { name: "Concombre", quantity: 100, unit: "g" },
+      { name: "Tomate", quantity: 120, unit: "g" },
+      { name: "Salade verte", quantity: 60, unit: "g" },
+    ],
+    instructions: [
+      "Faire cuire le poulet puis le couper en morceaux.",
+      "Couper les crudités et l’avocat.",
+      "Mélanger l’ensemble et assaisonner selon vos goûts.",
+    ],
+    prepTime: 15,
+    servings: 1,
+    tags: ["rapide", "frais", "proteines"],
+    dietary: [],
+    allergens: [],
+    budget: "standard",
+    goals: ["proteines", "equilibre", "hydratation"],
+    preferences: ["rapide", "simple"],
+    proteinLevel: "eleve",
+  },
+  {
+    id: "saumon-quinoa-epinards",
+    name: "Saumon, quinoa et épinards",
+    mealType: "dejeuner",
+    ingredients: [
+      { name: "Pavé de saumon", quantity: 150, unit: "g" },
+      { name: "Quinoa", quantity: 65, unit: "g" },
+      { name: "Épinards", quantity: 150, unit: "g" },
+      { name: "Citron", quantity: 1, unit: "portion" },
+    ],
+    instructions: [
+      "Cuire le quinoa.",
+      "Cuire le saumon au four ou à la poêle.",
+      "Faire tomber les épinards puis servir avec le citron.",
+    ],
+    prepTime: 20,
+    servings: 1,
+    tags: ["omega3", "proteines", "equilibre"],
+    dietary: [],
+    allergens: ["poisson"],
+    budget: "confort",
+    goals: ["proteines", "omega3", "equilibre"],
+    preferences: ["poisson", "simple"],
+    proteinLevel: "eleve",
+  },
+  {
+    id: "poulet-patate-douce-brocoli",
+    name: "Poulet, patate douce et brocoli",
+    mealType: "diner",
+    ingredients: [
+      { name: "Blanc de poulet", quantity: 150, unit: "g" },
+      { name: "Patate douce", quantity: 180, unit: "g" },
+      { name: "Brocoli", quantity: 150, unit: "g" },
+      { name: "Huile d’olive", quantity: 10, unit: "g" },
+    ],
+    instructions: [
+      "Couper la patate douce et la cuire au four.",
+      "Faire cuire le poulet à la poêle ou au four.",
+      "Cuire le brocoli puis servir avec un filet d’huile d’olive.",
+    ],
+    prepTime: 25,
+    servings: 1,
+    tags: ["proteines", "complet", "equilibre"],
+    dietary: [],
+    allergens: [],
+    budget: "standard",
+    goals: ["proteines", "energie", "equilibre"],
+    preferences: ["simple", "complet"],
+    proteinLevel: "eleve",
+  },
+  {
+    id: "tofu-curry-legumes",
+    name: "Curry de tofu et légumes",
+    mealType: "diner",
+    ingredients: [
+      { name: "Tofu ferme", quantity: 150, unit: "g" },
+      { name: "Lait de coco", quantity: 100, unit: "ml" },
+      { name: "Brocoli", quantity: 120, unit: "g" },
+      { name: "Carotte", quantity: 100, unit: "g" },
+      { name: "Riz", quantity: 60, unit: "g" },
+    ],
+    instructions: [
+      "Faire revenir le tofu et les légumes.",
+      "Ajouter le lait de coco et laisser mijoter.",
+      "Servir avec le riz cuit.",
+    ],
+    prepTime: 20,
+    servings: 1,
+    tags: ["vegetal", "proteines", "complet"],
+    dietary: ["vegetarien", "vegan"],
+    allergens: ["soja"],
+    budget: "standard",
+    goals: ["proteines", "equilibre", "energie"],
+    preferences: ["vegan", "vegetarien"],
+    proteinLevel: "eleve",
+  },
+  {
+    id: "omelette-salade-diner",
+    name: "Omelette aux champignons et salade",
+    mealType: "diner",
+    ingredients: [
+      { name: "Œufs", quantity: 2, unit: "unités" },
+      { name: "Champignons", quantity: 150, unit: "g" },
+      { name: "Salade verte", quantity: 80, unit: "g" },
+      { name: "Pain complet", quantity: 50, unit: "g" },
+    ],
+    instructions: [
+      "Faire revenir les champignons.",
+      "Ajouter les œufs battus et cuire l’omelette.",
+      "Servir avec la salade et le pain complet.",
+    ],
+    prepTime: 15,
+    servings: 1,
+    tags: ["rapide", "proteines", "simple"],
+    dietary: ["vegetarien"],
+    allergens: ["œuf"],
+    budget: "economique",
+    goals: ["proteines", "equilibre"],
+    preferences: ["rapide", "simple", "vegetarien"],
+    proteinLevel: "eleve",
+  },
+  {
+    id: "dahl-lentilles-coco",
+    name: "Dahl de lentilles corail et légumes",
+    mealType: "diner",
+    ingredients: [
+      { name: "Lentilles corail", quantity: 80, unit: "g" },
+      { name: "Carotte", quantity: 100, unit: "g" },
+      { name: "Tomate", quantity: 150, unit: "g" },
+      { name: "Lait de coco", quantity: 80, unit: "ml" },
+      { name: "Riz", quantity: 50, unit: "g" },
+    ],
+    instructions: [
+      "Faire revenir la carotte et la tomate.",
+      "Ajouter les lentilles et le lait de coco avec un peu d’eau.",
+      "Laisser mijoter puis servir avec le riz.",
+    ],
+    prepTime: 25,
+    servings: 1,
+    tags: ["vegetal", "fibre", "economique"],
+    dietary: ["vegetarien", "vegan"],
+    allergens: [],
+    budget: "economique",
+    goals: ["fibres", "equilibre", "digestion"],
+    preferences: ["vegan", "vegetarien", "economique"],
+    proteinLevel: "modere",
+  },
+  {
+    id: "cabillaud-courgettes-quinoa",
+    name: "Cabillaud, courgettes et quinoa",
+    mealType: "diner",
+    ingredients: [
+      { name: "Filet de cabillaud", quantity: 160, unit: "g" },
+      { name: "Quinoa", quantity: 60, unit: "g" },
+      { name: "Courgette", quantity: 180, unit: "g" },
+      { name: "Citron", quantity: 1, unit: "portion" },
+    ],
+    instructions: [
+      "Cuire le quinoa.",
+      "Cuire le cabillaud au four ou à la poêle.",
+      "Faire revenir les courgettes puis servir avec le citron.",
+    ],
+    prepTime: 20,
+    servings: 1,
+    tags: ["proteines", "poisson", "equilibre"],
+    dietary: [],
+    allergens: ["poisson"],
+    budget: "standard",
+    goals: ["proteines", "equilibre", "energie"],
+    preferences: ["poisson", "simple"],
+    proteinLevel: "eleve",
+  },
+
 ];
 
 function normalize(value?: string | null) {
   return (value ?? "")
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[’']/g, "")
+    .replace(/[()]/g, "")
+    .trim();
+}
+
+function hasAny(values: string[], terms: string[]) {
+  return terms.some((term) =>
+    values.some(
+      (value) =>
+        value.includes(term) ||
+        term.includes(value)
+    )
+  );
 }
 
 function recipeMatchesProfile(
   recipe: OtavioRecipe,
   profile: OtavioProgramProfile
 ) {
+  /*
+   * Les allergies et intolérances sont les seules données
+   * qui doivent bloquer directement une recette.
+   *
+   * Les dietary_constraints de l'onboarding sont des contraintes
+   * de mode de vie ("Peu de temps", "Budget limité", etc.).
+   */
   const forbidden = [
     ...(profile.allergies ?? []),
     ...(profile.intolerances ?? []),
-    ...(profile.dietary_constraints ?? []),
   ].map(normalize);
 
   if (
-    recipe.allergens.some((allergen) =>
-      forbidden.some((item) => normalize(allergen).includes(item))
-    )
+    recipe.allergens.some((allergen) => {
+      const normalizedAllergen = normalize(allergen);
+
+      return forbidden.some(
+        (item) =>
+          normalizedAllergen.includes(item) ||
+          item.includes(normalizedAllergen)
+      );
+    })
   ) {
     return false;
   }
 
-  const constraints = (profile.dietary_constraints ?? []).map(normalize);
   const style = normalize(profile.eating_style);
 
-  if (
-    constraints.some((constraint) =>
-      ["vegan", "vegetalien"].includes(constraint)
-    ) ||
-    style.includes("vegan")
-  ) {
-    if (!recipe.dietary.includes("vegan")) return false;
+  // Style végétalien
+  if (style.includes("vegetalien") || style.includes("vegan")) {
+    if (!recipe.dietary.includes("vegan")) {
+      return false;
+    }
   }
 
+  // Style végétarien
   if (
-    constraints.some((constraint) =>
-      ["vegetarien", "vegetarienne"].includes(constraint)
-    ) ||
-    style.includes("vegetar")
+    style.includes("vegetarien") ||
+    style.includes("vegetarienne")
   ) {
     if (
       !recipe.dietary.includes("vegetarien") &&
@@ -572,10 +950,43 @@ function recipeMatchesProfile(
     }
   }
 
-  if (
-    profile.budget_level === "economique" &&
-    recipe.budget === "confort"
-  ) {
+  // Style pescétarien :
+  // on accepte les recettes végétariennes/vegan ainsi que poisson/fruits de mer.
+  if (style.includes("pescetarien")) {
+    const pescetarianAllowed =
+      recipe.dietary.includes("vegetarien") ||
+      recipe.dietary.includes("vegan") ||
+      recipe.tags.some((tag) =>
+        ["poisson", "pescetarien"].includes(normalize(tag))
+      ) ||
+      recipe.ingredients.some((ingredient) =>
+        ["saumon", "cabillaud", "thon"].some((term) =>
+          normalize(ingredient.name).includes(term)
+        )
+      );
+
+    if (!pescetarianAllowed) {
+      return false;
+    }
+  }
+
+  // Flexitarien : aucune exclusion supplémentaire.
+  // Omnivore : aucune exclusion supplémentaire.
+
+  /*
+   * Le budget économique peut exclure les recettes "confort".
+   * Les contraintes "Budget limité" sont également prises en compte
+   * ici, même si budget_level reste la source principale.
+   */
+  const constraints = (profile.dietary_constraints ?? []).map(normalize);
+
+  const limitedBudget =
+    normalize(profile.budget_level) === "economique" ||
+    constraints.some((constraint) =>
+      constraint.includes("budget limite")
+    );
+
+  if (limitedBudget && recipe.budget === "confort") {
     return false;
   }
 
@@ -602,78 +1013,269 @@ function scoreRecipe(
 
   const goals = (profile.goals ?? []).map(normalize);
   const preferences = (profile.food_preferences ?? []).map(normalize);
+  const constraints = (profile.dietary_constraints ?? []).map(normalize);
   const style = normalize(profile.eating_style);
   const budget = normalize(profile.budget_level);
 
+  /*
+   * ---------------------------------------------------------
+   * OBJECTIFS
+   * ---------------------------------------------------------
+   */
+
   for (const goal of goals) {
-    if (recipe.goals.some((item) => normalize(item).includes(goal))) {
+    if (
+      recipe.goals.some((item) => {
+        const normalized = normalize(item);
+        return (
+          normalized.includes(goal) ||
+          goal.includes(normalized)
+        );
+      })
+    ) {
       score += 5;
     }
   }
 
-  for (const preference of preferences) {
+  /*
+   * ---------------------------------------------------------
+   * STYLE ALIMENTAIRE
+   * ---------------------------------------------------------
+   */
+
+  if (
+    style.includes("vegetalien") ||
+    style.includes("vegan")
+  ) {
+    if (recipe.dietary.includes("vegan")) {
+      score += 5;
+    }
+  } else if (
+    style.includes("vegetarien") ||
+    style.includes("vegetarienne")
+  ) {
     if (
-      recipe.preferences.some(
-        (item) =>
-          normalize(item).includes(preference) ||
-          preference.includes(normalize(item))
+      recipe.dietary.includes("vegetarien") ||
+      recipe.dietary.includes("vegan")
+    ) {
+      score += 5;
+    }
+  } else if (style.includes("pescetarien")) {
+    if (
+      recipe.ingredients.some((ingredient) =>
+        ["saumon", "cabillaud", "thon"].some((term) =>
+          normalize(ingredient.name).includes(term)
+        )
       )
     ) {
-      score += 3;
+      score += 4;
     }
-
+  } else if (style.includes("flexitarien")) {
+    // Favorise légèrement la diversité végétale.
     if (
-      recipe.tags.some(
-        (tag) =>
-          normalize(tag).includes(preference) ||
-          preference.includes(normalize(tag))
-      )
+      recipe.dietary.includes("vegetarien") ||
+      recipe.dietary.includes("vegan")
     ) {
       score += 2;
     }
   }
 
+  /*
+   * ---------------------------------------------------------
+   * PRÉFÉRENCES DE L'ONBOARDING
+   * ---------------------------------------------------------
+   */
+
+  for (const preference of preferences) {
+    if (
+      preference.includes("cuisiner") &&
+      recipe.prepTime >= 15
+    ) {
+      score += 3;
+    }
+
+    if (
+      preference.includes("repas rapides") ||
+      preference.includes("rapide")
+    ) {
+      if (recipe.prepTime <= 10) {
+        score += 6;
+      } else if (recipe.prepTime <= 15) {
+        score += 4;
+      } else if (recipe.prepTime <= 20) {
+        score += 1;
+      } else {
+        score -= 3;
+      }
+    }
+
+    if (
+      preference.includes("exterieur") &&
+      recipe.prepTime <= 15
+    ) {
+      score += 2;
+    }
+
+    if (
+      preference.includes("fait maison") &&
+      recipe.instructions.length >= 2
+    ) {
+      score += 3;
+    }
+
+    if (
+      preference.includes("fruits et legumes")
+    ) {
+      const plantFoods = recipe.ingredients.filter((ingredient) =>
+        [
+          "fruit",
+          "pomme",
+          "banane",
+          "tomate",
+          "courgette",
+          "carotte",
+          "legume",
+          "epinard",
+          "brocoli",
+          "concombre",
+          "poivron",
+          "avocat",
+          "salade",
+        ].some((term) =>
+          normalize(ingredient.name).includes(term)
+        )
+      ).length;
+
+      score += Math.min(plantFoods, 3) * 2;
+    }
+
+    if (preference.includes("reduire le sucre")) {
+      if (
+        recipe.tags.some((tag) =>
+          ["sucre", "dessert"].includes(normalize(tag))
+        )
+      ) {
+        score -= 4;
+      } else {
+        score += 1;
+      }
+    }
+
+    if (
+      preference.includes("produits ultra-transformes")
+    ) {
+      if (
+        recipe.tags.some((tag) =>
+          ["ultra-transforme", "transforme"].includes(
+            normalize(tag)
+          )
+        )
+      ) {
+        score -= 5;
+      } else {
+        score += 2;
+      }
+    }
+
+    // Correspondance avec les tags / préférences structurées
+    if (
+      recipe.preferences.some((item) => {
+        const normalized = normalize(item);
+
+        return (
+          normalized.includes(preference) ||
+          preference.includes(normalized)
+        );
+      })
+    ) {
+      score += 3;
+    }
+  }
+
+  /*
+   * ---------------------------------------------------------
+   * CONTRAINTES PRATIQUES
+   * ---------------------------------------------------------
+   */
+
+  const shortTime =
+    constraints.some((constraint) =>
+      constraint.includes("peu de temps")
+    ) ||
+    preferences.some((preference) =>
+      preference.includes("repas rapides")
+    );
+
+  if (shortTime) {
+    if (recipe.prepTime <= 10) {
+      score += 7;
+    } else if (recipe.prepTime <= 15) {
+      score += 4;
+    } else if (recipe.prepTime <= 25) {
+      score += 1;
+    } else {
+      score -= 4;
+    }
+  }
+
   if (
-    style &&
-    recipe.dietary.some(
-      (diet) =>
-        normalize(diet).includes(style) ||
-        style.includes(normalize(diet))
+    constraints.some((constraint) =>
+      constraint.includes("peu de materiel")
     )
   ) {
-    score += 4;
+    if (recipe.prepTime <= 15) {
+      score += 3;
+    }
   }
 
-  if (budget === "economique" && recipe.budget === "economique") {
-    score += 4;
+  if (
+    constraints.some((constraint) =>
+      constraint.includes("deplacements frequents")
+    )
+  ) {
+    if (recipe.prepTime <= 15) {
+      score += 3;
+    }
   }
 
-  if (budget === "standard" && recipe.budget !== "confort") {
+  /*
+   * ---------------------------------------------------------
+   * BUDGET
+   * ---------------------------------------------------------
+   */
+
+  if (
+    budget === "economique" ||
+    constraints.some((constraint) =>
+      constraint.includes("budget limite")
+    )
+  ) {
+    if (recipe.budget === "economique") {
+      score += 6;
+    } else if (recipe.budget === "standard") {
+      score += 2;
+    }
+  }
+
+  if (budget === "standard") {
+    if (recipe.budget !== "confort") {
+      score += 2;
+    }
+  }
+
+  if (budget === "confort" && recipe.budget === "confort") {
     score += 2;
   }
 
-  if (profile.available_time) {
-    const time = normalize(profile.available_time);
+  /*
+   * ---------------------------------------------------------
+   * SCAN FACIAL
+   * ---------------------------------------------------------
+   */
 
-    if (
-      time.includes("court") ||
-      time.includes("rapide") ||
-      time.includes("peu")
-    ) {
-      if (recipe.prepTime <= 10) score += 5;
-      else if (recipe.prepTime <= 15) score += 3;
-      else if (recipe.prepTime <= 25) score += 1;
-      else score -= 2;
-    }
-
-    if (time.includes("long") || time.includes("disponible")) {
-      if (recipe.prepTime >= 20) score += 2;
-    }
-  }
-
+  // Équilibre faible : repas complets et structurés.
   if (
-    scan?.equilibre !== null &&
-    scan?.equilibre !== undefined &&
+    typeof scan?.equilibre === "number" &&
     scan.equilibre < 70
   ) {
     if (
@@ -681,35 +1283,37 @@ function scoreRecipe(
         normalize(goal).includes("equilibre")
       )
     ) {
-      score += 4;
+      score += 5;
     }
   }
 
+  // Hydratation faible : aliments riches en eau.
   if (
-    scan?.hydratation !== null &&
-    scan?.hydratation !== undefined &&
+    typeof scan?.hydratation === "number" &&
     scan.hydratation < 70
   ) {
-    const hydratingIngredients = recipe.ingredients.filter((ingredient) =>
-      [
-        "tomate",
-        "concombre",
-        "courgette",
-        "fruits",
-        "pomme",
-        "banane",
-        "yaourt",
-      ].some((term) =>
-        normalize(ingredient.name).includes(term)
-      )
+    const hydratingIngredients = recipe.ingredients.filter(
+      (ingredient) =>
+        [
+          "tomate",
+          "concombre",
+          "courgette",
+          "fruits",
+          "pomme",
+          "banane",
+          "yaourt",
+          "salade",
+        ].some((term) =>
+          normalize(ingredient.name).includes(term)
+        )
     ).length;
 
-    score += Math.min(hydratingIngredients, 2) * 2;
+    score += Math.min(hydratingIngredients, 3) * 2;
   }
 
+  // Fatigue élevée : repas simples + protéines.
   if (
-    scan?.fatigue !== null &&
-    scan?.fatigue !== undefined &&
+    typeof scan?.fatigue === "number" &&
     scan.fatigue < 65
   ) {
     if (
@@ -719,11 +1323,18 @@ function scoreRecipe(
         )
       )
     ) {
-      score += 3;
+      score += 4;
     }
 
-    if (recipe.proteinLevel === "eleve") score += 2;
-    if (recipe.proteinLevel === "modere") score += 1;
+    if (recipe.proteinLevel === "eleve") {
+      score += 3;
+    } else if (recipe.proteinLevel === "modere") {
+      score += 1;
+    }
+
+    if (recipe.prepTime <= 15) {
+      score += 2;
+    }
   }
 
   return score;
@@ -911,7 +1522,7 @@ export function getRecipeSubstitutions(
 function chooseRecipe(
   mealType: OtavioMealType,
   profile: OtavioProgramProfile,
-  index: number,
+  dayIndex: number,
   usedRecipeIds: Set<string>,
   scan?: OtavioNutritionScan | null
 ) {
@@ -921,128 +1532,82 @@ function chooseRecipe(
     return null;
   }
 
-  const scored = candidates
-    .map((recipe) => {
-      let score = scoreRecipe(recipe, profile, scan);
+  const scored = candidates.map((recipe) => {
+    let score = scoreRecipe(recipe, profile, scan);
 
-      // Forte pénalité pour éviter de servir plusieurs fois
-      // exactement la même recette pendant la semaine.
-      if (usedRecipeIds.has(recipe.id)) {
-        score -= 12;
-      }
+    /*
+     * On évite fortement de resservir immédiatement
+     * une recette déjà utilisée.
+     */
+    if (usedRecipeIds.has(recipe.id)) {
+      score -= 18;
+    }
 
-      // Favorise légèrement la rotation naturelle des recettes.
-      score += index % Math.max(candidates.length, 1);
+    /*
+     * Rotation déterministe :
+     * lorsque plusieurs recettes sont proches en score,
+     * on fait varier naturellement le choix selon le jour.
+     */
+    const rotationIndex =
+      (dayIndex + mealType.length) % candidates.length;
 
-      return { recipe, score };
-    })
-    .sort((a, b) => b.score - a.score);
+    const candidateIndex = candidates.findIndex(
+      (candidate) => candidate.id === recipe.id
+    );
 
+    if (candidateIndex === rotationIndex) {
+      score += 4;
+    }
+
+    /*
+     * Petite pénalité supplémentaire pour les répétitions.
+     * Elle permet d'exploiter au maximum le catalogue avant
+     * de recommencer une recette.
+     */
+    if (usedRecipeIds.has(recipe.id)) {
+      score -= 8;
+    }
+
+    return {
+      recipe,
+      score,
+      candidateIndex,
+    };
+  });
+
+  scored.sort((a, b) => {
+    if (b.score !== a.score) {
+      return b.score - a.score;
+    }
+
+    return a.candidateIndex - b.candidateIndex;
+  });
+
+  /*
+   * On regarde les meilleures recettes.
+   * Si plusieurs sont suffisamment proches, on utilise la
+   * rotation du jour plutôt que de reprendre systématiquement
+   * la même recette.
+   */
   const bestScore = scored[0].score;
 
-  // Parmi les meilleures recettes, on garde plusieurs possibilités
-  // afin de ne pas toujours sélectionner mécaniquement la première.
   const shortlist = scored.filter(
-    (item) => item.score >= bestScore - 2
+    (item) => item.score >= bestScore - 3
   );
 
-  const selected =
-    shortlist[index % shortlist.length]?.recipe ?? scored[0].recipe;
+  const preferred =
+    shortlist.find(
+      (item) =>
+        item.candidateIndex ===
+        ((dayIndex + mealType.length) % candidates.length)
+    ) ?? shortlist[0];
+
+  const selected = preferred.recipe;
 
   usedRecipeIds.add(selected.id);
 
   return selected;
 }
-
-
-export function buildOtavioNutritionAdaptations(
-  feedback: OtavioMealFeedback[]
-): OtavioNutritionAdaptation[] {
-  const adaptations: OtavioNutritionAdaptation[] = [];
-
-  if (feedback.length === 0) {
-    return adaptations;
-  }
-
-  const ignored = feedback.filter(
-    (item) => item.status === "ignore"
-  ).length;
-
-  const replaced = feedback.filter(
-    (item) => item.status === "remplace"
-  ).length;
-
-  const completed = feedback.filter(
-    (item) => item.status === "realise"
-  ).length;
-
-  const satisfactionScores = feedback
-    .map((item) => item.satisfaction)
-    .filter((value): value is number => typeof value === "number");
-
-  const averageSatisfaction =
-    satisfactionScores.length > 0
-      ? satisfactionScores.reduce((sum, value) => sum + value, 0) /
-        satisfactionScores.length
-      : null;
-
-  if (ignored >= 2) {
-    adaptations.push({
-      type: "adherence",
-      message:
-        "Plusieurs repas ont été ignorés. Le prochain programme devrait être plus simple et plus facile à suivre.",
-      priority: "haute",
-    });
-  }
-
-  if (replaced >= 2) {
-    adaptations.push({
-      type: "temps",
-      message:
-        "Plusieurs repas ont été remplacés. Otavio devrait proposer davantage de recettes rapides et flexibles.",
-      priority: "moderee",
-    });
-  }
-
-  if (
-    averageSatisfaction !== null &&
-    averageSatisfaction < 3
-  ) {
-    adaptations.push({
-      type: "satisfaction",
-      message:
-        "La satisfaction moyenne est faible. Les prochaines propositions doivent davantage tenir compte des préférences alimentaires.",
-      priority: "haute",
-    });
-  }
-
-  if (
-    averageSatisfaction !== null &&
-    averageSatisfaction >= 4
-  ) {
-    adaptations.push({
-      type: "preferences",
-      message:
-        "Les repas sont globalement bien appréciés. Otavio peut conserver davantage de recettes similaires.",
-      priority: "faible",
-    });
-  }
-
-  if (
-    feedback.length >= 4 &&
-    completed / feedback.length < 0.5
-  ) {
-    adaptations.push({
-      type: "adherence",
-      message:
-        "Le taux de réalisation est faible. Le programme devrait être simplifié avant d'augmenter sa complexité.",
-      priority: "haute",
-    });
-  }
-
-  return adaptations;
-}
-
 
 function buildPortion(
   mealType: OtavioMealType,
@@ -1126,40 +1691,95 @@ export function buildOtavioNutritionPlan(
       ? Math.min(profile.meals_per_day, 4)
       : 3;
 
+  /*
+   * Mémoire globale pour limiter les répétitions.
+   */
   const usedRecipeIds = new Set<string>();
+
+  /*
+   * Mémoire par catégorie de repas.
+   * Cela permet notamment d'éviter deux fois de suite
+   * le même petit-déjeuner ou le même dîner.
+   */
+  const lastRecipeByMealType = new Map<
+    OtavioMealType,
+    string
+  >();
 
   for (let day = 0; day < durationDays; day++) {
     const meals: OtavioMealPlanDay["meals"] = [];
 
-    const breakfast = chooseRecipe(
-      "petit_dejeuner",
-      profile,
-      day,
-      usedRecipeIds,
-      scan
-    );
+    const selectMeal = (mealType: OtavioMealType) => {
+      const candidates = recipesFor(mealType, profile);
 
-    const lunch = chooseRecipe(
-      "dejeuner",
-      profile,
-      day,
-      usedRecipeIds,
-      scan
-    );
+      if (candidates.length === 0) {
+        return null;
+      }
 
-    const dinner = chooseRecipe(
-      "diner",
-      profile,
-      day,
-      usedRecipeIds,
-      scan
-    );
+      const lastRecipeId = lastRecipeByMealType.get(mealType);
+
+      const availableCandidates = candidates.filter(
+        (recipe) =>
+          recipe.id !== lastRecipeId &&
+          !usedRecipeIds.has(recipe.id)
+      );
+
+      /*
+       * Si toutes les recettes ont déjà été utilisées,
+       * on autorise la réutilisation mais on interdit
+       * celle du jour précédent.
+       */
+      const pool =
+        availableCandidates.length > 0
+          ? availableCandidates
+          : candidates.filter(
+              (recipe) => recipe.id !== lastRecipeId
+            );
+
+      const finalPool =
+        pool.length > 0 ? pool : candidates;
+
+      const scored = finalPool
+        .map((recipe) => ({
+          recipe,
+          score: scoreRecipe(recipe, profile, scan),
+        }))
+        .sort((a, b) => b.score - a.score);
+
+      /*
+       * On conserve les recettes proches du meilleur score.
+       * Cela laisse au moteur une marge pour créer de la variété
+       * sans sacrifier la personnalisation.
+       */
+      const bestScore = scored[0].score;
+
+      const shortlist = scored.filter(
+        (item) => item.score >= bestScore - 4
+      );
+
+      const selected =
+        shortlist[day % shortlist.length]?.recipe ??
+        scored[0].recipe;
+
+      usedRecipeIds.add(selected.id);
+      lastRecipeByMealType.set(mealType, selected.id);
+
+      return selected;
+    };
+
+    const breakfast = selectMeal("petit_dejeuner");
+    const lunch = selectMeal("dejeuner");
+    const dinner = selectMeal("diner");
 
     if (breakfast) {
       meals.push({
         type: "petit_dejeuner",
         recipe: breakfast,
-        portion: buildPortion("petit_dejeuner", breakfast, profile),
+        portion: buildPortion(
+          "petit_dejeuner",
+          breakfast,
+          profile
+        ),
       });
     }
 
@@ -1167,34 +1787,40 @@ export function buildOtavioNutritionPlan(
       meals.push({
         type: "dejeuner",
         recipe: lunch,
-        portion: buildPortion("dejeuner", lunch, profile),
+        portion: buildPortion(
+          "dejeuner",
+          lunch,
+          profile
+        ),
       });
+    }
+
+    if (mealsPerDay >= 4) {
+      const snack = selectMeal("collation");
+
+      if (snack) {
+        meals.push({
+          type: "collation",
+          recipe: snack,
+          portion: buildPortion(
+            "collation",
+            snack,
+            profile
+          ),
+        });
+      }
     }
 
     if (dinner) {
       meals.push({
         type: "diner",
         recipe: dinner,
-        portion: buildPortion("diner", dinner, profile),
+        portion: buildPortion(
+          "diner",
+          dinner,
+          profile
+        ),
       });
-    }
-
-    if (mealsPerDay >= 4) {
-      const snack = chooseRecipe(
-        "collation",
-        profile,
-        day,
-        usedRecipeIds,
-        scan
-      );
-
-      if (snack) {
-        meals.splice(2, 0, {
-          type: "collation",
-          recipe: snack,
-          portion: buildPortion("collation", snack, profile),
-        });
-      }
     }
 
     days.push({
@@ -1203,50 +1829,99 @@ export function buildOtavioNutritionPlan(
     });
   }
 
+  const goals = (profile.goals ?? []).map(normalize);
+
+  let objective =
+    "Construire une alimentation plus régulière et équilibrée.";
+
+  if (goals.includes("nutrition")) {
+    objective =
+      "Améliorer votre alimentation selon vos objectifs et contraintes.";
+  } else if (
+    goals.some((goal) =>
+      ["energie", "fatigue", "recuperation"].includes(goal)
+    )
+  ) {
+    objective =
+      "Soutenir votre énergie et votre récupération avec des repas réguliers et adaptés.";
+  } else if (
+    goals.some((goal) =>
+      ["peau", "qualite_peau", "hydratation"].includes(goal)
+    )
+  ) {
+    objective =
+      "Favoriser une alimentation équilibrée cohérente avec vos objectifs de peau et d’hydratation.";
+  } else if (goals.includes("equilibre")) {
+    objective =
+      "Construire une alimentation variée, régulière et équilibrée.";
+  }
+
   return {
     id: `nutrition_${Date.now()}`,
     durationDays,
-    objective: profile.goals?.includes("nutrition")
-      ? "Améliorer votre alimentation selon vos objectifs et contraintes."
-      : "Construire une alimentation plus régulière et équilibrée.",
+    objective,
     personalization: [
       profile.eating_style
         ? `Style alimentaire : ${profile.eating_style}`
         : "Style alimentaire non renseigné",
+
       profile.meals_per_day
         ? `${profile.meals_per_day} repas par jour`
         : "3 repas par défaut",
+
       profile.budget_level
         ? `Budget : ${profile.budget_level}`
         : "Budget non renseigné",
+
       profile.available_time
         ? `Temps disponible : ${profile.available_time}`
         : "Temps disponible non renseigné",
+
       ...(profile.food_preferences ?? []).map(
-        (preference) => `Préférence : ${preference}`
+        (preference) =>
+          `Préférence : ${preference}`
       ),
+
       ...(profile.dietary_constraints ?? []).map(
-        (constraint) => `Contrainte : ${constraint}`
+        (constraint) =>
+          `Contrainte : ${constraint}`
       ),
+
       ...(profile.allergies ?? []).map(
-        (allergy) => `Allergie : ${allergy}`
+        (allergy) =>
+          `Allergie : ${allergy}`
       ),
+
       ...(profile.intolerances ?? []).map(
-        (intolerance) => `Intolérance : ${intolerance}`
+        (intolerance) =>
+          `Intolérance : ${intolerance}`
       ),
-      ...(scan?.equilibre !== null && scan?.equilibre !== undefined
-        ? [`Score visuel d’équilibre pris en compte : ${scan.equilibre}/100`]
+
+      ...(scan?.equilibre !== null &&
+      scan?.equilibre !== undefined
+        ? [
+            `Score visuel d’équilibre pris en compte : ${scan.equilibre}/100`,
+          ]
         : []),
-      ...(scan?.hydratation !== null && scan?.hydratation !== undefined
-        ? [`Score visuel d’hydratation pris en compte : ${scan.hydratation}/100`]
+
+      ...(scan?.hydratation !== null &&
+      scan?.hydratation !== undefined
+        ? [
+            `Score visuel d’hydratation pris en compte : ${scan.hydratation}/100`,
+          ]
         : []),
-      ...(scan?.fatigue !== null && scan?.fatigue !== undefined
-        ? [`Indicateur visuel de fatigue pris en compte : ${scan.fatigue}/100`]
+
+      ...(scan?.fatigue !== null &&
+      scan?.fatigue !== undefined
+        ? [
+            `Indicateur visuel de fatigue pris en compte : ${scan.fatigue}/100`,
+          ]
         : []),
     ],
     days,
   };
 }
+
 
 export type OtavioShoppingItem = {
   name: string;
@@ -1258,6 +1933,88 @@ export type OtavioShoppingCategory = {
   name: string;
   items: OtavioShoppingItem[];
 };
+
+export function buildOtavioNutritionAdaptations(
+  feedback: OtavioMealFeedback[]
+): OtavioNutritionAdaptation[] {
+  const adaptations: OtavioNutritionAdaptation[] = [];
+
+  if (!feedback.length) {
+    return adaptations;
+  }
+
+  const ignoredMeals = feedback.filter(
+    (item) => item.status === "ignore"
+  );
+
+  const replacedMeals = feedback.filter(
+    (item) => item.status === "remplace"
+  );
+
+  const completedMeals = feedback.filter(
+    (item) => item.status === "realise"
+  );
+
+  const satisfactionScores = feedback
+    .map((item) => item.satisfaction)
+    .filter(
+      (value): value is number =>
+        typeof value === "number"
+    );
+
+  if (ignoredMeals.length >= 2) {
+    adaptations.push({
+      type: "adherence",
+      message:
+        "Plusieurs repas ont été ignorés. Otavio peut privilégier des recettes plus simples et rapides à préparer.",
+      priority: "haute",
+    });
+  }
+
+  if (replacedMeals.length >= 2) {
+    adaptations.push({
+      type: "preferences",
+      message:
+        "Plusieurs repas ont été remplacés. Otavio peut ajuster progressivement les recettes proposées selon vos préférences.",
+      priority: "moderee",
+    });
+  }
+
+  if (completedMeals.length >= 4) {
+    adaptations.push({
+      type: "adherence",
+      message:
+        "Votre régularité est bonne. Otavio peut conserver cette structure tout en introduisant davantage de variété.",
+      priority: "faible",
+    });
+  }
+
+  if (satisfactionScores.length > 0) {
+    const average =
+      satisfactionScores.reduce(
+        (sum, value) => sum + value,
+        0
+      ) / satisfactionScores.length;
+
+    if (average <= 2) {
+      adaptations.push({
+        type: "satisfaction",
+        message:
+          "Les dernières recettes ont généré une satisfaction faible. Otavio peut adapter davantage les prochaines propositions.",
+        priority: "haute",
+      });
+    } else if (average >= 4) {
+      adaptations.push({
+        type: "satisfaction",
+        message:
+          "Les dernières recettes sont bien appréciées. Otavio peut conserver les profils de repas qui fonctionnent le mieux.",
+        priority: "faible",
+      });
+    }
+  }
+
+  return adaptations;
+}
 
 export function buildOtavioShoppingList(
   plan: OtavioNutritionPlan
