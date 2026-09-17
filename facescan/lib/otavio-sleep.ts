@@ -8,6 +8,10 @@ export type OtavioSleepProfile = {
   goals?: string[] | null;
 };
 
+export type OtavioSleepScan = {
+  fatigue?: number | null;
+};
+
 export type OtavioSleepAction = {
   time: string;
   title: string;
@@ -81,22 +85,33 @@ function calculateSleepDuration(
 
 export function buildOtavioSleepPlan(
   profile: OtavioSleepProfile,
-  durationDays = 7
+  durationDays = 7,
+  scan?: OtavioSleepScan | null
 ): OtavioSleepPlan {
   const personalization: string[] = [];
 
-  const bedtime =
-    profile.bedtime ||
-    "23:00";
-
-  const wakeTime =
-    profile.wake_time ||
-    "07:00";
+  const bedtime = profile.bedtime || "23:00";
+  const wakeTime = profile.wake_time || "07:00";
 
   const sleepDuration =
     profile.sleep_duration ??
     calculateSleepDuration(bedtime, wakeTime) ??
     8;
+
+  const quality = (profile.sleep_quality ?? "").toLowerCase();
+  const regularity = (profile.sleep_regularity ?? "").toLowerCase();
+
+  const poorQuality =
+    quality.includes("mauvaise") ||
+    quality.includes("faible");
+
+  const irregular =
+    regularity.includes("irrég") ||
+    regularity.includes("irreg");
+
+  const shortSleep = sleepDuration < 7;
+  const fatigue = scan?.fatigue ?? null;
+  const highFatigue = fatigue !== null && fatigue < 65;
 
   if (profile.sleep_duration) {
     personalization.push(
@@ -116,9 +131,39 @@ export function buildOtavioSleepPlan(
     );
   }
 
+  if (profile.bedtime) {
+    personalization.push(
+      `Heure de coucher habituelle : ${profile.bedtime}`
+    );
+  }
+
+  if (profile.wake_time) {
+    personalization.push(
+      `Heure de lever habituelle : ${profile.wake_time}`
+    );
+  }
+
   if (profile.activity_level) {
     personalization.push(
-      `Activité : ${profile.activity_level}`
+      `Niveau d’activité : ${profile.activity_level}`
+    );
+  }
+
+  if (fatigue !== null) {
+    personalization.push(
+      `Indicateur visuel de fatigue du dernier scan : ${fatigue}/100.`
+    );
+  }
+
+  if (irregular) {
+    personalization.push(
+      "La régularité est traitée comme une priorité dans la première partie du programme."
+    );
+  }
+
+  if (shortSleep) {
+    personalization.push(
+      "La durée déclarée est courte : le programme privilégie la récupération progressive."
     );
   }
 
@@ -142,62 +187,89 @@ export function buildOtavioSleepPlan(
         time: wakeTime,
         title: "Heure de lever stable",
         description:
-          "Conservez une heure de lever aussi régulière que possible, y compris le week-end.",
+          irregular
+            ? "Votre priorité cette semaine est de conserver une heure de lever aussi stable que possible, y compris lorsque votre emploi du temps varie."
+            : "Conservez une heure de lever aussi régulière que possible.",
         category: "matin",
       },
       {
         time: shiftTime(wakeTime, 30),
         title: "Lumière naturelle",
         description:
-          "Exposez-vous à la lumière naturelle en début de journée pour aider à stabiliser votre rythme veille-sommeil.",
+          "Exposez-vous à la lumière naturelle en début de journée afin de donner un repère clair à votre rythme veille-sommeil.",
         category: "matin",
       },
       {
         time: "14:00",
         title: "Limiter les stimulants tardifs",
         description:
-          "Évitez autant que possible les boissons caféinées en fin d'après-midi.",
+          "Évitez autant que possible les boissons caféinées tard dans la journée, particulièrement si vous êtes sensible aux stimulants.",
         category: "journee",
       },
-      {
-        time: shiftTime(targetBedtime, -60),
-        title: "Début de la routine du soir",
-        description:
-          "Commencez progressivement à ralentir : lumière plus douce, activité calme et environnement moins stimulant.",
-        category: "soir",
-      },
-      {
-        time: shiftTime(targetBedtime, -30),
-        title: "Déconnexion progressive",
-        description:
-          "Réduisez les écrans et privilégiez une activité calme avant le coucher.",
-        category: "soir",
-      },
-      {
-        time: targetBedtime,
-        title: "Coucher cible",
-        description:
-          `Objectif : environ ${targetDuration.toFixed(1)} h de sommeil cette nuit.`,
-        category: "soir",
-      },
     ];
+
+    if (profile.activity_level === "actif" || profile.activity_level === "tres_actif") {
+      actions.push({
+        time: "18:00",
+        title: "Placer l’activité plus tôt",
+        description:
+          "Votre activité est élevée : lorsque possible, placez les séances les plus stimulantes suffisamment tôt pour laisser un temps de retour au calme.",
+        category: "journee",
+      });
+    } else {
+      actions.push({
+        time: "18:00",
+        title: "Bouger dans la journée",
+        description:
+          "Conservez une activité régulière dans la journée afin que la soirée soit consacrée progressivement au ralentissement.",
+        category: "journee",
+      });
+    }
+
+    actions.push({
+      time: shiftTime(targetBedtime, -60),
+      title: "Début de la routine du soir",
+      description:
+        poorQuality || highFatigue
+          ? "Commencez environ une heure avant le coucher cible : lumière plus douce, notifications réduites et activité calme."
+          : "Commencez progressivement à ralentir : lumière plus douce, activité calme et environnement moins stimulant.",
+      category: "soir",
+    });
+
+    actions.push({
+      time: shiftTime(targetBedtime, -30),
+      title: "Déconnexion progressive",
+      description:
+        "Réduisez les écrans et privilégiez une activité répétitive et calme : lecture, préparation du lendemain, respiration ou étirements doux.",
+      category: "soir",
+    });
 
     if (day >= 3) {
       actions.push({
         time: shiftTime(targetBedtime, -90),
         title: "Préparer le lendemain",
         description:
-          "Préparez vos affaires et les tâches importantes avant la routine du soir afin de réduire la charge mentale au coucher.",
+          "Préparez vos affaires et les tâches importantes avant la dernière demi-heure afin de réduire les sollicitations mentales au moment du coucher.",
         category: "soir",
       });
     }
 
-    if (day >= 5) {
+    if (day >= 4) {
       actions.push({
-        time: "18:00",
-        title: "Activité physique adaptée",
+        time: shiftTime(targetBedtime, -20),
+        title: "Repas du soir : rester léger",
         description:
-          "Maintenez une activité régulière dans la journée, en évitant les séances très stimulantes juste avant le coucher.",
+          "Évitez autant que possible un repas très lourd juste avant le coucher et laissez un peu de temps entre la fin du repas et votre nuit.",
+        category: "soir",
+      });
+    }
+
+    if (day >= 5 && highFatigue) {
+      actions.push({
+        time: "12:30",
+        title: "Pause récupération",
+        description:
+          "Votre dernier scan présente un indicateur visuel de fatigue à ${fatigue}/100 : prévoyez dans la journée une vraie pause sans écran plutôt que de compenser uniquement le soir.",
         category: "journee",
       });
     }
@@ -206,12 +278,18 @@ export function buildOtavioSleepPlan(
       day,
       objective:
         day === 1
-          ? "Stabiliser les horaires"
-          : day <= 3
-            ? "Installer une routine régulière"
-            : day <= 5
-              ? "Renforcer les habitudes favorables au sommeil"
-              : "Consolider la routine",
+          ? "Stabiliser vos horaires"
+          : day === 2
+            ? "Installer les premiers repères"
+            : day === 3
+              ? "Réduire progressivement les stimulations du soir"
+              : day === 4
+                ? "Consolider la routine"
+                : day === 5
+                  ? "Renforcer la récupération"
+                  : day === 6
+                    ? "Observer ce qui fonctionne réellement"
+                    : "Faire le bilan de la semaine",
       actions,
     });
   }

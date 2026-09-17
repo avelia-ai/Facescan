@@ -13,6 +13,7 @@ import { buildOtavioSkinPlan } from "@/lib/otavio-skin";
 
 export default function PeauPage() {
   const [profile, setProfile] = useState<any>(null);
+  const [scan, setScan] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [selectedDay, setSelectedDay] = useState(1);
 
@@ -38,6 +39,23 @@ export default function PeauPage() {
           .maybeSingle();
 
         setProfile(data ?? {});
+
+        try {
+          const rawScans = localStorage.getItem("facescan-scans");
+          const scans = rawScans ? JSON.parse(rawScans) : [];
+
+          const latestScan = Array.isArray(scans)
+            ? [...scans].sort(
+                (a, b) =>
+                  new Date(b?.date ?? 0).getTime() -
+                  new Date(a?.date ?? 0).getTime()
+              )[0]
+            : null;
+
+          setScan(latestScan?.indicators ?? null);
+        } catch {
+          setScan(null);
+        }
       } catch {
         setProfile({});
       } finally {
@@ -48,7 +66,7 @@ export default function PeauPage() {
     loadProfile();
   }, []);
 
-  const skinPlan = buildOtavioSkinPlan(profile ?? {}, null, 7);
+  const skinPlan = buildOtavioSkinPlan(profile ?? {}, scan, 7);
   const today = skinPlan.days[selectedDay - 1] ?? skinPlan.days[0];
 
   if (loading) {

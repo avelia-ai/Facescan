@@ -60,13 +60,26 @@ export function buildOtavioSkinPlan(
   durationDays = 7
 ): OtavioSkinPlan {
   const sensitivity = has(profile, "sensible");
+  const reactive = has(profile, "reactive");
   const dry = has(profile, "sec") || has(profile, "deshydrat");
-  const oily = has(profile, "gras") || has(profile, "mixte");
+  const oily = has(profile, "gras");
+  const combination = has(profile, "mixte");
   const acne = has(profile, "acne") || has(profile, "imperfection");
-  const redness = has(profile, "rougeur") || has(profile, "reactive");
+  const redness = has(profile, "rougeur") || reactive;
+  const dullness = has(profile, "eclat") || has(profile, "terne");
+  const texture =
+    has(profile, "texture") ||
+    has(profile, "pigmentation") ||
+    has(profile, "tache");
 
   const hydration = scan?.hydratation ?? null;
   const skinScore = scan?.peau ?? null;
+
+  const lowHydration =
+    hydration !== null && hydration < 70;
+
+  const lowSkinScore =
+    skinScore !== null && skinScore < 70;
 
   const personalization: string[] = [];
 
@@ -88,19 +101,31 @@ export function buildOtavioSkinPlan(
 
   if (hydration !== null) {
     personalization.push(
-      `Observation d'hydratation issue du dernier scan : ${hydration}/100.`
+      `Observation visuelle d’hydratation du dernier scan : ${hydration}/100.`
     );
   }
 
   if (skinScore !== null) {
     personalization.push(
-      `Score visuel global de peau issu du dernier scan : ${skinScore}/100.`
+      `Score visuel de peau du dernier scan : ${skinScore}/100.`
     );
   }
 
   if (sensitivity || redness) {
     personalization.push(
-      "Le programme privilégie une routine progressive et évite de multiplier les changements simultanés."
+      "Otavio privilégie une progression douce et limite les changements simultanés."
+    );
+  }
+
+  if (acne) {
+    personalization.push(
+      "Les imperfections sont prises en compte dans le choix des gestes et des actifs."
+    );
+  }
+
+  if (dry || lowHydration) {
+    personalization.push(
+      "L’hydratation et le confort cutané sont renforcés dans le programme."
     );
   }
 
@@ -113,16 +138,25 @@ export function buildOtavioSkinPlan(
       moment: "matin",
       title: "Nettoyage doux",
       description:
-        "Nettoyez le visage sans frotter et privilégiez une routine simple adaptée à votre tolérance.",
+        sensitivity || redness
+          ? "Utilisez un nettoyant visage doux, idéalement sans parfum, sans frotter et sans multiplier les lavages."
+          : oily || acne
+            ? "Nettoyez doucement le visage pour retirer l’excès de sébum sans chercher à décaper la peau."
+            : "Nettoyez le visage avec un produit doux et adapté à votre tolérance.",
       priority: "essentiel",
     });
 
     actions.push({
       moment: "matin",
-      title: "Hydratation",
-      description: dry || hydration !== null && hydration < 70
-        ? "Appliquez une hydratation régulière en privilégiant le confort cutané."
-        : "Maintenez une hydratation régulière pour préserver le confort et l'équilibre cutané.",
+      title: "Hydratation ciblée",
+      description:
+        dry || lowHydration
+          ? "Privilégiez un sérum ou une lotion hydratante à base de glycérine et/ou d’acide hyaluronique, puis une crème contenant notamment des céramides."
+          : oily
+            ? "Privilégiez un hydratant léger de type gel-crème, idéalement indiqué non comédogène."
+            : combination
+              ? "Utilisez une hydratation légère sur l’ensemble du visage et adaptez la quantité selon les zones."
+              : "Appliquez une crème hydratante adaptée à votre type de peau.",
       priority: "essentiel",
     });
 
@@ -130,46 +164,74 @@ export function buildOtavioSkinPlan(
       moment: "matin",
       title: "Protection solaire",
       description:
-        "Utilisez une protection solaire adaptée lorsque vous êtes exposé à la lumière extérieure.",
+        "Lorsque vous êtes exposé à l’extérieur, terminez la routine par une protection solaire large spectre SPF 30+.",
       priority: "important",
     });
 
-    if (oily || acne) {
+    actions.push({
+      moment: "soir",
+      title: "Nettoyage du soir",
+      description:
+        oily || acne
+          ? "Nettoyez le visage le soir pour retirer les impuretés et l’excès de sébum, sans gommage agressif."
+          : "Nettoyez doucement le visage pour retirer les impuretés accumulées pendant la journée.",
+      priority: "essentiel",
+    });
+
+    if (day >= 2 && (dry || lowHydration)) {
       actions.push({
         moment: "soir",
-        title: "Nettoyage après la journée",
+        title: "Renforcer la barrière cutanée",
         description:
-          "Nettoyez soigneusement le visage le soir sans décaper la peau.",
-        priority: "essentiel",
+          "Appliquez une crème contenant par exemple des céramides, de la glycérine ou d’autres agents hydratants pour soutenir le confort cutané.",
+        priority: "important",
+      });
+    } else if (day >= 2 && acne && !sensitivity && !redness) {
+      actions.push({
+        moment: "soir",
+        title: "Actif ciblé imperfections",
+        description:
+          "Un soin contenant de l’acide salicylique peut être envisagé progressivement. Commencez doucement et n’ajoutez pas plusieurs actifs ciblés en même temps.",
+        priority: "important",
+      });
+    } else if (day >= 2 && dullness && !sensitivity && !redness) {
+      actions.push({
+        moment: "soir",
+        title: "Soin éclat",
+        description:
+          "Un produit contenant de la niacinamide peut compléter progressivement votre routine si votre peau le tolère.",
+        priority: "important",
       });
     } else {
       actions.push({
         moment: "soir",
-        title: "Nettoyage du soir",
+        title: "Routine ciblée",
         description:
-          "Retirez les impuretés de la journée avec un nettoyage doux.",
-        priority: "essentiel",
+          sensitivity || redness
+            ? "Gardez une routine courte et évitez d’introduire plusieurs nouveaux actifs simultanément."
+            : texture && !sensitivity
+              ? "Un actif de type rétinol peut être envisagé progressivement si adapté à votre situation, sans le cumuler immédiatement avec plusieurs exfoliants."
+              : "Conservez les étapes utiles de votre routine sans multiplier les produits.",
+        priority: "important",
       });
     }
-
-    actions.push({
-      moment: "soir",
-      title: "Routine ciblée",
-      description:
-        sensitivity || redness
-          ? "Conservez une routine courte et évitez d'introduire plusieurs nouveaux actifs en même temps."
-          : acne
-            ? "Privilégiez une routine ciblée et progressive sur les imperfections."
-            : "Conservez les étapes utiles de votre routine sans multiplier les produits.",
-      priority: "important",
-    });
 
     if (day >= 3) {
       actions.push({
         moment: "soir",
-        title: "Observation de la peau",
+        title: "Vérifier la tolérance",
         description:
-          "Prenez quelques secondes pour observer confort, rougeurs, sécheresse et imperfections afin qu'Otavio puisse ajuster progressivement le programme.",
+          "Observez pendant quelques secondes les tiraillements, rougeurs, inconforts ou nouvelles imperfections avant de poursuivre ou d’ajouter un produit.",
+        priority: "optionnel",
+      });
+    }
+
+    if (day >= 5 && !sensitivity && !redness) {
+      actions.push({
+        moment: "soir",
+        title: "Ne pas surcharger la routine",
+        description:
+          "Gardez uniquement les produits qui ont un objectif clair pour votre peau et évitez d’empiler plusieurs actifs simplement parce qu’ils sont populaires.",
         priority: "optionnel",
       });
     }
@@ -177,17 +239,25 @@ export function buildOtavioSkinPlan(
     let objective = "Installer une routine simple et régulière.";
 
     if (day === 2) {
-      objective = "Stabiliser les gestes essentiels.";
+      objective = lowHydration || dry
+        ? "Renforcer l’hydratation et le confort cutané."
+        : "Stabiliser les gestes essentiels.";
     } else if (day === 3) {
-      objective = "Commencer l'adaptation selon les observations.";
+      objective = acne
+        ? "Commencer une action ciblée sur les imperfections."
+        : dullness || texture
+          ? "Commencer progressivement le travail sur l’éclat et la texture."
+          : "Commencer l’adaptation selon vos observations.";
     } else if (day === 4) {
-      objective = "Renforcer la régularité.";
+      objective = sensitivity || redness
+        ? "Protéger la tolérance de votre peau."
+        : "Renforcer la régularité de votre routine.";
     } else if (day === 5) {
-      objective = "Limiter les gestes inutiles et préserver l'équilibre.";
+      objective = "Éliminer les gestes inutiles et conserver l’essentiel.";
     } else if (day === 6) {
-      objective = "Observer l'évolution et ajuster progressivement.";
+      objective = "Observer les premiers changements et la tolérance.";
     } else if (day === 7) {
-      objective = "Faire le bilan de la semaine.";
+      objective = "Faire le bilan et préparer l’ajustement suivant.";
     }
 
     days.push({
@@ -197,20 +267,28 @@ export function buildOtavioSkinPlan(
     });
   }
 
-  let objective = "Améliorer progressivement la régularité de votre routine cutanée.";
+  let objective =
+    "Améliorer progressivement la régularité de votre routine cutanée.";
 
-  if (dry || hydration !== null && hydration < 70) {
+  if (lowHydration || dry) {
     objective =
-      "Priorité à l'hydratation et au confort cutané, avec une progression douce.";
-  } else if (acne) {
+      "Priorité à l’hydratation et au confort cutané avec une progression douce.";
+  } else if (acne && !sensitivity) {
     objective =
       "Construire une routine régulière et ciblée autour des imperfections.";
   } else if (redness || sensitivity) {
     objective =
       "Préserver la tolérance cutanée avec une routine simple et progressive.";
-  } else if (oily) {
+  } else if (dullness || texture) {
     objective =
-      "Maintenir l'équilibre cutané sans multiplier les gestes agressifs.";
+      "Améliorer progressivement l’éclat et la texture sans surcharger la routine.";
+  } else if (oily || combination) {
+    objective =
+      "Maintenir l’équilibre cutané avec une routine efficace mais non agressive.";
+  }
+
+  if (lowSkinScore) {
+    objective += ` Votre dernier score visuel de peau est de ${skinScore}/100 : Otavio donne la priorité aux fondamentaux avant d’ajouter des actifs.`;
   }
 
   return {
