@@ -9,6 +9,7 @@ export default function AlimentationPage() {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState<OtavioMealFeedback[]>([]);
+  const [scan, setScan] = useState<any>(null);
 
   useEffect(() => {
     async function loadProfile() {
@@ -42,7 +43,11 @@ export default function AlimentationPage() {
     loadProfile();
   }, []);
 
-  const nutritionPlan = buildOtavioNutritionPlan(profile ?? {}, 7);
+  const nutritionPlan = buildOtavioNutritionPlan(
+    profile ?? {},
+    7,
+    scan
+  );
   const shoppingList = buildOtavioShoppingList(nutritionPlan);
   const adaptations = buildOtavioNutritionAdaptations(feedback);
 
@@ -111,6 +116,25 @@ export default function AlimentationPage() {
       (item) => item.day === day && item.mealType === mealType
     );
   }
+
+  useEffect(() => {
+    try {
+      const rawScans = localStorage.getItem("facescan-scans");
+      const scans = rawScans ? JSON.parse(rawScans) : [];
+
+      const latestScan = Array.isArray(scans)
+        ? [...scans].sort(
+            (a, b) =>
+              new Date(b?.date ?? 0).getTime() -
+              new Date(a?.date ?? 0).getTime()
+          )[0]
+        : null;
+
+      setScan(latestScan?.indicators ?? null);
+    } catch {
+      setScan(null);
+    }
+  }, []);
 
   return (
     <main className="app-background min-h-screen px-4 pb-24 pt-6 text-white sm:px-6">

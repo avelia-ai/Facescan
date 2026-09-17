@@ -84,7 +84,7 @@ export function buildOtavioDailyProgram(
   scan?: OtavioSkinScan | null,
   date = new Date()
 ): OtavioDailyProgram {
-  const nutrition = buildOtavioNutritionPlan(profile, 7);
+  const nutrition = buildOtavioNutritionPlan(profile, 7, scan);
   const sleep = buildOtavioSleepPlan(profile, 7);
   const skin = buildOtavioSkinPlan(profile, scan, 7);
 

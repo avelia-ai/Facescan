@@ -87,6 +87,12 @@ export type OtavioProgramProfile = {
   available_time?: string | null;
 };
 
+export type OtavioNutritionScan = {
+  equilibre?: number | null;
+  hydratation?: number | null;
+  fatigue?: number | null;
+};
+
 const RECIPES: OtavioRecipe[] = [
   {
     id: "porridge-pomme",
@@ -397,6 +403,122 @@ const RECIPES: OtavioRecipe[] = [
     preferences: ["vegetarien", "vegan", "rapide", "economique"],
     proteinLevel: "modere",
   },
+
+  {
+    id: "collation-yaourt-fruits",
+    name: "Yaourt végétal, banane et cannelle",
+    mealType: "collation",
+    ingredients: [
+      { name: "Yaourt végétal sans sucre", quantity: 125, unit: "g" },
+      { name: "Banane", quantity: 1, unit: "unité" },
+      { name: "Cannelle", quantity: 1, unit: "pincée" },
+    ],
+    instructions: [
+      "Verser le yaourt dans un bol.",
+      "Ajouter la banane coupée en rondelles.",
+      "Ajouter une pincée de cannelle.",
+    ],
+    prepTime: 3,
+    servings: 1,
+    tags: ["rapide", "fibre", "energie"],
+    dietary: ["vegetarien", "vegan"],
+    allergens: [],
+    budget: "economique",
+    goals: ["equilibre", "energie", "digestion"],
+    preferences: ["rapide", "vegan", "vegetarien"],
+    proteinLevel: "faible",
+  },
+  {
+    id: "collation-houmous-crudites",
+    name: "Houmous et crudités",
+    mealType: "collation",
+    ingredients: [
+      { name: "Houmous", quantity: 60, unit: "g" },
+      { name: "Carotte", quantity: 100, unit: "g" },
+      { name: "Concombre", quantity: 100, unit: "g" },
+    ],
+    instructions: [
+      "Couper la carotte et le concombre en bâtonnets.",
+      "Servir avec le houmous.",
+    ],
+    prepTime: 5,
+    servings: 1,
+    tags: ["rapide", "fibre", "vegetal"],
+    dietary: ["vegetarien", "vegan"],
+    allergens: ["sésame"],
+    budget: "standard",
+    goals: ["fibres", "equilibre", "digestion"],
+    preferences: ["vegan", "vegetarien", "rapide"],
+    proteinLevel: "modere",
+  },
+  {
+    id: "collation-pomme-amandes",
+    name: "Pomme et amandes",
+    mealType: "collation",
+    ingredients: [
+      { name: "Pomme", quantity: 1, unit: "unité" },
+      { name: "Amandes", quantity: 20, unit: "g" },
+    ],
+    instructions: [
+      "Laver la pomme.",
+      "Servir avec les amandes.",
+    ],
+    prepTime: 2,
+    servings: 1,
+    tags: ["rapide", "fibre", "simple"],
+    dietary: ["vegetarien", "vegan"],
+    allergens: ["fruits à coque"],
+    budget: "standard",
+    goals: ["equilibre", "energie", "digestion"],
+    preferences: ["rapide", "simple"],
+    proteinLevel: "modere",
+  },
+  {
+    id: "collation-compote-graines",
+    name: "Compote et graines de courge",
+    mealType: "collation",
+    ingredients: [
+      { name: "Compote sans sucre ajouté", quantity: 100, unit: "g" },
+      { name: "Graines de courge", quantity: 15, unit: "g" },
+    ],
+    instructions: [
+      "Verser la compote dans un bol.",
+      "Ajouter les graines de courge.",
+    ],
+    prepTime: 2,
+    servings: 1,
+    tags: ["rapide", "simple", "fibre"],
+    dietary: ["vegetarien", "vegan"],
+    allergens: [],
+    budget: "economique",
+    goals: ["equilibre", "energie"],
+    preferences: ["rapide", "simple", "economique"],
+    proteinLevel: "modere",
+  },
+  {
+    id: "collation-tartine-houmous",
+    name: "Tartine complète et houmous",
+    mealType: "collation",
+    ingredients: [
+      { name: "Pain complet", quantity: 50, unit: "g" },
+      { name: "Houmous", quantity: 50, unit: "g" },
+      { name: "Tomate", quantity: 80, unit: "g" },
+    ],
+    instructions: [
+      "Faire griller le pain si souhaité.",
+      "Étaler le houmous.",
+      "Ajouter les rondelles de tomate.",
+    ],
+    prepTime: 5,
+    servings: 1,
+    tags: ["rapide", "fibre", "vegetal"],
+    dietary: ["vegetarien", "vegan"],
+    allergens: ["sésame"],
+    budget: "economique",
+    goals: ["equilibre", "energie", "fibres"],
+    preferences: ["rapide", "vegan", "vegetarien"],
+    proteinLevel: "modere",
+  },
 ];
 
 function normalize(value?: string | null) {
@@ -473,7 +595,8 @@ function recipesFor(
 
 function scoreRecipe(
   recipe: OtavioRecipe,
-  profile: OtavioProgramProfile
+  profile: OtavioProgramProfile,
+  scan?: OtavioNutritionScan | null
 ) {
   let score = 0;
 
@@ -532,14 +655,75 @@ function scoreRecipe(
   if (profile.available_time) {
     const time = normalize(profile.available_time);
 
-    if (time.includes("court") || time.includes("rapide")) {
-      if (recipe.prepTime <= 15) score += 4;
+    if (
+      time.includes("court") ||
+      time.includes("rapide") ||
+      time.includes("peu")
+    ) {
+      if (recipe.prepTime <= 10) score += 5;
+      else if (recipe.prepTime <= 15) score += 3;
       else if (recipe.prepTime <= 25) score += 1;
+      else score -= 2;
     }
 
     if (time.includes("long") || time.includes("disponible")) {
       if (recipe.prepTime >= 20) score += 2;
     }
+  }
+
+  if (
+    scan?.equilibre !== null &&
+    scan?.equilibre !== undefined &&
+    scan.equilibre < 70
+  ) {
+    if (
+      recipe.goals.some((goal) =>
+        normalize(goal).includes("equilibre")
+      )
+    ) {
+      score += 4;
+    }
+  }
+
+  if (
+    scan?.hydratation !== null &&
+    scan?.hydratation !== undefined &&
+    scan.hydratation < 70
+  ) {
+    const hydratingIngredients = recipe.ingredients.filter((ingredient) =>
+      [
+        "tomate",
+        "concombre",
+        "courgette",
+        "fruits",
+        "pomme",
+        "banane",
+        "yaourt",
+      ].some((term) =>
+        normalize(ingredient.name).includes(term)
+      )
+    ).length;
+
+    score += Math.min(hydratingIngredients, 2) * 2;
+  }
+
+  if (
+    scan?.fatigue !== null &&
+    scan?.fatigue !== undefined &&
+    scan.fatigue < 65
+  ) {
+    if (
+      recipe.goals.some((goal) =>
+        ["energie", "proteines", "equilibre"].some((term) =>
+          normalize(goal).includes(term)
+        )
+      )
+    ) {
+      score += 3;
+    }
+
+    if (recipe.proteinLevel === "eleve") score += 2;
+    if (recipe.proteinLevel === "modere") score += 1;
   }
 
   return score;
@@ -728,7 +912,8 @@ function chooseRecipe(
   mealType: OtavioMealType,
   profile: OtavioProgramProfile,
   index: number,
-  usedRecipeIds: Set<string>
+  usedRecipeIds: Set<string>,
+  scan?: OtavioNutritionScan | null
 ) {
   const candidates = recipesFor(mealType, profile);
 
@@ -738,7 +923,7 @@ function chooseRecipe(
 
   const scored = candidates
     .map((recipe) => {
-      let score = scoreRecipe(recipe, profile);
+      let score = scoreRecipe(recipe, profile, scan);
 
       // Forte pénalité pour éviter de servir plusieurs fois
       // exactement la même recette pendant la semaine.
@@ -931,7 +1116,8 @@ function buildPortion(
 }
 export function buildOtavioNutritionPlan(
   profile: OtavioProgramProfile,
-  durationDays = 7
+  durationDays = 7,
+  scan?: OtavioNutritionScan | null
 ): OtavioNutritionPlan {
   const days: OtavioMealPlanDay[] = [];
 
@@ -949,21 +1135,24 @@ export function buildOtavioNutritionPlan(
       "petit_dejeuner",
       profile,
       day,
-      usedRecipeIds
+      usedRecipeIds,
+      scan
     );
 
     const lunch = chooseRecipe(
       "dejeuner",
       profile,
       day,
-      usedRecipeIds
+      usedRecipeIds,
+      scan
     );
 
     const dinner = chooseRecipe(
       "diner",
       profile,
       day,
-      usedRecipeIds
+      usedRecipeIds,
+      scan
     );
 
     if (breakfast) {
@@ -991,27 +1180,21 @@ export function buildOtavioNutritionPlan(
     }
 
     if (mealsPerDay >= 4) {
-      const snack = {
-        id: "fruit-simple",
-        name: "Fruit frais",
-        mealType: "collation" as const,
-        ingredients: [{ name: "Fruit de saison", quantity: 1, unit: "unité" }],
-        instructions: ["Consommer tel quel ou découpé."],
-        prepTime: 2,
-        servings: 1,
-        tags: ["simple", "rapide"],
-        dietary: ["vegetarien", "vegan"],
-        allergens: [],
-        budget: "economique" as const,
-        goals: ["equilibre", "energie", "digestion"],
-        preferences: ["vegetarien", "vegan", "rapide", "economique"],
-        proteinLevel: "faible" as const,
-      };
+      const snack = chooseRecipe(
+        "collation",
+        profile,
+        day,
+        usedRecipeIds,
+        scan
+      );
 
-      meals.splice(2, 0, {
-        type: "collation",
-        recipe: snack,
-      });
+      if (snack) {
+        meals.splice(2, 0, {
+          type: "collation",
+          recipe: snack,
+          portion: buildPortion("collation", snack, profile),
+        });
+      }
     }
 
     days.push({
@@ -1036,12 +1219,30 @@ export function buildOtavioNutritionPlan(
       profile.budget_level
         ? `Budget : ${profile.budget_level}`
         : "Budget non renseigné",
+      profile.available_time
+        ? `Temps disponible : ${profile.available_time}`
+        : "Temps disponible non renseigné",
       ...(profile.food_preferences ?? []).map(
         (preference) => `Préférence : ${preference}`
       ),
       ...(profile.dietary_constraints ?? []).map(
         (constraint) => `Contrainte : ${constraint}`
       ),
+      ...(profile.allergies ?? []).map(
+        (allergy) => `Allergie : ${allergy}`
+      ),
+      ...(profile.intolerances ?? []).map(
+        (intolerance) => `Intolérance : ${intolerance}`
+      ),
+      ...(scan?.equilibre !== null && scan?.equilibre !== undefined
+        ? [`Score visuel d’équilibre pris en compte : ${scan.equilibre}/100`]
+        : []),
+      ...(scan?.hydratation !== null && scan?.hydratation !== undefined
+        ? [`Score visuel d’hydratation pris en compte : ${scan.hydratation}/100`]
+        : []),
+      ...(scan?.fatigue !== null && scan?.fatigue !== undefined
+        ? [`Indicateur visuel de fatigue pris en compte : ${scan.fatigue}/100`]
+        : []),
     ],
     days,
   };
