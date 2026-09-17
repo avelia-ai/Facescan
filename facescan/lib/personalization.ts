@@ -118,7 +118,23 @@ function buildHydrationRecommendation(
   scan: PersonalizationScan
 ): PersonalizedRecommendation {
   const target = hydrationTarget(profile);
-  const priority = indicatorPriority(scan.indicators.hydratation);
+  const score = scan.indicators.hydratation;
+  const activity = profile.activity_level ?? "non renseigné";
+  const hydrationLevel = profile.hydration_level ?? "non renseigné";
+
+  const priority = indicatorPriority(score);
+
+  const steps = [
+    `Commencez la journée par un verre d’eau puis répartissez vos boissons régulièrement plutôt que de boire de grandes quantités en une seule fois.`,
+    `Gardez une bouteille ou un verre à portée de main pendant vos périodes de travail, de déplacement ou d’activité.`,
+    `Utilisez les repas comme repères simples pour boire régulièrement au lieu d’attendre d’avoir très soif.`,
+    profile.activity_level === "actif" || profile.activity_level === "tres_actif"
+      ? "Lors des périodes d’activité physique, augmentez progressivement vos apports en fonction de la durée, de l’intensité, de la chaleur et de votre soif."
+      : "Lors d’une journée chaude ou lorsque votre activité augmente, soyez particulièrement attentif à vos besoins en boissons.",
+    profile.hydration_level === "faible"
+      ? "Si votre consommation actuelle est basse, augmentez-la progressivement plutôt que de chercher à atteindre immédiatement un objectif élevé."
+      : "Conservez une répartition régulière de vos boissons au fil de la journée.",
+  ];
 
   return {
     id: "hydration_profile",
@@ -126,35 +142,35 @@ function buildHydrationRecommendation(
     priority,
 
     title:
-      scan.indicators.hydratation < 70
+      score < 65
         ? "Renforcez progressivement votre hydratation"
-        : "Maintenez une hydratation régulière",
+        : score < 80
+          ? "Structurez mieux votre hydratation"
+          : "Maintenez une hydratation régulière",
 
-    observation: `Votre indicateur visuel d’hydratation est actuellement à ${scan.indicators.hydratation}/100.`,
+    observation:
+      `Votre indicateur visuel d’hydratation est actuellement à ${score}/100.`,
 
     summary:
-      `Repère général personnalisé à partir de votre profil : environ ${formatLiters(
-        target
-      )} de boissons sur la journée.`,
+      `Otavio croise votre hydratation déclarée (${hydrationLevel}), votre niveau d’activité (${activity}) et votre dernier indicateur visuel.`,
 
     why:
-      `Otavio combine ici votre niveau d’activité (${profile.activity_level ?? "non renseigné"}), votre hydratation déclarée (${profile.hydration_level ?? "non renseignée"}) et votre observation visuelle récente.`,
+      "L’objectif est de rendre l’hydratation plus régulière et plus facile à maintenir dans votre journée, sans transformer un repère général en prescription.",
 
     target:
-      `Environ ${formatLiters(target)} de boissons par jour comme repère général, à adapter à votre contexte.`,
+      `Repère personnalisé actuel : environ ${formatLiters(target)} de boissons sur la journée, à adapter à votre contexte.`,
 
     quantity: formatLiters(target),
 
     frequency: "Tout au long de la journée",
 
-    steps: [
-      "Gardez une bouteille à proximité pour avoir un repère visuel simple.",
-      "Répartissez les boissons sur la journée plutôt que de tout boire en une seule fois.",
-      "Augmentez progressivement si votre consommation actuelle est plus basse.",
-    ],
+    duration: "À réévaluer lors des prochains scans et selon vos habitudes.",
+
+    steps,
 
     alternatives: [
-      "Eau plate ou gazeuse",
+      "Eau plate",
+      "Eau gazeuse",
       "Boissons non sucrées",
       "Aliments riches en eau en complément",
     ],
@@ -166,32 +182,96 @@ function buildHydrationRecommendation(
     ],
 
     safetyNote:
-      "Il s’agit d’un repère général et non d’une prescription. Les besoins peuvent varier selon le contexte individuel.",
-
-    source: "Repères généraux d’hydratation adulte",
+      "Il s’agit d’un repère général et non d’une prescription. Les besoins peuvent varier selon votre contexte, notamment en cas de chaleur importante, d’activité physique ou de certaines situations médicales.",
   };
 }
+
 
 function buildSkinRecommendation(
   profile: PersonalizationProfile,
   scan: PersonalizationScan
 ): PersonalizedRecommendation {
-  const sensitivity = profile.skin_sensitivity;
-  const skinType = profile.skin_type;
-  const concerns = profile.skin_concerns ?? [];
+  const sensitivity = (profile.skin_sensitivity ?? "").toLowerCase();
+  const skinType = (profile.skin_type ?? "").toLowerCase();
+  const concerns = (profile.skin_concerns ?? []).map((item) =>
+    item.toLowerCase()
+  );
 
-  const steps =
-    sensitivity === "forte"
-      ? [
-          "Nettoyez doucement sans multiplier les produits.",
-          "Utilisez un produit hydratant déjà bien toléré.",
-          "Évitez d’introduire plusieurs nouveaux actifs en même temps.",
-        ]
-      : [
-          "Conservez une routine simple et régulière.",
-          "Ajoutez les nouveaux produits progressivement.",
-          "Évitez de modifier plusieurs éléments de la routine simultanément.",
-        ];
+  const sensitive =
+    sensitivity.includes("sensible") ||
+    sensitivity.includes("forte");
+
+  const imperfections = concerns.some((item) =>
+    ["imperfections", "acne", "acné", "pores", "points_noirs"].some((term) =>
+      item.includes(term)
+    )
+  );
+
+  const redness = concerns.some((item) =>
+    ["rougeurs", "rougeur", "reactive", "réactive"].some((term) =>
+      item.includes(term)
+    )
+  );
+
+  const dryness = concerns.some((item) =>
+    ["secheresse", "sécheresse", "deshydratation", "déshydratation"].some(
+      (term) => item.includes(term)
+    )
+  );
+
+  const dullness = concerns.some((item) =>
+    ["eclat", "éclat", "teint", "terne"].some((term) =>
+      item.includes(term)
+    )
+  );
+
+  const texture = concerns.some((item) =>
+    ["texture", "taches", "taches", "pigmentation"].some((term) =>
+      item.includes(term)
+    )
+  );
+
+  const routine = [
+    "MATIN — Nettoyez votre visage avec un nettoyant doux, sans multiplier les lavages ni les produits décapants.",
+    dryness
+      ? "MATIN — Appliquez un sérum hydratant à base d’acide hyaluronique ou de glycérine, puis une crème contenant notamment des céramides ou d’autres agents hydratants."
+      : "MATIN — Appliquez un soin hydratant adapté à votre type de peau ; privilégiez une texture plus légère si votre peau est grasse.",
+    imperfections
+      ? "MATIN — Si votre peau est sujette aux imperfections, privilégiez des produits indiqués non comédogènes et évitez d’empiler plusieurs actifs exfoliants."
+      : "MATIN — Terminez par une protection solaire large spectre SPF 30 ou plus lorsque vous êtes exposé au soleil.",
+    "SOIR — Démaquillez/nettoyez doucement puis appliquez votre soin hydratant.",
+    redness || sensitive
+      ? "PEAU SENSIBLE/RÉACTIVE — Introduisez un seul nouveau produit à la fois, idéalement après avoir stabilisé une routine simple."
+      : "PROGRESSION — Introduisez les nouveaux actifs progressivement plutôt que plusieurs nouveautés simultanément.",
+    imperfections
+      ? "IMPERFECTIONS — Un produit contenant de l’acide salicylique peut être envisagé progressivement si votre peau le tolère ; réduisez ou arrêtez en cas d’irritation."
+      : "ENTRETIEN — Observez la tolérance de votre peau avant d’ajouter un nouvel actif.",
+    texture || dullness
+      ? "TEXTURE/ÉCLAT — Un produit au rétinol peut être une option pour certaines personnes, mais il doit être introduit progressivement et ne convient pas à toutes les peaux."
+      : "CONSTANCE — La régularité d’une routine simple est plus importante que la multiplication des produits.",
+  ];
+
+  const productTypes = [
+    "Nettoyant visage doux, sans parfum si votre peau est sensible",
+    "Sérum hydratant à base d’acide hyaluronique et/ou glycérine",
+    "Crème hydratante contenant des céramides",
+    imperfections
+      ? "Hydratant indiqué non comédogène"
+      : "Hydratant adapté à votre type de peau",
+    "Protection solaire large spectre SPF 30+ pour les périodes d’exposition",
+  ];
+
+  if (imperfections && !sensitive) {
+    productTypes.push(
+      "Produit ciblé contenant de l’acide salicylique, introduit progressivement"
+    );
+  }
+
+  if ((texture || dullness) && !sensitive) {
+    productTypes.push(
+      "Soin au rétinol à faible intensité, uniquement si adapté à votre situation"
+    );
+  }
 
   return {
     id: "skin_routine",
@@ -199,72 +279,85 @@ function buildSkinRecommendation(
     priority: indicatorPriority(scan.indicators.peau),
 
     title:
-      scan.indicators.peau < 65
-        ? "Simplifiez et renforcez votre routine peau"
-        : "Stabilisez votre routine peau",
+      scan.indicators.peau < 60
+        ? "Construisez une routine peau plus ciblée"
+        : "Affinez votre routine peau",
 
     observation:
       `Votre indicateur visuel de qualité de peau est à ${scan.indicators.peau}/100.`,
 
     summary:
-      `${skinType ? `Profil ${skinType}` : "Profil cutané non renseigné"}${
+      `${skinType ? `Type de peau : ${skinType}` : "Type de peau non renseigné"} · ${
         concerns.length
-          ? ` · préoccupations : ${concerns.slice(0, 2).join(", ")}`
-          : ""
+          ? `Préoccupations : ${concerns.join(", ")}`
+          : "Préoccupations non renseignées"
       }.`,
 
     why:
-      `Otavio tient compte de votre type de peau, de votre sensibilité et de vos préoccupations déclarées pour éviter une routine trop complexe.`,
+      "Otavio adapte la routine à votre type de peau, votre sensibilité, vos préoccupations déclarées et votre résultat de scan afin d’éviter une routine inutilement complexe.",
 
     target:
-      "Une routine suffisamment simple pour être suivie régulièrement et bien tolérée.",
+      sensitive
+        ? "Une routine courte, régulière et particulièrement orientée vers la tolérance et le maintien de la barrière cutanée."
+        : imperfections
+          ? "Une routine régulière qui soutient l’hydratation tout en ciblant progressivement les imperfections."
+          : "Une routine régulière qui soutient l’hydratation, la protection et les besoins spécifiques identifiés.",
 
-    frequency: "Matin et/ou soir selon les produits",
+    frequency: "Matin et soir",
 
-    steps,
+    duration: "Routine à stabiliser pendant plusieurs semaines avant de multiplier les changements.",
 
-    alternatives: [
-      "Routine minimale si vous avez peu de temps",
-      "Routine progressive si vous souhaitez ajouter de nouveaux produits",
-    ],
+    steps: routine,
+
+    alternatives: productTypes,
 
     basedOn: [
       "Type de peau",
       "Sensibilité",
-      "Préoccupations",
+      "Préoccupations déclarées",
       "Indicateur visuel de peau",
     ],
 
     safetyNote:
-      "Les observations du scan sont visuelles et ne constituent pas un diagnostic dermatologique.",
+      sensitive
+        ? "En cas d’irritation, brûlure ou réaction persistante, interrompez le nouveau produit et demandez conseil à un professionnel de santé. Les observations du scan restent visuelles et ne constituent pas un diagnostic dermatologique."
+        : "Les observations du scan sont visuelles et ne constituent pas un diagnostic dermatologique. Les rétinoïdes ne conviennent pas à tout le monde et ne doivent notamment pas être utilisés pendant la grossesse ; demandez conseil à un professionnel de santé dans ce contexte.",
   };
 }
+
 
 function buildSleepRecommendation(
   profile: PersonalizationProfile,
   scan: PersonalizationScan
 ): PersonalizedRecommendation {
-  let steps: string[];
+  const duration =
+    typeof profile.sleep_duration === "number"
+      ? profile.sleep_duration
+      : null;
 
-  if (profile.sleep_regularity === "irreguliere") {
-    steps = [
-      "Commencez par stabiliser votre heure de lever.",
-      "Essayez de rapprocher progressivement vos horaires de coucher.",
-      "Gardez une routine du soir simple et répétable.",
-    ];
-  } else if (profile.sleep_quality === "mauvaise") {
-    steps = [
-      "Conservez une heure de lever aussi régulière que possible.",
-      "Préparez une période calme avant le coucher.",
-      "Réduisez progressivement les activités stimulantes en fin de soirée.",
-    ];
-  } else {
-    steps = [
-      "Conservez vos horaires réguliers.",
-      "Protégez votre routine du soir.",
-      "Observez l’évolution de votre fatigue au fil des prochains jours.",
-    ];
-  }
+  const irregular =
+    profile.sleep_regularity === "irreguliere";
+
+  const poorQuality =
+    profile.sleep_quality === "mauvaise";
+
+  const shortSleep = duration !== null && duration < 7;
+
+  const steps = [
+    irregular
+      ? "Commencez par stabiliser surtout votre heure de lever, y compris les jours où votre emploi du temps change."
+      : "Conservez autant que possible une heure de lever et de coucher relativement régulière.",
+    shortSleep
+      ? `Votre durée déclarée est de ${duration} h : essayez de créer progressivement davantage de temps disponible pour dormir plutôt que de modifier brutalement votre rythme.`
+      : "Préservez une durée de sommeil suffisante pour vous sentir reposé au réveil.",
+    "Dans les 30 à 60 minutes précédant le coucher, passez progressivement à des activités calmes et peu stimulantes.",
+    "Réduisez les écrans et la lumière forte en fin de soirée et gardez la chambre calme, sombre et confortable.",
+    "Évitez autant que possible les boissons caféinées tardives et les repas très copieux juste avant de dormir.",
+    "Conservez une activité physique régulière dans la journée, plutôt que de placer les efforts les plus intenses juste avant le coucher.",
+    poorQuality
+      ? "Votre qualité de sommeil déclarée étant basse, notez pendant quelques jours l’heure du coucher, du lever, les réveils et votre niveau de forme au matin pour identifier les habitudes qui influencent votre ressenti."
+      : "Observez votre niveau de forme au réveil et votre fatigue dans la journée pour suivre l’évolution de votre routine.",
+  ];
 
   return {
     id: "sleep_routine",
@@ -273,30 +366,43 @@ function buildSleepRecommendation(
 
     title:
       scan.indicators.fatigue < 65
-        ? "Donnez davantage de place à la récupération"
-        : "Stabilisez votre rythme de sommeil",
+        ? "Donnez davantage de place à votre récupération"
+        : irregular || poorQuality || shortSleep
+          ? "Stabilisez votre rythme de sommeil"
+          : "Entretenez votre rythme de sommeil",
 
     observation:
       `Votre indicateur de fatigue apparente est actuellement à ${scan.indicators.fatigue}/100.`,
 
     summary:
       `Votre profil indique ${
-        profile.sleep_duration
-          ? `${profile.sleep_duration} h de sommeil déclarées`
-          : "une durée de sommeil non renseignée"
+        duration ? `${duration} h de sommeil déclarées` : "une durée non renseignée"
+      }, une qualité ${
+        profile.sleep_quality ?? "non renseignée"
       } et une régularité ${
         profile.sleep_regularity ?? "non renseignée"
       }.`,
-
+    
     why:
-      "Otavio croise votre durée de sommeil déclarée, sa régularité, sa qualité et votre observation visuelle de fatigue.",
+      "Otavio croise votre durée de sommeil, votre régularité, votre qualité déclarée et votre indicateur visuel de fatigue pour adapter les priorités.",
 
     target:
-      "Un rythme de sommeil aussi régulier que possible et suffisamment long pour vos besoins.",
+      "Un rythme de sommeil suffisamment long et aussi régulier que possible, adapté à votre emploi du temps et à votre ressenti.",
 
     frequency: "Chaque soir",
 
+    duration: "À suivre sur plusieurs jours plutôt que sur une seule nuit.",
+
     steps,
+
+    alternatives: [
+      "Routine courte : 10 à 15 minutes de déconnexion et activité calme",
+      "Routine complète : 30 à 60 minutes avec lumière réduite et activité relaxante",
+      "Lecture calme",
+      "Étirements doux",
+      "Respiration ou relaxation",
+      "Préparation des affaires du lendemain pour réduire les sollicitations tardives",
+    ],
 
     basedOn: [
       "Durée de sommeil",
@@ -306,68 +412,132 @@ function buildSleepRecommendation(
     ],
 
     safetyNote:
-      "Un indicateur visuel de fatigue ne permet pas de déterminer une cause médicale de fatigue.",
+      "Un indicateur visuel de fatigue ne permet pas d’en déterminer la cause. En cas de troubles du sommeil persistants ou importants, demandez conseil à un professionnel de santé.",
   };
 }
+
 
 function buildNutritionRecommendation(
   profile: PersonalizationProfile,
   scan: PersonalizationScan
 ): PersonalizedRecommendation {
+  const constraints = (profile.dietary_constraints ?? []).map((item) =>
+    item.toLowerCase()
+  );
+  const allergies = profile.allergies ?? [];
+  const intolerances = profile.intolerances ?? [];
+  const preferences = profile.food_preferences ?? [];
   const budget = profile.budget_level;
 
-  const practical =
+  const vegetarian =
+    constraints.some((item) => item.includes("vegetar")) ||
+    constraints.some((item) => item.includes("vegan"));
+
+  const vegan = constraints.some((item) => item.includes("vegan"));
+  const noGluten = constraints.some((item) => item.includes("gluten"));
+  const noLactose = constraints.some((item) => item.includes("lactose"));
+
+  const proteinExamples = vegan
+    ? "lentilles, pois chiches, haricots, tofu ou tempeh"
+    : vegetarian
+      ? "œufs, produits laitiers tolérés, lentilles, pois chiches, haricots ou tofu"
+      : "œufs, poisson, volaille, produits laitiers selon vos préférences, ou légumineuses";
+
+  const starchExamples = noGluten
+    ? "riz, pommes de terre, quinoa ou autres céréales naturellement sans gluten compatibles avec vos habitudes"
+    : "riz, pommes de terre, semoule, pain ou pâtes, de préférence complets ou semi-complets selon votre tolérance";
+
+  const budgetAdvice =
     budget === "economique"
-      ? "Privilégiez les aliments simples, de saison, les légumineuses et les produits peu transformés pour garder des repas variés à coût maîtrisé."
+      ? "Pour maîtriser le budget, construisez vos repas autour de légumes secs, féculents simples, légumes de saison ou surgelés nature et quelques sources de protéines polyvalentes."
       : budget === "confort"
-        ? "Vous pouvez diversifier davantage les sources de protéines, les légumes et les aliments complets."
-        : "Cherchez un équilibre entre variété, simplicité et coût.";
+        ? "Votre budget permet de varier plus facilement les sources de protéines, les légumes, les fruits et les féculents complets."
+        : "Cherchez surtout un équilibre entre variété, simplicité, plaisir et coût.";
+
+  const steps = [
+    `À chaque repas principal, partez d’une structure simple : une source de protéines (${proteinExamples}) + une composante végétale + une source de féculents (${starchExamples}).`,
+    "Ajoutez régulièrement des légumes et des fruits selon vos goûts et la saison.",
+    "Privilégiez les aliments peu transformés lorsque cela est pratique pour vous, tout en gardant une alimentation compatible avec votre mode de vie.",
+    profile.meals_per_day
+      ? `Votre profil indique ${profile.meals_per_day} repas/jour : utilisez ce rythme comme structure plutôt que de multiplier les prises alimentaires inutilement.`
+      : "Construisez votre journée autour d’un rythme de repas que vous pouvez réellement maintenir.",
+    budgetAdvice,
+    preferences.length
+      ? `Vos préférences alimentaires (${preferences.slice(0, 3).join(", ")}) doivent guider les choix afin que le programme reste agréable et réaliste.`
+      : "Faites varier les aliments selon vos goûts pour rendre la routine durable.",
+    "Planifiez quelques repas à l’avance et gardez des ingrédients polyvalents disponibles pour les journées chargées.",
+  ];
+
+  const alternatives = [
+    `Protéines : ${proteinExamples}`,
+    `Féculents : ${starchExamples}`,
+    "Légumes : frais, surgelés nature ou en conserve selon ce qui est pratique",
+    "Fruits : frais ou surgelés selon la saison et le budget",
+    budget === "economique"
+      ? "Option économique : lentilles, pois chiches, haricots, œufs, légumes surgelés nature et féculents complets"
+      : "Option rapide : légumes surgelés nature + protéine simple + féculent déjà disponible",
+    "Pour les repas sans beaucoup de temps : préparez une base de céréale/féculent et une source de protéines pouvant servir sur plusieurs repas.",
+  ];
+
+  if (noLactose) {
+    alternatives.push(
+      "Sans lactose : choisissez des produits explicitement sans lactose ou des alternatives végétales adaptées à vos préférences."
+    );
+  }
+
+  const safetyNote =
+    allergies.length || intolerances.length || constraints.length
+      ? "Les allergies, intolérances et contraintes alimentaires enregistrées doivent rester prioritaires. En cas d’allergie importante ou de régime médical, ne les contournez pas avec une simple recommandation générale."
+      : "Les recommandations nutritionnelles restent générales et ne remplacent pas un accompagnement médical ou diététique lorsqu’il est nécessaire.";
 
   return {
     id: "nutrition_balance",
     category: "Alimentation",
-    priority:
-      profile.goals?.includes("nutrition") ? "high" : "medium",
+    priority: profile.goals?.includes("nutrition") ? "high" : "medium",
 
-    title: "Construisez des repas plus complets",
+    title:
+      scan.indicators.equilibre < 70
+        ? "Construisez une alimentation plus équilibrée"
+        : "Personnalisez davantage vos repas",
 
     observation:
-      "Otavio utilise vos habitudes alimentaires et vos contraintes pour personnaliser ses suggestions.",
+      `Votre indicateur d’équilibre visuel est actuellement à ${scan.indicators.equilibre}/100.`,
 
     summary:
       `${profile.eating_style ?? "Style alimentaire non renseigné"} · ${
         profile.meals_per_day
           ? `${profile.meals_per_day} repas/jour`
           : "nombre de repas non renseigné"
-      }.`,
+      } · budget ${budget ?? "non renseigné"}.`,
 
     why:
-      "L’objectif est de vous proposer des recommandations compatibles avec vos préférences plutôt qu’un modèle alimentaire identique pour tout le monde.",
+      "Otavio combine vos habitudes alimentaires, vos objectifs, vos préférences, votre budget et vos contraintes pour construire des recommandations compatibles avec votre quotidien.",
 
     target:
-      "Associer autant que possible une source de protéines, une composante végétale et une source de féculents adaptée au repas.",
+      "Des repas variés, suffisamment structurés et réalistes à maintenir dans votre rythme de vie.",
 
     frequency: "À chaque repas principal",
 
-    steps: [
-      practical,
-      "Adaptez la composition à vos préférences et à votre faim.",
-      "Conservez les contraintes, allergies et intolérances comme filtres prioritaires.",
-    ],
+    duration: "À ajuster progressivement selon vos habitudes et votre évolution.",
+
+    steps,
+
+    alternatives,
 
     basedOn: [
       "Style alimentaire",
       "Nombre de repas",
       "Budget",
-      "Préférences",
+      "Préférences alimentaires",
       "Contraintes alimentaires",
-      "Objectifs",
+      "Allergies et intolérances",
+      "Indicateur visuel d’équilibre",
     ],
 
-    safetyNote:
-      "Les allergies et intolérances déclarées doivent rester des contraintes strictes lors de toute future génération de repas.",
+    safetyNote,
   };
 }
+
 
 function buildRoutineRecommendation(
   profile: PersonalizationProfile,

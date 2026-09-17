@@ -413,7 +413,7 @@ export default function ConseilsPage() {
                       <p className="mt-1 text-[11px] leading-5">
                         {completedAdvice.includes(item.id)
                           ? "Otavio a enregistré cette action aujourd’hui."
-                          : item.steps}
+                          : item.steps[0]}
                       </p>
                     </div>
                   </div>
@@ -453,63 +453,131 @@ export default function ConseilsPage() {
                 </button>
 
                 {expandedAdvice === item.id && (
-                  <div className="mt-4 space-y-4 rounded-[20px] border border-[#cfe2dd] bg-[linear-gradient(145deg,#f7fcfa_0%,#eef8f4_100%)] p-4">
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#668083]">
-                        Pourquoi il vous est proposé
+                  <div className="mt-4 space-y-3 rounded-[22px] border border-[#cfe2dd] bg-[linear-gradient(145deg,#f8fcfb_0%,#edf7f4_100%)] p-4">
+                    <div className="rounded-[18px] border border-[#d8e9e5] bg-white/80 p-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#287b78]">
+                        Ce que votre scan a observé
                       </p>
-                      <p className="mt-2 text-[11px] leading-5 text-[#587174]">
+                      <p className="mt-2 text-[12px] leading-5 text-[#355f64]">
+                        {item.observation || item.summary}
+                      </p>
+                    </div>
+
+                    <div className="rounded-[18px] border border-[#d8e9e5] bg-white/80 p-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#287b78]">
+                        Votre plan Otavio
+                      </p>
+                      <div className="mt-3 space-y-2.5">
+                        {item.steps.map((step, index) => (
+                          <div
+                            key={`${item.id}-step-${index}`}
+                            className="flex items-start gap-3 rounded-[15px] border border-[#dfeae7] bg-white/75 px-3.5 py-3"
+                          >
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#176678] text-[10px] font-bold text-white">
+                              {index + 1}
+                            </span>
+                            <p className="pt-0.5 text-[11px] leading-5 text-[#355f64]">
+                              {step}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="rounded-[18px] border border-[#dddaf0] bg-[#faf9fe] p-4">
+                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#6b65a1]">
+                        Pourquoi ce conseil vous concerne
+                      </p>
+                      <p className="mt-2 text-[12px] leading-5 text-[#5f5a82]">
                         {item.why}
                       </p>
                     </div>
 
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#668083]">
-                        Ce qu’il faut faire concrètement
-                      </p>
-                      <p className="mt-2 text-[11px] leading-5 text-[#587174]">
-                        {item.steps}
-                      </p>
-                    </div>
+                    {(item.quantity || item.duration) && (
+                      <div className="grid grid-cols-2 gap-2">
+                        {item.quantity && (
+                          <div className="rounded-[16px] border border-[#dfe9e7] bg-white/75 px-3.5 py-3">
+                            <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#668083]">
+                              Repère
+                            </p>
+                            <p className="mt-1 text-[11px] leading-5 text-[#355f64]">
+                              {item.quantity}
+                            </p>
+                          </div>
+                        )}
+
+                        {item.duration && (
+                          <div className="rounded-[16px] border border-[#dfe9e7] bg-white/75 px-3.5 py-3">
+                            <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#668083]">
+                              Durée
+                            </p>
+                            <p className="mt-1 text-[11px] leading-5 text-[#355f64]">
+                              {item.duration}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                     {item.alternatives?.length ? (
-                      <div>
-                        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#668083]">
-                          Alternatives
+                      <div className="rounded-[18px] border border-[#d8e9e5] bg-white/80 p-4">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#287b78]">
+                          Alternatives adaptées
                         </p>
+
                         <div className="mt-2 space-y-1.5">
                           {item.alternatives.map((alternative) => (
-                            <p
+                            <div
                               key={alternative}
-                              className="text-[11px] leading-5 text-[#587174]"
+                              className="flex items-start gap-2 text-[11px] leading-5 text-[#355f64]"
                             >
-                              • {alternative}
-                            </p>
+                              <span className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#287b78]" />
+                              <span>{alternative}</span>
+                            </div>
                           ))}
                         </div>
                       </div>
                     ) : null}
 
                     {item.basedOn?.length ? (
-                      <div>
+                      <div className="rounded-[18px] border border-[#e3e8e7] bg-white/70 p-4">
                         <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#668083]">
-                          Personnalisation
+                          Ce qu’Otavio a pris en compte
                         </p>
-                        <p className="mt-2 text-[11px] leading-5 text-[#587174]">
-                          {item.basedOn.join(" • ")}
+
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          {item.basedOn.map((factor) => (
+                            <span
+                              key={factor}
+                              className="rounded-full border border-[#d5e5e1] bg-[#f5faf8] px-2.5 py-1.5 text-[10px] font-medium text-[#48686c]"
+                            >
+                              {factor}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {item.safetyNote && (
+                      <div className="rounded-[18px] border border-[#eadfbe] bg-[#fffbf0] p-4">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#9a7a18]">
+                          À garder en tête
+                        </p>
+                        <p className="mt-2 text-[11px] leading-5 text-[#75652d]">
+                          {item.safetyNote}
                         </p>
                       </div>
-                      ) : null}
+                    )}
 
                     {item.source && (
                       <div className="border-t border-[#dfe9e7] pt-3">
-                        <p className="text-[10px] leading-5 text-[#668083]">
+                        <p className="text-[10px] leading-5 text-[#718487]">
                           Référence : {item.source}
                         </p>
                       </div>
                     )}
 
-                    <p className="text-[10px] leading-5 text-[#668083]">
+                    <p className="pt-1 text-[10px] leading-5 text-[#718487]">
                       Les recommandations Otavio sont informatives et ne
                       constituent pas un diagnostic médical.
                     </p>
