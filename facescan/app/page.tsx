@@ -105,7 +105,6 @@ export default function HomePage() {
     loadOtavioProfile();
   }, []);
 
-  const otavioDailyProgram = buildOtavioDailyProgram(otavioProfile ?? {});
 
 
   const router = useRouter();
@@ -128,6 +127,17 @@ export default function HomePage() {
   const [taskLoading, setTaskLoading] = useState(false);
   const [xpFeedback, setXpFeedback] = useState<number | null>(null);
   const [stageUp, setStageUp] = useState(false);
+
+  const otavioDailyProgram = useMemo(
+    () =>
+      buildOtavioDailyProgram(
+        otavioProfile ?? {},
+        latestIndicators
+      ),
+    [otavioProfile, latestIndicators]
+  );
+
+  const dailyProgramItems = otavioDailyProgram.items.slice(0, 3);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -942,15 +952,13 @@ export default function HomePage() {
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0">
               <p className="text-sm font-semibold text-[#287f72]">
-                Votre quotidien
+                Votre programme
               </p>
-
               <h2 className="mt-1 text-xl font-semibold tracking-[-0.025em] text-[#183d48]">
-                Les habitudes qui comptent
+                Votre programme du jour
               </h2>
-
               <p className="mt-1.5 text-xs leading-5 text-[#718088]">
-                Les leviers que vous pouvez suivre au quotidien.
+                {otavioDailyProgram.subtitle}
               </p>
             </div>
 
@@ -968,162 +976,64 @@ export default function HomePage() {
           </div>
 
           <div className="mt-5 space-y-3">
-
-            {/* Sommeil */}
-            <Link
-              href="/sommeil"
-              className="group relative block overflow-hidden rounded-[26px] border border-[#c9c7e2] bg-white shadow-[0_12px_32px_rgba(64,59,90,0.07)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(64,59,90,0.11)]"
-            >
-              <div className="flex items-stretch">
-                <div className="flex w-[88px] shrink-0 items-center justify-center bg-[linear-gradient(160deg,#f5f4fd_0%,#e7e6f6_100%)]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-[17px] bg-white/85 text-[#5d5b9d] shadow-[0_6px_16px_rgba(93,91,157,0.10)]">
-                    <Moon size={21} strokeWidth={1.8} />
-                  </div>
-                </div>
-
-                <div className="min-w-0 flex-1 px-4 py-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7774a7]">
-                        Récupération
-                      </p>
-
-                      <p className="mt-1 text-[17px] font-semibold tracking-[-0.02em] text-[#39395f]">
-                        Sommeil
-                      </p>
-                    </div>
-
-                    <ChevronRight
-                      size={17}
-                      className="mt-1 shrink-0 text-[#aaa9c7] transition-transform group-hover:translate-x-0.5"
-                    />
+            {dailyProgramItems.map((item) => (
+              <Link
+                key={item.id}
+                href={item.href}
+                className="group block rounded-[22px] border border-[#dce7e4] bg-white px-4 py-4 shadow-[0_8px_24px_rgba(25,68,80,0.06)] transition hover:border-[#bcd5d0] hover:shadow-[0_10px_28px_rgba(25,68,80,0.09)]"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] bg-[#eef5f3] text-[#287f72]">
+                    {item.category === "alimentation" ? (
+                      <Utensils className="h-5 w-5" />
+                    ) : item.category === "sommeil" ? (
+                      <Moon className="h-5 w-5" />
+                    ) : (
+                      <Sparkles className="h-5 w-5" />
+                    )}
                   </div>
 
-                  <div className="mt-3 flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-[#f1f0fa] px-2.5 py-1 text-[10px] font-semibold text-[#5d5b9d]">
-                      {profile?.sleep_quality
-                        ? profile.sleep_quality === "tres_bonne"
-                          ? "Très bonne qualité"
-                          : profile.sleep_quality === "bonne"
-                            ? "Bonne qualité"
-                            : "À suivre"
-                        : "Personnalisation en cours"}
-                    </span>
-
-                    <span className="text-[10px] text-[#89909a]">
-                      Suivi quotidien
-                    </span>
-                  </div>
-
-                  <p className="mt-2 text-xs leading-5 text-[#7b898f]">
-                    {profile?.sleep_quality
-                      ? "Votre qualité de sommeil est prise en compte dans vos recommandations."
-                      : "Votre sommeil sera intégré progressivement à votre accompagnement."}
-                  </p>
-                </div>
-              </div>
-            </Link>
-
-            {/* Nutrition */}
-            <Link
-              href="/alimentation"
-              className="group relative block overflow-hidden rounded-[26px] border border-[#dfb7aa] bg-white shadow-[0_12px_32px_rgba(111,72,58,0.07)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(111,72,58,0.11)]"
-            >
-              <div className="flex items-stretch">
-                <div className="flex w-[88px] shrink-0 items-center justify-center bg-[linear-gradient(160deg,#fff5f0_0%,#f8dfd5_100%)]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-[17px] bg-white/85 text-[#b76b58] shadow-[0_6px_16px_rgba(183,107,88,0.10)]">
-                    <Utensils size={21} strokeWidth={1.8} />
-                  </div>
-                </div>
-
-                <div className="min-w-0 flex-1 px-4 py-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#b76b58]">
-                        Alimentation
-                      </p>
-
-                      <p className="mt-1 text-[17px] font-semibold tracking-[-0.02em] text-[#77463b]">
-                        Nutrition
-                      </p>
-                    </div>
-
-                    <ChevronRight
-                      size={17}
-                      className="mt-1 shrink-0 text-[#d29b8b] transition-transform group-hover:translate-x-0.5"
-                    />
-                  </div>
-
-                  <div className="mt-3 flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-[#fcf0eb] px-2.5 py-1 text-[10px] font-semibold text-[#a35f4d]">
-                      {profile?.eating_style
-                        ? profile.eating_style
-                        : "Profil alimentaire"}
-                    </span>
-
-                    {profile?.meals_per_day ? (
-                      <span className="rounded-full bg-[#f8f4f1] px-2.5 py-1 text-[10px] font-semibold text-[#8b7770]">
-                        {profile.meals_per_day} repas / jour
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#287f72]">
+                        {item.category === "alimentation"
+                          ? "Alimentation"
+                          : item.category === "sommeil"
+                            ? "Sommeil"
+                            : "Peau"}
                       </span>
-                    ) : null}
-                  </div>
 
-                  <p className="mt-2 text-xs leading-5 text-[#7b898f]">
-                    Votre alimentation, vos préférences et vos repas servent à personnaliser vos recommandations.
-                  </p>
-                </div>
-              </div>
-            </Link>
-
-            {/* Activité */}
-            <Link
-              href="/activite"
-              className="group relative block overflow-hidden rounded-[26px] border border-[#a9d1cb] bg-white shadow-[0_12px_32px_rgba(35,90,84,0.06)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(35,90,84,0.10)]"
-            >
-              <div className="flex items-stretch">
-                <div className="flex w-[88px] shrink-0 items-center justify-center bg-[linear-gradient(160deg,#ebfaf6_0%,#d7eee8_100%)]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-[17px] bg-white/85 text-[#168f91] shadow-[0_6px_16px_rgba(22,143,145,0.10)]">
-                    <Activity size={21} strokeWidth={1.8} />
-                  </div>
-                </div>
-
-                <div className="min-w-0 flex-1 px-4 py-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#168f91]">
-                        Mouvement
-                      </p>
-
-                      <p className="mt-1 text-[17px] font-semibold tracking-[-0.02em] text-[#21585d]">
-                        Activité
-                      </p>
+                      {item.time && (
+                        <span className="rounded-full bg-[#f3f6f5] px-2 py-0.5 text-[10px] font-medium text-[#718088]">
+                          {item.time}
+                        </span>
+                      )}
                     </div>
 
-                    <ChevronRight
-                      size={17}
-                      className="mt-1 shrink-0 text-[#8bb6b3] transition-transform group-hover:translate-x-0.5"
-                    />
+                    <h3 className="mt-1.5 text-sm font-semibold leading-5 text-[#183d48]">
+                      {item.title}
+                    </h3>
+
+                    <p className="mt-1 text-xs leading-5 text-[#718088]">
+                      {item.description}
+                    </p>
                   </div>
 
-                  <div className="mt-3 flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-[#eaf8f6] px-2.5 py-1 text-[10px] font-semibold text-[#168f91]">
-                      {profile?.activity_level
-                        ? profile.activity_level
-                        : "À personnaliser"}
-                    </span>
-
-                    <span className="text-[10px] text-[#89909a]">
-                      Suivi de progression
-                    </span>
-                  </div>
-
-                  <p className="mt-2 text-xs leading-5 text-[#7b898f]">
-                    Votre niveau d’activité aide à ajuster votre accompagnement et vos recommandations.
-                  </p>
+                  <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-[#9aaba8] transition-transform group-hover:translate-x-0.5" />
                 </div>
-              </div>
-            </Link>
+              </Link>
+            ))}
 
+            {dailyProgramItems.length === 0 && (
+              <div className="rounded-[22px] border border-[#dce7e4] bg-white px-4 py-5 text-center shadow-[0_8px_24px_rgba(25,68,80,0.05)]">
+                <p className="text-sm font-medium text-[#183d48]">
+                  Votre programme se prépare
+                </p>
+                <p className="mt-1 text-xs leading-5 text-[#718088]">
+                  Complétez votre profil pour permettre à Otavio de personnaliser vos actions.
+                </p>
+              </div>
+            )}
           </div>
         </section>
 
