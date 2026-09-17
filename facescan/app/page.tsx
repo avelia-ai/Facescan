@@ -1250,7 +1250,7 @@ export default function HomePage() {
 
             <div className="min-w-0 flex-1">
               <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#287f72]">
                     Votre prochaine étape
                   </p>
@@ -1260,8 +1260,22 @@ export default function HomePage() {
                   </h2>
                 </div>
 
+                <div className="relative h-[88px] w-[88px] shrink-0 overflow-hidden rounded-[22px] border border-white bg-[#e7f1ef] shadow-[0_9px_24px_rgba(25,68,80,0.12)]">
+                  <video
+                    src="/prochaine-etape.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="absolute inset-0 h-full w-full object-cover"
+                    aria-label="Votre prochaine étape"
+                  />
+
+                  <div className="pointer-events-none absolute inset-0 rounded-[22px] ring-1 ring-inset ring-black/5" />
+                </div>
+
                 {nextStep.score !== null && (
-                  <span className="shrink-0 rounded-full bg-white px-2.5 py-1 text-[10px] font-semibold text-[#287f72] shadow-sm">
+                  <span className="absolute right-[96px] top-0 shrink-0 rounded-full bg-white px-2.5 py-1 text-[10px] font-semibold text-[#287f72] shadow-sm">
                     {nextStep.score}/100
                   </span>
                 )}
