@@ -991,7 +991,7 @@ export default function HomePage() {
 
             {/* Activité */}
             <Link
-              href="/indicateur"
+              href="/activite"
               className="group relative block overflow-hidden rounded-[26px] border border-[#a9d1cb] bg-white shadow-[0_12px_32px_rgba(35,90,84,0.06)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(35,90,84,0.10)]"
             >
               <div className="flex items-stretch">
