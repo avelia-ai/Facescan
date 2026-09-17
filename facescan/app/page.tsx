@@ -490,8 +490,8 @@ export default function HomePage() {
             onClick={() => router.push("/resultats")}
             className="relative mt-7 w-full overflow-hidden rounded-[32px] border border-[#9fc0c8] bg-[#fffdfb] text-left shadow-[0_20px_50px_rgba(24,55,68,0.10)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_55px_rgba(24,55,68,0.13)]"
           >
-            <div className="relative flex items-start justify-between gap-4 overflow-hidden bg-[linear-gradient(135deg,#123544_0%,#184b5c_55%,#28677a_100%)] p-6 text-white">
-              <div>
+            <div className="relative flex items-center justify-between gap-5 overflow-hidden bg-[linear-gradient(135deg,#123544_0%,#184b5c_55%,#28677a_100%)] p-6 text-white">
+              <div className="min-w-0">
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#9ce5de]">
                   <ScanFace size={15} />
                   Votre analyse
@@ -509,8 +509,24 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/12 backdrop-blur-sm">
-                <ArrowRight size={19} />
+              <div className="flex shrink-0 flex-col items-end gap-2.5">
+                <div className="relative h-[78px] w-[78px] overflow-hidden rounded-[22px] border border-white/20 bg-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.16)]">
+                  <video
+                    src="/otavio/video-analyse.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="absolute inset-0 h-full w-full object-cover"
+                    aria-label="Otavio"
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+                </div>
+
+                <div className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/12 backdrop-blur-sm">
+                  <ArrowRight size={17} />
+                </div>
               </div>
             </div>
 
