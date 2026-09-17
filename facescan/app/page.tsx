@@ -430,6 +430,92 @@ export default function HomePage() {
   const otavioStreak = profile?.otavio_streak ?? 0;
   const completedToday = dailyTasks.filter((task) => task.completed).length;
 
+  const nextStep = (() => {
+    // Aucun scan : première étape
+    if (!hasScan || !latestIndicators) {
+      return {
+        title: "Commencez par votre premier scan",
+        description: primaryGoal
+          ? `Votre priorité est ${getGoalLabel(primaryGoal).toLowerCase()}. Votre premier scan permettra à Otavio d’affiner vos recommandations.`
+          : "Votre premier scan permettra à Otavio d’établir vos premiers indicateurs personnalisés.",
+        cta: "Faire mon premier scan",
+        href: "/scanner",
+        score: null as number | null,
+      };
+    }
+
+    const indicators = [
+      {
+        key: "peau",
+        value: latestIndicators.peau,
+      },
+      {
+        key: "hydratation",
+        value: latestIndicators.hydratation,
+      },
+      {
+        key: "fatigue",
+        value: latestIndicators.fatigue,
+      },
+      {
+        key: "equilibre",
+        value: latestIndicators.equilibre,
+      },
+    ];
+
+    const weakest = [...indicators].sort((a, b) => a.value - b.value)[0];
+
+    // Indicateurs globalement bons : suivi de l'évolution
+    if (weakest.value >= 85) {
+      return {
+        title: "Continuez votre progression",
+        description:
+          "Vos indicateurs sont globalement équilibrés. Suivez votre évolution pour voir comment vos habitudes évoluent dans le temps.",
+        cta: "Voir mon évolution",
+        href: "/evolution",
+        score: weakest.value,
+      };
+    }
+
+    switch (weakest.key) {
+      case "peau":
+        return {
+          title: "Prenez soin de votre peau",
+          description: `Votre indicateur peau est actuellement à ${weakest.value}/100. Otavio peut vous proposer des conseils plus ciblés pour votre routine et vos habitudes.`,
+          cta: "Voir mes conseils peau",
+          href: "/peau",
+          score: weakest.value,
+        };
+
+      case "hydratation":
+        return {
+          title: "Travaillez votre hydratation",
+          description: `Votre indicateur d’hydratation est actuellement à ${weakest.value}/100. C’est un bon levier à travailler dans votre quotidien.`,
+          cta: "Voir mes conseils",
+          href: "/conseils",
+          score: weakest.value,
+        };
+
+      case "fatigue":
+        return {
+          title: "Améliorez votre récupération",
+          description: `Votre indicateur de fatigue apparente est actuellement à ${weakest.value}/100. Le sommeil et la récupération peuvent devenir votre prochaine priorité.`,
+          cta: "Voir mon programme sommeil",
+          href: "/sommeil",
+          score: weakest.value,
+        };
+
+      default:
+        return {
+          title: "Travaillez votre équilibre",
+          description: `Votre indicateur d’équilibre est actuellement à ${weakest.value}/100. Otavio peut vous aider à ajuster progressivement vos habitudes.`,
+          cta: "Voir mes conseils",
+          href: "/conseils",
+          score: weakest.value,
+        };
+    }
+  })();
+
   return (
     <main className="app-background relative min-h-screen overflow-hidden pb-28">
       <div className="relative z-10 mx-auto max-w-md px-5 pt-6">
@@ -1048,26 +1134,34 @@ export default function HomePage() {
             </div>
 
             <div className="min-w-0 flex-1">
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#287f72]">
-                Votre prochaine étape
-              </p>
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#287f72]">
+                    Votre prochaine étape
+                  </p>
 
-              <h2 className="mt-1.5 text-lg font-semibold tracking-[-0.02em] text-[#183d48]">
-                Continuons ensemble
-              </h2>
+                  <h2 className="mt-1.5 text-lg font-semibold tracking-[-0.02em] text-[#183d48]">
+                    {nextStep.title}
+                  </h2>
+                </div>
+
+                {nextStep.score !== null && (
+                  <span className="shrink-0 rounded-full bg-white px-2.5 py-1 text-[10px] font-semibold text-[#287f72] shadow-sm">
+                    {nextStep.score}/100
+                  </span>
+                )}
+              </div>
 
               <p className="mt-2 max-w-md text-sm leading-6 text-[#66757d]">
-                {primaryGoal
-                  ? `Votre priorité est ${getGoalLabel(primaryGoal).toLowerCase()}. Votre premier scan permettra à Otavio d’affiner ses recommandations.`
-                  : "Votre premier scan permettra à Otavio d’établir vos premiers indicateurs personnalisés."}
+                {nextStep.description}
               </p>
 
               <button
                 type="button"
-                onClick={() => router.push("/scanner")}
+                onClick={() => router.push(nextStep.href)}
                 className="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-[#168f91] transition hover:gap-2.5"
               >
-                Commencer mon scan
+                {nextStep.cta}
                 <ArrowRight size={15} />
               </button>
             </div>
