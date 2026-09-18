@@ -173,19 +173,34 @@ export default function AlimentationPage() {
         ) : (
           <>
             <section className="mt-8 overflow-hidden rounded-[28px] border border-[#bcd4c8] bg-[linear-gradient(145deg,#ffffff_0%,#f9fcfa_100%)] p-5 shadow-[0_14px_36px_rgba(43,70,58,0.065)] sm:p-6">
-              <div className="flex items-center justify-between gap-4">
-                <div>
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
                   <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#668083]">
-                    Votre semaine
+                    Votre programme
                   </p>
-                  <h2 className="mt-1 text-lg font-semibold">
+                  <h2 className="mt-1 text-lg font-semibold leading-tight">
                     Programme sur {nutritionPlan.durationDays} jours
                   </h2>
                 </div>
 
-                <span className="rounded-full border border-[#b7d9cd] bg-[#e7f6f0] px-3 py-1.5 text-[10px] font-semibold text-[#287b72] shadow-[0_5px_14px_rgba(40,127,114,0.06)]">
-                  Personnalisé
-                </span>
+                <div className="flex shrink-0 items-start gap-3">
+                  <span className="hidden rounded-full border border-[#b7d9cd] bg-[#e7f6f0] px-3 py-1.5 text-[10px] font-semibold text-[#287b72] shadow-[0_5px_14px_rgba(40,127,114,0.06)] sm:inline-flex">
+                    Personnalisé
+                  </span>
+
+                  <div className="relative h-[78px] w-[78px] overflow-hidden rounded-[22px] border border-[#dbe8e2] bg-[#eaf4f0] shadow-[0_10px_28px_rgba(40,90,75,0.12)]">
+                    <video
+                      src="/otavio/video-sommeil.mp4"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="absolute inset-0 h-full w-full object-cover"
+                      aria-label="Otavio vous accompagne dans votre programme alimentaire"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+                  </div>
+                </div>
               </div>
 
               <p className="mt-4 text-[11px] leading-5 text-[#587174]">

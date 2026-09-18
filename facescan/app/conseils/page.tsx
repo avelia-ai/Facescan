@@ -53,7 +53,7 @@ const recommendations = [
 
 const categories = [
   { label: "Peau", icon: Sparkles, href: "/peau" },
-  { label: "Hydratation", icon: Droplets, href: "/peau" },
+  { label: "Hydratation", icon: Droplets, href: "/hydratation" },
   { label: "Sommeil", icon: Moon, href: "/sommeil" },
   { label: "Alimentation", icon: Utensils, href: "/alimentation" },
 ];
