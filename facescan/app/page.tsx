@@ -139,7 +139,12 @@ export default function HomePage() {
 
   const dailyProgramItems = (() => {
     const selected: typeof otavioDailyProgram.items = [];
-    const categories = ["alimentation", "sommeil", "peau"] as const;
+    const categories = [
+      "hydratation",
+      "peau",
+      "sommeil",
+      "alimentation",
+    ] as const;
 
     for (const category of categories) {
       const item = otavioDailyProgram.items.find(
@@ -1009,7 +1014,9 @@ export default function HomePage() {
               >
                 <div className="flex items-start gap-3">
                   <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] bg-[#eef5f3] text-[#287f72]">
-                    {item.category === "alimentation" ? (
+                    {item.category === "hydratation" ? (
+                      <Droplets className="h-5 w-5" />
+                    ) : item.category === "alimentation" ? (
                       <Utensils className="h-5 w-5" />
                     ) : item.category === "sommeil" ? (
                       <Moon className="h-5 w-5" />
@@ -1021,11 +1028,13 @@ export default function HomePage() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#287f72]">
-                        {item.category === "alimentation"
-                          ? "Alimentation"
-                          : item.category === "sommeil"
-                            ? "Sommeil"
-                            : "Peau"}
+                        {item.category === "hydratation"
+                          ? "Hydratation"
+                          : item.category === "alimentation"
+                            ? "Alimentation"
+                            : item.category === "sommeil"
+                              ? "Sommeil"
+                              : "Peau"}
                       </span>
 
                       {item.time && (
