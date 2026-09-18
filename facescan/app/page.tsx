@@ -1283,11 +1283,7 @@ export default function HomePage() {
                   <div className="pointer-events-none absolute inset-0 rounded-[22px] ring-1 ring-inset ring-black/5" />
                 </div>
 
-                {nextStep.score !== null && (
-                  <span className="absolute right-[96px] top-0 shrink-0 rounded-full bg-white px-2.5 py-1 text-[10px] font-semibold text-[#287f72] shadow-sm">
-                    {nextStep.score}/100
-                  </span>
-                )}
+
               </div>
 
               <p className="mt-2 max-w-md text-sm leading-6 text-[#66757d]">
