@@ -139,31 +139,27 @@ export default function AlimentationPage() {
   return (
     <main className="app-background min-h-screen px-4 pb-24 pt-6 text-white sm:px-6">
       <div className="mx-auto max-w-5xl">
-        <Link
-          href="/conseils"
-          className="inline-flex items-center gap-2 rounded-full border border-[#cbdcd5] bg-white px-3 py-1.5 text-[11px] font-medium text-[#183d48] shadow-[0_5px_16px_rgba(40,90,75,0.04)] transition hover:-translate-y-0.5"
-        >
-          <ArrowLeft size={15} />
-          Retour aux conseils
-        </Link>
+        <header className="mb-7 flex items-center justify-between">
+          <Link
+            href="/conseils"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e8ebe9] bg-white shadow-[0_6px_18px_rgba(35,55,60,0.05)] transition hover:-translate-y-0.5"
+            aria-label="Retour aux conseils"
+          >
+            <ArrowLeft size={19} />
+          </Link>
 
-        <header className="mt-7">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-[#b8d9ce] bg-[linear-gradient(135deg,#eaf8f2_0%,#d8eee5_100%)] text-[#287f72] shadow-[0_8px_20px_rgba(40,127,114,0.08)]">
-            <Utensils size={22} strokeWidth={1.7} />
+          <div className="text-center">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[#7b8580]">
+              Otavio
+            </p>
+            <h1 className="text-xl font-semibold text-white">
+              Alimentation
+            </h1>
           </div>
 
-          <p className="mt-5 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#948f87]">
-            Alimentation
-          </p>
-
-          <h1 className="mt-1 text-3xl font-semibold tracking-[-0.04em] text-white">
-            Un programme adapté à votre alimentation
-          </h1>
-
-          <p className="mt-3 max-w-2xl text-[13px] leading-6 text-white/70">
-            Otavio construit votre programme à partir de votre profil, de vos
-            préférences et de vos contraintes alimentaires.
-          </p>
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#edf7f0]">
+            <Utensils size={18} className="text-[#39775b]" />
+          </div>
         </header>
 
         {loading ? (
@@ -172,51 +168,62 @@ export default function AlimentationPage() {
           </div>
         ) : (
           <>
-            <section className="mt-8 overflow-hidden rounded-[28px] border border-[#bcd4c8] bg-[linear-gradient(145deg,#ffffff_0%,#f9fcfa_100%)] p-5 shadow-[0_14px_36px_rgba(43,70,58,0.065)] sm:p-6">
-              <div className="flex items-start justify-between gap-4">
-                <div className="min-w-0">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#668083]">
-                    Votre programme
-                  </p>
-                  <h2 className="mt-1 text-lg font-semibold leading-tight">
-                    Une alimentation adaptée à votre profil
-                  </h2>
-                  <p className="mt-2 max-w-2xl text-[11px] leading-5 text-[#668083]">
-                    Otavio adapte progressivement vos repas à vos préférences,
-                    vos contraintes et vos objectifs.
-                  </p>
+            <section className="rounded-[28px] bg-[#18352d] p-6 text-white shadow-[0_20px_48px_rgba(24,53,45,0.16)] sm:p-7">
+              <div className="mb-5 flex items-start justify-between gap-4">
+                <div className="flex min-w-0 items-center gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10">
+                    <Utensils size={21} />
+                  </div>
+
+                  <div className="min-w-0">
+                    <p className="text-xs uppercase tracking-wider text-white/60">
+                      Votre programme
+                    </p>
+                    <h2 className="text-xl font-semibold leading-tight">
+                      Une alimentation adaptée à votre profil
+                    </h2>
+                  </div>
                 </div>
 
-                <div className="flex shrink-0 items-start gap-3">
-                  <span className="hidden rounded-full border border-[#b7d9cd] bg-[#e7f6f0] px-3 py-1.5 text-[10px] font-semibold text-[#287b72] shadow-[0_5px_14px_rgba(40,127,114,0.06)] sm:inline-flex">
-                    Personnalisé
-                  </span>
-
-                  <div className="relative h-[78px] w-[78px] overflow-hidden rounded-[22px] border border-[#dbe8e2] bg-[#eaf4f0] shadow-[0_10px_28px_rgba(40,90,75,0.12)]">
-                    <video
-                      src="/otavio/video-sommeil.mp4"
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      className="absolute inset-0 h-full w-full object-cover"
-                      aria-label="Otavio vous accompagne dans votre programme alimentaire"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
-                  </div>
+                <div className="relative h-[78px] w-[78px] shrink-0 overflow-hidden rounded-[22px] border border-white/20 bg-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.16)]">
+                  <video
+                    src="/otavio/video-sommeil.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="absolute inset-0 h-full w-full object-cover"
+                    aria-label="Otavio vous accompagne dans votre programme alimentaire"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
                 </div>
               </div>
 
-              <p className="mt-4 text-[11px] leading-5 text-[#587174]">
-                {nutritionPlan.objective}
+              <p className="mb-6 text-sm leading-6 text-white/75">
+                Otavio construit progressivement vos repas à partir de votre
+                profil, de vos préférences, de vos contraintes et de vos
+                objectifs.
               </p>
 
-              {nutritionPlan.personalization.length > 0 && (
-                <p className="mt-2 text-[10px] leading-5 text-[#668083]">
-                  Adapté selon :{" "}
-                  {nutritionPlan.personalization.join(" • ")}
-                </p>
-              )}
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl bg-white/10 p-4">
+                  <p className="mb-1 text-xs text-white/60">
+                    Objectif actuel
+                  </p>
+                  <p className="text-sm font-medium leading-5">
+                    {nutritionPlan.objective}
+                  </p>
+                </div>
+
+                <div className="rounded-2xl bg-white/10 p-4">
+                  <p className="mb-1 text-xs text-white/60">
+                    Programme
+                  </p>
+                  <p className="text-sm font-medium">
+                    {nutritionPlan.durationDays} jours · personnalisé
+                  </p>
+                </div>
+              </div>
             </section>
 
             {feedback.length > 0 && (
