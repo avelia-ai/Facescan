@@ -5,8 +5,68 @@ import { ArrowLeft, ChevronDown, ShoppingBasket, Utensils } from "lucide-react";
 import { useEffect, useState } from "react";
 import { buildOtavioNutritionPlan, buildOtavioShoppingList, buildOtavioNutritionAdaptations, type OtavioMealFeedback, type OtavioMealStatus } from "@/lib/otavio-programs";
 
+function parseScalableQuantity(value: number | string | null | undefined) {
+  if (value === null || value === undefined || value === "") return null;
+
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : null;
+  }
+
+  const text = value.trim().replace(",", ".");
+
+  const fraction = text.match(/^(\d+)\s*\/\s*(\d+)$/);
+  if (fraction) {
+    const numerator = Number(fraction[1]);
+    const denominator = Number(fraction[2]);
+    if (denominator !== 0) return numerator / denominator;
+  }
+
+  const mixed = text.match(/^(\d+)\s+(\d+)\s*\/\s*(\d+)$/);
+  if (mixed) {
+    const whole = Number(mixed[1]);
+    const numerator = Number(mixed[2]);
+    const denominator = Number(mixed[3]);
+    if (denominator !== 0) return whole + numerator / denominator;
+  }
+
+  const number = Number(text);
+  return Number.isFinite(number) ? number : null;
+}
+
+function formatScaledQuantity(value: number) {
+  if (Number.isInteger(value)) return String(value);
+
+  return value
+    .toFixed(2)
+    .replace(/0+$/, "")
+    .replace(/\.$/, "")
+    .replace(".", ",");
+}
+
+function scaledIngredientQuantity(
+  quantity: number | string | null | undefined,
+  baseServings: number,
+  targetServings: number
+) {
+  const parsed = parseScalableQuantity(quantity);
+
+  if (parsed === null) {
+    return quantity ?? "";
+  }
+
+  if (!baseServings || baseServings <= 0) {
+    return quantity ?? "";
+  }
+
+  return formatScaledQuantity(
+    parsed * (targetServings / baseServings)
+  );
+}
+
 export default function AlimentationPage() {
   const [shoppingListOpen, setShoppingListOpen] = useState(false);
+
+  const [recipePeople, setRecipePeople] = useState<Record<string, number>>({});
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState<OtavioMealFeedback[]>([]);
@@ -677,27 +737,110 @@ export default function AlimentationPage() {
 
                               <div className="mt-3 space-y-4 rounded-[20px] border border-[#e1eae7] bg-[linear-gradient(145deg,#f9fcfa_0%,#f1f7f4_100%)] p-4">
                                 <div className="rounded-[16px] border border-white/80 bg-white/75 p-3.5">
-                                  <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#7b8e90]">
-                                    Ingrédients
-                                  </p>
+                                  <div className="flex items-start justify-between gap-3">
+                                    <div>
+                                      <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#7b8e90]">
+                                        Ingrédients
+                                      </p>
 
-                                  <div className="mt-2 space-y-1.5">
-                                    {meal.recipe.ingredients.map((ingredient) => (
-                                      <div
-                                        key={`${ingredient.name}-${ingredient.quantity ?? ""}-${ingredient.unit ?? ""}`}
-                                        className="flex items-start justify-between gap-4 border-b border-[#edf1f0] pb-1.5 last:border-0 last:pb-0"
+                                      <p className="mt-1 text-[10px] text-[#93a0a0]">
+                                        Quantités adaptées automatiquement
+                                      </p>
+                                    </div>
+
+                                    <div className="shrink-0">
+                                      <label
+                                        htmlFor={`recipe-people-${meal.recipe.id}`}
+                                        className="sr-only"
                                       >
-                                        <span className="text-[10px] leading-4 text-[#587174]">
-                                          {ingredient.name}
+                                        Nombre de personnes
+                                      </label>
+
+                                      <div className="flex items-center gap-2 rounded-full border border-[#d9e6e1] bg-white px-2.5 py-1.5 shadow-[0_4px_12px_rgba(40,90,75,0.05)]">
+                                        <span className="text-[9px] font-medium text-[#728587]">
+                                          Pour
                                         </span>
 
-                                        <span className="shrink-0 text-[9px] font-semibold text-[#287b78]">
-                                          {ingredient.quantity
-                                            ? `${ingredient.quantity} ${ingredient.unit ?? ""}`
-                                            : ""}
+                                        <select
+                                          id={`recipe-people-${meal.recipe.id}`}
+                                          value={
+                                            recipePeople[meal.recipe.id] ??
+                                            meal.recipe.servings ??
+                                            1
+                                          }
+                                          onChange={(event) => {
+                                            setRecipePeople((current) => ({
+                                              ...current,
+                                              [meal.recipe.id]: Number(event.target.value),
+                                            }));
+                                          }}
+                                          className="cursor-pointer appearance-none border-0 bg-transparent pr-1 text-[10px] font-semibold text-[#287b78] outline-none"
+                                        >
+                                          {Array.from({ length: 8 }, (_, index) => index + 1).map(
+                                            (people) => (
+                                              <option key={people} value={people}>
+                                                {people}
+                                              </option>
+                                            )
+                                          )}
+                                        </select>
+
+                                        <span className="text-[9px] font-medium text-[#728587]">
+                                          {(
+                                            recipePeople[meal.recipe.id] ??
+                                            meal.recipe.servings ??
+                                            1
+                                          ) > 1
+                                            ? "personnes"
+                                            : "personne"}
                                         </span>
                                       </div>
-                                    ))}
+                                    </div>
+                                  </div>
+
+                                  <div className="mt-2 flex items-center justify-between rounded-xl bg-[#edf7f3] px-3 py-2">
+                                    <span className="text-[9px] font-medium text-[#6b8280]">
+                                      Recette de base
+                                    </span>
+
+                                    <span className="text-[9px] font-semibold text-[#287b78]">
+                                      {meal.recipe.servings ?? 1}{" "}
+                                      {(meal.recipe.servings ?? 1) > 1
+                                        ? "personnes"
+                                        : "personne"}
+                                    </span>
+                                  </div>
+
+                                  <div className="mt-3 space-y-1.5">
+                                    {meal.recipe.ingredients.map((ingredient) => {
+                                      const baseServings = meal.recipe.servings ?? 1;
+                                      const targetServings =
+                                        recipePeople[meal.recipe.id] ?? baseServings;
+
+                                      const scaledQuantity =
+                                        scaledIngredientQuantity(
+                                          ingredient.quantity,
+                                          baseServings,
+                                          targetServings
+                                        );
+
+                                      return (
+                                        <div
+                                          key={`${ingredient.name}-${ingredient.quantity ?? ""}-${ingredient.unit ?? ""}`}
+                                          className="flex items-start justify-between gap-4 border-b border-[#edf1f0] pb-1.5 last:border-0 last:pb-0"
+                                        >
+                                          <span className="text-[10px] leading-4 text-[#587174]">
+                                            {ingredient.name}
+                                          </span>
+
+                                          <span className="shrink-0 text-[9px] font-semibold text-[#287b78]">
+                                            {scaledQuantity
+                                              ? `${scaledQuantity} ${ingredient.unit ?? ""}`
+                                              : ""}
+                                          </span>
+                                        </div>
+                                      );
+                                    })}
                                   </div>
                                 </div>
 
