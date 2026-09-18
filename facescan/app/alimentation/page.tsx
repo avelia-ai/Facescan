@@ -748,19 +748,15 @@ export default function AlimentationPage() {
                                       </p>
                                     </div>
 
-                                    <div className="shrink-0">
+                                    <div className="w-full max-w-[220px] shrink-0 sm:w-[220px]">
                                       <label
                                         htmlFor={`recipe-people-${meal.recipe.id}`}
-                                        className="sr-only"
+                                        className="mb-1.5 block text-[9px] font-semibold uppercase tracking-[0.11em] text-[#7b8e90]"
                                       >
                                         Nombre de personnes
                                       </label>
 
-                                      <div className="flex items-center gap-2 rounded-full border border-[#d9e6e1] bg-white px-2.5 py-1.5 shadow-[0_4px_12px_rgba(40,90,75,0.05)]">
-                                        <span className="text-[9px] font-medium text-[#728587]">
-                                          Pour
-                                        </span>
-
+                                      <div className="relative">
                                         <select
                                           id={`recipe-people-${meal.recipe.id}`}
                                           value={
@@ -774,27 +770,35 @@ export default function AlimentationPage() {
                                               [meal.recipe.id]: Number(event.target.value),
                                             }));
                                           }}
-                                          className="cursor-pointer appearance-none border-0 bg-transparent pr-1 text-[10px] font-semibold text-[#287b78] outline-none"
+                                          className="h-11 w-full cursor-pointer appearance-none rounded-2xl border border-[#cddfd8] bg-white px-4 pr-11 text-[11px] font-semibold text-[#226f6b] shadow-[0_6px_16px_rgba(40,90,75,0.06)] outline-none transition hover:border-[#9fc9bc] focus:border-[#287b78] focus:ring-2 focus:ring-[#72cfc0]/20"
                                         >
                                           {Array.from({ length: 8 }, (_, index) => index + 1).map(
                                             (people) => (
                                               <option key={people} value={people}>
-                                                {people}
+                                                {people} {people > 1 ? "personnes" : "personne"}
                                               </option>
                                             )
                                           )}
                                         </select>
 
-                                        <span className="text-[9px] font-medium text-[#728587]">
-                                          {(
-                                            recipePeople[meal.recipe.id] ??
-                                            meal.recipe.servings ??
-                                            1
-                                          ) > 1
-                                            ? "personnes"
-                                            : "personne"}
-                                        </span>
+                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-[#287b78]">
+                                          <svg
+                                            viewBox="0 0 24 24"
+                                            className="h-4 w-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                          >
+                                            <path d="m6 9 6 6 6-6" />
+                                          </svg>
+                                        </div>
                                       </div>
+
+                                      <p className="mt-1.5 text-[9px] text-[#96a5a5]">
+                                        Les quantités s’ajustent automatiquement
+                                      </p>
                                     </div>
                                   </div>
 
