@@ -199,7 +199,19 @@ export function buildOtavioDailyProgram(
 
   const items: OtavioDailyProgramItem[] = [];
 
-  const dailyTasks = buildOtavioDailyTasks(profile, scan, date);
+  const dailyScan = scan
+    ? {
+        score: null,
+        indicators: {
+          peau: scan.peau ?? null,
+          hydratation: scan.hydratation ?? null,
+          fatigue: scan.fatigue ?? null,
+          equilibre: scan.equilibre ?? null,
+        },
+      }
+    : null;
+
+  const dailyTasks = buildOtavioDailyTasks(profile, dailyScan, date);
   const hydrationTask = dailyTasks.find(
     (task) => task.category === "hydratation"
   );

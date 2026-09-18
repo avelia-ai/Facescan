@@ -157,12 +157,12 @@ export default function AlimentationPage() {
           </p>
 
           <h1 className="mt-1 text-3xl font-semibold tracking-[-0.04em] text-white">
-            Votre programme alimentaire
+            Un programme adapté à votre alimentation
           </h1>
 
           <p className="mt-3 max-w-2xl text-[13px] leading-6 text-white/70">
-            Un programme construit à partir de votre profil, de vos
-            préférences et de vos contraintes.
+            Otavio construit votre programme à partir de votre profil, de vos
+            préférences et de vos contraintes alimentaires.
           </p>
         </header>
 
@@ -179,8 +179,12 @@ export default function AlimentationPage() {
                     Votre programme
                   </p>
                   <h2 className="mt-1 text-lg font-semibold leading-tight">
-                    Programme sur {nutritionPlan.durationDays} jours
+                    Une alimentation adaptée à votre profil
                   </h2>
+                  <p className="mt-2 max-w-2xl text-[11px] leading-5 text-[#668083]">
+                    Otavio adapte progressivement vos repas à vos préférences,
+                    vos contraintes et vos objectifs.
+                  </p>
                 </div>
 
                 <div className="flex shrink-0 items-start gap-3">
