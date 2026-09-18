@@ -197,13 +197,22 @@ export default function ConseilsPage() {
 
   const expandedAdviceId = expandedAdvice;
 
-  const categoryEmoji: Record<string, string> = {
-    Peau: "✨",
-    Hydratation: "💧",
-    Sommeil: "🌙",
-    Alimentation: "🍽️",
-    Activité: "🏃",
-    Routine: "🧘",
+  const renderCategoryIcon = (category: string) => {
+    switch (category) {
+      case "Peau":
+        return <Sparkles size={15} strokeWidth={1.8} />;
+      case "Hydratation":
+        return <Droplets size={15} strokeWidth={1.8} />;
+      case "Sommeil":
+      case "Fatigue apparente":
+        return <Moon size={15} strokeWidth={1.8} />;
+      case "Alimentation":
+        return <Utensils size={15} strokeWidth={1.8} />;
+      case "Activité":
+        return <Activity size={15} strokeWidth={1.8} />;
+      default:
+        return <Sparkles size={15} strokeWidth={1.8} />;
+    }
   };
 
   return (
@@ -311,7 +320,7 @@ export default function ConseilsPage() {
             {visibleRecommendations.map((item) => (
               <article
                 key={item.id}
-                className="overflow-hidden rounded-[28px] border border-[#c8d9d5] bg-white shadow-[0_14px_36px_rgba(36,78,70,0.065)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_46px_rgba(35,55,60,0.10)]"
+                className="group relative overflow-hidden rounded-[28px] border border-[#c8d9d5] bg-[linear-gradient(145deg,#ffffff_0%,#f8fcfb_100%)] shadow-[0_12px_24px_rgba(31,69,65,0.07),0_24px_50px_rgba(31,69,65,0.055),inset_0_1px_0_rgba(255,255,255,0.95)] transition-all duration-300 hover:-translate-y-1 hover:border-[#b9cfca] hover:shadow-[0_16px_30px_rgba(31,69,65,0.09),0_30px_60px_rgba(31,69,65,0.10),inset_0_1px_0_rgba(255,255,255,1)]"
               >
                 <div
                   role="button"
@@ -346,10 +355,10 @@ export default function ConseilsPage() {
                 >
                   <div className="flex min-w-0 items-center gap-2.5">
                     <span
-                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/60 bg-white/70 text-[15px] shadow-[0_4px_12px_rgba(36,78,70,0.06)]"
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[13px] border border-white/80 bg-[linear-gradient(145deg,rgba(255,255,255,0.95)_0%,rgba(231,246,242,0.82)_100%)] text-[#287f72] shadow-[0_5px_10px_rgba(33,79,73,0.08),0_10px_20px_rgba(33,79,73,0.06),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 group-hover:scale-[1.04]"
                       aria-hidden="true"
                     >
-                      {categoryEmoji[String(item.category)] ?? "•"}
+                      {renderCategoryIcon(String(item.category))}
                     </span>
 
                     <div
