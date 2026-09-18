@@ -262,7 +262,7 @@ export default function ConseilsPage() {
               </div>
             </div>
 
-            <div className="absolute right-1 top-1 flex shrink-0 flex-col items-end gap-2.5 sm:right-2 sm:top-2">
+            <div className="absolute bottom-6 right-6 flex shrink-0 flex-col items-end gap-2.5 sm:bottom-8 sm:right-8">
               <div className="relative h-[78px] w-[78px] overflow-hidden rounded-[22px] border border-white/20 bg-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.16)]">
                 <video
                   src="/conseils-otavio.mp4"
