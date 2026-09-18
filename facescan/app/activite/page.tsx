@@ -70,7 +70,10 @@ export default function ActivitePage() {
           data: { user },
         } = await supabase.auth.getUser();
 
-        if (!user) return;
+        if (!user) {
+          setProfile({ activity_level: null });
+          return;
+        }
 
         const { data } = await supabase
           .from("profiles")
@@ -78,7 +81,9 @@ export default function ActivitePage() {
           .eq("id", user.id)
           .maybeSingle();
 
-        setProfile((data ?? null) as Profile | null);
+        setProfile((data ?? {}) as Profile);
+      } catch {
+        setProfile({ activity_level: null });
       } finally {
         setLoading(false);
       }
@@ -89,11 +94,9 @@ export default function ActivitePage() {
 
   if (loading) {
     return (
-      <main className="app-background min-h-screen">
-        <div className="mx-auto flex min-h-screen max-w-md items-center justify-center px-5">
-          <p className="text-sm font-medium text-white/75">
-            Préparation de votre espace activité…
-          </p>
+      <main className="app-background flex min-h-screen items-center justify-center">
+        <div className="text-sm font-medium text-white/75">
+          Préparation de votre programme activité…
         </div>
       </main>
     );
@@ -102,115 +105,151 @@ export default function ActivitePage() {
   const activity = profile?.activity_level ?? null;
 
   return (
-    <main className="app-background min-h-screen pb-12">
-      <div className="mx-auto max-w-3xl px-5 pt-6 sm:px-8">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-2 text-[11px] font-medium text-white backdrop-blur-md transition hover:bg-white/15"
-        >
-          <ArrowLeft size={14} />
-          Accueil
-        </Link>
+    <main className="app-background min-h-screen pb-12 text-[#171717]">
+      <div className="mx-auto max-w-3xl px-5 pt-6">
+        <header className="mb-7 flex items-center justify-between">
+          <Link
+            href="/"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e8ebe9] bg-white shadow-[0_6px_18px_rgba(35,55,60,0.05)] transition hover:-translate-y-0.5"
+            aria-label="Retour à l'accueil"
+          >
+            <ArrowLeft size={19} />
+          </Link>
 
-        <header className="mt-8">
-          <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/15 bg-white/10 text-white backdrop-blur-sm">
-              <Activity size={21} strokeWidth={1.8} />
-            </div>
-
-            <div>
-              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/65">
-                Votre quotidien
-              </p>
-              <h1 className="mt-1 text-3xl font-semibold tracking-[-0.035em] text-white">
-                Activité & mouvement
-              </h1>
-            </div>
+          <div className="text-center">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[#7b8580]">
+              Otavio
+            </p>
+            <h1 className="text-xl font-semibold text-white">
+              Activité
+            </h1>
           </div>
 
-          <p className="mt-4 max-w-2xl text-sm leading-6 text-white/75">
-            Votre niveau de mouvement et votre pratique sportive peuvent aider
-            Otavio à ajuster vos recommandations au quotidien.
-          </p>
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e8f5f2]">
+            <Activity size={18} className="text-[#287f72]" />
+          </div>
         </header>
 
-        <section className="mt-7 overflow-hidden rounded-[28px] border border-[#a9d1cb] bg-white shadow-[0_18px_45px_rgba(24,70,76,0.08)]">
-          <div className="bg-[linear-gradient(135deg,#edf9f6_0%,#d9eee9_100%)] p-5 sm:p-6">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#168f91]">
-                  Votre niveau actuel
-                </p>
+        <section className="rounded-[28px] bg-[#18352d] p-6 text-white shadow-[0_20px_48px_rgba(24,53,45,0.16)] sm:p-7">
+          <div className="mb-5 flex items-start justify-between gap-4">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10">
+                <Activity size={21} />
+              </div>
 
-                <h2 className="mt-1.5 text-2xl font-semibold tracking-[-0.03em] text-[#183d48]">
-                  {getActivityLabel(activity)}
+              <div className="min-w-0">
+                <p className="text-xs uppercase tracking-wider text-white/60">
+                  Votre programme
+                </p>
+                <h2 className="text-xl font-semibold leading-tight">
+                  Une routine adaptée à votre niveau d’activité
                 </h2>
               </div>
-
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/80 text-[#168f91] shadow-sm">
-                <Footprints size={20} strokeWidth={1.8} />
-              </div>
             </div>
 
-            <p className="mt-3 max-w-xl text-sm leading-6 text-[#5f7278]">
-              {getActivityDescription(activity)}
-            </p>
+            <div className="relative h-[78px] w-[78px] shrink-0 overflow-hidden rounded-[22px] border border-white/20 bg-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.16)]">
+              <video
+                src="/otavio/video-quotidien.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 h-full w-full object-cover"
+                aria-label="Otavio vous accompagne dans votre programme activité"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+            </div>
           </div>
 
-          <div className="grid gap-3 p-4 sm:grid-cols-3 sm:p-5">
-            <div className="rounded-2xl bg-[#f6fbfa] p-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#168f91] shadow-sm">
-                <Footprints size={18} />
-              </div>
-              <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-[#718088]">
-                Mouvement
+          <p className="mb-6 text-sm leading-6 text-white/75">
+            Otavio adapte progressivement vos recommandations de mouvement,
+            d’activité et de récupération à votre rythme quotidien.
+          </p>
+
+          <div className="grid gap-3 sm:grid-cols-2">
+            <div className="rounded-2xl bg-white/10 p-4">
+              <p className="mb-1 text-xs text-white/60">
+                Votre niveau actuel
               </p>
-              <p className="mt-1 text-sm font-semibold text-[#183d48]">
-                À suivre
+              <p className="text-xl font-semibold">
+                {getActivityLabel(activity)}
               </p>
             </div>
 
-            <div className="rounded-2xl bg-[#f8f7fd] p-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#6d68b6] shadow-sm">
-                <Dumbbell size={18} />
-              </div>
-              <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-[#718088]">
-                Sport
+            <div className="rounded-2xl bg-white/10 p-4">
+              <p className="mb-1 text-xs text-white/60">
+                Priorité actuelle
               </p>
-              <p className="mt-1 text-sm font-semibold text-[#183d48]">
-                À personnaliser
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-[#fff8f4] p-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#b76b58] shadow-sm">
-                <Timer size={18} />
-              </div>
-              <p className="mt-3 text-xs font-semibold uppercase tracking-[0.12em] text-[#718088]">
-                Régularité
-              </p>
-              <p className="mt-1 text-sm font-semibold text-[#183d48]">
-                À construire
+              <p className="text-sm font-medium leading-5">
+                Construire une routine régulière
               </p>
             </div>
           </div>
         </section>
 
-        <section className="mt-5 rounded-[26px] border border-[#d9e5e2] bg-white p-5 shadow-[0_12px_30px_rgba(30,70,75,0.055)]">
+        <section className="mt-5 grid grid-cols-3 gap-3">
+          <div className="rounded-2xl border border-[#dce7e4] bg-white p-4 shadow-[0_8px_22px_rgba(35,70,60,0.04)]">
+            <Footprints size={18} className="mb-3 text-[#287f72]" />
+            <p className="text-xs text-[#8a928e]">Mouvement</p>
+            <p className="mt-1 font-semibold">À suivre</p>
+          </div>
+
+          <div className="rounded-2xl border border-[#dddaf0] bg-white p-4 shadow-[0_8px_22px_rgba(82,75,130,0.04)]">
+            <Dumbbell size={18} className="mb-3 text-[#756bd4]" />
+            <p className="text-xs text-[#8a928e]">Sport</p>
+            <p className="mt-1 font-semibold">À personnaliser</p>
+          </div>
+
+          <div className="rounded-2xl border border-[#ead8cf] bg-white p-4 shadow-[0_8px_22px_rgba(120,75,60,0.04)]">
+            <Timer size={18} className="mb-3 text-[#b76b58]" />
+            <p className="text-xs text-[#8a928e]">Régularité</p>
+            <p className="mt-1 font-semibold">À construire</p>
+          </div>
+        </section>
+
+        <section className="mt-7">
+          <div className="mb-3">
+            <p className="text-xs uppercase tracking-wider text-[#89918d]">
+              Votre niveau
+            </p>
+            <h2 className="mt-1 text-xl font-semibold">
+              {getActivityLabel(activity)}
+            </h2>
+          </div>
+
+          <div className="rounded-[26px] border border-[#dfe8e5] bg-white p-5 shadow-[0_12px_30px_rgba(30,70,65,0.045)]">
+            <div className="flex items-start gap-4">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#eaf8f5] text-[#287f72]">
+                <Footprints size={19} />
+              </div>
+
+              <div className="min-w-0">
+                <p className="text-sm font-semibold text-[#183d48]">
+                  Votre activité aujourd’hui
+                </p>
+                <p className="mt-2 text-sm leading-6 text-[#718088]">
+                  {getActivityDescription(activity)}
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-7 rounded-[26px] border border-[#dfe8e5] bg-white p-5 shadow-[0_12px_30px_rgba(30,70,65,0.045)]">
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#eaf8f6] text-[#168f91]">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#eaf8f5] text-[#287f72]">
               <Sparkles size={18} />
             </div>
 
-            <div>
+            <div className="min-w-0">
               <p className="text-sm font-semibold text-[#183d48]">
-                Ce qu’Otavio pourra suivre
+                Ce qu’Otavio peut suivre
               </p>
 
               <p className="mt-2 text-xs leading-5 text-[#718088]">
-                Fréquence de pratique, mouvement quotidien, récupération et
-                progression pourront progressivement enrichir votre
-                accompagnement.
+                Votre fréquence de pratique, votre mouvement quotidien, votre
+                récupération et votre régularité pourront progressivement
+                enrichir votre accompagnement.
               </p>
             </div>
           </div>
@@ -223,6 +262,11 @@ export default function ActivitePage() {
             <ArrowRight size={15} />
           </Link>
         </section>
+
+        <p className="mt-5 px-2 text-[11px] leading-5 text-[#8a928e]">
+          Les recommandations d’activité proposées par Otavio sont des conseils
+          de bien-être et ne remplacent pas l’avis d’un professionnel de santé.
+        </p>
       </div>
     </main>
   );
