@@ -104,18 +104,33 @@ export default function PeauPage() {
         </header>
 
         <section className="rounded-[28px] bg-[#18352d] text-white p-6 shadow-sm">
-          <div className="flex items-center gap-3 mb-5">
-            <div className="h-11 w-11 rounded-2xl bg-white/10 flex items-center justify-center">
-              <Sparkles size={21} />
+          <div className="flex items-start justify-between gap-4 mb-5">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="h-11 w-11 shrink-0 rounded-2xl bg-white/10 flex items-center justify-center">
+                <Sparkles size={21} />
+              </div>
+
+              <div className="min-w-0">
+                <p className="text-xs text-white/60 uppercase tracking-wider">
+                  Votre programme
+                </p>
+                <h2 className="text-xl font-semibold leading-tight">
+                  Une routine adaptée à votre peau
+                </h2>
+              </div>
             </div>
 
-            <div>
-              <p className="text-xs text-white/60 uppercase tracking-wider">
-                Votre programme
-              </p>
-              <h2 className="text-xl font-semibold">
-                Une routine adaptée à votre peau
-              </h2>
+            <div className="relative h-[78px] w-[78px] shrink-0 overflow-hidden rounded-[22px] border border-white/20 bg-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.16)]">
+              <video
+                src="/otavio/video-sommeil.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 h-full w-full object-cover"
+                aria-label="Otavio vous accompagne"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
             </div>
           </div>
 

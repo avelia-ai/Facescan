@@ -148,7 +148,7 @@ function IndicateurContent() {
           <div className="pointer-events-none absolute -bottom-28 right-20 h-56 w-56 rounded-full bg-[#756bd4]/20 blur-3xl" />
 
           <div className="relative flex flex-col justify-between gap-8 sm:flex-row sm:items-end">
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-2">
                 <div
                   className="flex h-9 w-9 items-center justify-center rounded-xl"
@@ -175,21 +175,35 @@ function IndicateurContent() {
               </div>
             </div>
 
-            <div className="rounded-[22px] border border-white/10 bg-white/7 px-5 py-4 backdrop-blur-sm sm:min-w-[190px]">
-              <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/40">
-                Progression
-              </p>
+            <div className="flex shrink-0 flex-col items-end gap-3">
+            <div className="relative h-[78px] w-[78px] shrink-0 overflow-hidden rounded-[22px] border border-white/20 bg-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.16)]">
+              <video
+                src="/otavio/video-sommeil.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 h-full w-full object-cover"
+                aria-label="Otavio vous accompagne"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+            </div>
+              <div className="rounded-[22px] border border-white/10 bg-white/7 px-5 py-4 backdrop-blur-sm sm:min-w-[190px]">
+                <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-white/40">
+                  Progression
+                </p>
 
-              <div className="mt-1.5 flex items-center gap-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10">
-                  <TrendingUp size={14} strokeWidth={1.9} />
+                <div className="mt-1.5 flex items-center gap-2">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10">
+                    <TrendingUp size={14} strokeWidth={1.9} />
+                  </div>
+
+                  <span className="text-xl font-semibold">{current.change}</span>
+
+                  <span className="text-[10px] text-white/40">
+                    depuis le début
+                  </span>
                 </div>
-
-                <span className="text-xl font-semibold">{current.change}</span>
-
-                <span className="text-[10px] text-white/40">
-                  depuis le début
-                </span>
               </div>
             </div>
           </div>
