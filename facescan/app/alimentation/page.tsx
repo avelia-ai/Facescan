@@ -5,6 +5,67 @@ import { ArrowLeft, ChevronDown, ShoppingBasket, Utensils } from "lucide-react";
 import { useEffect, useState } from "react";
 import { buildOtavioNutritionPlan, buildOtavioShoppingList, buildOtavioNutritionAdaptations, type OtavioMealFeedback, type OtavioMealStatus } from "@/lib/otavio-programs";
 
+const recipePhotos = {
+  breakfast:
+    "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=1200&q=85",
+  avocado:
+    "https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?auto=format&fit=crop&w=1200&q=85",
+  salmon:
+    "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=1200&q=85",
+  salad:
+    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=85",
+  chicken:
+    "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=1200&q=85",
+  curry:
+    "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1200&q=85",
+  yogurt:
+    "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1200&q=85",
+  apple:
+    "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?auto=format&fit=crop&w=1200&q=85",
+};
+
+function getRecipePhoto(name: string, mealType: string) {
+  const value = name.toLowerCase();
+
+  if (value.includes("avocat")) return recipePhotos.avocado;
+  if (value.includes("saumon")) return recipePhotos.salmon;
+  if (value.includes("salade")) return recipePhotos.salad;
+  if (
+    value.includes("poulet") ||
+    value.includes("dinde") ||
+    value.includes("œuf") ||
+    value.includes("omelette")
+  ) {
+    return recipePhotos.chicken;
+  }
+  if (
+    value.includes("curry") ||
+    value.includes("pois chiches") ||
+    value.includes("lentilles") ||
+    value.includes("dahl")
+  ) {
+    return recipePhotos.curry;
+  }
+  if (
+    value.includes("yaourt") ||
+    value.includes("fromage blanc") ||
+    value.includes("pudding")
+  ) {
+    return recipePhotos.yogurt;
+  }
+  if (
+    value.includes("pomme") ||
+    value.includes("compote")
+  ) {
+    return recipePhotos.apple;
+  }
+
+  if (mealType === "petit_dejeuner") return recipePhotos.breakfast;
+  if (mealType === "collation") return recipePhotos.yogurt;
+
+  return recipePhotos.salad;
+}
+
 export default function AlimentationPage() {
   const [shoppingListOpen, setShoppingListOpen] = useState(false);
   const [profile, setProfile] = useState<any>(null);
@@ -488,6 +549,24 @@ export default function AlimentationPage() {
                           key={`${day.day}-${meal.type}`}
                           className="group overflow-hidden rounded-[26px] border border-[#d2e1dc] bg-white shadow-[0_8px_20px_rgba(40,90,75,0.04),0_16px_32px_rgba(40,90,75,0.035)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_26px_rgba(40,90,75,0.06),0_20px_38px_rgba(40,90,75,0.05)]"
                         >
+                          <div className="relative h-[170px] overflow-hidden bg-[#eaf1ee]">
+                            <img
+                              src={getRecipePhoto(
+                                meal.recipe.name,
+                                meal.type
+                              )}
+                              alt={meal.recipe.name}
+                              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                              loading="lazy"
+                            />
+
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#102f3a]/55 via-[#102f3a]/5 to-transparent" />
+
+                            <div className="absolute bottom-3 left-3 rounded-full border border-white/20 bg-black/20 px-2.5 py-1.5 text-[9px] font-semibold uppercase tracking-[0.1em] text-white backdrop-blur-md">
+                              {day.meals.length > 1 ? "Programme Otavio" : "Repas"}
+                            </div>
+                          </div>
+
                           <div
                             className={`relative overflow-hidden px-4 py-4 ${
                               meal.type === "petit_dejeuner"
