@@ -67,6 +67,24 @@ export default function AlimentationPage() {
   const [shoppingListOpen, setShoppingListOpen] = useState(false);
 
   const [recipePeople, setRecipePeople] = useState<Record<string, number>>({});
+
+  const [openMenuDays, setOpenMenuDays] = useState<number[]>(() => {
+    const today = new Date().getDay();
+    const currentDay = today === 0 ? 7 : today;
+    return [currentDay];
+  });
+
+  function toggleMenuDay(dayNumber: number, isOpen: boolean) {
+    setOpenMenuDays((current) => {
+      if (isOpen) {
+        return current.includes(dayNumber)
+          ? current
+          : [...current, dayNumber];
+      }
+
+      return current.filter((day) => day !== dayNumber);
+    });
+  }
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState<OtavioMealFeedback[]>([]);
@@ -503,10 +521,15 @@ export default function AlimentationPage() {
 
             <section className="mt-7 space-y-5">
               {nutritionPlan.days.map((day) => (
-                <article
+                <details
                   key={day.day}
-                  className="overflow-hidden rounded-[30px] border border-[#cddfd9] bg-white shadow-[0_14px_30px_rgba(35,70,60,0.055),0_28px_58px_rgba(35,70,60,0.045),inset_0_1px_0_rgba(255,255,255,0.98)]"
+                  open={openMenuDays.includes(day.day)}
+                  onToggle={(event) =>
+                    toggleMenuDay(day.day, event.currentTarget.open)
+                  }
+                  className="group overflow-hidden rounded-[30px] border border-[#cddfd9] bg-white shadow-[0_14px_30px_rgba(35,70,60,0.055),0_28px_58px_rgba(35,70,60,0.045),inset_0_1px_0_rgba(255,255,255,0.98)]"
                 >
+                  <summary className="list-none cursor-pointer [&::-webkit-details-marker]:hidden">
                   <div className="relative overflow-hidden bg-[linear-gradient(135deg,#143b43_0%,#1b5963_58%,#287b78_100%)] px-5 py-5 text-white sm:px-6">
                     <div className="pointer-events-none absolute -right-12 -top-16 h-40 w-40 rounded-full bg-[#78d9d0]/10 blur-3xl" />
                     <div className="pointer-events-none absolute -bottom-14 left-16 h-28 w-32 rounded-full bg-[#756bd4]/10 blur-3xl" />
@@ -523,21 +546,54 @@ export default function AlimentationPage() {
                           <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-white/55">
                             Programme Otavio
                           </p>
-                          <h2 className="mt-1 text-[17px] font-semibold tracking-[-0.02em]">
-                            Jour {day.day}
-                          </h2>
+                          <div className="mt-1 flex items-center gap-2">
+                            <h2 className="text-[17px] font-semibold tracking-[-0.02em]">
+                              Jour {day.day}
+                            </h2>
+
+                            {day.day ===
+                              (() => {
+                                const today = new Date().getDay();
+                                return today === 0 ? 7 : today;
+                              })() && (
+                              <span className="rounded-full border border-[#72f0dc]/30 bg-[#72f0dc]/12 px-2 py-0.5 text-[8px] font-semibold text-[#b8fff4]">
+                                Aujourd’hui
+                              </span>
+                            )}
+                          </div>
+
                           <p className="mt-0.5 text-[10px] text-white/60">
                             Votre journée alimentaire
                           </p>
                         </div>
                       </div>
 
-                      <div className="hidden shrink-0 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[9px] font-semibold text-white/80 backdrop-blur-sm sm:inline-flex">
-                        {day.meals.length}{" "}
-                        {day.meals.length > 1 ? "repas" : "repas"}
+                      <div className="flex shrink-0 items-center gap-2">
+                        <div className="hidden rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[9px] font-semibold text-white/80 backdrop-blur-sm sm:inline-flex">
+                          {day.meals.length}{" "}
+                          {day.meals.length > 1 ? "repas" : "repas"}
+                        </div>
+
+                        <div
+                          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.15),0_6px_14px_rgba(0,0,0,0.10)] backdrop-blur-sm"
+                          aria-hidden="true"
+                        >
+                          <svg
+                            viewBox="0 0 24 24"
+                            className="h-4 w-4 text-white/80 transition-transform duration-300 group-open:rotate-180"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="m6 9 6 6 6-6" />
+                          </svg>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  </summary>
 
                   <div className="grid gap-4 bg-[linear-gradient(180deg,#fbfdfc_0%,#f6faf8_100%)] p-4 sm:p-5 lg:grid-cols-2">
                     {day.meals.map((meal) => {
@@ -879,7 +935,7 @@ export default function AlimentationPage() {
                       );
                     })}
                   </div>
-                </article>
+                </details>
               ))}
             </section>
           </>
