@@ -52,10 +52,10 @@ const recommendations = [
 ];
 
 const categories = [
-  { label: "Peau", icon: Sparkles },
-  { label: "Hydratation", icon: Droplets },
-  { label: "Sommeil", icon: Moon },
-  { label: "Alimentation", icon: Utensils },
+  { label: "Peau", icon: Sparkles, href: "/peau" },
+  { label: "Hydratation", icon: Droplets, href: "/peau" },
+  { label: "Sommeil", icon: Moon, href: "/sommeil" },
+  { label: "Alimentation", icon: Utensils, href: "/alimentation" },
 ];
 
 export default function ConseilsPage() {
@@ -688,9 +688,9 @@ export default function ConseilsPage() {
               const Icon = item.icon;
 
               return (
-                <button
+                <Link
                   key={item.label}
-                  type="button"
+                  href={item.href}
                   className="group rounded-[26px] border border-[#cbdad7] bg-[linear-gradient(145deg,#ffffff_0%,#fbfdfc_100%)] p-4 text-left shadow-[0_10px_28px_rgba(36,78,70,0.055)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(36,78,70,0.08)]"
                 >
                   <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#e8f8f3_0%,#d8eee7_100%)] text-[#287f72] shadow-[0_6px_16px_rgba(40,127,114,0.08)] transition group-hover:scale-[1.03]">
@@ -700,7 +700,7 @@ export default function ConseilsPage() {
                   <p className="mt-1 text-[10px] text-[#6f8587]">
                     Voir les conseils
                   </p>
-                </button>
+                </Link>
               );
             })}
           </div>
