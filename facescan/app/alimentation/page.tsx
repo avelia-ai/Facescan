@@ -748,15 +748,15 @@ export default function AlimentationPage() {
                                       </p>
                                     </div>
 
-                                    <div className="w-full max-w-[220px] shrink-0 sm:w-[220px]">
+                                    <div className="shrink-0">
                                       <label
                                         htmlFor={`recipe-people-${meal.recipe.id}`}
-                                        className="mb-1.5 block text-[9px] font-semibold uppercase tracking-[0.11em] text-[#7b8e90]"
+                                        className="mb-1 block text-[8px] font-semibold uppercase tracking-[0.1em] text-[#7b8e90]"
                                       >
                                         Nombre de personnes
                                       </label>
 
-                                      <div className="relative">
+                                      <div className="relative w-[132px]">
                                         <select
                                           id={`recipe-people-${meal.recipe.id}`}
                                           value={
@@ -770,7 +770,7 @@ export default function AlimentationPage() {
                                               [meal.recipe.id]: Number(event.target.value),
                                             }));
                                           }}
-                                          className="h-11 w-full cursor-pointer appearance-none rounded-2xl border border-[#cddfd8] bg-white px-4 pr-11 text-[11px] font-semibold text-[#226f6b] shadow-[0_6px_16px_rgba(40,90,75,0.06)] outline-none transition hover:border-[#9fc9bc] focus:border-[#287b78] focus:ring-2 focus:ring-[#72cfc0]/20"
+                                          className="h-9 w-full cursor-pointer appearance-none rounded-xl border border-[#cddfd8] bg-white px-3 pr-8 text-[10px] font-semibold text-[#226f6b] shadow-[0_4px_12px_rgba(40,90,75,0.05)] outline-none transition hover:border-[#9fc9bc] focus:border-[#287b78] focus:ring-2 focus:ring-[#72cfc0]/20"
                                         >
                                           {Array.from({ length: 8 }, (_, index) => index + 1).map(
                                             (people) => (
@@ -781,10 +781,10 @@ export default function AlimentationPage() {
                                           )}
                                         </select>
 
-                                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-[#287b78]">
+                                        <div className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-[#287b78]">
                                           <svg
                                             viewBox="0 0 24 24"
-                                            className="h-4 w-4"
+                                            className="h-3.5 w-3.5"
                                             fill="none"
                                             stroke="currentColor"
                                             strokeWidth="2"
@@ -796,8 +796,8 @@ export default function AlimentationPage() {
                                         </div>
                                       </div>
 
-                                      <p className="mt-1.5 text-[9px] text-[#96a5a5]">
-                                        Les quantités s’ajustent automatiquement
+                                      <p className="mt-1 text-[8px] text-[#96a5a5]">
+                                        Quantités ajustées
                                       </p>
                                     </div>
                                   </div>
