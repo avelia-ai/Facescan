@@ -262,18 +262,20 @@ export default function ConseilsPage() {
               </div>
             </div>
 
-            <div className="relative mx-auto h-[150px] w-[150px] shrink-0 overflow-hidden rounded-[30px] border border-white/20 bg-white/10 shadow-[0_18px_40px_rgba(7,38,48,0.25)] sm:h-[170px] sm:w-[170px] lg:mx-0">
-              <video
-                src="/conseils-otavio.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="absolute inset-0 h-full w-full object-cover"
-                aria-label="Otavio vous accompagne dans vos conseils personnalisés"
-              />
+            <div className="relative mx-auto w-full max-w-[260px] shrink-0 overflow-hidden rounded-[28px] border border-white/20 bg-white/10 shadow-[0_18px_40px_rgba(7,38,48,0.25)] lg:mx-0 lg:max-w-[280px]">
+              <div className="aspect-square w-full">
+                <video
+                  src="/conseils-otavio.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="h-full w-full object-cover"
+                  aria-label="Otavio vous accompagne dans vos conseils personnalisés"
+                />
+              </div>
 
-              <div className="pointer-events-none absolute inset-0 rounded-[30px] ring-1 ring-inset ring-white/15" />
+              <div className="pointer-events-none absolute inset-0 rounded-[28px] ring-1 ring-inset ring-white/15" />
             </div>
           </div>
         </section>
