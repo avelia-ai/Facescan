@@ -262,24 +262,18 @@ export default function ConseilsPage() {
               </div>
             </div>
 
-            <div className="absolute bottom-6 right-6 flex shrink-0 flex-col items-end gap-2.5 sm:bottom-8 sm:right-8">
-              <div className="relative h-[78px] w-[78px] overflow-hidden rounded-[22px] border border-white/20 bg-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.16)]">
-                <video
-                  src="/conseils-otavio.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="absolute inset-0 h-full w-full object-cover"
-                  aria-label="Otavio vous accompagne dans vos conseils personnalisés"
-                />
+            <div className="absolute bottom-6 right-6 h-[78px] w-[78px] overflow-hidden rounded-[22px] border border-white/20 bg-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.16)] sm:bottom-8 sm:right-8">
+              <video
+                src="/conseils-otavio.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 h-full w-full object-cover"
+                aria-label="Otavio vous accompagne dans vos conseils personnalisés"
+              />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
-              </div>
-
-              <div className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/12 backdrop-blur-sm">
-                <ArrowRight size={17} />
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
             </div>
           </div>
         </section>
