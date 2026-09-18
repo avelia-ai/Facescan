@@ -5,67 +5,6 @@ import { ArrowLeft, ChevronDown, ShoppingBasket, Utensils } from "lucide-react";
 import { useEffect, useState } from "react";
 import { buildOtavioNutritionPlan, buildOtavioShoppingList, buildOtavioNutritionAdaptations, type OtavioMealFeedback, type OtavioMealStatus } from "@/lib/otavio-programs";
 
-const recipePhotos = {
-  breakfast:
-    "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?auto=format&fit=crop&w=1200&q=85",
-  avocado:
-    "https://images.unsplash.com/photo-1541519227354-08fa5d50c44d?auto=format&fit=crop&w=1200&q=85",
-  salmon:
-    "https://images.unsplash.com/photo-1467003909585-2f8a72700288?auto=format&fit=crop&w=1200&q=85",
-  salad:
-    "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=85",
-  chicken:
-    "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=1200&q=85",
-  curry:
-    "https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=1200&q=85",
-  yogurt:
-    "https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1200&q=85",
-  apple:
-    "https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?auto=format&fit=crop&w=1200&q=85",
-};
-
-function getRecipePhoto(name: string, mealType: string) {
-  const value = name.toLowerCase();
-
-  if (value.includes("avocat")) return recipePhotos.avocado;
-  if (value.includes("saumon")) return recipePhotos.salmon;
-  if (value.includes("salade")) return recipePhotos.salad;
-  if (
-    value.includes("poulet") ||
-    value.includes("dinde") ||
-    value.includes("œuf") ||
-    value.includes("omelette")
-  ) {
-    return recipePhotos.chicken;
-  }
-  if (
-    value.includes("curry") ||
-    value.includes("pois chiches") ||
-    value.includes("lentilles") ||
-    value.includes("dahl")
-  ) {
-    return recipePhotos.curry;
-  }
-  if (
-    value.includes("yaourt") ||
-    value.includes("fromage blanc") ||
-    value.includes("pudding")
-  ) {
-    return recipePhotos.yogurt;
-  }
-  if (
-    value.includes("pomme") ||
-    value.includes("compote")
-  ) {
-    return recipePhotos.apple;
-  }
-
-  if (mealType === "petit_dejeuner") return recipePhotos.breakfast;
-  if (mealType === "collation") return recipePhotos.yogurt;
-
-  return recipePhotos.salad;
-}
-
 export default function AlimentationPage() {
   const [shoppingListOpen, setShoppingListOpen] = useState(false);
   const [profile, setProfile] = useState<any>(null);
@@ -551,10 +490,7 @@ export default function AlimentationPage() {
                         >
                           <div className="relative h-[170px] overflow-hidden bg-[#eaf1ee]">
                             <img
-                              src={getRecipePhoto(
-                                meal.recipe.name,
-                                meal.type
-                              )}
+                              src={meal.recipe.image ?? "/recipes/placeholder.svg"}
                               alt={meal.recipe.name}
                               className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                               loading="lazy"

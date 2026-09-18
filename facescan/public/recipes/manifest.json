@@ -1,0 +1,50 @@
+{
+  "Omelette aux légumes": {
+    "file": "/recipes/omelette-legumes.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:01599jfCuisine_of_Bulacan_sauces_vegetables_foodsfvf_08.jpg",
+    "title": "File:01599jfCuisine of Bulacan sauces vegetables foodsfvf 08.jpg",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Judgefloro\" title=\"User:Judgefloro\">Judgefloro</a>",
+    "license": "CC0",
+    "query": "vegetable omelette egg vegetables"
+  },
+  "Poulet, riz et légumes": {
+    "file": "/recipes/poulet-riz-legumes.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Liat_Portal_for_Foodie_Disorder_-_Grilled_chicken_with_rice,_potatoes_and_vegetables.jpg",
+    "title": "File:Liat Portal for Foodie Disorder - Grilled chicken with rice, potatoes and vegetables.jpg",
+    "artist": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:HaJunkiyada&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:HaJunkiyada (page does not exist)\">HaJunkiyada</a>",
+    "license": "CC BY-SA 4.0",
+    "query": "chicken rice vegetables bowl"
+  },
+  "Lentilles aux légumes": {
+    "file": "/recipes/lentilles-legumes.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Guiso_de_lentejas_argentino_con_chorizo_y_verduras_cocidas_lentamente.jpg",
+    "title": "File:Guiso de lentejas argentino con chorizo y verduras cocidas lentamente.jpg",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:Tubby3\" title=\"User:Tubby3\">Horacio Cambeiro</a>",
+    "license": "CC BY-SA 3.0",
+    "query": "lentil vegetables stew"
+  },
+  "Saumon et légumes rôtis": {
+    "file": "/recipes/saumon-legumes-rotis.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Liat_Portal_for_Foodie_Disorder_-_Oven-baked_teriyaki_salmon_with_vegetables.jpg",
+    "title": "File:Liat Portal for Foodie Disorder - Oven-baked teriyaki salmon with vegetables.jpg",
+    "artist": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:HaJunkiyada&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:HaJunkiyada (page does not exist)\">HaJunkiyada</a>",
+    "license": "CC BY-SA 4.0",
+    "query": "salmon roasted vegetables"
+  },
+  "Tartine avocat et œuf": {
+    "file": "/recipes/tartine-avocat-oeuf.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Fresh_Avocado_Toast_with_Egg.jpg",
+    "title": "File:Fresh Avocado Toast with Egg.jpg",
+    "artist": "<a href=\"//commons.wikimedia.org/w/index.php?title=User:Asramsey&amp;action=edit&amp;redlink=1\" class=\"new\" title=\"User:Asramsey (page does not exist)\">Asramsey</a>",
+    "license": "CC BY-SA 4.0",
+    "query": "avocado toast egg"
+  },
+  "Dinde, quinoa et légumes": {
+    "file": "/recipes/dinde-quinoa-legumes.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Sebzeli_kinoa.jpg",
+    "title": "File:Sebzeli kinoa.jpg",
+    "artist": "<a href=\"//commons.wikimedia.org/wiki/User:E4024\" class=\"mw-redirect\" title=\"User:E4024\">E4024</a>",
+    "license": "CC BY-SA 4.0",
+    "query": "turkey quinoa vegetables"
+  }
+}

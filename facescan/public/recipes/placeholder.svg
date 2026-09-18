@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <rect width="1200" height="800" fill="#eaf1ee"/>
+  <circle cx="600" cy="360" r="140" fill="#d4e2dd"/>
+  <text x="600" y="570" text-anchor="middle"
+        font-family="Arial, sans-serif" font-size="34"
+        fill="#5c756d">Photo recette</text>
+</svg>

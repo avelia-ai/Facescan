@@ -11,6 +11,7 @@ export type OtavioIngredient = {
 };
 
 export type OtavioRecipe = {
+  image?: string;
   id: string;
   name: string;
   mealType: OtavioMealType;
@@ -122,6 +123,7 @@ const RECIPES: OtavioRecipe[] = [
   {
     id: "omelette-legumes",
     name: "Omelette aux légumes",
+    image: "/recipes/omelette-legumes.jpg",
     mealType: "petit_dejeuner",
     ingredients: [
       { name: "Œufs", quantity: 2, unit: "unités" },
@@ -147,6 +149,7 @@ const RECIPES: OtavioRecipe[] = [
   {
     id: "poulet-riz-legumes",
     name: "Poulet, riz et légumes",
+    image: "/recipes/poulet-riz-legumes.jpg",
     mealType: "dejeuner",
     ingredients: [
       { name: "Blanc de poulet", quantity: 150, unit: "g" },
@@ -173,6 +176,7 @@ const RECIPES: OtavioRecipe[] = [
   {
     id: "lentilles-legumes",
     name: "Lentilles aux légumes",
+    image: "/recipes/lentilles-legumes.jpg",
     mealType: "dejeuner",
     ingredients: [
       { name: "Lentilles", quantity: 80, unit: "g" },
@@ -199,6 +203,7 @@ const RECIPES: OtavioRecipe[] = [
   {
     id: "saumon-legumes",
     name: "Saumon et légumes rôtis",
+    image: "/recipes/saumon-legumes-rotis.jpg",
     mealType: "diner",
     ingredients: [
       { name: "Pavé de saumon", quantity: 150, unit: "g" },
@@ -251,6 +256,7 @@ const RECIPES: OtavioRecipe[] = [
   {
     id: "tartine-avocat-oeuf",
     name: "Tartine avocat et œuf",
+    image: "/recipes/tartine-avocat-oeuf.jpg",
     mealType: "petit_dejeuner",
     ingredients: [
       { name: "Pain complet", quantity: 80, unit: "g" },
@@ -276,6 +282,7 @@ const RECIPES: OtavioRecipe[] = [
   {
     id: "dinde-quinoa-legumes",
     name: "Dinde, quinoa et légumes",
+    image: "/recipes/dinde-quinoa-legumes.jpg",
     mealType: "dejeuner",
     ingredients: [
       { name: "Escalope de dinde", quantity: 150, unit: "g" },
