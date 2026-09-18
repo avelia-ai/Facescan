@@ -231,7 +231,7 @@ export default function ConseilsPage() {
           <div className="pointer-events-none absolute -right-14 -top-16 h-40 w-40 rounded-full bg-[#78d9d0]/12 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-16 left-20 h-32 w-32 rounded-full bg-[#f2b58f]/10 blur-3xl" />
 
-          <div className="relative min-h-[190px]">
+          <div className="relative">
             <div className="min-w-0 max-w-2xl">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] text-white/80 shadow-sm backdrop-blur-md">
                 <Sparkles size={13} strokeWidth={1.8} />
@@ -246,8 +246,10 @@ export default function ConseilsPage() {
                 Otavio transforme vos observations en actions simples à intégrer
                 dans votre quotidien.
               </p>
+            </div>
 
-              <div className="mt-6 flex w-fit items-center gap-3 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-sm">
+            <div className="mt-6 flex items-center justify-between gap-4">
+              <div className="flex w-fit items-center gap-3 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-sm">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/12">
                   <Activity size={18} strokeWidth={1.8} />
                 </div>
@@ -260,20 +262,20 @@ export default function ConseilsPage() {
                   </p>
                 </div>
               </div>
-            </div>
 
-            <div className="absolute bottom-[-18px] right-2 h-[78px] w-[78px] overflow-hidden rounded-[22px] border border-white/20 bg-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.16)] sm:bottom-[-18px] sm:right-3">
-              <video
-                src="/conseils-otavio.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="absolute inset-0 h-full w-full object-cover"
-                aria-label="Otavio vous accompagne dans vos conseils personnalisés"
-              />
+              <div className="relative h-[78px] w-[78px] shrink-0 overflow-hidden rounded-[22px] border border-white/20 bg-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.16)]">
+                <video
+                  src="/conseils-otavio.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="absolute inset-0 h-full w-full object-cover"
+                  aria-label="Otavio vous accompagne dans vos conseils personnalisés"
+                />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+              </div>
             </div>
           </div>
         </section>
