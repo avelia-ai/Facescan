@@ -224,10 +224,26 @@ export default function EvolutionPage() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs text-white/85 backdrop-blur-sm">
-                <TrendingUp size={14} />
-                {scoreChange >= 0 ? "+" : ""}
-                {scoreChange}
+              <div className="flex flex-col items-end gap-2.5">
+                <div className="relative h-[78px] w-[78px] overflow-hidden rounded-[22px] border border-white/20 bg-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.16)]">
+                  <video
+                    src="/otavio/video-evolution.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="absolute inset-0 h-full w-full object-cover"
+                    aria-label="Otavio vous accompagne dans votre évolution"
+                  />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+                </div>
+
+                <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs text-white/85 backdrop-blur-sm">
+                  <TrendingUp size={14} />
+                  {scoreChange >= 0 ? "+" : ""}
+                  {scoreChange}
+                </div>
               </div>
             </div>
 
