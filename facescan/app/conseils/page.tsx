@@ -232,7 +232,7 @@ export default function ConseilsPage() {
           <div className="pointer-events-none absolute -bottom-16 left-20 h-32 w-32 rounded-full bg-[#f2b58f]/10 blur-3xl" />
 
           <div className="relative min-h-[190px]">
-            <div className="min-w-0 max-w-2xl pr-24 sm:pr-28 lg:pr-32">
+            <div className="min-w-0 max-w-2xl">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] text-white/80 shadow-sm backdrop-blur-md">
                 <Sparkles size={13} strokeWidth={1.8} />
                 Basé sur vos objectifs et votre dernier scan
@@ -262,7 +262,7 @@ export default function ConseilsPage() {
               </div>
             </div>
 
-            <div className="absolute right-6 top-6 flex shrink-0 flex-col items-end gap-2.5 sm:right-8 sm:top-8">
+            <div className="absolute right-4 top-4 flex shrink-0 flex-col items-end gap-2.5 sm:right-5 sm:top-5">
               <div className="relative h-[78px] w-[78px] overflow-hidden rounded-[22px] border border-white/20 bg-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.16)]">
                 <video
                   src="/conseils-otavio.mp4"
