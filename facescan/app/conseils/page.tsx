@@ -262,7 +262,7 @@ export default function ConseilsPage() {
               </div>
             </div>
 
-            <div className="absolute bottom-2 right-2 h-[78px] w-[78px] overflow-hidden rounded-[22px] border border-white/20 bg-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.16)] sm:bottom-3 sm:right-3">
+            <div className="absolute bottom-[-18px] right-2 h-[78px] w-[78px] overflow-hidden rounded-[22px] border border-white/20 bg-white/10 shadow-[0_10px_28px_rgba(0,0,0,0.16)] sm:bottom-[-18px] sm:right-3">
               <video
                 src="/conseils-otavio.mp4"
                 autoPlay
