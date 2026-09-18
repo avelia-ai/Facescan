@@ -70,7 +70,7 @@ export default function ConseilsPage() {
       equilibre: number;
     };
   } | null>(null);
-  const [expandedAdvice, setExpandedAdvice] = useState<string | null>(null);
+  const [expandedAdvice, setExpandedAdvice] = useState<string | null>("__first__");
   const [completedAdvice, setCompletedAdvice] = useState<string[]>([]);
   const [completingAdvice, setCompletingAdvice] = useState<string | null>(null);
 
@@ -195,6 +195,11 @@ export default function ConseilsPage() {
       ? buildOtavioNutritionPlan(profile, 7)
       : null;
 
+  const expandedAdviceId =
+    expandedAdvice === "__first__"
+      ? visibleRecommendations[0]?.id ?? null
+      : expandedAdvice;
+
   return (
     <main className="app-background min-h-screen text-[#17202a] pb-28">
       <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
@@ -303,7 +308,23 @@ export default function ConseilsPage() {
                 className="overflow-hidden rounded-[28px] border border-[#c8d9d5] bg-white shadow-[0_14px_36px_rgba(36,78,70,0.065)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_20px_46px_rgba(35,55,60,0.10)]"
               >
                 <div
-                  className={`flex items-center justify-between gap-3 border-b px-5 py-3.5 ${
+                  role="button"
+                  tabIndex={0}
+                  aria-expanded={expandedAdviceId === item.id}
+                  onClick={() =>
+                    setExpandedAdvice(
+                      expandedAdviceId === item.id ? null : item.id
+                    )
+                  }
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      setExpandedAdvice(
+                        expandedAdviceId === item.id ? null : item.id
+                      );
+                    }
+                  }}
+                  className={`flex cursor-pointer items-center justify-between gap-3 border-b px-5 py-3.5 ${
                     item.category === "Peau"
                       ? "border-[#e4c5bb] bg-[linear-gradient(135deg,#fff0eb_0%,#f9dfd5_100%)]"
                       : item.category === "Hydratation"
@@ -350,6 +371,15 @@ export default function ConseilsPage() {
                         ? "À suivre"
                         : "À maintenir"}
                   </span>
+
+                  <span
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-black/5 bg-white/55 text-[#55757b] transition-transform duration-200 ${
+                      expandedAdviceId === item.id ? "rotate-180" : ""
+                    }`}
+                    aria-hidden="true"
+                  >
+                    <span className="block h-1.5 w-1.5 rotate-45 border-b border-r border-current" />
+                  </span>
                 </div>
 
                 <div className="p-5">
@@ -361,7 +391,11 @@ export default function ConseilsPage() {
                   {item.summary}
                 </p>
 
-                <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
+                <div
+                  className={`mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-1 ${
+                    expandedAdviceId === item.id ? "" : "hidden"
+                  }`}
+                >
                   <div className="rounded-2xl border border-[#d7ebe7] bg-[#f5fbf9] px-4 py-3">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#668083]">
                       Cible
@@ -382,7 +416,11 @@ export default function ConseilsPage() {
                 </div>
 
                 {(item.quantity || item.duration) && (
-                  <div className="mt-3 grid grid-cols-2 gap-2">
+                  <div
+                    className={`mt-3 grid grid-cols-2 gap-2 ${
+                      expandedAdviceId === item.id ? "" : "hidden"
+                    }`}
+                  >
                     {item.quantity && (
                       <div className="rounded-2xl border border-[#e4ebea] px-4 py-3">
                         <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#668083]">
@@ -412,6 +450,8 @@ export default function ConseilsPage() {
                     completedAdvice.includes(item.id)
                       ? "bg-[#e5faf7] text-[#176678]"
                       : "bg-[#f8faf9] text-[#35666b]"
+                  } ${
+                    expandedAdviceId === item.id ? "" : "hidden"
                   }`}
                 >
                   <div className="flex items-start gap-3">
@@ -454,23 +494,25 @@ export default function ConseilsPage() {
                   type="button"
                   onClick={() =>
                     setExpandedAdvice(
-                      expandedAdvice === item.id ? null : item.id
+                      expandedAdviceId === item.id ? null : item.id
                     )
                   }
-                  aria-expanded={expandedAdvice === item.id}
-                  className="mt-4 flex items-center gap-2 text-[11px] font-medium text-[#183d48]"
+                  aria-expanded={expandedAdviceId === item.id}
+                  className={`mt-4 flex items-center gap-2 text-[11px] font-medium text-[#183d48] ${
+                    expandedAdviceId === item.id ? "" : "hidden"
+                  }`}
                 >
                   Pourquoi ce conseil ?
                   <ArrowRight
                     size={14}
                     strokeWidth={1.8}
                     className={`transition-transform ${
-                      expandedAdvice === item.id ? "rotate-90" : ""
+                      expandedAdviceId === item.id ? "rotate-90" : ""
                     }`}
                   />
                 </button>
 
-                {expandedAdvice === item.id && (
+                {expandedAdviceId === item.id && (
                   <div className="mt-4 space-y-3 rounded-[22px] border border-[#cfe2dd] bg-[linear-gradient(145deg,#f8fcfb_0%,#edf7f4_100%)] p-4">
                     <div className="rounded-[18px] border border-[#d8e9e5] bg-white/80 p-4">
                       <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#287b78]">
