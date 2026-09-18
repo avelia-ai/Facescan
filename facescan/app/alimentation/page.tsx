@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Utensils } from "lucide-react";
+import { ArrowLeft, ChevronDown, Utensils } from "lucide-react";
 import { useEffect, useState } from "react";
 import { buildOtavioNutritionPlan, buildOtavioShoppingList, buildOtavioNutritionAdaptations, type OtavioMealFeedback, type OtavioMealStatus } from "@/lib/otavio-programs";
 
 export default function AlimentationPage() {
+  const [shoppingListOpen, setShoppingListOpen] = useState(false);
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState<OtavioMealFeedback[]>([]);
@@ -316,49 +317,77 @@ export default function AlimentationPage() {
               </section>
             )}
 
-            <section className="mt-6 rounded-[26px] border border-[#dfe7e6] bg-white p-5 shadow-[0_14px_38px_rgba(35,55,60,0.055)] sm:p-6">
-              <div>
-                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#668083]">
-                  Courses
-                </p>
-                <h2 className="mt-1 text-lg font-semibold">
-                  Ma liste de courses
-                </h2>
-                <p className="mt-2 text-[11px] leading-5 text-[#668083]">
-                  Les ingrédients nécessaires pour préparer votre programme de la semaine.
-                </p>
-              </div>
+            <section className="mt-6 overflow-hidden rounded-[26px] border border-[#dfe7e6] bg-white shadow-[0_14px_38px_rgba(35,55,60,0.055)]">
+              <button
+                type="button"
+                onClick={() => setShoppingListOpen((open) => !open)}
+                aria-expanded={shoppingListOpen}
+                className="group flex w-full items-center justify-between gap-4 px-5 py-5 text-left transition hover:bg-[#fbfdfc] sm:px-6"
+              >
+                <div className="min-w-0">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#668083]">
+                    Courses
+                  </p>
+                  <h2 className="mt-1 text-lg font-semibold">
+                    Ma liste de courses
+                  </h2>
+                  <p className="mt-1.5 text-[11px] leading-5 text-[#668083]">
+                    Les ingrédients nécessaires pour préparer votre programme de la semaine.
+                  </p>
+                </div>
 
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                {shoppingList.map((category) => (
-                  <div
-                    key={category.name}
-                    className="rounded-[22px] border border-[#d5e4df] bg-[linear-gradient(145deg,#ffffff_0%,#f8fbfa_100%)] p-4 shadow-[0_6px_16px_rgba(40,90,75,0.035)]"
-                  >
-                    <h3 className="text-[12px] font-semibold text-[#183d48]">
-                      {category.name}
-                    </h3>
+                <span
+                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#d8e5e1] bg-[#f4f9f7] text-[#287b78] shadow-[0_5px_14px_rgba(40,90,75,0.04)] transition-transform duration-300 ${
+                    shoppingListOpen ? "rotate-180" : ""
+                  }`}
+                  aria-hidden="true"
+                >
+                  <ChevronDown size={17} strokeWidth={1.8} />
+                </span>
+              </button>
 
-                    <div className="mt-3 space-y-2">
-                      {category.items.map((item) => (
+              <div
+                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
+                  shoppingListOpen
+                    ? "grid-rows-[1fr] opacity-100"
+                    : "grid-rows-[0fr] opacity-0"
+                }`}
+              >
+                <div className="min-h-0 overflow-hidden">
+                  <div className="border-t border-[#edf1f0] px-5 pb-5 pt-5 sm:px-6">
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      {shoppingList.map((category) => (
                         <div
-                          key={`${category.name}-${item.name}-${item.unit}`}
-                          className="flex items-center justify-between gap-4 border-b border-[#edf1f0] pb-2 last:border-0 last:pb-0"
+                          key={category.name}
+                          className="rounded-[22px] border border-[#d5e4df] bg-[linear-gradient(145deg,#ffffff_0%,#f8fbfa_100%)] p-4 shadow-[0_6px_16px_rgba(40,90,75,0.035)]"
                         >
-                          <span className="text-[10px] text-[#587174]">
-                            {item.name}
-                          </span>
-                          <span className="shrink-0 text-[10px] font-semibold text-[#287b78]">
-                            {Number.isInteger(item.quantity)
-                              ? item.quantity
-                              : item.quantity.toFixed(1)}{" "}
-                            {item.unit}
-                          </span>
+                          <h3 className="text-[12px] font-semibold text-[#183d48]">
+                            {category.name}
+                          </h3>
+
+                          <div className="mt-3 space-y-2">
+                            {category.items.map((item) => (
+                              <div
+                                key={`${category.name}-${item.name}-${item.unit}`}
+                                className="flex items-center justify-between gap-4 border-b border-[#edf1f0] pb-2 last:border-0 last:pb-0"
+                              >
+                                <span className="text-[10px] text-[#587174]">
+                                  {item.name}
+                                </span>
+                                <span className="shrink-0 text-[10px] font-semibold text-[#287b78]">
+                                  {Number.isInteger(item.quantity)
+                                    ? item.quantity
+                                    : item.quantity.toFixed(1)}{" "}
+                                  {item.unit}
+                                </span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       ))}
                     </div>
                   </div>
-                ))}
+                </div>
               </div>
             </section>
 
