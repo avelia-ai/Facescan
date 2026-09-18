@@ -441,109 +441,156 @@ export default function AlimentationPage() {
               </div>
             </section>
 
-            <section className="mt-6 space-y-4">
+            <section className="mt-7 space-y-5">
               {nutritionPlan.days.map((day) => (
                 <article
                   key={day.day}
-                  className="overflow-hidden rounded-[26px] border border-[#dfe7e6] bg-white shadow-[0_14px_38px_rgba(35,55,60,0.055)]"
+                  className="overflow-hidden rounded-[30px] border border-[#cddfd9] bg-white shadow-[0_14px_30px_rgba(35,70,60,0.055),0_28px_58px_rgba(35,70,60,0.045),inset_0_1px_0_rgba(255,255,255,0.98)]"
                 >
-                  <div className="flex items-center justify-between border-b border-[#edf1f0] bg-[#f8fbfa] px-5 py-4">
-                    <div>
-                      <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#668083]">
-                        Jour {day.day}
-                      </p>
-                      <h2 className="mt-1 text-[15px] font-semibold">
-                        Votre journée alimentaire
-                      </h2>
-                    </div>
+                  <div className="relative overflow-hidden bg-[linear-gradient(135deg,#143b43_0%,#1b5963_58%,#287b78_100%)] px-5 py-5 text-white sm:px-6">
+                    <div className="pointer-events-none absolute -right-12 -top-16 h-40 w-40 rounded-full bg-[#78d9d0]/10 blur-3xl" />
+                    <div className="pointer-events-none absolute -bottom-14 left-16 h-28 w-32 rounded-full bg-[#756bd4]/10 blur-3xl" />
 
-                    <Utensils
-                      size={18}
-                      strokeWidth={1.7}
-                      className="text-[#287b78]"
-                    />
-                  </div>
-
-                  <div className="grid gap-3 p-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {day.meals.map((meal) => (
-                      <div
-                        key={`${day.day}-${meal.type}`}
-                        className="overflow-hidden rounded-[24px] border border-[#d2dfdb] bg-white shadow-[0_8px_22px_rgba(40,90,75,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(40,90,75,0.08)]"
-                      >
-                        <div
-                          className={`px-4 py-3 ${
-                            meal.type === "petit_dejeuner"
-                              ? "bg-[linear-gradient(135deg,#fff8dc_0%,#f7eac1_100%)]"
-                              : meal.type === "dejeuner"
-                                ? "bg-[linear-gradient(135deg,#edf7ef_0%,#d9ecdf_100%)]"
-                                : meal.type === "diner"
-                                  ? "bg-[linear-gradient(135deg,#fff0ea_0%,#f6dcd2_100%)]"
-                                  : "bg-[linear-gradient(135deg,#f2effb_0%,#e4e0f2_100%)]"
-                          }`}
-                        >
-                          <p
-                            className={`text-[9px] font-bold uppercase tracking-[0.14em] ${
-                              meal.type === "petit_dejeuner"
-                                ? "text-[#9a7818]"
-                                : meal.type === "dejeuner"
-                                  ? "text-[#39775b]"
-                                  : meal.type === "diner"
-                                    ? "text-[#b45d4b]"
-                                    : "text-[#655f9e]"
-                            }`}
-                          >
-                            {meal.type === "petit_dejeuner"
-                              ? "Petit-déjeuner"
-                              : meal.type === "dejeuner"
-                                ? "Déjeuner"
-                                : meal.type === "diner"
-                                  ? "Dîner"
-                                  : "Collation"}
-                          </p>
+                    <div className="relative flex items-center justify-between gap-4">
+                      <div className="flex min-w-0 items-center gap-3.5">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] border border-white/15 bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_8px_18px_rgba(0,0,0,0.10)]">
+                          <span className="text-lg font-semibold tracking-[-0.04em]">
+                            {String(day.day).padStart(2, "0")}
+                          </span>
                         </div>
 
-                        <div className="p-4">
-                          <h3 className="text-[15px] font-semibold leading-5 tracking-[-0.015em] text-[#183d48]">
-                            {meal.recipe.name}
-                          </h3>
+                        <div className="min-w-0">
+                          <p className="text-[9px] font-semibold uppercase tracking-[0.18em] text-white/55">
+                            Programme Otavio
+                          </p>
+                          <h2 className="mt-1 text-[17px] font-semibold tracking-[-0.02em]">
+                            Jour {day.day}
+                          </h2>
+                          <p className="mt-0.5 text-[10px] text-white/60">
+                            Votre journée alimentaire
+                          </p>
+                        </div>
+                      </div>
 
-                          <div className="mt-3 flex flex-wrap items-center gap-2">
-                            {meal.portion && (
-                              <span className="rounded-full bg-[#f4f7f6] px-2.5 py-1 text-[9px] font-medium text-[#587174]">
-                                {meal.portion}
+                      <div className="hidden shrink-0 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[9px] font-semibold text-white/80 backdrop-blur-sm sm:inline-flex">
+                        {day.meals.length}{" "}
+                        {day.meals.length > 1 ? "repas" : "repas"}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-4 bg-[linear-gradient(180deg,#fbfdfc_0%,#f6faf8_100%)] p-4 sm:p-5 lg:grid-cols-2">
+                    {day.meals.map((meal) => {
+                      const feedback = getMealFeedback(day.day, meal.type);
+
+                      return (
+                        <div
+                          key={`${day.day}-${meal.type}`}
+                          className="group overflow-hidden rounded-[26px] border border-[#d2e1dc] bg-white shadow-[0_8px_20px_rgba(40,90,75,0.04),0_16px_32px_rgba(40,90,75,0.035)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_26px_rgba(40,90,75,0.06),0_20px_38px_rgba(40,90,75,0.05)]"
+                        >
+                          <div
+                            className={`relative overflow-hidden px-4 py-4 ${
+                              meal.type === "petit_dejeuner"
+                                ? "bg-[linear-gradient(135deg,#fff9e5_0%,#f7edcf_100%)]"
+                                : meal.type === "dejeuner"
+                                  ? "bg-[linear-gradient(135deg,#edf8f0_0%,#d9eee0_100%)]"
+                                  : meal.type === "diner"
+                                    ? "bg-[linear-gradient(135deg,#fff1eb_0%,#f5ddd4_100%)]"
+                                    : "bg-[linear-gradient(135deg,#f3f0fb_0%,#e5e1f2_100%)]"
+                            }`}
+                          >
+                            <div className="flex items-center justify-between gap-3">
+                              <div className="flex min-w-0 items-center gap-2.5">
+                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[12px] border border-white/80 bg-white/70 shadow-[0_4px_10px_rgba(35,55,60,0.05)]">
+                                  <Utensils
+                                    size={16}
+                                    strokeWidth={1.7}
+                                    className={
+                                      meal.type === "petit_dejeuner"
+                                        ? "text-[#9a7818]"
+                                        : meal.type === "dejeuner"
+                                          ? "text-[#39775b]"
+                                          : meal.type === "diner"
+                                            ? "text-[#b45d4b]"
+                                            : "text-[#655f9e]"
+                                    }
+                                  />
+                                </div>
+
+                                <div>
+                                  <p
+                                    className={`text-[9px] font-bold uppercase tracking-[0.16em] ${
+                                      meal.type === "petit_dejeuner"
+                                        ? "text-[#9a7818]"
+                                        : meal.type === "dejeuner"
+                                          ? "text-[#39775b]"
+                                          : meal.type === "diner"
+                                            ? "text-[#b45d4b]"
+                                            : "text-[#655f9e]"
+                                    }`}
+                                  >
+                                    {meal.type === "petit_dejeuner"
+                                      ? "Petit-déjeuner"
+                                      : meal.type === "dejeuner"
+                                        ? "Déjeuner"
+                                        : meal.type === "diner"
+                                          ? "Dîner"
+                                          : "Collation"}
+                                  </p>
+
+                                  <p className="mt-0.5 text-[9px] text-[#7b8988]">
+                                    Repas du programme
+                                  </p>
+                                </div>
+                              </div>
+
+                              <span className="shrink-0 rounded-full border border-white/80 bg-white/70 px-2.5 py-1 text-[9px] font-semibold text-[#587174] shadow-[0_4px_10px_rgba(35,55,60,0.04)]">
+                                {meal.recipe.prepTime} min
                               </span>
-                            )}
-
-                            <span className="rounded-full bg-[#edf7f4] px-2.5 py-1 text-[9px] font-semibold text-[#287b78]">
-                              {meal.recipe.prepTime} min
-                            </span>
+                            </div>
                           </div>
 
-                          <div className="mt-5 border-t border-[#edf1f0] pt-4">
-                            <div className="flex items-center justify-between gap-3">
-                              <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#7b8e90]">
-                                Suivi du repas
-                              </p>
+                          <div className="p-4 sm:p-5">
+                            <h3 className="text-[16px] font-semibold leading-6 tracking-[-0.02em] text-[#183d48]">
+                              {meal.recipe.name}
+                            </h3>
 
-                              {getMealFeedback(day.day, meal.type) && (
-                                <span className="text-[8px] font-medium text-[#287b78]">
-                                  Suivi enregistré
+                            <div className="mt-3 flex flex-wrap items-center gap-2">
+                              {meal.portion && (
+                                <span className="rounded-full border border-[#dce8e3] bg-[#f6faf8] px-2.5 py-1.5 text-[9px] font-medium text-[#587174]">
+                                  {meal.portion}
                                 </span>
                               )}
+
+                              <span className="rounded-full border border-[#cae3dc] bg-[#edf8f4] px-2.5 py-1.5 text-[9px] font-semibold text-[#287b78]">
+                                Préparation {meal.recipe.prepTime} min
+                              </span>
                             </div>
 
-                            <div className="mt-2 grid grid-cols-3 gap-1.5 rounded-2xl bg-[#f7f9f8] p-1">
-                              {[
-                                ["realise", "✓ Réalisé"],
-                                ["remplace", "↻ Remplacé"],
-                                ["ignore", "— Ignoré"],
-                              ].map(([status, label]) => {
-                                const current = getMealFeedback(
-                                  day.day,
-                                  meal.type
-                                );
+                            <div className="mt-5 rounded-[20px] border border-[#dfeae6] bg-[linear-gradient(145deg,#fbfdfc_0%,#f4f9f7_100%)] p-3.5">
+                              <div className="flex items-center justify-between gap-3">
+                                <div>
+                                  <p className="text-[9px] font-semibold uppercase tracking-[0.13em] text-[#7b8e90]">
+                                    Suivi du repas
+                                  </p>
+                                  <p className="mt-1 text-[10px] text-[#9aa8a7]">
+                                    Votre retour aide Otavio à ajuster vos prochains repas.
+                                  </p>
+                                </div>
 
-                                return (
+                                {feedback && (
+                                  <span className="shrink-0 rounded-full bg-[#eaf7f3] px-2.5 py-1 text-[8px] font-semibold text-[#287b78]">
+                                    Enregistré
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className="mt-3 grid grid-cols-3 gap-1.5 rounded-[16px] bg-[#eaf0ed] p-1">
+                                {[
+                                  ["realise", "✓ Réalisé"],
+                                  ["remplace", "↻ Remplacé"],
+                                  ["ignore", "— Ignoré"],
+                                ].map(([status, label]) => (
                                   <button
                                     key={status}
                                     type="button"
@@ -555,38 +602,31 @@ export default function AlimentationPage() {
                                         status as OtavioMealStatus
                                       )
                                     }
-                                    className={`rounded-xl px-2 py-2 text-[8px] font-semibold transition ${
-                                      current?.status === status
-                                        ? "bg-white text-[#176678] shadow-[0_3px_10px_rgba(40,90,75,0.08)]"
+                                    className={`rounded-[12px] px-2 py-2 text-[8px] font-semibold transition ${
+                                      feedback?.status === status
+                                        ? "bg-white text-[#176678] shadow-[0_4px_12px_rgba(40,90,75,0.08)]"
                                         : "text-[#7b8e90] hover:bg-white/80 hover:text-[#587174]"
                                     }`}
                                   >
                                     {label}
                                   </button>
-                                );
-                              })}
-                            </div>
+                                ))}
+                              </div>
 
-                            {getMealFeedback(day.day, meal.type) && (
-                              <div className="mt-3 rounded-2xl bg-[#fafcfb] px-3 py-2.5">
-                                <div className="flex items-center justify-between">
-                                  <p className="text-[9px] font-medium text-[#668083]">
-                                    Votre satisfaction
-                                  </p>
+                              {feedback && (
+                                <div className="mt-3 rounded-[16px] border border-[#e2ebe8] bg-white/80 p-3">
+                                  <div className="flex items-center justify-between gap-3">
+                                    <p className="text-[9px] font-medium text-[#668083]">
+                                      Votre satisfaction
+                                    </p>
 
-                                  <span className="text-[8px] text-[#9aa9aa]">
-                                    sur 5
-                                  </span>
-                                </div>
+                                    <span className="text-[8px] text-[#9aa9aa]">
+                                      sur 5
+                                    </span>
+                                  </div>
 
-                                <div className="mt-2 flex gap-1.5">
-                                  {[1, 2, 3, 4, 5].map((value) => {
-                                    const current = getMealFeedback(
-                                      day.day,
-                                      meal.type
-                                    );
-
-                                    return (
+                                  <div className="mt-2 flex gap-1.5">
+                                    {[1, 2, 3, 4, 5].map((value) => (
                                       <button
                                         key={value}
                                         type="button"
@@ -598,70 +638,84 @@ export default function AlimentationPage() {
                                           )
                                         }
                                         className={`flex h-7 w-7 items-center justify-center rounded-full text-[9px] font-semibold transition ${
-                                          current?.satisfaction === value
-                                            ? "bg-[#287b78] text-white shadow-[0_3px_10px_rgba(40,127,114,0.16)]"
-                                            : "bg-white text-[#7b8e90] ring-1 ring-[#e5ece9] hover:bg-[#edf7f4]"
+                                          feedback?.satisfaction === value
+                                            ? "bg-[#287b78] text-white shadow-[0_4px_10px_rgba(40,127,114,0.16)]"
+                                            : "bg-[#f7faf8] text-[#7b8e90] ring-1 ring-[#e1ebe7] hover:bg-[#edf7f4]"
                                         }`}
                                         aria-label={`Satisfaction ${value} sur 5`}
                                       >
                                         {value}
                                       </button>
-                                    );
-                                  })}
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+
+                            <details className="group mt-4">
+                              <summary className="flex cursor-pointer list-none items-center justify-between rounded-[18px] border border-[#dfe9e5] bg-[linear-gradient(145deg,#fbfdfc_0%,#f4f8f6_100%)] px-4 py-3.5 text-[10px] font-semibold text-[#183d48] shadow-[0_5px_12px_rgba(40,90,75,0.035)] transition hover:bg-[#eef6f2]">
+                                <span>Voir la recette complète</span>
+                                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[15px] font-normal text-[#287b78] shadow-[0_4px_10px_rgba(40,90,75,0.05)] transition-transform group-open:rotate-45">
+                                  +
+                                </span>
+                              </summary>
+
+                              <div className="mt-3 space-y-4 rounded-[20px] border border-[#e1eae7] bg-[linear-gradient(145deg,#f9fcfa_0%,#f1f7f4_100%)] p-4">
+                                <div className="rounded-[16px] border border-white/80 bg-white/75 p-3.5">
+                                  <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#7b8e90]">
+                                    Ingrédients
+                                  </p>
+
+                                  <div className="mt-2 space-y-1.5">
+                                    {meal.recipe.ingredients.map((ingredient) => (
+                                      <div
+                                        key={`${ingredient.name}-${ingredient.quantity ?? ""}-${ingredient.unit ?? ""}`}
+                                        className="flex items-start justify-between gap-4 border-b border-[#edf1f0] pb-1.5 last:border-0 last:pb-0"
+                                      >
+                                        <span className="text-[10px] leading-4 text-[#587174]">
+                                          {ingredient.name}
+                                        </span>
+
+                                        <span className="shrink-0 text-[9px] font-semibold text-[#287b78]">
+                                          {ingredient.quantity
+                                            ? `${ingredient.quantity} ${ingredient.unit ?? ""}`
+                                            : ""}
+                                        </span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+
+                                <div className="rounded-[16px] border border-white/80 bg-white/75 p-3.5">
+                                  <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#7b8e90]">
+                                    Préparation
+                                  </p>
+
+                                  <div className="mt-2 space-y-2">
+                                    {meal.recipe.instructions.map(
+                                      (instruction, index) => (
+                                        <div
+                                          key={instruction}
+                                          className="flex items-start gap-2.5"
+                                        >
+                                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#e7f4ef] text-[8px] font-bold text-[#287b78]">
+                                            {index + 1}
+                                          </span>
+
+                                          <p className="pt-0.5 text-[10px] leading-4 text-[#587174]">
+                                            {instruction}
+                                          </p>
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
                                 </div>
                               </div>
-                            )}
+                            </details>
                           </div>
-
-                          <details className="group mt-4">
-                            <summary className="flex cursor-pointer list-none items-center justify-between rounded-2xl border border-[#e4ebe8] bg-[#fafcfb] px-3.5 py-3 text-[10px] font-semibold text-[#183d48] transition hover:bg-[#f4f8f6]">
-                              <span>Voir la recette</span>
-                              <span className="text-[14px] font-normal text-[#287b78] transition-transform group-open:rotate-45">
-                                +
-                              </span>
-                            </summary>
-
-                            <div className="mt-3 space-y-4 rounded-2xl bg-[#fafcfb] p-3.5">
-                            <div>
-                              <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#7b8e90]">
-                                Ingrédients
-                              </p>
-
-                              <div className="mt-1.5 space-y-1">
-                                {meal.recipe.ingredients.map((ingredient) => (
-                                  <p
-                                    key={`${ingredient.name}-${ingredient.quantity ?? ""}-${ingredient.unit ?? ""}`}
-                                    className="text-[10px] leading-4 text-[#587174]"
-                                  >
-                                    • {ingredient.quantity ? `${ingredient.quantity} ${ingredient.unit ?? ""} ` : ""}{ingredient.name}
-                                  </p>
-                                ))}
-                              </div>
-                            </div>
-
-                            <div>
-                              <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#7b8e90]">
-                                Préparation
-                              </p>
-
-                              <div className="mt-1.5 space-y-1">
-                                {meal.recipe.instructions.map(
-                                  (instruction, index) => (
-                                    <p
-                                      key={instruction}
-                                      className="text-[10px] leading-4 text-[#587174]"
-                                    >
-                                      {index + 1}. {instruction}
-                                    </p>
-                                  )
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </details>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </article>
               ))}
