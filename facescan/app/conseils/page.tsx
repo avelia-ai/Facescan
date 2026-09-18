@@ -231,7 +231,7 @@ export default function ConseilsPage() {
           <div className="pointer-events-none absolute -right-14 -top-16 h-40 w-40 rounded-full bg-[#78d9d0]/12 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-16 left-20 h-32 w-32 rounded-full bg-[#f2b58f]/10 blur-3xl" />
 
-          <div className="relative flex flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
+          <div className="relative flex flex-col gap-7 lg:flex-row lg:items-start lg:justify-between">
             <div className="min-w-0 max-w-2xl">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] text-white/80 shadow-sm backdrop-blur-md">
                 <Sparkles size={13} strokeWidth={1.8} />
