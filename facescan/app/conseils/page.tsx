@@ -231,9 +231,9 @@ export default function ConseilsPage() {
           <div className="pointer-events-none absolute -right-14 -top-16 h-40 w-40 rounded-full bg-[#78d9d0]/12 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-16 left-20 h-32 w-32 rounded-full bg-[#f2b58f]/10 blur-3xl" />
 
-          <div className="relative flex flex-col justify-between gap-7 lg:flex-row lg:items-end">
-            <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 backdrop-blur-md shadow-sm text-[10px] text-white/80">
+          <div className="relative flex flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
+            <div className="min-w-0 max-w-2xl">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[10px] text-white/80 shadow-sm backdrop-blur-md">
                 <Sparkles size={13} strokeWidth={1.8} />
                 Basé sur vos objectifs et votre dernier scan
               </div>
@@ -246,18 +246,34 @@ export default function ConseilsPage() {
                 Otavio transforme vos observations en actions simples à intégrer
                 dans votre quotidien.
               </p>
+
+              <div className="mt-6 flex w-fit items-center gap-3 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-sm">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/12">
+                  <Activity size={18} strokeWidth={1.8} />
+                </div>
+                <div>
+                  <p className="text-[10px] uppercase tracking-[0.16em] text-white/55">
+                    État global
+                  </p>
+                  <p className="mt-0.5 text-lg font-semibold">
+                    {latestScan?.score ?? 78} / 100
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="flex items-center gap-3 rounded-2xl border border-white/15 bg-white/10 backdrop-blur-sm px-4 py-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/12">
-                <Activity size={18} strokeWidth={1.8} />
-              </div>
-              <div>
-                <p className="text-[10px] uppercase tracking-[0.16em] text-white/55">
-                  État global
-                </p>
-                <p className="mt-0.5 text-lg font-semibold">{latestScan?.score ?? 78} / 100</p>
-              </div>
+            <div className="relative mx-auto h-[150px] w-[150px] shrink-0 overflow-hidden rounded-[30px] border border-white/20 bg-white/10 shadow-[0_18px_40px_rgba(7,38,48,0.25)] sm:h-[170px] sm:w-[170px] lg:mx-0">
+              <video
+                src="/conseils-otavio.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 h-full w-full object-cover"
+                aria-label="Otavio vous accompagne dans vos conseils personnalisés"
+              />
+
+              <div className="pointer-events-none absolute inset-0 rounded-[30px] ring-1 ring-inset ring-white/15" />
             </div>
           </div>
         </section>
