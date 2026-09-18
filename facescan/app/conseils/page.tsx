@@ -70,7 +70,7 @@ export default function ConseilsPage() {
       equilibre: number;
     };
   } | null>(null);
-  const [expandedAdvice, setExpandedAdvice] = useState<string | null>("__first__");
+  const [expandedAdvice, setExpandedAdvice] = useState<string | null>(null);
   const [completedAdvice, setCompletedAdvice] = useState<string[]>([]);
   const [completingAdvice, setCompletingAdvice] = useState<string | null>(null);
 
@@ -195,10 +195,16 @@ export default function ConseilsPage() {
       ? buildOtavioNutritionPlan(profile, 7)
       : null;
 
-  const expandedAdviceId =
-    expandedAdvice === "__first__"
-      ? visibleRecommendations[0]?.id ?? null
-      : expandedAdvice;
+  const expandedAdviceId = expandedAdvice;
+
+  const categoryEmoji: Record<string, string> = {
+    Peau: "✨",
+    Hydratation: "💧",
+    Sommeil: "🌙",
+    Alimentation: "🍽️",
+    Activité: "🏃",
+    Routine: "🧘",
+  };
 
   return (
     <main className="app-background min-h-screen text-[#17202a] pb-28">
@@ -338,22 +344,31 @@ export default function ConseilsPage() {
                               : "border-[#e8d9a9] bg-[linear-gradient(135deg,#fff9e8_0%,#f8edc9_100%)]"
                   }`}
                 >
-                  <div
-                    className={`text-[10px] font-bold uppercase tracking-[0.15em] ${
-                      item.category === "Peau"
-                        ? "text-[#b45f4d]"
-                        : item.category === "Hydratation"
-                          ? "text-[#23888a]"
-                          : item.category === "Sommeil"
-                            ? "text-[#655f9e]"
-                            : item.category === "Alimentation"
-                              ? "text-[#39775b]"
-                              : String(item.category) === "Activité"
-                                ? "text-[#287f72]"
-                                : "text-[#9a7a18]"
-                    }`}
-                  >
-                    {item.category}
+                  <div className="flex min-w-0 items-center gap-2.5">
+                    <span
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border border-white/60 bg-white/70 text-[15px] shadow-[0_4px_12px_rgba(36,78,70,0.06)]"
+                      aria-hidden="true"
+                    >
+                      {categoryEmoji[String(item.category)] ?? "•"}
+                    </span>
+
+                    <div
+                      className={`text-[10px] font-bold uppercase tracking-[0.15em] ${
+                        item.category === "Peau"
+                          ? "text-[#b45f4d]"
+                          : item.category === "Hydratation"
+                            ? "text-[#23888a]"
+                            : item.category === "Sommeil"
+                              ? "text-[#655f9e]"
+                              : item.category === "Alimentation"
+                                ? "text-[#39775b]"
+                                : String(item.category) === "Activité"
+                                  ? "text-[#287f72]"
+                                  : "text-[#9a7a18]"
+                      }`}
+                    >
+                      {item.category}
+                    </div>
                   </div>
 
                   <span
