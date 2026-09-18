@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, ChevronDown, Utensils } from "lucide-react";
+import { ArrowLeft, ChevronDown, ShoppingBasket, Utensils } from "lucide-react";
 import { useEffect, useState } from "react";
 import { buildOtavioNutritionPlan, buildOtavioShoppingList, buildOtavioNutritionAdaptations, type OtavioMealFeedback, type OtavioMealStatus } from "@/lib/otavio-programs";
 
@@ -317,32 +317,51 @@ export default function AlimentationPage() {
               </section>
             )}
 
-            <section className="mt-6 overflow-hidden rounded-[26px] border border-[#dfe7e6] bg-white shadow-[0_14px_38px_rgba(35,55,60,0.055)]">
+            <section className="mt-6 overflow-hidden rounded-[30px] border border-[#bcd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#f7fbf9_100%)] shadow-[0_16px_34px_rgba(35,70,60,0.07),0_28px_62px_rgba(35,70,60,0.055),inset_0_1px_0_rgba(255,255,255,0.98)]">
               <button
                 type="button"
                 onClick={() => setShoppingListOpen((open) => !open)}
                 aria-expanded={shoppingListOpen}
-                className="group flex w-full items-center justify-between gap-4 px-5 py-5 text-left transition hover:bg-[#fbfdfc] sm:px-6"
+                className="group relative flex w-full items-center justify-between gap-4 overflow-hidden px-5 py-5 text-left transition hover:-translate-y-0.5 hover:bg-[#fbfdfc] sm:px-6"
               >
-                <div className="min-w-0">
-                  <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#668083]">
-                    Courses
-                  </p>
-                  <h2 className="mt-1 text-lg font-semibold">
-                    Ma liste de courses
-                  </h2>
-                  <p className="mt-1.5 text-[11px] leading-5 text-[#668083]">
-                    Les ingrédients nécessaires pour préparer votre programme de la semaine.
-                  </p>
+                <div className="pointer-events-none absolute -right-10 -top-12 h-28 w-28 rounded-full bg-[#88d6ca]/12 blur-2xl" />
+                <div className="pointer-events-none absolute -bottom-10 left-16 h-20 w-24 rounded-full bg-[#7e9ff2]/8 blur-2xl" />
+
+                <div className="relative flex min-w-0 items-center gap-3.5">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] border border-white/80 bg-[linear-gradient(145deg,#eefaf6_0%,#dcefe7_100%)] text-[#287b78] shadow-[0_5px_10px_rgba(40,127,114,0.08),0_10px_22px_rgba(40,127,114,0.07),inset_0_1px_0_rgba(255,255,255,1)]">
+                    <ShoppingBasket size={19} strokeWidth={1.7} />
+                  </div>
+
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#287b78]">
+                        Courses
+                      </p>
+
+                      <span className="rounded-full border border-[#cce1da] bg-white/90 px-2.5 py-1 text-[9px] font-semibold text-[#668083] shadow-[0_4px_10px_rgba(40,90,75,0.04)]">
+                        {shoppingList.length} catégories
+                      </span>
+                    </div>
+
+                    <h2 className="mt-1 text-[18px] font-semibold tracking-[-0.02em] text-[#183d48]">
+                      Ma liste de courses
+                    </h2>
+
+                    <p className="mt-1.5 max-w-xl text-[11px] leading-5 text-[#668083]">
+                      Tous les ingrédients nécessaires pour préparer votre programme de la semaine.
+                    </p>
+                  </div>
                 </div>
 
                 <span
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#d8e5e1] bg-[#f4f9f7] text-[#287b78] shadow-[0_5px_14px_rgba(40,90,75,0.04)] transition-transform duration-300 ${
-                    shoppingListOpen ? "rotate-180" : ""
+                  className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#d6e5df] bg-white text-[#287b78] shadow-[0_6px_14px_rgba(40,90,75,0.055)] transition-all duration-300 ${
+                    shoppingListOpen
+                      ? "rotate-180 bg-[#edf8f4]"
+                      : "group-hover:scale-105"
                   }`}
                   aria-hidden="true"
                 >
-                  <ChevronDown size={17} strokeWidth={1.8} />
+                  <ChevronDown size={18} strokeWidth={1.8} />
                 </span>
               </button>
 
@@ -354,27 +373,58 @@ export default function AlimentationPage() {
                 }`}
               >
                 <div className="min-h-0 overflow-hidden">
-                  <div className="border-t border-[#edf1f0] px-5 pb-5 pt-5 sm:px-6">
+                  <div className="border-t border-[#e0ebe7] bg-[linear-gradient(180deg,#f8fcfa_0%,#f4f9f7_100%)] px-5 pb-5 pt-5 sm:px-6">
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-[#7d918f]">
+                          Organisation
+                        </p>
+                        <p className="mt-1 text-[11px] text-[#668083]">
+                          Les ingrédients sont regroupés pour simplifier vos achats.
+                        </p>
+                      </div>
+
+                      <span className="hidden rounded-full border border-[#d2e3dc] bg-white px-3 py-1.5 text-[9px] font-semibold text-[#39775b] shadow-[0_5px_12px_rgba(40,90,75,0.04)] sm:inline-flex">
+                        Programme Otavio
+                      </span>
+                    </div>
+
                     <div className="grid gap-4 sm:grid-cols-2">
-                      {shoppingList.map((category) => (
+                      {shoppingList.map((category, index) => (
                         <div
                           key={category.name}
-                          className="rounded-[22px] border border-[#d5e4df] bg-[linear-gradient(145deg,#ffffff_0%,#f8fbfa_100%)] p-4 shadow-[0_6px_16px_rgba(40,90,75,0.035)]"
+                          className="group rounded-[22px] border border-[#d5e4df] bg-[linear-gradient(145deg,#ffffff_0%,#f8fbfa_100%)] p-4 shadow-[0_7px_16px_rgba(40,90,75,0.04),0_14px_28px_rgba(40,90,75,0.035),inset_0_1px_0_rgba(255,255,255,0.98)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(40,90,75,0.055),0_18px_34px_rgba(40,90,75,0.05)]"
                         >
-                          <h3 className="text-[12px] font-semibold text-[#183d48]">
-                            {category.name}
-                          </h3>
+                          <div className="flex items-center justify-between gap-3">
+                            <div className="flex min-w-0 items-center gap-2.5">
+                              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#edf8f4_0%,#dff0e8_100%)] text-[#287b78] shadow-[0_4px_10px_rgba(40,127,114,0.06)]">
+                                <span className="text-[10px] font-bold">
+                                  {String(index + 1).padStart(2, "0")}
+                                </span>
+                              </div>
 
-                          <div className="mt-3 space-y-2">
+                              <h3 className="text-[12px] font-semibold text-[#183d48]">
+                                {category.name}
+                              </h3>
+                            </div>
+
+                            <span className="rounded-full bg-[#eef7f3] px-2 py-1 text-[9px] font-semibold text-[#39775b]">
+                              {category.items.length}{" "}
+                              {category.items.length > 1 ? "articles" : "article"}
+                            </span>
+                          </div>
+
+                          <div className="mt-4 space-y-2.5">
                             {category.items.map((item) => (
                               <div
                                 key={`${category.name}-${item.name}-${item.unit}`}
-                                className="flex items-center justify-between gap-4 border-b border-[#edf1f0] pb-2 last:border-0 last:pb-0"
+                                className="flex items-center justify-between gap-4 border-b border-[#edf1f0] pb-2.5 last:border-0 last:pb-0"
                               >
-                                <span className="text-[10px] text-[#587174]">
+                                <span className="text-[10px] leading-4 text-[#587174]">
                                   {item.name}
                                 </span>
-                                <span className="shrink-0 text-[10px] font-semibold text-[#287b78]">
+
+                                <span className="shrink-0 rounded-full bg-[#f1f7f4] px-2 py-1 text-[10px] font-semibold text-[#287b78]">
                                   {Number.isInteger(item.quantity)
                                     ? item.quantity
                                     : item.quantity.toFixed(1)}{" "}
