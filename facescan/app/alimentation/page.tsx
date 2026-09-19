@@ -570,7 +570,7 @@ export default function AlimentationPage() {
 
                       <div className="flex shrink-0 items-center gap-2">
           {day.day === 1 && (
-            <div className="relative h-14 w-24 shrink-0 overflow-hidden rounded-2xl border border-white/20 bg-black/20 shadow-[0_8px_24px_rgba(0,0,0,0.20)]">
+            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-white/20 bg-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.20)] sm:h-20 sm:w-20">
               <video
                 src="/otavio/recette-jour-1.mp4"
                 autoPlay
@@ -579,13 +579,8 @@ export default function AlimentationPage() {
                 playsInline
                 preload="auto"
                 aria-label="Recette du jour 1"
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
               />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent px-2 pb-1 pt-4">
-                <span className="text-[9px] font-semibold text-white">
-                  Recette du jour
-                </span>
-              </div>
             </div>
           )}
 
