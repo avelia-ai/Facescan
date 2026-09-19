@@ -312,18 +312,6 @@ export default function AlimentationPage() {
                 </p>
 
                 <div className="relative mt-5 mb-0 overflow-hidden rounded-[26px] bg-[linear-gradient(135deg,#123a43_0%,#195563_55%,#247c78_100%)] px-5 py-5 text-white shadow-[0_16px_34px_rgba(25,72,66,0.14),inset_0_1px_0_rgba(255,255,255,0.14)] sm:px-6 sm:py-6">
-        <div className="pointer-events-none absolute right-4 top-4 z-20 h-16 w-16 overflow-hidden rounded-2xl border border-white/20 bg-white/10 shadow-[0_10px_24px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-sm sm:right-5 sm:top-5 sm:h-20 sm:w-20">
-          <video
-            src="/otavio/video-liste-courses.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            aria-label="Vidéo de conseils d'Otavio"
-            className="h-full w-full object-contain"
-          />
-        </div>
 
                   <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-white/[0.07] blur-2xl" />
                   <div className="absolute -bottom-16 left-16 h-32 w-32 rounded-full bg-[#62d2bf]/10 blur-2xl" />
