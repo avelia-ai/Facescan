@@ -607,68 +607,7 @@ export default function AlimentationPage() {
                       </div>
 
                       <div className="flex shrink-0 items-center gap-2">
-          {day.day === 1 && (
-            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-white/20 bg-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.20)] sm:h-20 sm:w-20">
-              <video
-                src="/otavio/recette-jour-1.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                aria-label="Recette du jour 1"
-                className="h-full w-full object-contain"
-              />
-            </div>
-          )}
-
-          {day.day === 2 && (
-            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-white/20 bg-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.20)] sm:h-20 sm:w-20">
-              <video
-                src="/otavio/recette-jour-2.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                aria-label="Recette du jour 2"
-                className="h-full w-full object-contain"
-              />
-            </div>
-          )}
-
-          {day.day === 3 && (
-            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-white/20 bg-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.20)] sm:h-20 sm:w-20">
-              <video
-                src="/otavio/recette-jour-3.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                aria-label="Recette du jour 3"
-                className="h-full w-full object-contain"
-              />
-            </div>
-          )}
-
-          {day.day === 4 && (
-            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-white/20 bg-black/10 shadow-[0_8px_24px_rgba(0,0,0,0.20)] sm:h-20 sm:w-20">
-              <video
-                src="/otavio/recette-jour-4.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                aria-label="Recette du jour 4"
-                className="h-full w-full object-contain"
-              />
-            </div>
-          )}
-
-          
-                        <div className="hidden rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[9px] font-semibold text-white/80 backdrop-blur-sm sm:inline-flex">
+<div className="hidden rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-[9px] font-semibold text-white/80 backdrop-blur-sm sm:inline-flex">
                           {day.meals.length}{" "}
                           {day.meals.length > 1 ? "repas" : "repas"}
                         </div>
