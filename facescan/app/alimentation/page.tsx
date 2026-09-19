@@ -311,7 +311,7 @@ export default function AlimentationPage() {
                   Otavio apprend
                 </p>
 
-                <div className="relative mb-5 overflow-hidden rounded-[26px] bg-[linear-gradient(135deg,#123a43_0%,#195563_55%,#247c78_100%)] px-5 py-5 text-white shadow-[0_16px_34px_rgba(25,72,66,0.14),inset_0_1px_0_rgba(255,255,255,0.14)] sm:px-6 sm:py-6">
+                <div className="relative mt-2 mb-2 overflow-hidden rounded-[26px] bg-[linear-gradient(135deg,#123a43_0%,#195563_55%,#247c78_100%)] px-5 py-5 text-white shadow-[0_16px_34px_rgba(25,72,66,0.14),inset_0_1px_0_rgba(255,255,255,0.14)] sm:px-6 sm:py-6">
                   <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-white/[0.07] blur-2xl" />
                   <div className="absolute -bottom-16 left-16 h-32 w-32 rounded-full bg-[#62d2bf]/10 blur-2xl" />
 
