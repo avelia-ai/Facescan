@@ -261,7 +261,13 @@ export default function ScannerPage() {
         );
       }
 
-      window.location.href = "/analyse";
+      setAnalysisStep(4);
+
+      await new Promise((resolve) => {
+        window.setTimeout(resolve, 700);
+      });
+
+      window.location.href = "/resultats";
     } catch (error) {
       console.error("Otavio analysis error:", error);
 
