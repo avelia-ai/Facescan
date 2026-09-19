@@ -311,6 +311,44 @@ export default function AlimentationPage() {
                   Otavio apprend
                 </p>
 
+                <div className="relative mb-5 overflow-hidden rounded-[26px] bg-[linear-gradient(135deg,#123a43_0%,#195563_55%,#247c78_100%)] px-5 py-5 text-white shadow-[0_16px_34px_rgba(25,72,66,0.14),inset_0_1px_0_rgba(255,255,255,0.14)] sm:px-6 sm:py-6">
+                  <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-white/[0.07] blur-2xl" />
+                  <div className="absolute -bottom-16 left-16 h-32 w-32 rounded-full bg-[#62d2bf]/10 blur-2xl" />
+
+                  <div className="relative flex items-center justify-between gap-4">
+                    <div className="flex min-w-0 items-center gap-3.5">
+                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_8px_20px_rgba(0,0,0,0.14)] backdrop-blur-sm">
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.7"
+                          className="h-5 w-5 text-[#c6f3e9]"
+                        >
+                          <path d="M12 3.5 13.7 8l4.5 1.7-4.5 1.7L12 16l-1.7-4.6-4.5-1.7L10.3 8 12 3.5Z" />
+                          <path d="m18.5 14 .8 2.2 2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2Z" />
+                        </svg>
+                      </div>
+
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/55">
+                          Intelligence Otavio
+                        </p>
+                        <h2 className="mt-0.5 text-[21px] font-semibold tracking-[-0.03em] text-white sm:text-[23px]">
+                          Otavio apprend
+                        </h2>
+                        <p className="mt-1.5 max-w-xl text-[12px] leading-5 text-white/72 sm:text-[13px]">
+                          Votre programme s’affine au fil de vos habitudes, de vos retours et de vos préférences.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="hidden shrink-0 items-center rounded-full border border-white/12 bg-white/10 px-3.5 py-1.5 text-[9px] font-semibold tracking-[0.14em] text-white/80 backdrop-blur-sm sm:flex">
+                      PERSONNALISATION
+                    </div>
+                  </div>
+                </div>
+
                 <h2 className="mt-1 text-lg font-semibold">
                   Votre programme évolue avec vous
                 </h2>
