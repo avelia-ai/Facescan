@@ -343,8 +343,17 @@ export default function AlimentationPage() {
                       </div>
                     </div>
 
-                    <div className="hidden shrink-0 items-center rounded-full border border-white/12 bg-white/10 px-3.5 py-1.5 text-[9px] font-semibold tracking-[0.14em] text-white/80 backdrop-blur-sm sm:flex">
-                      PERSONNALISATION
+                    <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-2xl border border-white/20 bg-white/10 shadow-[0_10px_24px_rgba(0,0,0,0.18),inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-sm sm:h-20 sm:w-20">
+                      <video
+                        src="/otavio/video-liste-courses.mp4"
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        preload="auto"
+                        aria-label="Vidéo de conseils d'Otavio"
+                        className="h-full w-full object-contain"
+                      />
                     </div>
                   </div>
                 </div>
@@ -468,21 +477,6 @@ export default function AlimentationPage() {
                     </p>
                   </div>
                 </div>
-
-                          <div className="pointer-events-none absolute right-14 top-1/2 z-10 -translate-y-1/2 sm:right-16">
-            <div className="relative h-14 w-14 overflow-hidden rounded-2xl border border-[#cfe0da] bg-white shadow-[0_8px_20px_rgba(35,70,60,0.12),inset_0_1px_0_rgba(255,255,255,0.95)] sm:h-16 sm:w-16">
-              <video
-                src="/otavio/video-liste-courses.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                aria-label="Vidéo de conseils pour la liste de courses"
-                className="h-full w-full object-contain"
-              />
-            </div>
-          </div>
 
 <span
                   className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#d6e5df] bg-white text-[#287b78] shadow-[0_6px_14px_rgba(40,90,75,0.055)] transition-all duration-300 ${
