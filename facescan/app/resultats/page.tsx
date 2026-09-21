@@ -206,17 +206,14 @@ export default function ResultatsPage() {
     }
   }, []);
 
-  const currentIndicators = latestScan?.indicators ?? {
-    peau: 82,
-    hydratation: 74,
-    fatigue: 68,
-    equilibre: 79,
-  };
+  const currentIndicators = latestScan?.indicators ?? null;
 
-  const currentScore = latestScan?.score ?? 78;
+  const currentScore = latestScan?.score ?? null;
 
   const scoreChange =
-    previousScan ? currentScore - previousScan.score : null;
+    previousScan && currentScore !== null
+      ? currentScore - previousScan.score
+      : null;
 
   const scanQualityScore =
     latestScan?.quality?.qualityScore ?? null;
@@ -252,23 +249,27 @@ export default function ResultatsPage() {
     };
   }, [faceBox, latestScan]);
 
-  const indicators = indicatorConfig.map((item) => {
-    const value = currentIndicators[item.key];
-    const previous = previousScan?.indicators?.[item.key] ?? null;
-    const change = previous === null ? null : value - previous;
+  const indicators = currentIndicators
+    ? indicatorConfig.map((item) => {
+        const value = currentIndicators[item.key];
+        const previous = previousScan?.indicators?.[item.key] ?? null;
+        const change = previous === null ? null : value - previous;
 
-    return {
-      ...item,
-      value,
-      change,
-      status: getStatus(value),
-    };
-  });
+        return {
+          ...item,
+          value,
+          change,
+          status: getStatus(value),
+        };
+      })
+    : [];
 
-  const personalizedInsights = buildPersonalizedInsights({
-    goals: userGoals,
-    indicators: currentIndicators,
-  });
+  const personalizedInsights = currentIndicators
+    ? buildPersonalizedInsights({
+        goals: userGoals,
+        indicators: currentIndicators,
+      })
+    : [];
 
   const positiveInsight =
     personalizedInsights.find((item) => item.type === "positive") ??
@@ -278,7 +279,9 @@ export default function ResultatsPage() {
     personalizedInsights.find((item) => item.type === "attention") ??
     personalizedInsights[0];
 
-  const dailyActions = buildDailyActions(currentIndicators, userGoals);
+  const dailyActions = currentIndicators
+    ? buildDailyActions(currentIndicators, userGoals)
+    : [];
 
   const surveillanceGoals = userGoals.filter((goal) =>
     ["peau", "hydratation", "recuperation", "equilibre"].includes(goal),
@@ -381,7 +384,9 @@ export default function ResultatsPage() {
                 </p>
 
                 <p className="mt-3 text-[14px] font-medium leading-6 text-white/82">
-                  {getScoreMessage(currentScore)}
+                  {currentScore !== null
+                    ? getScoreMessage(currentScore)
+                    : "Votre premier scan permettra à Otavio d’établir votre première observation."}
                 </p>
 
                 <div className="mt-5 space-y-2">
