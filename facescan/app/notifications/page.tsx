@@ -63,7 +63,7 @@ const baseNotifications = [
 
 export default function NotificationsPage() {
   const [latestScan, setLatestScan] = useState<{
-    score: number;
+    score: number | null;
     date: string;
     indicators: {
       peau: number;
@@ -85,7 +85,7 @@ export default function NotificationsPage() {
 
         if (Array.isArray(parsed) && parsed[0]?.indicators) {
           setLatestScan({
-            score: typeof parsed[0].score === "number" ? parsed[0].score : 78,
+            score: typeof parsed[0].score === "number" ? parsed[0].score : null,
             date:
               typeof parsed[0].date === "string"
                 ? parsed[0].date
@@ -139,7 +139,10 @@ export default function NotificationsPage() {
       }
 
       if (item.id === 3 && latestScan) {
-        text = `Votre dernier score global est de ${latestScan.score}/100. Vos prochains scans permettront de suivre son évolution.`;
+        text =
+          latestScan.score !== null
+            ? `Votre dernier score global est de ${latestScan.score}/100. Vos prochains scans permettront de suivre son évolution.`
+            : "Votre dernier scan est enregistré. Vos prochains scans permettront de suivre votre évolution.";
       }
 
       if (item.id === 5 && latestScan) {
