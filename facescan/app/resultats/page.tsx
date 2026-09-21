@@ -704,212 +704,420 @@ export default function ResultatsPage() {
         </section>
 
         {/* EVOLUTION */}
-        <section className="mt-11">
-          <div>
-            <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-[#3f9864]">
-              Votre progression
-            </p>
-            <h2 className="mt-1.5 text-2xl font-semibold tracking-[-0.045em]">
-              Votre évolution
-            </h2>
-            <p className="mt-2 max-w-xl text-[12px] leading-5 text-[#71858a]">
-              Comparez votre dernier scan à votre niveau de référence.
-            </p>
+        <section className="mt-12">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-[#3f9864]">
+                Votre progression
+              </p>
+              <h2 className="mt-1.5 text-2xl font-semibold tracking-[-0.045em] text-[#172a32]">
+                Votre évolution
+              </h2>
+              <p className="mt-2 max-w-xl text-[12px] leading-5 text-[#71858a]">
+                Otavio compare vos scans au fil du temps pour faire apparaître les tendances.
+              </p>
+            </div>
+
+            <Link
+              href="/evolution"
+              className="inline-flex w-fit items-center gap-2 rounded-full border border-[#dce9e2] bg-white px-3.5 py-2 text-[9px] font-bold text-[#3f9864] shadow-[0_8px_22px_rgba(20,55,65,0.045)] transition hover:-translate-y-0.5"
+            >
+              Ouvrir évolution
+              <ArrowRight size={13} />
+            </Link>
           </div>
 
-          <div className="mt-5 rounded-[28px] border border-[#dce6e8] bg-white p-5 shadow-[0_15px_40px_rgba(20,55,65,0.05)] sm:p-6">
-            <div className="grid gap-3 sm:grid-cols-2">
+          <div className="mt-6 overflow-hidden rounded-[30px] border border-[#dce6e8] bg-white shadow-[0_16px_42px_rgba(20,55,65,0.055)]">
+            <div className="border-b border-[#edf2f2] bg-[linear-gradient(135deg,#fbfdfc_0%,#f4faf7_100%)] px-5 py-5 sm:px-6">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3f9864]">
+                    Lecture de tendance
+                  </p>
+
+                  <h3 className="mt-1.5 text-[16px] font-semibold tracking-[-0.02em] text-[#20343c]">
+                    {previousScan
+                      ? "Votre dernière évolution"
+                      : "Votre point de départ"}
+                  </h3>
+                </div>
+
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#e8f7ee] text-[#3f9864]">
+                  <TrendingUp size={19} strokeWidth={1.8} />
+                </div>
+              </div>
+
+              <div className="mt-5 rounded-[22px] border border-[#dcebe3] bg-white/80 p-4 shadow-[0_8px_22px_rgba(35,90,65,0.04)]">
+                {previousScan ? (
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p className="text-[9px] uppercase tracking-[0.14em] text-[#88999d]">
+                        Score global
+                      </p>
+
+                      <div className="mt-1 flex items-end gap-2">
+                        <span className="text-[30px] font-semibold leading-none tracking-[-0.06em] text-[#17313a]">
+                          {currentScore}
+                        </span>
+
+                        <span
+                          className={`mb-1 rounded-full px-2.5 py-1 text-[9px] font-bold ${
+                            scoreChange !== null && scoreChange >= 0
+                              ? "bg-[#e8f7ee] text-[#3f9864]"
+                              : "bg-[#fff0ec] text-[#d96550]"
+                          }`}
+                        >
+                          {scoreChange !== null && scoreChange >= 0 ? "+" : ""}
+                          {scoreChange ?? 0} pts
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="text-left sm:text-right">
+                      <p className="text-[9px] uppercase tracking-[0.14em] text-[#88999d]">
+                        Scan précédent
+                      </p>
+                      <p className="mt-1 text-[14px] font-semibold text-[#304951]">
+                        {previousScan.score}/100
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-[#eef7f1] text-[#3f9864]">
+                      <Sparkles size={17} />
+                    </div>
+
+                    <div>
+                      <p className="text-[11px] font-semibold text-[#304951]">
+                        Votre premier scan est enregistré
+                      </p>
+                      <p className="mt-1 text-[10px] leading-5 text-[#7b8e93]">
+                        Le prochain scan permettra à Otavio de mesurer vos évolutions.
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="grid gap-3 p-5 sm:grid-cols-2 sm:p-6">
               {indicators.map((item) => {
-                const positive = item.change !== null && item.change >= 0;
+                const hasChange = item.change !== null;
+                const positive = item.change !== null ? item.change >= 0 : false;
 
                 return (
                   <div
                     key={item.key}
-                    className="rounded-[20px] bg-[#f5f8f8] p-4"
+                    className="rounded-[22px] border border-[#e2e9ea] bg-[#f8faf9] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
                   >
-                    <div className="flex items-center justify-between">
-                      <div>
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
                         <p className="text-[11px] font-semibold text-[#304951]">
                           {item.label}
                         </p>
                         <p className="mt-1 text-[9px] text-[#899a9e]">
-                          {item.change === null
-                            ? "Première mesure"
-                            : `Référence ${previousScan?.indicators?.[item.key]}`}
+                          {hasChange
+                            ? `Avant ${previousScan?.indicators[item.key]}`
+                            : "Première mesure"}
                         </p>
                       </div>
 
                       <div className="text-right">
-                        <span className="text-xl font-semibold tracking-[-0.05em]">
+                        <span className="text-[22px] font-semibold leading-none tracking-[-0.05em] text-[#17313a]">
                           {item.value}
                         </span>
 
-                        {item.change === null ? (
-                          <p className="text-[9px] font-semibold text-[#899a9e]">
-                            Première mesure
-                          </p>
-                        ) : (
+                        {hasChange ? (
                           <p
-                            className={`text-[9px] font-bold ${
+                            className={`mt-1 text-[9px] font-bold ${
                               positive
-                                ? "text-[#168f91]"
+                                ? "text-[#3f9864]"
                                 : "text-[#d96550]"
                             }`}
                           >
                             {positive ? "+" : ""}
                             {item.change} pts
                           </p>
+                        ) : (
+                          <p className="mt-1 text-[9px] font-semibold text-[#8d9ca0]">
+                            Référence
+                          </p>
                         )}
                       </div>
                     </div>
 
-                    <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-[#dfe8e9]">
-                      <div
-                        className={`h-full rounded-full bg-gradient-to-r ${item.bar}`}
-                        style={{ width: `${item.value}%` }}
-                      />
+                    <div className="mt-4 h-2 overflow-hidden rounded-full bg-[#e7edef]">
+                      {hasChange && previousScan ? (
+                        <div className="relative h-full">
+                          <div
+                            className="absolute inset-y-0 left-0 rounded-full bg-[#d9e3e5]"
+                            style={{
+                              width: `${previousScan.indicators[item.key]}%`,
+                            }}
+                          />
+                          <div
+                            className={`absolute inset-y-0 left-0 rounded-full bg-gradient-to-r ${item.bar}`}
+                            style={{
+                              width: `${item.value}%`,
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <div
+                          className={`h-full rounded-full bg-gradient-to-r ${item.bar}`}
+                          style={{ width: `${item.value}%` }}
+                        />
+                      )}
                     </div>
                   </div>
                 );
               })}
             </div>
 
-            <div className="mt-4 flex items-start gap-3 rounded-[20px] bg-gradient-to-r from-[#e9f9f6] to-[#efedff] p-4">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white/80 text-[#168f91]">
-                <TrendingUp size={15} />
-              </div>
+            <div className="border-t border-[#edf2f2] px-5 py-4 sm:px-6">
+              <div className="flex items-start gap-3">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#edf7f1] text-[#3f9864]">
+                  <Info size={14} />
+                </div>
 
-              <div>
-                <p className="text-[10px] font-bold text-[#263f48]">
-                  Les tendances comptent plus qu’un résultat isolé
-                </p>
-                <p className="mt-1 text-[9px] leading-5 text-[#71858a]">
-                  Otavio compare progressivement vos scans pour faire apparaître votre évolution.
+                <p className="text-[10px] leading-5 text-[#75878c]">
+                  Les variations sont calculées uniquement à partir de vos scans
+                  enregistrés. Un seul scan constitue une référence initiale.
                 </p>
               </div>
             </div>
           </div>
-
-          <Link
-            href="/evolution"
-            className="mt-4 flex items-center justify-center gap-2 text-[10px] font-bold text-[#168f91]"
-          >
-            Voir mon évolution
-            <ArrowRight size={13} />
-          </Link>
         </section>
 
         {/* INSIGHTS */}
-        <section className="mt-11 grid gap-4 lg:grid-cols-2">
-          <article className="rounded-[26px] border border-[#dce6e8] bg-white p-6 shadow-[0_12px_35px_rgba(20,55,65,0.045)]">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#e8f7ee] text-[#3f9864]">
-                <CheckCircle2 size={18} />
+        <section className="mt-12">
+          <div className="flex flex-col gap-2">
+            <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-[#756bd4]">
+              Interprétation Otavio
+            </p>
+            <h2 className="text-2xl font-semibold tracking-[-0.045em] text-[#172a32]">
+              Ce que votre scan signifie
+            </h2>
+            <p className="max-w-2xl text-[12px] leading-5 text-[#71858a]">
+              Otavio met en perspective vos observations visuelles pour vous aider à
+              comprendre les principaux points à retenir aujourd’hui.
+            </p>
+          </div>
+
+          <div className="mt-6 grid gap-4 lg:grid-cols-2">
+            <article className="relative overflow-hidden rounded-[30px] border border-[#dce9e2] bg-white p-5 shadow-[0_16px_42px_rgba(20,55,65,0.055)] sm:p-6">
+              <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#e8f7ee] opacity-70 blur-3xl" />
+
+              <div className="relative flex items-start gap-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#e8f7ee] text-[#3f9864] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                  <CheckCircle2 size={19} strokeWidth={1.8} />
+                </div>
+
+                <div className="min-w-0">
+                  <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3f9864]">
+                    Point positif
+                  </p>
+                  <h3 className="mt-1.5 text-[17px] font-semibold tracking-[-0.025em] text-[#20343c]">
+                    {positiveInsight?.title ?? "Une dynamique positive"}
+                  </h3>
+                </div>
               </div>
 
-              <div>
-                <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3f9864]">
-                  Observation principale
+              <div className="relative mt-5 rounded-[22px] bg-[linear-gradient(145deg,#f5fbf7_0%,#eef8f2_100%)] px-4 py-4">
+                <p className="text-[11px] leading-5 text-[#5f757b]">
+                  {positiveInsight?.text ??
+                    "Votre scan présente plusieurs observations favorables."}
                 </p>
-                <h3 className="mt-1 text-[16px] font-semibold">
-                  {positiveInsight?.title ?? "Une dynamique positive"}
-                </h3>
               </div>
+            </article>
+
+            <article className="relative overflow-hidden rounded-[30px] border border-[#e2defb] bg-[linear-gradient(145deg,#fbfaff_0%,#f2efff_100%)] p-5 shadow-[0_16px_42px_rgba(71,64,130,0.055)] sm:p-6">
+              <div className="pointer-events-none absolute -bottom-16 -right-10 h-36 w-36 rounded-full bg-[#c9c3ff]/25 blur-3xl" />
+
+              <div className="relative flex items-start gap-4">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-white/80 text-[#756bd4] shadow-[0_8px_20px_rgba(80,70,150,0.06)]">
+                  <Droplets size={19} strokeWidth={1.8} />
+                </div>
+
+                <div className="min-w-0">
+                  <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#756bd4]">
+                    À surveiller
+                  </p>
+                  <h3 className="mt-1.5 text-[17px] font-semibold tracking-[-0.025em] text-[#24363e]">
+                    {surveillanceTitle}
+                  </h3>
+                </div>
+              </div>
+
+              <div className="relative mt-5 rounded-[22px] border border-white/70 bg-white/65 px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                <p className="text-[11px] leading-5 text-[#61767c]">
+                  {attentionInsight?.text ??
+                    "Ces axes font partie de vos priorités de suivi et méritent une attention régulière."}
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <div className="mt-4 flex items-start gap-3 rounded-[24px] border border-[#dce6e8] bg-white px-4 py-4 shadow-[0_10px_28px_rgba(20,55,65,0.04)]">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#eef7f6] text-[#168f91]">
+              <Info size={15} />
             </div>
 
-            <p className="mt-5 text-[12px] leading-6 text-[#62777d]">
-              {positiveInsight?.text ??
-                "Votre scan présente plusieurs indicateurs favorables."}
+            <p className="text-[10px] leading-5 text-[#75878c]">
+              Cette interprétation met en perspective des observations visuelles.
+              Elle ne constitue pas une évaluation médicale et doit être lue comme
+              un repère de suivi personnel.
             </p>
-          </article>
-
-          <article className="rounded-[26px] bg-gradient-to-br from-[#eaf9f6] via-[#eef3ff] to-[#f4efff] p-6">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-[13px] bg-white/80 text-[#756bd4]">
-                <Droplets size={18} />
-              </div>
-
-              <div>
-                <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#756bd4]">
-                  À surveiller
-                </p>
-                <h3 className="mt-1 text-[16px] font-semibold text-[#24363e]">
-                  {surveillanceTitle}
-                </h3>
-              </div>
-            </div>
-
-            <p className="mt-5 text-[12px] leading-6 text-[#61767c]">
-              {attentionInsight?.text ??
-                "Ces axes font partie de vos priorités de suivi et méritent une attention régulière."}
-            </p>
-          </article>
+          </div>
         </section>
 
         {/* RELIABILITY */}
-        <section className="mt-8 rounded-[26px] border border-[#dce6e8] bg-white p-6 shadow-[0_12px_35px_rgba(20,55,65,0.045)]">
-          <div className="flex items-start gap-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-[#e8f7f5] text-[#168f91]">
-              <Info size={18} />
+        <section className="mt-10">
+          <div className="overflow-hidden rounded-[30px] border border-[#dce6e8] bg-white shadow-[0_14px_38px_rgba(20,55,65,0.05)]">
+            <div className="flex items-start gap-4 border-b border-[#edf2f2] bg-[linear-gradient(135deg,#fbfdfc_0%,#f5faf9_100%)] px-5 py-5 sm:px-6">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#e8f7f5] text-[#168f91]">
+                <Info size={18} strokeWidth={1.8} />
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#168f91]">
+                  Qualité de l’analyse
+                </p>
+                <h2 className="mt-1.5 text-[17px] font-semibold tracking-[-0.025em] text-[#20343c]">
+                  La qualité de votre scan
+                </h2>
+                <p className="mt-2 max-w-2xl text-[11px] leading-5 text-[#71858a]">
+                  Ce niveau reflète les conditions visuelles de la photo utilisée
+                  pour produire les observations présentées ci-dessus.
+                </p>
+              </div>
+
+              <div className="hidden shrink-0 rounded-full bg-[#e8f7f5] px-3 py-1.5 text-[9px] font-bold text-[#168f91] sm:block">
+                {scanQualityScore ?? 80} %
+              </div>
             </div>
 
-            <div className="flex-1">
-              <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+            <div className="p-5 sm:p-6">
+              <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
                 <div>
-                  <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#168f91]">
-                    Qualité de l’analyse
-                  </p>
-                  <h3 className="mt-1 text-[16px] font-semibold">
-                    Qualité élevée
-                  </h3>
+                  <div className="flex items-end justify-between gap-4">
+                    <div>
+                      <p className="text-[10px] uppercase tracking-[0.14em] text-[#8a9b9f]">
+                        Conditions du scan
+                      </p>
+                      <p className="mt-1 text-[18px] font-semibold tracking-[-0.025em] text-[#20343c]">
+                        {scanQualityLabel}
+                      </p>
+                    </div>
+
+                    <span className="text-[22px] font-semibold tracking-[-0.05em] text-[#168f91]">
+                      {scanQualityScore ?? 80}%
+                    </span>
+                  </div>
+
+                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-[#e8eff0]">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-[#42c9bd] via-[#63d9d4] to-[#756bd4] transition-all duration-700"
+                      style={{
+                        width: `${scanQualityScore ?? 80}%`,
+                      }}
+                    />
+                  </div>
                 </div>
 
-                <span className="rounded-full bg-[#e8f7f5] px-3 py-1.5 text-[9px] font-bold text-[#168f91]">
-                  91 %
-                </span>
+                <div className="rounded-[22px] border border-[#e3eaeb] bg-[#f8faf9] px-4 py-3.5 lg:min-w-[230px]">
+                  <p className="text-[9px] font-bold uppercase tracking-[0.14em] text-[#899a9e]">
+                    À retenir
+                  </p>
+
+                  <p className="mt-1.5 text-[10px] leading-5 text-[#63787e]">
+                    {scanQualityScore !== null && scanQualityScore >= 80
+                      ? "Les conditions de prise de vue sont favorables."
+                      : scanQualityScore !== null && scanQualityScore >= 65
+                        ? "Les conditions sont correctes, mais peuvent être améliorées."
+                        : "Une meilleure lumière et une image plus nette amélioreront le prochain scan."}
+                  </p>
+                </div>
               </div>
 
-              <p className="mt-3 max-w-2xl text-[11px] leading-5 text-[#62777d]">
-                La qualité de l’image permet une lecture visuelle claire des principaux indicateurs présentés.
-              </p>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-[20px] bg-[#f7faf9] p-4">
+                  <p className="text-[9px] uppercase tracking-[0.14em] text-[#899a9e]">
+                    Ce que cela mesure
+                  </p>
+                  <p className="mt-1.5 text-[10px] leading-5 text-[#63787e]">
+                    Lumière, contraste et conditions visuelles nécessaires à
+                    l’analyse de l’image.
+                  </p>
+                </div>
 
-              <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-[#e3ebec]">
-                <div className="h-full w-[91%] rounded-full bg-gradient-to-r from-[#42c9bd] to-[#756bd4]" />
+                <div className="rounded-[20px] bg-[#f7faf9] p-4">
+                  <p className="text-[9px] uppercase tracking-[0.14em] text-[#899a9e]">
+                    Ce que cela ne mesure pas
+                  </p>
+                  <p className="mt-1.5 text-[10px] leading-5 text-[#63787e]">
+                    Ce score ne représente ni une certitude médicale ni une
+                    mesure clinique de votre état de santé.
+                  </p>
+                </div>
               </div>
-
-              <p className="mt-3 text-[9px] leading-5 text-[#819297]">
-                Cette estimation concerne la qualité du scan, et non la certitude d’une observation médicale.
-              </p>
             </div>
           </div>
         </section>
 
         {/* NEXT STEP */}
-        <section className="relative mt-8 overflow-hidden rounded-[28px] bg-[#102f3a] p-6 text-white shadow-[0_22px_55px_rgba(16,47,58,0.17)] sm:p-7">
-          <div className="absolute -right-20 -top-24 h-64 w-64 rounded-full bg-[#756bd4]/30 blur-3xl" />
-          <div className="absolute -bottom-20 left-1/3 h-52 w-52 rounded-full bg-[#39d8c5]/20 blur-3xl" />
+        <section className="relative mt-10 overflow-hidden rounded-[32px] bg-[linear-gradient(135deg,#102f3a_0%,#174b58_52%,#3b477f_100%)] p-6 text-white shadow-[0_24px_60px_rgba(16,47,58,0.18)] sm:p-7">
+          <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-[#72f0dc]/12 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-[#aaa5ff]/14 blur-3xl" />
+          <div className="pointer-events-none absolute right-10 top-10 h-28 w-28 rounded-full border border-white/[0.05]" />
 
-          <div className="relative flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
+          <div className="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
-              <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#72f0dc]/60">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#72f0dc]/15 bg-[#72f0dc]/10 px-3 py-1.5 text-[9px] font-semibold text-[#a8f4ea]">
+                <Sparkles size={12} />
+                OTAVIO
+              </div>
+
+              <p className="mt-5 text-[9px] font-bold uppercase tracking-[0.2em] text-white/42">
                 Prochaine étape
               </p>
 
-              <h2 className="mt-2 text-xl font-semibold tracking-[-0.03em]">
+              <h2 className="mt-2 text-[22px] font-semibold tracking-[-0.035em] sm:text-[25px]">
                 Passez de l’analyse à l’action
               </h2>
 
-              <p className="mt-2 max-w-xl text-[11px] leading-5 text-white/55">
-                Retrouvez vos recommandations personnalisées à partir des observations de votre scan.
+              <p className="mt-2 max-w-2xl text-[11px] leading-5 text-white/58 sm:text-[12px]">
+                Otavio peut maintenant transformer les observations de votre
+                scan en conseils simples et personnalisés pour votre quotidien.
               </p>
+
+              <div className="mt-5 flex flex-wrap gap-2">
+                {[
+                  "Conseils peau",
+                  "Hydratation",
+                  "Récupération",
+                  "Alimentation",
+                ].map((label) => (
+                  <span
+                    key={label}
+                    className="rounded-full border border-white/10 bg-white/[0.07] px-3 py-1.5 text-[9px] font-medium text-white/62 backdrop-blur-sm"
+                  >
+                    {label}
+                  </span>
+                ))}
+              </div>
             </div>
 
             <Link
               href="/conseils"
-              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-[10px] font-bold text-[#102f3a] shadow-lg transition hover:-translate-y-0.5"
+              className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-[20px] bg-white px-5 py-3 text-[10px] font-bold text-[#173f4a] shadow-[0_12px_30px_rgba(0,0,0,0.18)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#f5fffd] lg:min-w-[190px]"
             >
               Voir mes conseils
-              <ArrowRight size={14} />
+              <ArrowRight
+                size={14}
+                className="transition-transform duration-300 group-hover:translate-x-0.5"
+              />
             </Link>
           </div>
         </section>
