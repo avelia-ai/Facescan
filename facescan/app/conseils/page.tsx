@@ -21,35 +21,6 @@ import {
   SunMedium,
 } from "lucide-react";
 
-const recommendations = [
-  {
-    icon: Droplets,
-    category: "Hydratation",
-    title: "Augmentez légèrement votre hydratation",
-    text: "Votre dernier scan suggère un niveau d’hydratation perfectible. Une hydratation régulière peut contribuer au confort cutané et à votre routine quotidienne.",
-    priority: "Priorité aujourd’hui",
-    action: "Boire régulièrement dans la journée",
-    goal: "hydratation",
-  },
-  {
-    icon: Moon,
-    category: "Récupération",
-    title: "Accordez plus de place au repos",
-    text: "Votre indicateur de fatigue reste inférieur à vos autres indicateurs. Une routine de sommeil régulière peut favoriser une meilleure récupération.",
-    priority: "À surveiller",
-    action: "Préserver une heure de coucher régulière",
-    goal: "recuperation",
-  },
-  {
-    icon: Utensils,
-    category: "Alimentation",
-    title: "Misez sur une alimentation variée",
-    text: "Privilégiez des repas contenant légumes, fruits, sources de protéines et bonnes graisses afin de soutenir vos habitudes de bien-être.",
-    priority: "Conseil personnalisé",
-    action: "Ajouter une portion végétale à votre prochain repas",
-    goal: "equilibre",
-  },
-];
 
 const categories = [
   { label: "Peau", icon: Sparkles, href: "/peau" },
@@ -62,7 +33,7 @@ export default function ConseilsPage() {
   const [userGoals, setUserGoals] = useState<string[]>([]);
   const [profile, setProfile] = useState<any>(null);
   const [latestScan, setLatestScan] = useState<{
-    score: number;
+    score: number | null;
     indicators: {
       peau: number;
       hydratation: number;
@@ -111,7 +82,7 @@ export default function ConseilsPage() {
 
             if (first?.indicators) {
               setLatestScan({
-                score: typeof first.score === "number" ? first.score : 0,
+                score: typeof first.score === "number" ? first.score : null,
                 indicators: first.indicators,
                 previousIndicators: second?.indicators ?? null,
               });
@@ -192,7 +163,11 @@ export default function ConseilsPage() {
     profile && latestScan
       ? buildPersonalizedRecommendations({
           profile,
-          scan: latestScan,
+          scan: {
+          ...latestScan,
+          score:
+            latestScan.score ?? latestScan.indicators.equilibre,
+        },
         })
       : [];
 
