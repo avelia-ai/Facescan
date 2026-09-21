@@ -69,6 +69,12 @@ export default function ConseilsPage() {
       fatigue: number;
       equilibre: number;
     };
+    previousIndicators: {
+      peau: number;
+      hydratation: number;
+      fatigue: number;
+      equilibre: number;
+    } | null;
   } | null>(null);
   const [expandedAdvice, setExpandedAdvice] = useState<string | null>(null);
   const [completedAdvice, setCompletedAdvice] = useState<string[]>([]);
@@ -101,11 +107,13 @@ export default function ConseilsPage() {
 
           if (Array.isArray(scans) && scans.length > 0) {
             const first = scans[0];
+            const second = scans[1];
 
             if (first?.indicators) {
               setLatestScan({
-                score: typeof first.score === "number" ? first.score : 78,
+                score: typeof first.score === "number" ? first.score : 0,
                 indicators: first.indicators,
+                previousIndicators: second?.indicators ?? null,
               });
             }
           }
@@ -295,7 +303,7 @@ export default function ConseilsPage() {
                     État global
                   </p>
                   <p className="mt-0.5 text-lg font-semibold">
-                    {latestScan?.score ?? 78} / 100
+                    {latestScan?.score ?? "—"} / 100
                   </p>
                 </div>
               </div>
@@ -744,31 +752,60 @@ export default function ConseilsPage() {
                   Votre tendance
                 </p>
                 <h3 className="mt-1 text-[17px] font-semibold">
-                  Vous progressez bien
+                  {!latestScan
+                    ? "En attente de votre premier scan"
+                    : latestScan.previousIndicators
+                      ? "Évolution depuis votre précédent scan"
+                      : "Votre première observation"}
                 </h3>
               </div>
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {[
-                ["Peau", "82", "+6"],
-                ["Hydratation", "74", "+9"],
-                ["Fatigue", "68", "-4"],
-                ["Équilibre", "79", "+3"],
-              ].map(([label, value, trend]) => (
-                <div
-                  key={label}
-                  className="rounded-[20px] border border-[#cfe1dd] bg-[linear-gradient(145deg,#f8fcfa_0%,#eef8f4_100%)] px-3.5 py-3.5 shadow-[0_5px_14px_rgba(36,78,70,0.035)]"
-                >
-                  <p className="text-[10px] text-[#8d887f]">{label}</p>
-                  <div className="mt-2 flex items-baseline justify-between gap-2">
-                    <p className="text-lg font-semibold">{value}</p>
-                    <p className="text-[10px] font-semibold text-[#6b675f]">
-                      {trend}
-                    </p>
+                ["Peau", "peau"],
+                ["Hydratation", "hydratation"],
+                ["Fatigue", "fatigue"],
+                ["Équilibre", "equilibre"],
+              ].map(([label, key]) => {
+                const currentValue = latestScan?.indicators?.[
+                  key as keyof typeof latestScan.indicators
+                ];
+
+                const previousValue = latestScan?.previousIndicators?.[
+                  key as keyof typeof latestScan.previousIndicators
+                ];
+
+                const difference =
+                  typeof currentValue === "number" &&
+                  typeof previousValue === "number"
+                    ? currentValue - previousValue
+                    : null;
+
+                const trend =
+                  difference === null
+                    ? "—"
+                    : difference > 0
+                      ? `+${difference}`
+                      : `${difference}`;
+
+                return (
+                  <div
+                    key={label}
+                    className="rounded-[20px] border border-[#cfe1dd] bg-[linear-gradient(145deg,#f8fcfa_0%,#eef8f4_100%)] px-3.5 py-3.5 shadow-[0_5px_14px_rgba(36,78,70,0.035)]"
+                  >
+                    <p className="text-[10px] text-[#8d887f]">{label}</p>
+                    <div className="mt-2 flex items-baseline justify-between gap-2">
+                      <p className="text-lg font-semibold">
+                        {typeof currentValue === "number" ? currentValue : "—"}
+                      </p>
+                      <p className="text-[10px] font-semibold text-[#6b675f]">
+                        {trend}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
