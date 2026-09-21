@@ -16,17 +16,14 @@ import {
   UserRound,
 } from "lucide-react";
 
-const data = {
+const indicatorMeta = {
   peau: {
     title: "Peau",
-    value: 82,
-    change: "+6",
-    status: "Bonne",
     icon: Sparkles,
     accent: "#168f91",
     soft: "#e5faf7",
     observation:
-      "Votre dernier scan montre une évolution visuelle favorable de cet indicateur.",
+      "Otavio analyse l’apparence visuelle de votre peau à partir de vos scans enregistrés.",
     factors:
       "L’environnement, le sommeil, les habitudes quotidiennes et la routine cutanée peuvent influencer les observations.",
     actions: [
@@ -34,19 +31,15 @@ const data = {
       "Limiter les variations importantes de routine",
       "Observer l’évolution lors des prochains scans",
     ],
-    history: [76, 78, 77, 79, 82],
   },
 
   hydratation: {
     title: "Hydratation",
-    value: 74,
-    change: "+9",
-    status: "À surveiller",
     icon: Droplets,
     accent: "#287f86",
     soft: "#e5f7f7",
     observation:
-      "L’apparence visuelle suggère un niveau d’hydratation perfectible lors de ce scan.",
+      "Otavio observe visuellement certains signes pouvant être associés à l’apparence de l’hydratation de la peau.",
     factors:
       "L’hydratation quotidienne, le sommeil, l’environnement et certains facteurs du quotidien peuvent faire varier les observations.",
     actions: [
@@ -54,19 +47,15 @@ const data = {
       "Maintenir une routine de sommeil régulière",
       "Observer l’évolution lors des prochains scans",
     ],
-    history: [61, 65, 66, 70, 74],
   },
 
   fatigue: {
     title: "Fatigue",
-    value: 68,
-    change: "-4",
-    status: "Modérée",
     icon: Moon,
     accent: "#756bd4",
     soft: "#eeecff",
     observation:
-      "Votre indicateur reste inférieur à vos autres indicateurs et mérite une attention particulière.",
+      "Otavio observe certains signes visuels pouvant évoluer avec la fatigue apparente et la récupération.",
     factors:
       "Le sommeil, la récupération, le rythme quotidien et l’environnement peuvent influencer les observations.",
     actions: [
@@ -74,19 +63,15 @@ const data = {
       "Accorder davantage de temps à la récupération",
       "Comparer cet indicateur sur plusieurs scans",
     ],
-    history: [72, 71, 70, 69, 68],
   },
 
   equilibre: {
     title: "Équilibre",
-    value: 79,
-    change: "+3",
-    status: "Stable",
     icon: Activity,
     accent: "#d96550",
     soft: "#fff0eb",
     observation:
-      "Votre indicateur d’équilibre évolue de manière régulière et reste globalement stable.",
+      "Otavio suit l’évolution visuelle de cet indicateur à partir de vos différents scans.",
     factors:
       "Les habitudes quotidiennes, le sommeil, l’activité et le contexte général peuvent influencer cette observation.",
     actions: [
@@ -94,11 +79,8 @@ const data = {
       "Maintenir un bon équilibre entre activité et récupération",
       "Continuer à suivre votre évolution",
     ],
-    history: [74, 75, 77, 76, 79],
   },
 };
-
-const dates = ["13 août", "20 août", "27 août", "3 sept.", "10 sept."];
 
 type StoredScan = {
   id: string;
@@ -139,7 +121,9 @@ function IndicateurContent() {
     }
   }, []);
 
-  const current = data[type as keyof typeof data] ?? data.hydratation;
+  const current =
+    indicatorMeta[type as keyof typeof indicatorMeta] ??
+    indicatorMeta.hydratation;
   const Icon = current.icon;
 
   const indicatorKey =
@@ -152,9 +136,14 @@ function IndicateurContent() {
     scans[1]?.indicators?.[indicatorKey] ?? null;
 
   const currentChange =
-    previousValue === null
+    currentValue === null || previousValue === null
       ? null
       : currentValue - previousValue;
+
+  const currentStatus =
+    currentValue === null
+      ? "En attente du premier scan"
+      : "Dernière observation disponible";
 
   const displayChange =
     currentChange === null
@@ -235,7 +224,7 @@ function IndicateurContent() {
                     Observation visuelle
                   </p>
                   <p className="mt-0.5 text-[12px] text-white/75">
-                    {current.status}
+                    {currentStatus}
                   </p>
                 </div>
               </div>
@@ -349,14 +338,16 @@ function IndicateurContent() {
                     </strong>{" "}
                     sur les scans enregistrés.
                   </>
-                ) : (
+                ) : currentValue !== null ? (
                   <>
                     Votre premier scan établit une référence de{" "}
                     <strong className="font-semibold text-[#17333d]">
-                      {currentValue}/100
+                      {currentValue !== null ? `${currentValue}/100` : "—"}
                     </strong>{" "}
                     pour cet indicateur.
                   </>
+                ) : (
+                  "Effectuez votre premier scan pour établir une référence et commencer à suivre cet indicateur."
                 )}
               </p>
             </article>
@@ -413,7 +404,7 @@ function IndicateurContent() {
                   Dernière valeur
                 </p>
                 <p className="mt-0.5 text-[15px] font-semibold text-[#20343c]">
-                  {currentValue}/100
+                  {currentValue !== null ? `${currentValue}/100` : "—"}
                 </p>
               </div>
 
@@ -496,7 +487,7 @@ function IndicateurContent() {
                     Dernière valeur
                   </p>
                   <p className="mt-1 text-[16px] font-semibold text-[#168f91]">
-                    {currentValue}/100
+                    {currentValue !== null ? `${currentValue}/100` : "—"}
                   </p>
                 </div>
               </div>
