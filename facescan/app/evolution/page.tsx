@@ -88,13 +88,14 @@ export default function EvolutionPage() {
     .reverse()
     .map((scan) => scan.score);
 
-  const currentScore = latestScan?.score ?? 0;
+  const currentScore = latestScan?.score ?? null;
   const firstScore = scans.length
     ? scans[scans.length - 1].score
-    : 0;
-  const scoreChange = scans.length > 1
-    ? currentScore - firstScore
-    : 0;
+    : null;
+  const scoreChange =
+    scans.length > 1 && currentScore !== null && firstScore !== null
+      ? currentScore - firstScore
+      : null;
 
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - selectedPeriod);
@@ -202,7 +203,7 @@ export default function EvolutionPage() {
               Évolution
             </p>
             <p className="mt-2 text-2xl font-semibold tracking-[-0.04em]">
-              {scans.length > 1
+              {scans.length > 1 && scoreChange !== null
                 ? `${scoreChange >= 0 ? "+" : ""}${scoreChange}`
                 : "—"}
               {scans.length > 1 && (
@@ -250,11 +251,13 @@ export default function EvolutionPage() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
                 </div>
 
-                <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs text-white/85 backdrop-blur-sm">
-                  <TrendingUp size={14} />
-                  {scoreChange >= 0 ? "+" : ""}
-                  {scoreChange}
-                </div>
+                {scans.length > 1 && scoreChange !== null && (
+                  <div className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs text-white/85 backdrop-blur-sm">
+                    <TrendingUp size={14} />
+                    {scoreChange >= 0 ? "+" : ""}
+                    {scoreChange}
+                  </div>
+                )}
               </div>
             </div>
 
@@ -307,7 +310,7 @@ export default function EvolutionPage() {
             </div>
 
             <div className="mt-6 flex items-center gap-2 border-t border-white/15 pt-5">
-              {scans.length > 1 ? (
+              {scans.length > 1 && scoreChange !== null ? (
                 <>
                   {scoreChange >= 0 ? (
                     <ArrowUp size={14} />

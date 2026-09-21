@@ -772,8 +772,9 @@ export default function ResultatsPage() {
                               : "bg-[#fff0ec] text-[#d96550]"
                           }`}
                         >
-                          {scoreChange !== null && scoreChange >= 0 ? "+" : ""}
-                          {scoreChange ?? 0} pts
+                          {scoreChange !== null
+                            ? `${scoreChange >= 0 ? "+" : ""}${scoreChange} pts`
+                            : "—"}
                         </span>
                       </div>
                     </div>
@@ -999,7 +1000,7 @@ export default function ResultatsPage() {
               </div>
 
               <div className="hidden shrink-0 rounded-full bg-[#e8f7f5] px-3 py-1.5 text-[9px] font-bold text-[#168f91] sm:block">
-                {scanQualityScore ?? 80} %
+                {scanQualityScore !== null ? `${scanQualityScore} %` : "—"}
               </div>
             </div>
 
@@ -1017,7 +1018,7 @@ export default function ResultatsPage() {
                     </div>
 
                     <span className="text-[22px] font-semibold tracking-[-0.05em] text-[#168f91]">
-                      {scanQualityScore ?? 80}%
+                      {scanQualityScore !== null ? `${scanQualityScore}%` : "—"}
                     </span>
                   </div>
 
@@ -1025,7 +1026,7 @@ export default function ResultatsPage() {
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-[#42c9bd] via-[#63d9d4] to-[#756bd4] transition-all duration-700"
                       style={{
-                        width: `${scanQualityScore ?? 80}%`,
+                        width: `${scanQualityScore !== null ? `${scanQualityScore}%` : "—"}`,
                       }}
                     />
                   </div>
