@@ -19,12 +19,7 @@ import {
   User,
 } from "lucide-react";
 
-const metrics = [
-  { name: "Peau", value: 82, change: "+6", positive: true },
-  { name: "Hydratation", value: 74, change: "+9", positive: true },
-  { name: "Fatigue", value: 68, change: "-4", positive: true },
-  { name: "Équilibre", value: 79, change: "+3", positive: true },
-];
+
 
 type StoredScan = {
   id: string;
@@ -43,6 +38,7 @@ type StoredScan = {
 
 export default function EvolutionPage() {
   const [storedScans, setStoredScans] = useState<StoredScan[]>([]);
+  const [selectedPeriod, setSelectedPeriod] = useState<7 | 30 | 90>(30);
 
   useEffect(() => {
     const stored = localStorage.getItem("facescan-scans");
@@ -85,23 +81,38 @@ export default function EvolutionPage() {
         { name: "Fatigue", value: latestScan.indicators.fatigue },
         { name: "Équilibre", value: latestScan.indicators.equilibre },
       ]
-    : metrics.map((metric) => ({
-        name: metric.name,
-        value: metric.value,
-      }));
+    : [];
 
-  const scoreHistory = scans.length
-    ? scans
-        .slice()
-        .reverse()
-        .map((scan) => scan.score)
-    : [52, 57, 55, 63, 61, 70, 68, 74, 71, 78];
+  const scoreHistory = scans
+    .slice()
+    .reverse()
+    .map((scan) => scan.score);
 
-  const currentScore = latestScan?.score ?? 78;
+  const currentScore = latestScan?.score ?? 0;
   const firstScore = scans.length
     ? scans[scans.length - 1].score
-    : 68;
-  const scoreChange = currentScore - firstScore;
+    : 0;
+  const scoreChange = scans.length > 1
+    ? currentScore - firstScore
+    : 0;
+
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - selectedPeriod);
+
+  const periodScans = scans.filter(
+    (scan) => new Date(scan.date).getTime() >= cutoffDate.getTime()
+  );
+
+  const periodScoreHistory = periodScans
+    .slice()
+    .reverse()
+    .map((scan) => scan.score);
+
+  const periodScoreChange =
+    periodScans.length > 1
+      ? periodScans[0].score -
+        periodScans[periodScans.length - 1].score
+      : null;
 
   return (
     <main className="app-background min-h-screen text-[#17202a] pb-24 lg:pb-10">
@@ -249,87 +260,127 @@ export default function EvolutionPage() {
 
             {/* Chart */}
             <div className="mt-8">
-              <div className="flex h-40 items-end gap-2 md:gap-4">
-                {scoreHistory.map((score, index) => (
-                  <div
-                    key={`${score}-${index}`}
-                    className="group relative flex h-full flex-1 items-end"
-                  >
-                    <div
-                      className="w-full rounded-t-xl bg-gradient-to-t from-[#72e5d5]/55 to-[#b5f4eb]/25 transition-all group-hover:from-[#72e5d5]/80 group-hover:to-[#d8fbf6]/45"
-                      style={{ height: `${score}%` }}
-                    />
+              {periodScoreHistory.length > 0 ? (
+                <>
+                  <div className="flex h-40 items-end gap-2 md:gap-4">
+                    {periodScoreHistory.map((score, index) => (
+                      <div
+                        key={`${score}-${index}`}
+                        className="group relative flex h-full flex-1 items-end"
+                      >
+                        <div
+                          className="w-full rounded-t-xl bg-gradient-to-t from-[#72e5d5]/55 to-[#b5f4eb]/25 transition-all group-hover:from-[#72e5d5]/80 group-hover:to-[#d8fbf6]/45"
+                          style={{ height: `${Math.max(8, score)}%` }}
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
 
-              <div className="mt-3 flex justify-between gap-2 text-[10px] text-white/50">
-                {(
-                  scans.length
-                    ? scans
-                        .slice()
-                        .reverse()
-                        .map((scan) =>
-                          new Date(scan.date).toLocaleDateString("fr-FR", {
-                            day: "2-digit",
-                            month: "short",
-                          })
-                        )
-                    : ["13 août", "20 août", "27 août", "3 sept.", "Aujourd'hui"]
-                ).map((label, index) => (
-                  <span key={`${label}-${index}`}>{label}</span>
-                ))}
-              </div>
+                  <div className="mt-3 flex justify-between gap-2 text-[10px] text-white/50">
+                    {scans
+                      .slice()
+                      .reverse()
+                      .map((scan) =>
+                        new Date(scan.date).toLocaleDateString("fr-FR", {
+                          day: "2-digit",
+                          month: "short",
+                        })
+                      )
+                      .map((label, index) => (
+                        <span key={`${label}-${index}`}>{label}</span>
+                      ))}
+                  </div>
+                </>
+              ) : (
+                <div className="flex h-40 items-center justify-center rounded-[22px] border border-white/8 bg-white/[0.04] text-center">
+                  <div>
+                    <Sparkles size={20} className="mx-auto text-white/35" />
+                    <p className="mt-3 text-[11px] font-medium text-white/60">
+                      Votre historique apparaîtra ici
+                    </p>
+                    <p className="mt-1 text-[9px] text-white/35">
+                      Lancez votre premier scan pour commencer le suivi.
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="mt-6 flex items-center gap-2 border-t border-white/15 pt-5">
-              <ArrowUp size={14} />
-              <p className="text-xs text-white/75">
-                Votre score progresse régulièrement depuis votre premier scan.
-              </p>
+              {scans.length > 1 ? (
+                <>
+                  {scoreChange >= 0 ? (
+                    <ArrowUp size={14} />
+                  ) : (
+                    <ArrowDown size={14} />
+                  )}
+                  <p className="text-xs text-white/75">
+                    {scoreChange > 0
+                      ? `Votre score a progressé de ${scoreChange} point${scoreChange > 1 ? "s" : ""} depuis votre premier scan.`
+                      : scoreChange < 0
+                        ? `Votre score a diminué de ${Math.abs(scoreChange)} point${Math.abs(scoreChange) > 1 ? "s" : ""} depuis votre premier scan.`
+                        : "Votre score reste stable depuis votre premier scan."}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <Sparkles size={14} />
+                  <p className="text-xs text-white/60">
+                    {scans.length === 1
+                      ? "Ce premier scan constitue votre point de référence."
+                      : "Votre premier scan permettra de commencer votre suivi."}
+                  </p>
+                </>
+              )}
             </div>
           </div>
 
           {/* Period selector + summary */}
           <div className="rounded-[30px] border border-[#dfe7e6] bg-white p-6 shadow-[0_14px_40px_rgba(35,55,60,0.05)] md:p-8">
             <div className="flex gap-2 rounded-full border border-[#e1ebe9] bg-[#f0f7f5] p-1">
-              {["7 jours", "30 jours", "3 mois"].map((period, index) => (
+              {[
+                ["7 jours", 7],
+                ["30 jours", 30],
+                ["3 mois", 90],
+              ].map(([label, days]) => (
                 <button
-                  key={period}
-                  className={`flex-1 rounded-full px-3 py-2 text-[11px] font-medium ${
-                    index === 1
+                  key={label}
+                  type="button"
+                  onClick={() =>
+                    setSelectedPeriod(days as 7 | 30 | 90)
+                  }
+                  className={`flex-1 rounded-full px-3 py-2 text-[11px] font-medium transition ${
+                    selectedPeriod === days
                       ? "bg-white text-[#171717] shadow-sm"
-                      : "text-[#718789]"
+                      : "text-[#718789] hover:text-[#304951]"
                   }`}
                 >
-                  {period}
+                  {label}
                 </button>
               ))}
             </div>
 
             <div className="mt-8">
               <p className="text-xs uppercase tracking-[0.16em] text-[#718789]">
-                Depuis votre premier scan
+                {selectedPeriod === 7
+                  ? "Sur les 7 derniers jours"
+                  : selectedPeriod === 30
+                    ? "Sur les 30 derniers jours"
+                    : "Sur les 3 derniers mois"}
               </p>
 
               <p className="mt-3 text-3xl font-semibold tracking-[-0.04em]">
-                {scans.length > 1
-                  ? `${scoreChange >= 0 ? "+" : ""}${scoreChange} point${Math.abs(scoreChange) > 1 ? "s" : ""}`
+                {periodScoreChange !== null
+                  ? `${periodScoreChange >= 0 ? "+" : ""}${periodScoreChange} point${Math.abs(periodScoreChange) > 1 ? "s" : ""}`
                   : "—"}
               </p>
 
               <p className="mt-2 text-sm leading-6 text-[#587174]">
-                {scans.length > 1
-                  ? `Votre dernier score est de ${currentScore}/100. ${
-                      scoreChange > 0
-                        ? `Vous progressez de ${scoreChange} point${scoreChange > 1 ? "s" : ""} depuis votre premier scan enregistré.`
-                        : scoreChange < 0
-                          ? `Votre score est inférieur de ${Math.abs(scoreChange)} point${Math.abs(scoreChange) > 1 ? "s" : ""} à votre premier scan enregistré.`
-                          : "Votre score reste stable depuis votre premier scan enregistré."
-                    }`
-                  : scans.length === 1
-                    ? "Premier scan enregistré. Un second scan permettra de mesurer votre évolution."
-                    : "Effectuez votre premier scan pour commencer à suivre votre évolution dans le temps."}
+                {periodScans.length > 1
+                  ? `Votre score est passé de ${periodScans[periodScans.length - 1].score}/100 à ${periodScans[0].score}/100 sur cette période.`
+                  : periodScans.length === 1
+                    ? "Un seul scan est disponible sur cette période."
+                    : "Aucun scan enregistré sur cette période."}
               </p>
             </div>
 
@@ -340,21 +391,21 @@ export default function EvolutionPage() {
                 </div>
                 <div>
                   <p className="text-xs font-semibold">
-                    {scans.length > 1
-                      ? scoreChange > 0
-                        ? "Tendance encourageante"
-                        : scoreChange < 0
+                    {periodScans.length > 1 && periodScoreChange !== null
+                      ? periodScoreChange > 0
+                        ? "Progression sur la période"
+                        : periodScoreChange < 0
                           ? "Évolution à surveiller"
                           : "Tendance stable"
-                      : scans.length === 1
-                        ? "Premier scan enregistré"
-                        : "En attente du premier scan"}
+                      : periodScans.length === 1
+                        ? "Scan de référence"
+                        : "En attente d’un scan"}
                   </p>
                   <p className="mt-0.5 text-[11px] text-[#587174]">
-                    {scans.length > 1
-                      ? "La comparaison de plusieurs scans permet de suivre votre tendance."
-                      : scans.length === 1
-                        ? "Un second scan permettra de comparer vos indicateurs."
+                    {periodScans.length > 1
+                      ? "Plusieurs scans permettent de comparer votre tendance sur la période choisie."
+                      : periodScans.length === 1
+                        ? "Un autre scan permettra de mesurer une évolution."
                         : "Vos prochaines analyses construiront votre historique."}
                   </p>
                 </div>
@@ -383,14 +434,18 @@ export default function EvolutionPage() {
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {currentMetrics.map((metric, index) => (
               (() => {
-                const previousMetric =
-                  scans.length > 1
-                    ? scans[1].indicators[
-                        ["peau", "hydratation", "fatigue", "equilibre"][index] as keyof StoredScan["indicators"]
-                      ]
-                    : metric.value;
+                const metricKey =
+                  ["peau", "hydratation", "fatigue", "equilibre"][index] as keyof StoredScan["indicators"];
 
-                const change = metric.value - previousMetric;
+                const referenceMetric =
+                  scans.length > 1
+                    ? scans[scans.length - 1].indicators[metricKey]
+                    : null;
+
+                const change =
+                  referenceMetric === null
+                    ? null
+                    : metric.value - referenceMetric;
 
                 return (
               <div
@@ -412,11 +467,25 @@ export default function EvolutionPage() {
                     {metric.value}
                   </p>
 
-                  <div className="flex items-center gap-1 text-[11px] font-medium">
-                    <ArrowUp size={12} />
-                    {change >= 0 ? "+" : ""}
-                    {change}
-                  </div>
+                  {change === null ? (
+                    <span className="rounded-full bg-white px-2.5 py-1 text-[9px] font-semibold text-[#8a9a9e]">
+                      Référence
+                    </span>
+                  ) : (
+                    <div
+                      className={`flex items-center gap-1 text-[11px] font-medium ${
+                        change >= 0 ? "text-[#3f9864]" : "text-[#d96550]"
+                      }`}
+                    >
+                      {change >= 0 ? (
+                        <ArrowUp size={12} />
+                      ) : (
+                        <ArrowDown size={12} />
+                      )}
+                      {change >= 0 ? "+" : ""}
+                      {change}
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-black/[0.07]">
@@ -433,156 +502,352 @@ export default function EvolutionPage() {
         </div>
 
         {/* What changed */}
-        <div className="mt-6 grid gap-6 lg:grid-cols-2">
-          <div className="rounded-[30px] border border-[#dfe7e6] bg-white p-6 shadow-[0_14px_40px_rgba(35,55,60,0.05)] md:p-8">
-            <p className="text-xs uppercase tracking-[0.16em] text-[#718789]">
-              Analyse
-            </p>
+        <div className="mt-10 grid gap-5 lg:grid-cols-2">
+          <div className="relative overflow-hidden rounded-[30px] border border-[#dce9e2] bg-white p-6 shadow-[0_16px_42px_rgba(20,55,65,0.055)] md:p-7">
+            <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#e8f7ee] opacity-60 blur-3xl" />
 
-            <h2 className="mt-2 text-xl font-semibold tracking-[-0.025em]">
-              Ce qui s&apos;améliore
-            </h2>
+            <div className="relative">
+              <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3f9864]">
+                Analyse
+              </p>
 
-            <div className="mt-6 space-y-4">
-              {[
-                ["Hydratation", "+9 points", "Votre indicateur progresse."],
-                ["Peau", "+6 points", "Une tendance positive se confirme."],
-                ["Équilibre", "+3 points", "Une progression régulière."],
-              ].map(([title, value, description]) => (
-                <div
-                  key={title}
-                  className="flex items-center justify-between gap-4 border-b border-[#e0e9e7] pb-4 last:border-0 last:pb-0"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#e9f8f5]">
-                      <ArrowUp size={15} />
+              <h2 className="mt-1.5 text-[20px] font-semibold tracking-[-0.03em] text-[#17333d]">
+                Ce qui évolue favorablement
+              </h2>
+
+              <p className="mt-2 text-[11px] leading-5 text-[#71858a]">
+                {scans.length > 1
+                  ? "Comparaison entre votre dernier scan et votre premier scan enregistré."
+                  : "Les tendances apparaîtront après un second scan."}
+              </p>
+
+              <div className="mt-6 space-y-4">
+                {currentMetrics.map((metric, index) => {
+                  const metricKey =
+                    ["peau", "hydratation", "fatigue", "equilibre"][index] as keyof StoredScan["indicators"];
+
+                  const reference =
+                    scans.length > 1
+                      ? scans[scans.length - 1].indicators[metricKey]
+                      : null;
+
+                  const change =
+                    reference === null ? null : metric.value - reference;
+
+                  if (change === null || change <= 0) {
+                    return null;
+                  }
+
+                  return (
+                    <div
+                      key={metric.name}
+                      className="flex items-center justify-between gap-4 border-b border-[#e5eeea] pb-4 last:border-0 last:pb-0"
+                    >
+                      <div className="flex min-w-0 items-center gap-3">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#e9f8f2] text-[#3f9864]">
+                          <ArrowUp size={15} />
+                        </div>
+
+                        <div className="min-w-0">
+                          <p className="text-[12px] font-semibold text-[#304951]">
+                            {metric.name}
+                          </p>
+                          <p className="mt-1 text-[10px] text-[#7b8e93]">
+                            {reference} → {metric.value}
+                          </p>
+                        </div>
+                      </div>
+
+                      <span className="shrink-0 text-[11px] font-bold text-[#3f9864]">
+                        +{change} pts
+                      </span>
                     </div>
+                  );
+                })}
 
-                    <div>
-                      <p className="text-xs font-medium">{title}</p>
-                      <p className="mt-1 text-[11px] text-[#668083]">
-                        {description}
+                {scans.length <= 1 && (
+                  <div className="rounded-[20px] bg-[#f6faf8] p-4">
+                    <p className="text-[11px] font-semibold text-[#304951]">
+                      Pas encore de tendance
+                    </p>
+                    <p className="mt-1 text-[10px] leading-5 text-[#7b8e93]">
+                      Votre prochain scan permettra à Otavio de comparer les
+                      indicateurs et de faire apparaître les premières évolutions.
+                    </p>
+                  </div>
+                )}
+
+                {scans.length > 1 &&
+                  currentMetrics.every((metric, index) => {
+                    const key =
+                      ["peau", "hydratation", "fatigue", "equilibre"][index] as keyof StoredScan["indicators"];
+                    return metric.value <= scans[scans.length - 1].indicators[key];
+                  }) && (
+                    <div className="rounded-[20px] bg-[#f6faf8] p-4">
+                      <p className="text-[11px] font-semibold text-[#304951]">
+                        Pas de progression mesurable
+                      </p>
+                      <p className="mt-1 text-[10px] leading-5 text-[#7b8e93]">
+                        Aucun indicateur n’a augmenté entre votre premier et votre dernier scan.
                       </p>
                     </div>
-                  </div>
-
-                  <span className="text-xs font-semibold">{value}</span>
-                </div>
-              ))}
+                  )}
+              </div>
             </div>
           </div>
 
-          <div className="rounded-[30px] border border-[#dfe7e6] bg-white p-6 shadow-[0_14px_40px_rgba(35,55,60,0.05)] md:p-8">
-            <p className="text-xs uppercase tracking-[0.16em] text-[#718789]">
-              À surveiller
-            </p>
+          <div className="relative overflow-hidden rounded-[30px] border border-[#e5e1f6] bg-[linear-gradient(145deg,#ffffff_0%,#f7f5ff_100%)] p-6 shadow-[0_16px_42px_rgba(71,64,130,0.055)] md:p-7">
+            <div className="pointer-events-none absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-[#d8d3ff]/30 blur-3xl" />
 
-            <h2 className="mt-2 text-xl font-semibold tracking-[-0.025em]">
-              Ce qui mérite votre attention
-            </h2>
+            <div className="relative">
+              <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#756bd4]">
+                À surveiller
+              </p>
 
-            <div className="mt-6 rounded-2xl border border-[#e2eeeb] bg-[#f5faf9] p-5">
-              <div className="flex items-start gap-3">
-                <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white">
-                  <ArrowDown size={15} />
-                </div>
+              <h2 className="mt-1.5 text-[20px] font-semibold tracking-[-0.03em] text-[#24363e]">
+                Ce qui mérite votre attention
+              </h2>
 
-                <div>
-                  <p className="text-xs font-semibold">Fatigue</p>
-                  <p className="mt-1 text-[11px] leading-5 text-[#587174]">
-                    Votre indicateur reste à surveiller. Otavio pourra
-                    comparer cette tendance avec vos prochaines analyses.
-                  </p>
-                </div>
+              <p className="mt-2 text-[11px] leading-5 text-[#71858a]">
+                {scans.length > 1
+                  ? "Les indicateurs en baisse ou stables sont présentés sans interprétation médicale."
+                  : "Une comparaison sera disponible après votre prochain scan."}
+              </p>
+
+              <div className="mt-6 space-y-4">
+                {currentMetrics.map((metric, index) => {
+                  const metricKey =
+                    ["peau", "hydratation", "fatigue", "equilibre"][index] as keyof StoredScan["indicators"];
+
+                  const reference =
+                    scans.length > 1
+                      ? scans[scans.length - 1].indicators[metricKey]
+                      : null;
+
+                  const change =
+                    reference === null ? null : metric.value - reference;
+
+                  if (change === null || change >= 0) {
+                    return null;
+                  }
+
+                  return (
+                    <div
+                      key={metric.name}
+                      className="flex items-center justify-between gap-4 border-b border-[#e7e4f2] pb-4 last:border-0 last:pb-0"
+                    >
+                      <div className="flex min-w-0 items-center gap-3">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#eeecff] text-[#756bd4]">
+                          <ArrowDown size={15} />
+                        </div>
+
+                        <div className="min-w-0">
+                          <p className="text-[12px] font-semibold text-[#304951]">
+                            {metric.name}
+                          </p>
+                          <p className="mt-1 text-[10px] text-[#7b8e93]">
+                            {reference} → {metric.value}
+                          </p>
+                        </div>
+                      </div>
+
+                      <span className="shrink-0 text-[11px] font-bold text-[#d96550]">
+                        {change} pts
+                      </span>
+                    </div>
+                  );
+                })}
+
+                {scans.length <= 1 && (
+                  <div className="rounded-[20px] border border-white/70 bg-white/70 p-4">
+                    <p className="text-[11px] font-semibold text-[#304951]">
+                      Suivi en construction
+                    </p>
+                    <p className="mt-1 text-[10px] leading-5 text-[#7b8e93]">
+                      Otavio attend votre prochaine analyse pour identifier les
+                      évolutions qui méritent votre attention.
+                    </p>
+                  </div>
+                )}
+
+                {scans.length > 1 &&
+                  currentMetrics.every((metric, index) => {
+                    const key =
+                      ["peau", "hydratation", "fatigue", "equilibre"][index] as keyof StoredScan["indicators"];
+                    return metric.value >= scans[scans.length - 1].indicators[key];
+                  }) && (
+                    <div className="rounded-[20px] border border-white/70 bg-white/70 p-4">
+                      <p className="text-[11px] font-semibold text-[#304951]">
+                        Aucun indicateur en baisse
+                      </p>
+                      <p className="mt-1 text-[10px] leading-5 text-[#7b8e93]">
+                        Votre dernier scan ne présente pas de baisse par rapport au premier scan enregistré.
+                      </p>
+                    </div>
+                  )}
               </div>
-            </div>
 
-            <Link
-              href="/scanner"
-              className="mt-5 flex items-center justify-between rounded-2xl border border-[#dce8e6] bg-[#f8fbfa] px-4 py-4 transition hover:bg-black/[0.02]"
-            >
-              <span className="text-xs font-medium">
-                Faire un nouveau scan
-              </span>
-              <ChevronRight size={16} className="text-[#668083]" />
-            </Link>
+              <Link
+                href="/scanner"
+                className="mt-6 flex items-center justify-between rounded-[20px] border border-white/80 bg-white/75 px-4 py-4 shadow-[0_8px_22px_rgba(71,64,130,0.045)] transition hover:-translate-y-0.5"
+              >
+                <span className="text-[10px] font-bold text-[#756bd4]">
+                  Faire un nouveau scan
+                </span>
+                <ChevronRight size={16} className="text-[#756bd4]" />
+              </Link>
+            </div>
           </div>
         </div>
 
         {/* History */}
-        <div className="mt-6 rounded-[30px] border border-[#dfe7e6] bg-white p-6 shadow-[0_14px_40px_rgba(35,55,60,0.05)] md:p-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs uppercase tracking-[0.16em] text-[#718789]">
-                Historique
-              </p>
-              <h2 className="mt-2 text-xl font-semibold tracking-[-0.025em]">
-                Vos scans
-              </h2>
-            </div>
+        <section className="mt-10 overflow-hidden rounded-[30px] border border-[#dce6e8] bg-white shadow-[0_16px_42px_rgba(20,55,65,0.055)]">
+          <div className="border-b border-[#edf2f2] bg-[linear-gradient(135deg,#fbfdfc_0%,#f5faf9_100%)] px-5 py-5 sm:px-6">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#168f91]">
+                  Historique
+                </p>
 
-            <button className="hidden items-center gap-1 text-xs font-medium text-[#587174] sm:flex">
-              Tout afficher
-              <ArrowRight size={14} />
-            </button>
-          </div>
+                <h2 className="mt-1.5 text-[18px] font-semibold tracking-[-0.025em] text-[#17333d]">
+                  Vos scans
+                </h2>
 
-          <div className="mt-6 divide-y divide-[#e0e9e7]">
-            {scans.map((scan, index) => (
-              <div
-                key={scan.date}
-                className="flex items-center justify-between py-4 first:pt-0 last:pb-0"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#edf7f5]">
-                    <ScanFace size={17} />
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-medium">
-                        {index === 0 ? "Dernier scan" : "Scan précédent"}
-                      </p>
-                    <p className="mt-1 text-[11px] text-[#668083]">
-                      {new Date(scan.date).toLocaleDateString("fr-FR", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  {index < scans.length - 1 && (
-                    <span
-                      className={`hidden text-[10px] font-medium sm:block ${
-                        scan.score - scans[index + 1].score > 0
-                          ? "text-[#4f514c]"
-                          : scan.score - scans[index + 1].score < 0
-                            ? "text-[#8a665f]"
-                            : "text-[#99948c]"
-                      }`}
-                    >
-                      {scan.score - scans[index + 1].score > 0 ? "+" : ""}
-                      {scan.score - scans[index + 1].score} pt
-                    </span>
-                  )}
-
-                  <div className="text-right">
-                    <p className="text-sm font-semibold">{scan.score}/100</p>
-                    {index < scans.length - 1 && (
-                      <p className="mt-1 text-[10px] text-[#718789]">
-                        Score global
-                      </p>
-                    )}
-                  </div>
-
-                  <ChevronRight size={15} className="text-black/25" />
-                </div>
+                <p className="mt-1.5 text-[10px] leading-5 text-[#7a8e93]">
+                  Chaque analyse enrichit progressivement votre suivi personnel.
+                </p>
               </div>
-            ))}
+
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#e8f7f5] text-[#168f91]">
+                <ScanFace size={18} strokeWidth={1.8} />
+              </div>
+            </div>
           </div>
-        </div>
+
+          <div className="p-5 sm:p-6">
+            {scans.length > 0 ? (
+              <div className="space-y-3">
+                {scans.map((scan, index) => {
+                  const previous =
+                    index < scans.length - 1 ? scans[index + 1] : null;
+
+                  const change = previous
+                    ? scan.score - previous.score
+                    : null;
+
+                  const dateLabel = new Date(scan.date).toLocaleDateString(
+                    "fr-FR",
+                    {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    }
+                  );
+
+                  return (
+                    <div
+                      key={scan.id}
+                      className="group rounded-[22px] border border-[#e1e9ea] bg-[#f8faf9] p-4 transition duration-300 hover:border-[#d4e3e3] hover:bg-white hover:shadow-[0_10px_26px_rgba(20,55,65,0.045)]"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-white text-[#168f91] shadow-[0_6px_16px_rgba(20,55,65,0.045)]">
+                          <ScanFace size={17} strokeWidth={1.8} />
+                        </div>
+
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <p className="text-[11px] font-semibold text-[#304951]">
+                              {index === 0 ? "Dernier scan" : `Scan ${scans.length - index}`}
+                            </p>
+
+                            {index === 0 && (
+                              <span className="rounded-full bg-[#e8f7f5] px-2.5 py-1 text-[8px] font-bold text-[#168f91]">
+                                LE PLUS RÉCENT
+                              </span>
+                            )}
+                          </div>
+
+                          <p className="mt-1 text-[9px] text-[#83969a]">
+                            {dateLabel}
+                          </p>
+                        </div>
+
+                        <div className="text-right">
+                          <p className="text-[20px] font-semibold leading-none tracking-[-0.05em] text-[#17313a]">
+                            {scan.score}
+                            <span className="ml-1 text-[9px] font-medium tracking-normal text-[#9aa8ab]">
+                              /100
+                            </span>
+                          </p>
+
+                          {change !== null ? (
+                            <p
+                              className={`mt-1.5 text-[9px] font-bold ${
+                                change >= 0
+                                  ? "text-[#3f9864]"
+                                  : "text-[#d96550]"
+                              }`}
+                            >
+                              {change >= 0 ? "+" : ""}
+                              {change} pts
+                            </p>
+                          ) : (
+                            <p className="mt-1.5 text-[9px] font-semibold text-[#8d9ca0]">
+                              Référence
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="mt-4 grid grid-cols-4 gap-2">
+                        {[
+                          ["Peau", scan.indicators.peau],
+                          ["Hydratation", scan.indicators.hydratation],
+                          ["Fatigue", scan.indicators.fatigue],
+                          ["Équilibre", scan.indicators.equilibre],
+                        ].map(([label, value]) => (
+                          <div
+                            key={label}
+                            className="rounded-[15px] bg-white px-2.5 py-2.5"
+                          >
+                            <p className="truncate text-[8px] uppercase tracking-[0.08em] text-[#97a5a8]">
+                              {label}
+                            </p>
+                            <p className="mt-1 text-[12px] font-semibold text-[#304951]">
+                              {value}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="rounded-[24px] border border-dashed border-[#d8e5e5] bg-[#f8faf9] px-5 py-10 text-center">
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-[16px] bg-white text-[#168f91] shadow-[0_8px_20px_rgba(20,55,65,0.045)]">
+                  <ScanFace size={20} strokeWidth={1.7} />
+                </div>
+
+                <p className="mt-4 text-[12px] font-semibold text-[#304951]">
+                  Aucun scan enregistré
+                </p>
+
+                <p className="mx-auto mt-1.5 max-w-sm text-[10px] leading-5 text-[#7b8e93]">
+                  Votre historique apparaîtra ici dès votre première analyse.
+                </p>
+
+                <Link
+                  href="/scanner"
+                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#173f4a] px-4 py-2.5 text-[9px] font-bold text-white shadow-[0_8px_20px_rgba(23,63,74,0.16)] transition hover:-translate-y-0.5"
+                >
+                  Faire mon premier scan
+                  <ArrowRight size={13} />
+                </Link>
+              </div>
+            )}
+          </div>
+        </section>
 
         {/* Disclaimer */}
         <div className="mx-auto mt-8 flex max-w-2xl items-start gap-3 px-3 pb-4">

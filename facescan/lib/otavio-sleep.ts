@@ -226,6 +226,16 @@ export function buildOtavioSleepPlan(
       });
     }
 
+    if (highFatigue) {
+      actions.push({
+        time: "12:30",
+        title: "Pause récupération",
+        description:
+          `Votre dernier scan présente un indicateur visuel de fatigue de ${fatigue}/100. Prévoyez une vraie pause dans la journée, idéalement sans écran, pour éviter de repousser toute la récupération au soir.`,
+        category: "journee",
+      });
+    }
+
     actions.push({
       time: shiftTime(targetBedtime, -60),
       title: "Début de la routine du soir",
@@ -269,7 +279,7 @@ export function buildOtavioSleepPlan(
         time: "12:30",
         title: "Pause récupération",
         description:
-          "Votre dernier scan présente un indicateur visuel de fatigue à ${fatigue}/100 : prévoyez dans la journée une vraie pause sans écran plutôt que de compenser uniquement le soir.",
+          `Votre dernier scan présente un indicateur visuel de fatigue à ${fatigue}/100 : prévoyez dans la journée une vraie pause sans écran plutôt que de compenser uniquement le soir.`,
         category: "journee",
       });
     }

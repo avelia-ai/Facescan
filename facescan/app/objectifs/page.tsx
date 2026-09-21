@@ -46,6 +46,9 @@ const goals = [
 export default function ObjectifsPage() {
   const [selected, setSelected] = useState<string[]>([]);
   const [saved, setSaved] = useState(false);
+  const [scanCount, setScanCount] = useState(0);
+  const [latestScore, setLatestScore] = useState<number | null>(null);
+  const [previousScore, setPreviousScore] = useState<number | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem("facescan-goals");
@@ -66,6 +69,48 @@ export default function ObjectifsPage() {
     setSelected(["peau", "hydratation"]);
   }, []);
 
+  useEffect(() => {
+    const storedScans = localStorage.getItem("facescan-scans");
+
+    if (!storedScans) {
+      setScanCount(0);
+      setLatestScore(null);
+      setPreviousScore(null);
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(storedScans);
+
+      if (!Array.isArray(parsed)) {
+        setScanCount(0);
+        setLatestScore(null);
+        setPreviousScore(null);
+        return;
+      }
+
+      const scans = parsed
+        .filter(
+          (scan) =>
+            scan &&
+            typeof scan.date === "string" &&
+            typeof scan.score === "number"
+        )
+        .sort(
+          (a, b) =>
+            new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+
+      setScanCount(scans.length);
+      setLatestScore(scans[0]?.score ?? null);
+      setPreviousScore(scans[1]?.score ?? null);
+    } catch {
+      setScanCount(0);
+      setLatestScore(null);
+      setPreviousScore(null);
+    }
+  }, []);
+
   const toggleGoal = (id: string) => {
     setSaved(false);
 
@@ -80,6 +125,11 @@ export default function ObjectifsPage() {
     localStorage.setItem("facescan-goals", JSON.stringify(selected));
     setSaved(true);
   };
+
+  const scoreChange =
+    latestScore !== null && previousScore !== null
+      ? latestScore - previousScore
+      : null;
 
   return (
     <main className="app-background min-h-screen text-[#17202a] pb-28">
@@ -238,6 +288,14 @@ export default function ObjectifsPage() {
                 associés pourront être mis en avant dans votre tableau de bord,
                 vos conseils et vos futures analyses.
               </p>
+
+              <p className="mt-3 text-[10px] font-medium text-[#8a9a9d]">
+                {scanCount === 0
+                  ? "Aucun scan enregistré pour le moment."
+                  : scanCount === 1
+                    ? "1 scan enregistré."
+                    : `${scanCount} scans enregistrés.`}
+              </p>
             </div>
           </div>
 
@@ -245,10 +303,15 @@ export default function ObjectifsPage() {
             {[
               ["Priorités", `${selected.length}`],
               ["Indicateurs", "4"],
-              ["Dernier scan", "78"],
-              ["Progression", "+10"],
+              ["Dernier scan", latestScore !== null ? `${latestScore}/100` : "—"],
+              [
+                "Progression",
+                scoreChange === null
+                  ? "—"
+                  : `${scoreChange >= 0 ? "+" : ""}${scoreChange}`,
+              ],
             ].map(([label, value]) => (
-              <div key={label} className="rounded-2xl bg-white px-4 py-3">
+              <div key={label} className="rounded-2xl bg-[#f8fbfa] px-4 py-3">
                 <p className="text-[9px] uppercase tracking-[0.13em] text-[#668083]">
                   {label}
                 </p>

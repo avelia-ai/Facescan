@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   Activity,
   ArrowLeft,
@@ -100,14 +100,87 @@ const data = {
 
 const dates = ["13 août", "20 août", "27 août", "3 sept.", "10 sept."];
 
+type StoredScan = {
+  id: string;
+  date: string;
+  score: number;
+  indicators: {
+    peau: number;
+    hydratation: number;
+    fatigue: number;
+    equilibre: number;
+  };
+};
+
 function IndicateurContent() {
   const searchParams = useSearchParams();
   const type = searchParams.get("type") || "hydratation";
+  const [scans, setScans] = useState<StoredScan[]>([]);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("facescan-scans");
+
+      if (!stored) return;
+
+      const parsed = JSON.parse(stored);
+
+      if (Array.isArray(parsed)) {
+        setScans(
+          parsed.filter(
+            (scan): scan is StoredScan =>
+              Boolean(scan?.indicators) &&
+              typeof scan.indicators === "object"
+          )
+        );
+      }
+    } catch {
+      setScans([]);
+    }
+  }, []);
 
   const current = data[type as keyof typeof data] ?? data.hydratation;
   const Icon = current.icon;
 
-  const maxHistory = Math.max(...current.history);
+  const indicatorKey =
+    type as keyof StoredScan["indicators"];
+
+  const currentValue: number | null =
+    scans[0]?.indicators?.[indicatorKey] ?? null;
+
+  const previousValue =
+    scans[1]?.indicators?.[indicatorKey] ?? null;
+
+  const currentChange =
+    previousValue === null
+      ? null
+      : currentValue - previousValue;
+
+  const displayChange =
+    currentChange === null
+      ? "—"
+      : `${currentChange >= 0 ? "+" : ""}${currentChange}`;
+
+  const currentHistory: number[] = scans.length
+    ? scans
+        .slice(0, 8)
+        .reverse()
+        .map((scan: StoredScan) => scan.indicators[indicatorKey])
+    : [];
+
+  const currentDates = scans.length
+    ? scans
+        .slice(0, 8)
+        .reverse()
+        .map((scan: StoredScan) =>
+          new Intl.DateTimeFormat("fr-FR", {
+            day: "numeric",
+            month: "short",
+          }).format(new Date(scan.date))
+        )
+    : [];
+
+  const maxHistory = Math.max(...currentHistory, 1);
 
   return (
     <main className="app-background min-h-screen text-[#172a31] pb-28">
@@ -169,7 +242,7 @@ function IndicateurContent() {
 
               <div className="mt-6 flex items-end gap-3">
                 <span className="text-7xl font-semibold tracking-[-0.07em]">
-                  {current.value}
+                  {currentValue ?? "—"}
                 </span>
                 <span className="mb-2.5 text-sm text-white/35">/ 100</span>
               </div>
@@ -198,10 +271,10 @@ function IndicateurContent() {
                     <TrendingUp size={14} strokeWidth={1.9} />
                   </div>
 
-                  <span className="text-xl font-semibold">{current.change}</span>
+                  <span className="text-xl font-semibold">{displayChange}</span>
 
                   <span className="text-[10px] text-white/40">
-                    depuis le début
+                    {currentChange === null ? "première référence" : "depuis le scan précédent"}
                   </span>
                 </div>
               </div>
@@ -213,7 +286,7 @@ function IndicateurContent() {
               <div
                 className="h-full rounded-full transition-all duration-500"
                 style={{
-                  width: `${current.value}%`,
+                  width: `${currentValue ?? 0}%`,
                   background: `linear-gradient(90deg, ${current.accent}, #8bded4)`,
                 }}
               />
@@ -264,15 +337,27 @@ function IndicateurContent() {
               </h3>
 
               <p className="mt-2 text-[12px] leading-6 text-[#668083]">
-                Votre indicateur est passé de{" "}
-                <strong className="font-semibold text-[#17333d]">
-                  {current.history[0]}
-                </strong>{" "}
-                à{" "}
-                <strong className="font-semibold text-[#17333d]">
-                  {current.value}
-                </strong>{" "}
-                sur la période observée.
+                {currentHistory.length > 1 ? (
+                  <>
+                    Votre indicateur est passé de{" "}
+                    <strong className="font-semibold text-[#17333d]">
+                      {currentHistory[0]}
+                    </strong>{" "}
+                    à{" "}
+                    <strong className="font-semibold text-[#17333d]">
+                      {currentValue}
+                    </strong>{" "}
+                    sur les scans enregistrés.
+                  </>
+                ) : (
+                  <>
+                    Votre premier scan établit une référence de{" "}
+                    <strong className="font-semibold text-[#17333d]">
+                      {currentValue}/100
+                    </strong>{" "}
+                    pour cet indicateur.
+                  </>
+                )}
               </p>
             </article>
 
@@ -293,118 +378,236 @@ function IndicateurContent() {
         </section>
 
         {/* History */}
-        <section className="mt-9 rounded-[27px] border border-[#dfe8e9] bg-white p-6 shadow-[0_10px_30px_rgba(35,55,60,0.045)] sm:p-7">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#789095]">
-                Historique
-              </p>
+        <section className="mt-10 overflow-hidden rounded-[30px] border border-[#dce6e8] bg-white shadow-[0_16px_42px_rgba(20,55,65,0.055)]">
+          <div className="border-b border-[#edf2f2] bg-[linear-gradient(135deg,#fbfdfc_0%,#f5faf9_100%)] px-5 py-5 sm:px-6">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#168f91]">
+                  Historique
+                </p>
 
-              <h2 className="mt-1 text-xl font-semibold tracking-[-0.03em] text-[#17333d]">
-                Votre évolution
-              </h2>
+                <h2 className="mt-1.5 text-[18px] font-semibold tracking-[-0.025em] text-[#17333d]">
+                  Votre évolution
+                </h2>
+
+                <p className="mt-1.5 text-[10px] leading-5 text-[#7a8e93]">
+                  {currentHistory.length > 1
+                    ? "Visualisez la tendance de cet indicateur au fil de vos scans."
+                    : "Votre premier scan constitue votre point de départ."}
+                </p>
+              </div>
+
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#e8f7f5] text-[#168f91]">
+                <TrendingUp size={18} strokeWidth={1.8} />
+              </div>
             </div>
 
-            <span className="rounded-full bg-[#f1f6f6] px-3 py-1.5 text-[10px] font-medium text-[#70868a]">
-              5 derniers scans
-            </span>
+            <div className="mt-5 flex items-center gap-3 rounded-[20px] border border-[#dfe9e9] bg-white/80 px-4 py-3 shadow-[0_7px_20px_rgba(20,55,65,0.035)]">
+              <div
+                className="h-2.5 w-2.5 shrink-0 rounded-full"
+                style={{ backgroundColor: current.accent }}
+              />
+
+              <div className="min-w-0 flex-1">
+                <p className="text-[9px] uppercase tracking-[0.14em] text-[#899a9e]">
+                  Dernière valeur
+                </p>
+                <p className="mt-0.5 text-[15px] font-semibold text-[#20343c]">
+                  {currentValue}/100
+                </p>
+              </div>
+
+              <span className="rounded-full bg-[#f2f6f6] px-3 py-1.5 text-[9px] font-semibold text-[#75888d]">
+                {currentHistory.length}{" "}
+                {currentHistory.length > 1 ? "scans" : "scan"}
+              </span>
+            </div>
           </div>
 
-          <div className="mt-7">
-            <div className="flex h-52 items-end gap-2 border-b border-[#e5eded] px-1 sm:gap-5">
-              {current.history.map((value, index) => {
-                const isLatest = index === current.history.length - 1;
-                const height = Math.max(
-                  22,
-                  Math.round((value / maxHistory) * 145)
-                );
+          <div className="p-5 sm:p-6">
+            <div className="rounded-[24px] border border-[#e1e9ea] bg-[#f8faf9] p-4 sm:p-5">
+              <div className="flex h-56 items-end gap-2 sm:gap-4">
+                {currentHistory.map((value, index) => {
+                  const isLatest = index === currentHistory.length - 1;
+                  const height = Math.max(
+                    22,
+                    Math.round((value / Math.max(maxHistory, 100)) * 156)
+                  );
 
-                return (
-                  <div
-                    key={`${dates[index]}-${value}`}
-                    className="flex h-full flex-1 flex-col items-center justify-end"
-                  >
-                    <span
-                      className={`mb-2 text-[10px] font-semibold ${
-                        isLatest ? "text-[#17333d]" : "text-[#789095]"
-                      }`}
+                  return (
+                    <div
+                      key={`${currentDates[index]}-${value}-${index}`}
+                      className="flex h-full min-w-0 flex-1 flex-col items-center justify-end"
                     >
-                      {value}
-                    </span>
-
-                    <div className="flex h-[150px] w-full items-end">
-                      <div
-                        className={`mx-auto w-full max-w-[48px] rounded-t-[14px] transition-all ${
-                          isLatest
-                            ? "shadow-[0_8px_20px_rgba(22,143,145,0.18)]"
-                            : "bg-[#dfe9e9]"
+                      <span
+                        className={`mb-2 text-[10px] font-semibold ${
+                          isLatest ? "text-[#17333d]" : "text-[#83969a]"
                         }`}
-                        style={{
-                          height: `${height}px`,
-                          ...(isLatest
-                            ? {
-                                background: `linear-gradient(180deg, ${current.accent}, #72c9c3)`,
-                              }
-                            : {}),
-                        }}
-                      />
-                    </div>
+                      >
+                        {value}
+                      </span>
 
-                    <span className="mt-3 text-[9px] text-[#8aa0a3]">
-                      {dates[index]}
-                    </span>
-                  </div>
-                );
-              })}
+                      <div className="flex h-[160px] w-full items-end">
+                        <div
+                          className={`mx-auto w-full max-w-[52px] rounded-t-[15px] transition-all duration-500 ${
+                            isLatest
+                              ? "shadow-[0_9px_22px_rgba(22,143,145,0.18)]"
+                              : "bg-[#dfe9e9]"
+                          }`}
+                          style={{
+                            height: `${height}px`,
+                            ...(isLatest
+                              ? {
+                                  background: `linear-gradient(180deg, ${current.accent}, #72c9c3)`,
+                                }
+                              : {}),
+                          }}
+                        />
+                      </div>
+
+                      <span
+                        className={`mt-3 max-w-full truncate text-[9px] ${
+                          isLatest
+                            ? "font-semibold text-[#536c72]"
+                            : "text-[#8da0a4]"
+                        }`}
+                      >
+                        {currentDates[index]}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
+
+            {currentHistory.length > 1 ? (
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-[20px] bg-[#f7faf9] p-4">
+                  <p className="text-[9px] uppercase tracking-[0.14em] text-[#899a9e]">
+                    Première valeur
+                  </p>
+                  <p className="mt-1 text-[16px] font-semibold text-[#304951]">
+                    {currentHistory[0]}/100
+                  </p>
+                </div>
+
+                <div className="rounded-[20px] bg-[#f7faf9] p-4">
+                  <p className="text-[9px] uppercase tracking-[0.14em] text-[#899a9e]">
+                    Dernière valeur
+                  </p>
+                  <p className="mt-1 text-[16px] font-semibold text-[#168f91]">
+                    {currentValue}/100
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="mt-4 flex items-start gap-3 rounded-[20px] bg-[linear-gradient(135deg,#eef9f6_0%,#f3f1ff_100%)] p-4">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white text-[#168f91]">
+                  <Sparkles size={14} />
+                </div>
+
+                <p className="text-[10px] leading-5 text-[#667b80]">
+                  Effectuez un nouveau scan plus tard pour commencer à visualiser
+                  la tendance de cet indicateur.
+                </p>
+              </div>
+            )}
           </div>
         </section>
 
         {/* Actions */}
-        <section className="mt-9">
-          <div className="flex items-end justify-between">
+        <section className="mt-10">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#789095]">
+              <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#756bd4]">
                 Actions
               </p>
 
-              <h2 className="mt-1 text-xl font-semibold tracking-[-0.03em] text-[#17333d]">
+              <h2 className="mt-1.5 text-[21px] font-semibold tracking-[-0.04em] text-[#17333d]">
                 Ce que vous pouvez faire
               </h2>
+
+              <p className="mt-2 max-w-xl text-[11px] leading-5 text-[#71858a]">
+                Quelques habitudes simples à intégrer à votre quotidien pour suivre
+                cet indicateur dans le temps.
+              </p>
             </div>
 
             <Link
               href="/conseils"
-              className="hidden items-center gap-1.5 text-[11px] font-semibold text-[#287f86] sm:flex"
+              className="inline-flex w-fit items-center gap-2 rounded-full border border-[#dfe5f4] bg-white px-3.5 py-2 text-[9px] font-bold text-[#756bd4] shadow-[0_8px_22px_rgba(20,55,65,0.045)] transition hover:-translate-y-0.5"
             >
               Tous les conseils
-              <ArrowRight size={14} strokeWidth={1.8} />
+              <ArrowRight size={13} strokeWidth={1.8} />
             </Link>
           </div>
 
-          <div className="mt-5 grid gap-3">
-            {current.actions.map((action, index) => (
-              <div
-                key={action}
-                className="flex items-center gap-3 rounded-[20px] border border-[#dfe8e9] bg-white px-4 py-4 shadow-[0_6px_20px_rgba(35,55,60,0.035)]"
-              >
-                <div
-                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
-                    index === 0
-                      ? "bg-[#e5faf7] text-[#168f91]"
-                      : index === 1
-                        ? "bg-[#eeecff] text-[#756bd4]"
-                        : "bg-[#fff0eb] text-[#d96550]"
-                  }`}
-                >
-                  <Check size={15} strokeWidth={2.2} />
-                </div>
+          <div className="mt-6 grid gap-3">
+            {current.actions.map((action, index) => {
+              const tones = [
+                {
+                  bg: "#e8f8f5",
+                  text: "#168f91",
+                },
+                {
+                  bg: "#eeecff",
+                  text: "#756bd4",
+                },
+                {
+                  bg: "#fff0eb",
+                  text: "#d96550",
+                },
+              ];
 
-                <p className="text-[12px] leading-5 text-[#5e777c]">
-                  {action}
-                </p>
-              </div>
-            ))}
+              const tone = tones[index % tones.length];
+
+              return (
+                <article
+                  key={action}
+                  className="group relative overflow-hidden rounded-[24px] border border-[#dce6e8] bg-white p-4 shadow-[0_12px_32px_rgba(20,55,65,0.045)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(20,55,65,0.07)] sm:p-5"
+                >
+                  <div
+                    className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-50 blur-2xl"
+                    style={{ backgroundColor: tone.bg }}
+                  />
+
+                  <div className="relative flex items-center gap-4">
+                    <div
+                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
+                      style={{
+                        backgroundColor: tone.bg,
+                        color: tone.text,
+                      }}
+                    >
+                      <span className="text-[11px] font-bold">
+                        0{index + 1}
+                      </span>
+                    </div>
+
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[12px] font-semibold text-[#304951]">
+                        {action}
+                      </p>
+
+                      <p className="mt-1 text-[9px] leading-4 text-[#8a9a9e]">
+                        Une habitude simple à intégrer progressivement.
+                      </p>
+                    </div>
+
+                    <div
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border"
+                      style={{
+                        borderColor: `${tone.text}22`,
+                        color: tone.text,
+                        backgroundColor: `${tone.bg}99`,
+                      }}
+                    >
+                      <Check size={14} strokeWidth={2.2} />
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
 

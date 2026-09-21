@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 import {
   Activity,
   ArrowLeft,
@@ -31,6 +33,30 @@ const settings = [
 ];
 
 export default function ParametresPage() {
+  const [scanFrequency, setScanFrequency] = useState(7);
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem("facescan-scan-frequency");
+
+    if (!stored) return;
+
+    const value = Number(stored);
+
+    if ([3, 7, 14, 30].includes(value)) {
+      setScanFrequency(value);
+    }
+  }, []);
+
+  const handleSignOut = async () => {
+    setIsSigningOut(true);
+
+    const supabase = createClient();
+    await supabase.auth.signOut();
+
+    window.location.href = "/connexion";
+  };
+
   return (
     <main className="app-background min-h-screen text-[#17202a] pb-28">
       <div className="mx-auto w-full max-w-5xl px-5 sm:px-8">
@@ -122,7 +148,7 @@ export default function ParametresPage() {
             {[
               ["Version", "0.1.0"],
               ["Suivi", "Actif"],
-              ["Fréquence", "Régulière"],
+              ["Fréquence", `${scanFrequency} jours`],
             ].map(([label, value]) => (
               <div
                 key={label}
@@ -151,15 +177,16 @@ export default function ParametresPage() {
               </h3>
 
               <p className="mt-2 text-[12px] leading-6 text-[#587174]">
-                La gestion réelle de la session sera connectée lorsque le
-                système de compte sera mis en place.
+                Votre session FaceScan sera fermée sur cet appareil.
               </p>
 
               <button
                 type="button"
-                className="mt-5 rounded-full bg-gradient-to-r from-[#176678] to-[#756bd4] px-5 py-3 text-[11px] font-semibold text-white shadow-[0_8px_22px_rgba(34,91,105,0.20)]"
+                onClick={handleSignOut}
+                disabled={isSigningOut}
+                className="mt-5 rounded-full bg-gradient-to-r from-[#176678] to-[#756bd4] px-5 py-3 text-[11px] font-semibold text-white shadow-[0_8px_22px_rgba(34,91,105,0.20)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Se déconnecter
+                {isSigningOut ? "Déconnexion…" : "Se déconnecter"}
               </button>
             </div>
           </div>

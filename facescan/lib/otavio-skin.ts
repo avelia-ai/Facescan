@@ -47,6 +47,7 @@ function has(profile: OtavioSkinProfile, value: string) {
   return [
     profile.skin_type,
     profile.skin_sensitivity,
+    profile.hydration_level,
     ...(profile.skin_concerns ?? []),
     ...(profile.goals ?? []),
   ]
@@ -64,9 +65,17 @@ export function buildOtavioSkinPlan(
   const dry = has(profile, "sec") || has(profile, "deshydrat");
   const oily = has(profile, "gras");
   const combination = has(profile, "mixte");
-  const acne = has(profile, "acne") || has(profile, "imperfection");
-  const redness = has(profile, "rougeur") || reactive;
-  const dullness = has(profile, "eclat") || has(profile, "terne");
+  const acne =
+    has(profile, "acne") ||
+    has(profile, "imperfection") ||
+    has(profile, "bouton");
+  const redness =
+    has(profile, "rougeur") ||
+    has(profile, "rouge") ||
+    reactive;
+  const dullness =
+    has(profile, "eclat") ||
+    has(profile, "terne");
   const texture =
     has(profile, "texture") ||
     has(profile, "pigmentation") ||
@@ -74,17 +83,38 @@ export function buildOtavioSkinPlan(
 
   const hydration = scan?.hydratation ?? null;
   const skinScore = scan?.peau ?? null;
+  const fatigue = scan?.fatigue ?? null;
+  const balance = scan?.equilibre ?? null;
 
   const lowHydration =
     hydration !== null && hydration < 70;
 
+  const veryLowHydration =
+    hydration !== null && hydration < 60;
+
   const lowSkinScore =
     skinScore !== null && skinScore < 70;
+
+  const veryLowSkinScore =
+    skinScore !== null && skinScore < 60;
+
+  const highFatigue =
+    fatigue !== null && fatigue < 65;
+
+  const lowBalance =
+    balance !== null && balance < 70;
+
+  const needsFundamentals =
+    veryLowSkinScore ||
+    veryLowHydration ||
+    lowBalance;
 
   const personalization: string[] = [];
 
   if (profile.skin_type) {
-    personalization.push(`Type de peau déclaré : ${profile.skin_type}.`);
+    personalization.push(
+      `Type de peau déclaré : ${profile.skin_type}.`
+    );
   }
 
   if (profile.skin_sensitivity) {
@@ -111,6 +141,18 @@ export function buildOtavioSkinPlan(
     );
   }
 
+  if (fatigue !== null) {
+    personalization.push(
+      `Indicateur visuel de fatigue du dernier scan : ${fatigue}/100.`
+    );
+  }
+
+  if (balance !== null) {
+    personalization.push(
+      `Indicateur visuel d’équilibre du dernier scan : ${balance}/100.`
+    );
+  }
+
   if (sensitivity || redness) {
     personalization.push(
       "Otavio privilégie une progression douce et limite les changements simultanés."
@@ -126,6 +168,18 @@ export function buildOtavioSkinPlan(
   if (dry || lowHydration) {
     personalization.push(
       "L’hydratation et le confort cutané sont renforcés dans le programme."
+    );
+  }
+
+  if (highFatigue) {
+    personalization.push(
+      "La fatigue visuelle est prise en compte : Otavio évite de surcharger la routine et privilégie les fondamentaux."
+    );
+  }
+
+  if (needsFundamentals) {
+    personalization.push(
+      "Les fondamentaux sont prioritaires avant toute augmentation du nombre d’actifs."
     );
   }
 
@@ -150,13 +204,15 @@ export function buildOtavioSkinPlan(
       moment: "matin",
       title: "Hydratation ciblée",
       description:
-        dry || lowHydration
-          ? "Privilégiez un sérum ou une lotion hydratante à base de glycérine et/ou d’acide hyaluronique, puis une crème contenant notamment des céramides."
-          : oily
-            ? "Privilégiez un hydratant léger de type gel-crème, idéalement indiqué non comédogène."
-            : combination
-              ? "Utilisez une hydratation légère sur l’ensemble du visage et adaptez la quantité selon les zones."
-              : "Appliquez une crème hydratante adaptée à votre type de peau.",
+        dry || veryLowHydration
+          ? "Votre scan suggère une hydratation basse. Privilégiez une formule simple avec des agents humectants comme la glycérine, puis une crème contenant notamment des céramides pour soutenir la barrière cutanée."
+          : lowHydration
+            ? "Votre hydratation visuelle mérite une attention particulière. Appliquez régulièrement un soin hydratant puis une crème adaptée à votre tolérance."
+            : oily
+              ? "Privilégiez un hydratant léger de type gel-crème, idéalement indiqué non comédogène."
+              : combination
+                ? "Utilisez une hydratation légère sur l’ensemble du visage et adaptez la quantité selon les zones."
+                : "Appliquez une crème hydratante adaptée à votre type de peau.",
       priority: "essentiel",
     });
 
@@ -183,10 +239,18 @@ export function buildOtavioSkinPlan(
         moment: "soir",
         title: "Renforcer la barrière cutanée",
         description:
-          "Appliquez une crème contenant par exemple des céramides, de la glycérine ou d’autres agents hydratants pour soutenir le confort cutané.",
+          veryLowHydration
+            ? "Ce soir, privilégiez une routine réparatrice très simple : soin hydratant puis crème contenant par exemple des céramides. Évitez les exfoliants et les actifs multiples."
+            : "Appliquez une crème contenant par exemple des céramides, de la glycérine ou d’autres agents hydratants pour soutenir le confort cutané.",
         priority: "important",
       });
-    } else if (day >= 2 && acne && !sensitivity && !redness) {
+    } else if (
+      day >= 2 &&
+      acne &&
+      !sensitivity &&
+      !redness &&
+      !needsFundamentals
+    ) {
       actions.push({
         moment: "soir",
         title: "Actif ciblé imperfections",
@@ -194,7 +258,13 @@ export function buildOtavioSkinPlan(
           "Un soin contenant de l’acide salicylique peut être envisagé progressivement. Commencez doucement et n’ajoutez pas plusieurs actifs ciblés en même temps.",
         priority: "important",
       });
-    } else if (day >= 2 && dullness && !sensitivity && !redness) {
+    } else if (
+      day >= 2 &&
+      dullness &&
+      !sensitivity &&
+      !redness &&
+      !needsFundamentals
+    ) {
       actions.push({
         moment: "soir",
         title: "Soin éclat",
@@ -205,14 +275,28 @@ export function buildOtavioSkinPlan(
     } else {
       actions.push({
         moment: "soir",
-        title: "Routine ciblée",
+        title: needsFundamentals
+          ? "Routine fondamentale"
+          : "Routine ciblée",
         description:
           sensitivity || redness
             ? "Gardez une routine courte et évitez d’introduire plusieurs nouveaux actifs simultanément."
-            : texture && !sensitivity
-              ? "Un actif de type rétinol peut être envisagé progressivement si adapté à votre situation, sans le cumuler immédiatement avec plusieurs exfoliants."
-              : "Conservez les étapes utiles de votre routine sans multiplier les produits.",
+            : needsFundamentals
+              ? "Votre dernier scan invite à stabiliser les fondamentaux avant d’ajouter de nouveaux actifs : nettoyage doux, hydratation et protection solaire."
+              : texture && !sensitivity
+                ? "Un actif de type rétinol peut être envisagé progressivement si adapté à votre situation, sans le cumuler immédiatement avec plusieurs exfoliants."
+                : "Conservez les étapes utiles de votre routine sans multiplier les produits.",
         priority: "important",
+      });
+    }
+
+    if (highFatigue && day >= 2) {
+      actions.push({
+        moment: "soir",
+        title: "Soirée récupération",
+        description:
+          "Votre indicateur visuel de fatigue est bas. Gardez ce soir une routine courte et confortable, puis privilégiez une bonne récupération plutôt que d’ajouter plusieurs soins.",
+        priority: "optionnel",
       });
     }
 
@@ -226,7 +310,7 @@ export function buildOtavioSkinPlan(
       });
     }
 
-    if (day >= 5 && !sensitivity && !redness) {
+    if (day >= 5 && !sensitivity && !redness && !needsFundamentals) {
       actions.push({
         moment: "soir",
         title: "Ne pas surcharger la routine",
@@ -239,25 +323,38 @@ export function buildOtavioSkinPlan(
     let objective = "Installer une routine simple et régulière.";
 
     if (day === 2) {
-      objective = lowHydration || dry
-        ? "Renforcer l’hydratation et le confort cutané."
-        : "Stabiliser les gestes essentiels.";
+      objective =
+        lowHydration || dry
+          ? "Renforcer l’hydratation et le confort cutané."
+          : needsFundamentals
+            ? "Stabiliser les fondamentaux avant d’ajouter de nouveaux actifs."
+            : "Stabiliser les gestes essentiels.";
     } else if (day === 3) {
-      objective = acne
-        ? "Commencer une action ciblée sur les imperfections."
-        : dullness || texture
-          ? "Commencer progressivement le travail sur l’éclat et la texture."
-          : "Commencer l’adaptation selon vos observations.";
+      objective =
+        acne && !needsFundamentals
+          ? "Commencer une action ciblée sur les imperfections."
+          : dullness || texture
+            ? "Commencer progressivement le travail sur l’éclat et la texture."
+            : highFatigue
+              ? "Maintenir une routine simple tout en favorisant la récupération."
+              : "Commencer l’adaptation selon vos observations.";
     } else if (day === 4) {
-      objective = sensitivity || redness
-        ? "Protéger la tolérance de votre peau."
-        : "Renforcer la régularité de votre routine.";
+      objective =
+        sensitivity || redness
+          ? "Protéger la tolérance de votre peau."
+          : needsFundamentals
+            ? "Consolider les fondamentaux avant toute intensification."
+            : "Renforcer la régularité de votre routine.";
     } else if (day === 5) {
-      objective = "Éliminer les gestes inutiles et conserver l’essentiel.";
+      objective =
+        highFatigue
+          ? "Maintenir une routine efficace sans ajouter de charge inutile."
+          : "Éliminer les gestes inutiles et conserver l’essentiel.";
     } else if (day === 6) {
       objective = "Observer les premiers changements et la tolérance.";
     } else if (day === 7) {
-      objective = "Faire le bilan et préparer l’ajustement suivant.";
+      objective =
+        "Faire le bilan et préparer l’ajustement suivant.";
     }
 
     days.push({
@@ -270,9 +367,15 @@ export function buildOtavioSkinPlan(
   let objective =
     "Améliorer progressivement la régularité de votre routine cutanée.";
 
-  if (lowHydration || dry) {
+  if (veryLowHydration) {
+    objective =
+      "Priorité à une routine simple centrée sur l’hydratation et le confort cutané.";
+  } else if (lowHydration || dry) {
     objective =
       "Priorité à l’hydratation et au confort cutané avec une progression douce.";
+  } else if (veryLowSkinScore || lowBalance) {
+    objective =
+      "Stabiliser les fondamentaux de la routine avant d’intensifier les soins.";
   } else if (acne && !sensitivity) {
     objective =
       "Construire une routine régulière et ciblée autour des imperfections.";
@@ -285,6 +388,11 @@ export function buildOtavioSkinPlan(
   } else if (oily || combination) {
     objective =
       "Maintenir l’équilibre cutané avec une routine efficace mais non agressive.";
+  }
+
+  if (highFatigue) {
+    objective +=
+      " La fatigue visuelle observée pousse Otavio à privilégier une routine courte et régulière.";
   }
 
   if (lowSkinScore) {

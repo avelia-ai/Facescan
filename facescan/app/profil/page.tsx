@@ -23,6 +23,19 @@ import {
   LogOut,
 } from "lucide-react";
 
+type StoredScan = {
+  id: string;
+  date: string;
+  score: number;
+  indicators: {
+    peau: number;
+    hydratation: number;
+    fatigue: number;
+    equilibre: number;
+  };
+  photo?: string;
+};
+
 const profileSections = [
   {
     icon: Target,
@@ -48,12 +61,14 @@ const profileSections = [
 
 export default function ProfilPage() {
   const [scanFrequency, setScanFrequency] = useState(7);
+  const [storedScans, setStoredScans] = useState<StoredScan[]>([]);
   const [scanCount, setScanCount] = useState(0);
   const [currentScore, setCurrentScore] = useState<number | null>(null);
   const [previousScore, setPreviousScore] = useState<number | null>(null);
   const [xp, setXp] = useState(0);
   const [stage, setStage] = useState(1);
   const [streak, setStreak] = useState(0);
+  const [displayName, setDisplayName] = useState("vous");
 
   const handleSignOut = async () => {
     const { createClient } = await import("@/lib/supabase/client");
@@ -76,6 +91,18 @@ export default function ProfilPage() {
         return;
       }
 
+      const metadataName =
+        user.user_metadata?.full_name ||
+        user.user_metadata?.name ||
+        user.email?.split("@")[0] ||
+        "vous";
+
+      setDisplayName(
+        String(metadataName)
+          .trim()
+          .replace(/\s+/g, " ")
+      );
+
       const { data: profile } = await supabase
         .from("profiles")
         .select("otavio_xp, otavio_stage, otavio_streak")
@@ -91,28 +118,48 @@ export default function ProfilPage() {
 
       const storedScans = localStorage.getItem("facescan-scans");
 
-      if (!storedScans) return;
+      if (!storedScans) {
+        setStoredScans([]);
+        setScanCount(0);
+        setCurrentScore(null);
+        setPreviousScore(null);
+        return;
+      }
 
       try {
-        const scans = JSON.parse(storedScans);
+        const parsed = JSON.parse(storedScans);
 
-        if (Array.isArray(scans) && scans.length > 0) {
-          setScanCount(scans.length);
-
-          const scores = scans
-            .map((scan) => scan?.score)
-            .filter((score) => typeof score === "number");
-
-          if (scores.length > 0) {
-            setCurrentScore(scores[0]);
-          }
-
-          if (scores.length > 1) {
-            setPreviousScore(scores[1]);
-          }
+        if (!Array.isArray(parsed)) {
+          setStoredScans([]);
+          setScanCount(0);
+          setCurrentScore(null);
+          setPreviousScore(null);
+          return;
         }
+
+        const scans = parsed
+          .filter(
+            (scan) =>
+              scan &&
+              typeof scan.id === "string" &&
+              typeof scan.date === "string" &&
+              typeof scan.score === "number" &&
+              scan.indicators
+          )
+          .sort(
+            (a, b) =>
+              new Date(b.date).getTime() - new Date(a.date).getTime()
+          );
+
+        setStoredScans(scans);
+        setScanCount(scans.length);
+        setCurrentScore(scans[0]?.score ?? null);
+        setPreviousScore(scans[1]?.score ?? null);
       } catch {
+        setStoredScans([]);
         setScanCount(0);
+        setCurrentScore(null);
+        setPreviousScore(null);
       }
     };
 
@@ -135,6 +182,27 @@ export default function ProfilPage() {
     setScanFrequency(value);
     localStorage.setItem("facescan-scan-frequency", String(value));
   };
+
+  const latestScan = storedScans[0];
+
+  const indicatorItems = [
+    {
+      label: "Peau",
+      key: "peau" as const,
+    },
+    {
+      label: "Hydratation",
+      key: "hydratation" as const,
+    },
+    {
+      label: "Fatigue",
+      key: "fatigue" as const,
+    },
+    {
+      label: "Équilibre",
+      key: "equilibre" as const,
+    },
+  ];
 
   return (
     <main className="app-background min-h-screen text-[#17202a] pb-28">
@@ -202,7 +270,7 @@ export default function ProfilPage() {
               </p>
 
               <h2 className="mt-2 text-3xl font-semibold tracking-[-0.04em]">
-                Bonjour
+                Bonjour {displayName}
               </h2>
 
               <p className="mt-2 max-w-xl text-[13px] leading-6 text-white/70">
@@ -325,13 +393,9 @@ export default function ProfilPage() {
                 jour{scanFrequency > 1 ? "s" : ""}.
               </p>
 
-              <button
-                type="button"
-                className="mt-5 flex items-center gap-2 text-[11px] font-semibold"
-              >
-                Modifier
-                <ChevronRight size={14} strokeWidth={1.8} />
-              </button>
+              <p className="mt-5 text-[10px] font-medium text-[#7b8e91]">
+                Enregistré automatiquement
+              </p>
             </article>
           </div>
         </section>
@@ -346,23 +410,23 @@ export default function ProfilPage() {
           </h2>
 
           <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {[
-              { label: "Peau", value: "82", icon: Sparkles, trend: "+6" },
-              {
-                label: "Hydratation",
-                value: "74",
-                icon: Droplets,
-                trend: "+9",
-              },
-              { label: "Fatigue", value: "68", icon: Moon, trend: "-4" },
-              {
-                label: "Équilibre",
-                value: "79",
-                icon: Activity,
-                trend: "+3",
-              },
-            ].map((item) => {
-              const Icon = item.icon;
+            {indicatorItems.map((item) => {
+              const Icon =
+                item.key === "peau"
+                  ? Sparkles
+                  : item.key === "hydratation"
+                    ? Droplets
+                    : item.key === "fatigue"
+                      ? Moon
+                      : Activity;
+
+              const value = latestScan?.indicators?.[item.key] ?? null;
+              const previous = storedScans[1]?.indicators?.[item.key] ?? null;
+
+              const change =
+                value !== null && previous !== null
+                  ? value - previous
+                  : null;
 
               return (
                 <Link
@@ -371,7 +435,7 @@ export default function ProfilPage() {
                     .toLowerCase()
                     .normalize("NFD")
                     .replace(/[\u0300-\u036f]/g, "")}`}
-                  className="rounded-[22px] border border-[#e0e9e7] bg-white p-4 shadow-[0_10px_30px_rgba(35,55,60,0.045)] transition hover:-translate-y-0.5"
+                  className="rounded-[22px] border border-[#e0e9e7] bg-white p-4 shadow-[0_10px_30px_rgba(35,55,60,0.045)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(35,55,60,0.07)]"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#e9f8f5]">
@@ -391,13 +455,30 @@ export default function ProfilPage() {
 
                   <div className="mt-1 flex items-baseline gap-1">
                     <span className="text-2xl font-semibold tracking-[-0.03em]">
-                      {item.value}
+                      {value ?? "—"}
                     </span>
-                    <span className="text-[10px] text-[#8aa0a1]">/100</span>
+
+                    {value !== null && (
+                      <span className="text-[10px] text-[#8aa0a1]">
+                        /100
+                      </span>
+                    )}
                   </div>
 
-                  <p className="mt-2 text-[10px] font-semibold text-[#587174]">
-                    {item.trend}
+                  <p
+                    className={`mt-2 text-[10px] font-semibold ${
+                      change === null
+                        ? "text-[#8a9a9d]"
+                        : change >= 0
+                          ? "text-[#287f72]"
+                          : "text-[#c76852]"
+                    }`}
+                  >
+                    {change === null
+                      ? value !== null
+                        ? "Référence"
+                        : "Après votre premier scan"
+                      : `${change >= 0 ? "+" : ""}${change} pts`}
                   </p>
                 </Link>
               );

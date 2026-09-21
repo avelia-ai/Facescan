@@ -197,6 +197,23 @@ export default function ConseilsPage() {
 
   const expandedAdviceId = expandedAdvice;
 
+  const programHrefForCategory = (category: string) => {
+    switch (category) {
+      case "Peau":
+        return "/peau";
+      case "Hydratation":
+        return "/hydratation";
+      case "Sommeil":
+      case "Récupération":
+      case "Fatigue apparente":
+        return "/sommeil";
+      case "Alimentation":
+        return "/alimentation";
+      default:
+        return null;
+    }
+  };
+
   const renderCategoryIcon = (category: string) => {
     switch (category) {
       case "Peau":
@@ -566,6 +583,16 @@ export default function ConseilsPage() {
                           </div>
                         ))}
                       </div>
+
+                      {programHrefForCategory(String(item.category)) && (
+                        <Link
+                          href={programHrefForCategory(String(item.category))!}
+                          className="mt-4 flex items-center justify-between rounded-[18px] border border-[#bcded8] bg-[linear-gradient(135deg,#edf9f6_0%,#dff2ed_100%)] px-4 py-3 text-[11px] font-semibold text-[#176678] shadow-[0_8px_20px_rgba(23,102,120,0.07)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_24px_rgba(23,102,120,0.1)]"
+                        >
+                          <span>Voir mon programme personnalisé</span>
+                          <ArrowRight size={15} strokeWidth={1.9} />
+                        </Link>
+                      )}
                     </div>
 
                     <div className="rounded-[18px] border border-[#dddaf0] bg-[#faf9fe] p-4">
