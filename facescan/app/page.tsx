@@ -137,37 +137,10 @@ export default function HomePage() {
     [otavioProfile, latestIndicators]
   );
 
-  const dailyProgramItems = (() => {
-    const selected: typeof otavioDailyProgram.items = [];
-    const categories = [
-      "hydratation",
-      "peau",
-      "sommeil",
-      "alimentation",
-    ] as const;
-
-    for (const category of categories) {
-      const item = otavioDailyProgram.items.find(
-        (programItem) => programItem.category === category
-      );
-
-      if (item) {
-        selected.push(item);
-      }
-    }
-
-    if (selected.length < 3) {
-      for (const item of otavioDailyProgram.items) {
-        if (selected.length >= 3) break;
-
-        if (!selected.some((selectedItem) => selectedItem.id === item.id)) {
-          selected.push(item);
-        }
-      }
-    }
-
-    return selected.slice(0, 3);
-  })();
+  const dailyProgramItems = useMemo(
+    () => otavioDailyProgram.items.slice(0, 3),
+    [otavioDailyProgram.items]
+  );
 
   const dailyHabitItems = useMemo(() => {
     const scan = latestIndicators;
