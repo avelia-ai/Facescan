@@ -169,6 +169,147 @@ export default function HomePage() {
     return selected.slice(0, 3);
   })();
 
+  const dailyHabitItems = useMemo(() => {
+    const scan = latestIndicators;
+    const goals = profile?.goals ?? [];
+
+    const urgency = (value: number | null | undefined) =>
+      typeof value === "number" ? 100 - value : 0;
+
+    const items = [
+      {
+        key: "peau",
+        href: "/peau",
+        title: "Peau",
+        eyebrow: "Priorité du jour",
+        badge:
+          scan?.peau != null
+            ? `Score ${Math.round(scan.peau)} / 100`
+            : profile?.skin_type || "À personnaliser",
+        description:
+          scan?.peau != null && scan.peau < 70
+            ? `Votre dernier scan montre un score peau de ${Math.round(scan.peau)}. Otavio renforce aujourd’hui les gestes adaptés à votre profil.`
+            : "Votre profil peau et votre évolution servent à ajuster les gestes proposés par Otavio.",
+        relevance:
+          urgency(scan?.peau) +
+          (goals.includes("qualite_peau") || goals.includes("eclat") ? 18 : 0),
+        border: "border-[#b9d7d1]",
+        shadow: "shadow-[0_12px_32px_rgba(35,90,84,0.07)]",
+        iconBg: "bg-[linear-gradient(160deg,#eefaf7_0%,#dcefe9_100%)]",
+        iconColor: "text-[#287f72]",
+        badgeBg: "bg-[#edf7f4]",
+        badgeColor: "text-[#287f72]",
+        titleColor: "text-[#244c50]",
+      },
+      {
+        key: "hydratation",
+        href: "/hydratation",
+        title: "Hydratation",
+        eyebrow: "Besoin détecté",
+        badge:
+          scan?.hydratation != null
+            ? `Score ${Math.round(scan.hydratation)} / 100`
+            : profile?.hydration_level || "À personnaliser",
+        description:
+          scan?.hydratation != null && scan.hydratation < 70
+            ? `Votre dernier scan montre un score d’hydratation apparente de ${Math.round(scan.hydratation)}. Otavio met l’hydratation régulière en avant aujourd’hui.`
+            : "Votre niveau d’hydratation et vos habitudes servent à ajuster les conseils du quotidien.",
+        relevance:
+          urgency(scan?.hydratation) +
+          (goals.includes("hydratation") ? 20 : 0),
+        border: "border-[#b9d9e5]",
+        shadow: "shadow-[0_12px_32px_rgba(37,98,116,0.07)]",
+        iconBg: "bg-[linear-gradient(160deg,#edf9fc_0%,#dceff4_100%)]",
+        iconColor: "text-[#2d8eae]",
+        badgeBg: "bg-[#edf7fa]",
+        badgeColor: "text-[#2d7e9a]",
+        titleColor: "text-[#245766]",
+      },
+      {
+        key: "sommeil",
+        href: "/sommeil",
+        title: "Sommeil",
+        eyebrow: "Récupération",
+        badge:
+          scan?.fatigue != null
+            ? `Fatigue ${Math.round(scan.fatigue)} / 100`
+            : profile?.sleep_quality || "À personnaliser",
+        description:
+          scan?.fatigue != null && scan.fatigue < 70
+            ? `Le dernier scan montre un score de fatigue apparente de ${Math.round(scan.fatigue)}. Otavio privilégie aujourd’hui la récupération.`
+            : "Votre qualité et votre régularité de sommeil servent à personnaliser votre accompagnement.",
+        relevance:
+          urgency(scan?.fatigue) +
+          (goals.includes("sommeil") || goals.includes("fatigue") ? 18 : 0),
+        border: "border-[#c9c7e2]",
+        shadow: "shadow-[0_12px_32px_rgba(64,59,90,0.07)]",
+        iconBg: "bg-[linear-gradient(160deg,#f5f4fd_0%,#e7e6f6_100%)]",
+        iconColor: "text-[#5d5b9d]",
+        badgeBg: "bg-[#f1f0fa]",
+        badgeColor: "text-[#5d5b9d]",
+        titleColor: "text-[#39395f]",
+      },
+      {
+        key: "alimentation",
+        href: "/alimentation",
+        title: "Nutrition",
+        eyebrow: "Alimentation",
+        badge:
+          profile?.eating_style ||
+          (scan?.equilibre != null
+            ? `Équilibre ${Math.round(scan.equilibre)} / 100`
+            : "À personnaliser"),
+        description:
+          scan?.hydratation != null && scan.hydratation < 70
+            ? "Otavio renforce les habitudes alimentaires cohérentes avec votre hydratation et votre profil."
+            : scan?.equilibre != null && scan.equilibre < 70
+              ? "Votre score d’équilibre entre dans la sélection des habitudes alimentaires proposées par Otavio."
+              : "Votre alimentation et vos préférences servent à personnaliser vos recommandations.",
+        relevance:
+          urgency(scan?.equilibre) * 0.45 +
+          urgency(scan?.hydratation) * 0.35 +
+          urgency(scan?.peau) * 0.20 +
+          (goals.includes("nutrition") ? 16 : 0),
+        border: "border-[#dfb7aa]",
+        shadow: "shadow-[0_12px_32px_rgba(111,72,58,0.07)]",
+        iconBg: "bg-[linear-gradient(160deg,#fff5f0_0%,#f8dfd5_100%)]",
+        iconColor: "text-[#b76b58]",
+        badgeBg: "bg-[#fcf0eb]",
+        badgeColor: "text-[#a35f4d]",
+        titleColor: "text-[#77463b]",
+      },
+      {
+        key: "activite",
+        href: "/activite",
+        title: "Activité",
+        eyebrow: "Mouvement",
+        badge: profile?.activity_level || "À personnaliser",
+        description:
+          scan?.fatigue != null && scan.fatigue < 60
+            ? "Otavio privilégie aujourd’hui un mouvement doux et des pauses actives."
+            : "Votre niveau d’activité, votre fatigue apparente et votre équilibre servent à ajuster le mouvement conseillé.",
+        relevance:
+          urgency(scan?.fatigue) * 0.55 +
+          urgency(scan?.equilibre) * 0.45 +
+          (profile?.activity_level === "faible" ||
+          profile?.activity_level === "sédentaire"
+            ? 12
+            : 0),
+        border: "border-[#a9d1cb]",
+        shadow: "shadow-[0_12px_32px_rgba(35,90,84,0.06)]",
+        iconBg: "bg-[linear-gradient(160deg,#ebfaf6_0%,#d7eee8_100%)]",
+        iconColor: "text-[#168f91]",
+        badgeBg: "bg-[#eaf8f6]",
+        badgeColor: "text-[#168f91]",
+        titleColor: "text-[#21585d]",
+      },
+    ];
+
+    return [...items]
+      .sort((a, b) => b.relevance - a.relevance)
+      .slice(0, 3);
+  }, [latestIndicators, profile]);
+
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     router.replace("/connexion");
@@ -1119,173 +1260,82 @@ export default function HomePage() {
               </h2>
 
               <p className="mt-1.5 text-xs leading-5 text-[#718088]">
-                Les leviers que vous pouvez suivre au quotidien.
+                Otavio ajuste ces priorités à partir de votre profil et de votre dernier scan.
               </p>
             </div>
-
-
           </div>
 
           <div className="mt-5 space-y-3">
-
-            {/* Sommeil */}
-            <Link
-              href="/sommeil"
-              className="group relative block overflow-hidden rounded-[26px] border border-[#c9c7e2] bg-white shadow-[0_12px_32px_rgba(64,59,90,0.07)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(64,59,90,0.11)]"
-            >
-              <div className="flex items-stretch">
-                <div className="flex w-[88px] shrink-0 items-center justify-center bg-[linear-gradient(160deg,#f5f4fd_0%,#e7e6f6_100%)]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-[17px] bg-white/85 text-[#5d5b9d] shadow-[0_6px_16px_rgba(93,91,157,0.10)]">
-                    <Moon size={21} strokeWidth={1.8} />
+            {dailyHabitItems.map((item) => (
+              <Link
+                key={item.key}
+                href={item.href}
+                className={`group relative block overflow-hidden rounded-[26px] border bg-white ${item.border} ${item.shadow} transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(25,68,80,0.11)]`}
+              >
+                <div className="flex items-stretch">
+                  <div
+                    className={`flex w-[88px] shrink-0 items-center justify-center ${item.iconBg}`}
+                  >
+                    <div
+                      className={`flex h-12 w-12 items-center justify-center rounded-[17px] bg-white/85 ${item.iconColor} shadow-[0_6px_16px_rgba(25,68,80,0.08)]`}
+                    >
+                      {item.key === "sommeil" ? (
+                        <Moon size={21} strokeWidth={1.8} />
+                      ) : item.key === "alimentation" ? (
+                        <Utensils size={21} strokeWidth={1.8} />
+                      ) : item.key === "activite" ? (
+                        <Activity size={21} strokeWidth={1.8} />
+                      ) : item.key === "hydratation" ? (
+                        <Droplets size={21} strokeWidth={1.8} />
+                      ) : (
+                        <Sparkles size={21} strokeWidth={1.8} />
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                <div className="min-w-0 flex-1 px-4 py-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#7774a7]">
-                        Récupération
-                      </p>
+                  <div className="min-w-0 flex-1 px-4 py-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <p
+                          className={`text-[10px] font-bold uppercase tracking-[0.16em] ${item.iconColor}`}
+                        >
+                          {item.eyebrow}
+                        </p>
 
-                      <p className="mt-1 text-[17px] font-semibold tracking-[-0.02em] text-[#39395f]">
-                        Sommeil
-                      </p>
+                        <p
+                          className={`mt-1 text-[17px] font-semibold tracking-[-0.02em] ${item.titleColor}`}
+                        >
+                          {item.title}
+                        </p>
+                      </div>
+
+                      <ChevronRight
+                        size={17}
+                        className="mt-1 shrink-0 text-[#a6b2b0] transition-transform group-hover:translate-x-0.5"
+                      />
                     </div>
 
-                    <ChevronRight
-                      size={17}
-                      className="mt-1 shrink-0 text-[#aaa9c7] transition-transform group-hover:translate-x-0.5"
-                    />
-                  </div>
-
-                  <div className="mt-3 flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-[#f1f0fa] px-2.5 py-1 text-[10px] font-semibold text-[#5d5b9d]">
-                      {profile?.sleep_quality
-                        ? profile.sleep_quality === "tres_bonne"
-                          ? "Très bonne qualité"
-                          : profile.sleep_quality === "bonne"
-                            ? "Bonne qualité"
-                            : "À suivre"
-                        : "Personnalisation en cours"}
-                    </span>
-
-                    <span className="text-[10px] text-[#89909a]">
-                      Suivi quotidien
-                    </span>
-                  </div>
-
-                  <p className="mt-2 text-xs leading-5 text-[#7b898f]">
-                    {profile?.sleep_quality
-                      ? "Votre qualité de sommeil est prise en compte dans vos recommandations."
-                      : "Votre sommeil sera intégré progressivement à votre accompagnement."}
-                  </p>
-                </div>
-              </div>
-            </Link>
-
-            {/* Nutrition */}
-            <Link
-              href="/alimentation"
-              className="group relative block overflow-hidden rounded-[26px] border border-[#dfb7aa] bg-white shadow-[0_12px_32px_rgba(111,72,58,0.07)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(111,72,58,0.11)]"
-            >
-              <div className="flex items-stretch">
-                <div className="flex w-[88px] shrink-0 items-center justify-center bg-[linear-gradient(160deg,#fff5f0_0%,#f8dfd5_100%)]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-[17px] bg-white/85 text-[#b76b58] shadow-[0_6px_16px_rgba(183,107,88,0.10)]">
-                    <Utensils size={21} strokeWidth={1.8} />
-                  </div>
-                </div>
-
-                <div className="min-w-0 flex-1 px-4 py-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#b76b58]">
-                        Alimentation
-                      </p>
-
-                      <p className="mt-1 text-[17px] font-semibold tracking-[-0.02em] text-[#77463b]">
-                        Nutrition
-                      </p>
-                    </div>
-
-                    <ChevronRight
-                      size={17}
-                      className="mt-1 shrink-0 text-[#d29b8b] transition-transform group-hover:translate-x-0.5"
-                    />
-                  </div>
-
-                  <div className="mt-3 flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-[#fcf0eb] px-2.5 py-1 text-[10px] font-semibold text-[#a35f4d]">
-                      {profile?.eating_style
-                        ? profile.eating_style
-                        : "Profil alimentaire"}
-                    </span>
-
-                    {profile?.meals_per_day ? (
-                      <span className="rounded-full bg-[#f8f4f1] px-2.5 py-1 text-[10px] font-semibold text-[#8b7770]">
-                        {profile.meals_per_day} repas / jour
+                    <div className="mt-3 flex flex-wrap items-center gap-2">
+                      <span
+                        className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${item.badgeBg} ${item.badgeColor}`}
+                      >
+                        {item.badge}
                       </span>
-                    ) : null}
-                  </div>
 
-                  <p className="mt-2 text-xs leading-5 text-[#7b898f]">
-                    Votre alimentation, vos préférences et vos repas servent à personnaliser vos recommandations.
-                  </p>
-                </div>
-              </div>
-            </Link>
-
-            {/* Activité */}
-            <Link
-              href="/activite"
-              className="group relative block overflow-hidden rounded-[26px] border border-[#a9d1cb] bg-white shadow-[0_12px_32px_rgba(35,90,84,0.06)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(35,90,84,0.10)]"
-            >
-              <div className="flex items-stretch">
-                <div className="flex w-[88px] shrink-0 items-center justify-center bg-[linear-gradient(160deg,#ebfaf6_0%,#d7eee8_100%)]">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-[17px] bg-white/85 text-[#168f91] shadow-[0_6px_16px_rgba(22,143,145,0.10)]">
-                    <Activity size={21} strokeWidth={1.8} />
-                  </div>
-                </div>
-
-                <div className="min-w-0 flex-1 px-4 py-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#168f91]">
-                        Mouvement
-                      </p>
-
-                      <p className="mt-1 text-[17px] font-semibold tracking-[-0.02em] text-[#21585d]">
-                        Activité
-                      </p>
+                      <span className="text-[10px] text-[#89909a]">
+                        Personnalisé par Otavio
+                      </span>
                     </div>
 
-                    <ChevronRight
-                      size={17}
-                      className="mt-1 shrink-0 text-[#8bb6b3] transition-transform group-hover:translate-x-0.5"
-                    />
+                    <p className="mt-2 text-xs leading-5 text-[#7b898f]">
+                      {item.description}
+                    </p>
                   </div>
-
-                  <div className="mt-3 flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-[#eaf8f6] px-2.5 py-1 text-[10px] font-semibold text-[#168f91]">
-                      {profile?.activity_level
-                        ? profile.activity_level
-                        : "À personnaliser"}
-                    </span>
-
-                    <span className="text-[10px] text-[#89909a]">
-                      Suivi de progression
-                    </span>
-                  </div>
-
-                  <p className="mt-2 text-xs leading-5 text-[#7b898f]">
-                    Votre niveau d’activité aide à ajuster votre accompagnement et vos recommandations.
-                  </p>
                 </div>
-              </div>
-            </Link>
-
+              </Link>
+            ))}
           </div>
         </section>
-
 
         <section className="mt-9 border-t border-[#d7e3e0] pt-6">
           <div className="flex items-start gap-4">
