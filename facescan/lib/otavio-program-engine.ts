@@ -311,11 +311,48 @@ export function buildOtavioDailyProgram(
     return priorityOrder[a.priority] - priorityOrder[b.priority];
   });
 
+  const scanFocus = scan
+    ? [
+        {
+          key: "peau",
+          label: "votre peau",
+          value: scan.peau,
+        },
+        {
+          key: "hydratation",
+          label: "votre hydratation",
+          value: scan.hydratation,
+        },
+        {
+          key: "fatigue",
+          label: "votre fatigue apparente",
+          value: scan.fatigue,
+        },
+        {
+          key: "equilibre",
+          label: "votre équilibre visuel",
+          value: scan.equilibre,
+        },
+      ]
+        .filter(
+          (item) => typeof item.value === "number"
+        )
+        .sort(
+          (a, b) =>
+            (a.value as number) - (b.value as number)
+        )[0]
+    : null;
+
+  const subtitle = scanFocus
+    ? `Votre dernier scan place ${scanFocus.label} à ${Math.round(
+        scanFocus.value as number
+      )}/100. Otavio ajuste vos actions du jour autour de ce repère visuel.`
+    : "Otavio sélectionne les actions les plus utiles pour avancer aujourd’hui.";
+
   return {
     date: todayKey(date),
     title: "Votre programme du jour",
-    subtitle:
-      "Otavio sélectionne les actions les plus utiles pour avancer aujourd’hui.",
+    subtitle,
     items: scoredItems,
     nutrition,
     sleep,
