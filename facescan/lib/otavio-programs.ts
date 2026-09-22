@@ -89,6 +89,7 @@ export type OtavioProgramProfile = {
 };
 
 export type OtavioNutritionScan = {
+  peau?: number | null;
   equilibre?: number | null;
   hydratation?: number | null;
   fatigue?: number | null;
@@ -1280,6 +1281,63 @@ function scoreRecipe(
    * ---------------------------------------------------------
    */
 
+  // Peau faible : orienter davantage les recettes vers une
+  // alimentation variée et riche en végétaux.
+  if (
+    typeof scan?.peau === "number" &&
+    scan.peau < 75
+  ) {
+    const skinSupportGoals = recipe.goals.filter((goal) =>
+      [
+        "peau",
+        "qualite_peau",
+        "hydratation",
+        "equilibre",
+        "eclat",
+        "antioxydants",
+      ].some((term) => normalize(goal).includes(term))
+    ).length;
+
+    const skinSupportIngredients = recipe.ingredients.filter(
+      (ingredient) =>
+        [
+          "tomate",
+          "carotte",
+          "epinard",
+          "brocoli",
+          "poivron",
+          "concombre",
+          "courgette",
+          "avocat",
+          "salade",
+          "fruits",
+          "pomme",
+          "banane",
+          "baies",
+          "framboise",
+          "myrtille",
+          "orange",
+          "citron",
+          "noix",
+          "amande",
+          "graines",
+          "saumon",
+          "sardine",
+        ].some((term) =>
+          normalize(ingredient.name).includes(term)
+        )
+    ).length;
+
+    score += Math.min(skinSupportGoals, 2) * 5;
+    score += Math.min(skinSupportIngredients, 4) * 2;
+
+    if (scan.peau < 40) {
+      score += 2;
+    } else if (scan.peau < 60) {
+      score += 1;
+    }
+  }
+
   // Équilibre faible : repas complets et structurés.
   if (
     typeof scan?.equilibre === "number" &&
@@ -1903,6 +1961,13 @@ export function buildOtavioNutritionPlan(
         (intolerance) =>
           `Intolérance : ${intolerance}`
       ),
+
+      ...(scan?.peau !== null &&
+      scan?.peau !== undefined
+        ? [
+            `Score visuel de peau pris en compte pour l’orientation alimentaire : ${scan.peau}/100`,
+          ]
+        : []),
 
       ...(scan?.equilibre !== null &&
       scan?.equilibre !== undefined
