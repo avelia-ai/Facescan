@@ -190,29 +190,45 @@ export function buildOtavioSkinPlan(
 
     actions.push({
       moment: "matin",
-      title: "Nettoyage doux",
+      title:
+        veryLowSkinScore
+          ? "Stabiliser ma routine peau"
+          : lowSkinScore
+            ? "Renforcer les fondamentaux de ma peau"
+            : "Nettoyage doux",
       description:
-        sensitivity || redness
-          ? "Utilisez un nettoyant visage doux, idéalement sans parfum, sans frotter et sans multiplier les lavages."
-          : oily || acne
-            ? "Nettoyez doucement le visage pour retirer l’excès de sébum sans chercher à décaper la peau."
-            : "Nettoyez le visage avec un produit doux et adapté à votre tolérance.",
+        veryLowSkinScore
+          ? `Votre score visuel de peau est de ${skinScore}/100. Pendant cette phase, privilégiez un nettoyage très doux, sans gommage agressif ni multiplication des produits.`
+          : lowSkinScore
+            ? `Votre dernier scan affiche ${skinScore}/100. Gardez un nettoyage doux et régulier avant d’ajouter de nouveaux actifs.`
+            : sensitivity || redness
+              ? "Utilisez un nettoyant visage doux, idéalement sans parfum, sans frotter et sans multiplier les lavages."
+              : oily || acne
+                ? "Nettoyez doucement le visage pour retirer l’excès de sébum sans chercher à décaper la peau."
+                : "Nettoyez le visage avec un produit doux et adapté à votre tolérance.",
       priority: "essentiel",
     });
 
     actions.push({
       moment: "matin",
-      title: "Hydratation ciblée",
+      title:
+        veryLowSkinScore
+          ? "Prioriser le confort cutané"
+          : lowHydration || dry
+            ? "Renforcer mon hydratation"
+            : "Hydratation ciblée",
       description:
-        dry || veryLowHydration
-          ? "Votre scan suggère une hydratation basse. Privilégiez une formule simple avec des agents humectants comme la glycérine, puis une crème contenant notamment des céramides pour soutenir la barrière cutanée."
-          : lowHydration
-            ? "Votre hydratation visuelle mérite une attention particulière. Appliquez régulièrement un soin hydratant puis une crème adaptée à votre tolérance."
-            : oily
-              ? "Privilégiez un hydratant léger de type gel-crème, idéalement indiqué non comédogène."
-              : combination
-                ? "Utilisez une hydratation légère sur l’ensemble du visage et adaptez la quantité selon les zones."
-                : "Appliquez une crème hydratante adaptée à votre type de peau.",
+        veryLowSkinScore
+          ? `Avec un score peau de ${skinScore}/100, Otavio privilégie aujourd’hui une routine simple et confortable : hydratation régulière et limitation des actifs multiples.`
+          : dry || veryLowHydration
+            ? "Votre scan suggère une hydratation basse. Privilégiez une formule simple avec des agents humectants comme la glycérine, puis une crème contenant notamment des céramides pour soutenir la barrière cutanée."
+            : lowHydration
+              ? "Votre hydratation visuelle mérite une attention particulière. Appliquez régulièrement un soin hydratant puis une crème adaptée à votre tolérance."
+              : oily
+                ? "Privilégiez un hydratant léger de type gel-crème, idéalement indiqué non comédogène."
+                : combination
+                  ? "Utilisez une hydratation légère sur l’ensemble du visage et adaptez la quantité selon les zones."
+                  : "Appliquez une crème hydratante adaptée à votre type de peau.",
       priority: "essentiel",
     });
 
@@ -367,7 +383,10 @@ export function buildOtavioSkinPlan(
   let objective =
     "Améliorer progressivement la régularité de votre routine cutanée.";
 
-  if (veryLowHydration) {
+  if (veryLowSkinScore) {
+    objective =
+      `Votre score visuel de peau est de ${skinScore}/100. Otavio donne aujourd’hui la priorité à la stabilisation des fondamentaux et au confort cutané.`;
+  } else if (veryLowHydration) {
     objective =
       "Priorité à une routine simple centrée sur l’hydratation et le confort cutané.";
   } else if (lowHydration || dry) {
