@@ -41,13 +41,11 @@ function analyzeFacePixels(
 
     image.onload = () => {
       if (!face.faceBox) {
-        resolve({
-          skinUniformity: 50,
-          visibleRedness: 50,
-          texture: 50,
-          underEyeAppearance: 50,
-          apparentHydration: 50,
-        });
+        reject(
+          new Error(
+            "Impossible de déterminer précisément la zone du visage."
+          )
+        );
         return;
       }
 
@@ -57,23 +55,47 @@ function analyzeFacePixels(
       const scaleX = sourceWidth / face.imageWidth;
       const scaleY = sourceHeight / face.imageHeight;
 
-      const x = Math.max(0, Math.floor(face.faceBox.x * scaleX));
-      const y = Math.max(0, Math.floor(face.faceBox.y * scaleY));
-      const width = Math.min(
-        sourceWidth - x,
+      const faceX = Math.max(0, Math.floor(face.faceBox.x * scaleX));
+      const faceY = Math.max(0, Math.floor(face.faceBox.y * scaleY));
+      const faceWidth = Math.min(
+        sourceWidth - faceX,
         Math.max(1, Math.floor(face.faceBox.width * scaleX))
       );
-      const height = Math.min(
-        sourceHeight - y,
+      const faceHeight = Math.min(
+        sourceHeight - faceY,
         Math.max(1, Math.floor(face.faceBox.height * scaleY))
+      );
+
+      /*
+       * La bounding box MediaPipe peut contenir une partie des cheveux,
+       * du fond ou du cou. On réduit légèrement la zone avant analyse.
+       */
+      const cropX = faceX + Math.floor(faceWidth * 0.10);
+      const cropY = faceY + Math.floor(faceHeight * 0.08);
+      const cropWidth = Math.max(
+        1,
+        Math.min(
+          sourceWidth - cropX,
+          Math.floor(faceWidth * 0.80)
+        )
+      );
+      const cropHeight = Math.max(
+        1,
+        Math.min(
+          sourceHeight - cropY,
+          Math.floor(faceHeight * 0.84)
+        )
       );
 
       const canvas = document.createElement("canvas");
       const maxSize = 500;
-      const ratio = Math.min(1, maxSize / Math.max(width, height));
+      const ratio = Math.min(
+        1,
+        maxSize / Math.max(cropWidth, cropHeight)
+      );
 
-      canvas.width = Math.max(1, Math.round(width * ratio));
-      canvas.height = Math.max(1, Math.round(height * ratio));
+      canvas.width = Math.max(1, Math.round(cropWidth * ratio));
+      canvas.height = Math.max(1, Math.round(cropHeight * ratio));
 
       const context = canvas.getContext("2d", {
         willReadFrequently: true,
@@ -86,10 +108,10 @@ function analyzeFacePixels(
 
       context.drawImage(
         image,
-        x,
-        y,
-        width,
-        height,
+        cropX,
+        cropY,
+        cropWidth,
+        cropHeight,
         0,
         0,
         canvas.width,
@@ -111,82 +133,140 @@ function analyzeFacePixels(
       let totalSaturation = 0;
       let pixels = 0;
 
-      for (let index = 0; index < data.length; index += 4) {
-        const r = data[index];
-        const g = data[index + 1];
-        const b = data[index + 2];
+      /*
+       * Masque elliptique central :
+       * il réduit l'influence des cheveux, du contour du visage
+       * et de l'arrière-plan restant dans la bounding box.
+       */
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radiusX = Math.max(1, canvas.width * 0.45);
+      const radiusY = Math.max(1, canvas.height * 0.46);
 
-        const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+      for (let y = 0; y < canvas.height; y++) {
+        for (let x = 0; x < canvas.width; x++) {
+          const normalizedX = (x - centerX) / radiusX;
+          const normalizedY = (y - centerY) / radiusY;
 
-        const max = Math.max(r, g, b);
-        const min = Math.min(r, g, b);
-        const saturation = max === 0 ? 0 : ((max - min) / max) * 100;
+          if (
+            normalizedX * normalizedX +
+              normalizedY * normalizedY >
+            1
+          ) {
+            continue;
+          }
 
-        const redness = Math.max(
-          0,
-          ((r - (g + b) / 2) / 255) * 100
-        );
+          const index = (y * canvas.width + x) * 4;
 
-        brightnessValues.push(brightness);
-        rednessValues.push(redness);
+          const r = data[index];
+          const g = data[index + 1];
+          const b = data[index + 2];
 
-        totalBrightness += brightness;
-        totalRedness += redness;
-        totalSaturation += saturation;
-        pixels += 1;
+          const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+
+          const max = Math.max(r, g, b);
+          const min = Math.min(r, g, b);
+          const saturation =
+            max === 0 ? 0 : ((max - min) / max) * 100;
+
+          const redness = Math.max(
+            0,
+            ((r - (g + b) / 2) / 255) * 100
+          );
+
+          brightnessValues.push(brightness);
+          rednessValues.push(redness);
+
+          totalBrightness += brightness;
+          totalRedness += redness;
+          totalSaturation += saturation;
+          pixels += 1;
+        }
       }
 
       if (pixels === 0) {
-        resolve({
-          skinUniformity: 50,
-          visibleRedness: 50,
-          texture: 50,
-          underEyeAppearance: 50,
-          apparentHydration: 50,
-        });
+        reject(
+          new Error(
+            "Aucun pixel exploitable dans la zone du visage."
+          )
+        );
         return;
       }
+
+      /*
+       * Statistiques robustes :
+       * on retire les 10 % de valeurs les plus basses et les plus hautes
+       * avant d'estimer la dispersion. Cela limite l'effet des yeux,
+       * cheveux, lèvres et zones très ombrées.
+       */
+      const sortedBrightness = [...brightnessValues].sort(
+        (a, b) => a - b
+      );
+
+      const trimCount = Math.floor(sortedBrightness.length * 0.10);
+      const trimmedBrightness =
+        sortedBrightness.slice(
+          trimCount,
+          Math.max(
+            trimCount + 1,
+            sortedBrightness.length - trimCount
+          )
+        );
+
+      const trimmedAverage =
+        trimmedBrightness.reduce(
+          (sum, value) => sum + value,
+          0
+        ) / trimmedBrightness.length;
+
+      const trimmedVariance =
+        trimmedBrightness.reduce(
+          (sum, value) =>
+            sum + Math.pow(value - trimmedAverage, 2),
+          0
+        ) / trimmedBrightness.length;
+
+      const brightnessDeviation = Math.sqrt(
+        Math.max(0, trimmedVariance)
+      );
 
       const averageBrightness = totalBrightness / pixels;
       const averageRedness = totalRedness / pixels;
       const averageSaturation = totalSaturation / pixels;
 
-      const brightnessVariance = average(
-        brightnessValues.map((value) =>
-          Math.pow(value - averageBrightness, 2)
-        )
-      );
-
-      const brightnessDeviation = Math.sqrt(brightnessVariance);
-
       /*
-       * Ces signaux sont volontairement des indicateurs visuels
-       * approximatifs. Ils ne constituent pas des mesures médicales.
+       * Ces signaux restent des indicateurs visuels heuristiques.
+       * Ils ne constituent pas des mesures médicales.
+       *
+       * Les coefficients sont volontairement moins sévères que
+       * l'ancienne version afin qu'une variation normale d'éclairage
+       * ne transforme pas immédiatement le score peau en valeur extrême.
        */
-
       const skinUniformity = clamp(
-        100 - brightnessDeviation * 2.1
-      );
-
-      const visibleRedness = clamp(
-        50 + averageRedness * 2.4
+        100 -
+          Math.max(0, brightnessDeviation - 8) * 1.55
       );
 
       const texture = clamp(
-        100 - brightnessDeviation * 1.7
+        100 -
+          Math.max(0, brightnessDeviation - 10) * 1.05
+      );
+
+      const visibleRedness = clamp(
+        48 + averageRedness * 2.15
       );
 
       const underEyeAppearance = clamp(
         100 -
-          Math.abs(averageBrightness - 125) * 0.45 -
-          brightnessDeviation * 0.65
+          Math.abs(averageBrightness - 125) * 0.30 -
+          Math.max(0, brightnessDeviation - 8) * 0.48
       );
 
       const apparentHydration = clamp(
-        45 +
-          averageBrightness * 0.16 +
-          averageSaturation * 0.18 -
-          brightnessDeviation * 0.25
+        48 +
+          averageBrightness * 0.13 +
+          averageSaturation * 0.14 -
+          Math.max(0, brightnessDeviation - 10) * 0.18
       );
 
       resolve({
