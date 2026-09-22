@@ -96,43 +96,93 @@ function buildDailyActions(
   indicators: StoredScan["indicators"],
   goals: string[],
 ) {
+  const goalBoost = (keys: string[]) =>
+    goals.some((goal) => keys.includes(goal)) ? 25 : 0;
+
   const candidates = [
     {
       key: "hydratation",
-      title: "Hydratation",
-      text: "Buvez régulièrement au cours de la journée et privilégiez les aliments riches en eau.",
+      title:
+        indicators.hydratation < 60
+          ? "Renforcer mon hydratation"
+          : indicators.hydratation < 75
+            ? "Structurer mon hydratation"
+            : "Maintenir une hydratation régulière",
+      text:
+        indicators.hydratation < 60
+          ? `Votre indicateur visuel d’hydratation est à ${indicators.hydratation}/100. Otavio donne aujourd’hui la priorité à des apports réguliers et répartis dans la journée.`
+          : indicators.hydratation < 75
+            ? `Votre hydratation visuelle est à ${indicators.hydratation}/100. Répartissez vos boissons sur la journée plutôt que de tout concentrer sur quelques moments.`
+            : `Votre indicateur visuel d’hydratation est à ${indicators.hydratation}/100. Conservez une hydratation régulière au fil de la journée.`,
       score: indicators.hydratation,
+      priority:
+        100 - indicators.hydratation + goalBoost(["hydratation"]),
       tone: "bg-[#e5faf7] text-[#168f91]",
     },
     {
       key: "recuperation",
-      title: "Récupération",
-      text: "Privilégiez une soirée calme et un sommeil régulier pour favoriser la récupération.",
+      title:
+        indicators.fatigue < 50
+          ? "Prioriser ma récupération"
+          : indicators.fatigue < 70
+            ? "Préserver ma récupération"
+            : "Entretenir mon rythme de récupération",
+      text:
+        indicators.fatigue < 50
+          ? `Votre indicateur visuel de fatigue est à ${indicators.fatigue}/100. Otavio met aujourd’hui l’accent sur une soirée calme et une récupération suffisante.`
+          : indicators.fatigue < 70
+            ? `Votre indicateur visuel de fatigue est à ${indicators.fatigue}/100. Préservez votre sommeil et évitez de surcharger votre fin de journée.`
+            : `Votre indicateur visuel de fatigue est à ${indicators.fatigue}/100. Votre récupération apparente est actuellement plus favorable ; gardez un rythme de sommeil régulier.`,
       score: indicators.fatigue,
+      priority:
+        100 - indicators.fatigue +
+        goalBoost(["recuperation", "fatigue", "sommeil"]),
       tone: "bg-[#eeecff] text-[#756bd4]",
     },
     {
       key: "peau",
-      title: "Peau",
-      text: "Conservez une routine douce et protégez votre peau des agressions quotidiennes.",
+      title:
+        indicators.peau < 50
+          ? "Stabiliser ma peau"
+          : indicators.peau < 70
+            ? "Renforcer les fondamentaux de ma peau"
+            : "Maintenir ma routine peau",
+      text:
+        indicators.peau < 50
+          ? `Votre score visuel de peau est de ${indicators.peau}/100. Otavio privilégie les fondamentaux : routine douce, hydratation et protection, sans multiplier les actifs.`
+          : indicators.peau < 70
+            ? `Votre score visuel de peau est de ${indicators.peau}/100. Otavio renforce aujourd’hui les gestes réguliers et simples avant d’intensifier la routine.`
+            : `Votre score visuel de peau est de ${indicators.peau}/100. Conservez une routine régulière et non agressive adaptée à votre profil.`,
       score: indicators.peau,
+      priority:
+        100 - indicators.peau +
+        goalBoost(["peau", "qualite_peau", "eclat"]),
       tone: "bg-[#fff0eb] text-[#d96550]",
     },
     {
       key: "equilibre",
-      title: "Équilibre",
-      text: "Gardez une routine régulière avec des habitudes simples et constantes.",
+      title:
+        indicators.equilibre < 60
+          ? "Rééquilibrer ma journée"
+          : indicators.equilibre < 75
+            ? "Consolider mon équilibre"
+            : "Entretenir mon équilibre",
+      text:
+        indicators.equilibre < 60
+          ? `Votre équilibre visuel est à ${indicators.equilibre}/100. Otavio privilégie quelques habitudes simples et régulières plutôt qu’un changement trop important à la fois.`
+          : indicators.equilibre < 75
+            ? `Votre équilibre visuel est à ${indicators.equilibre}/100. Gardez une routine régulière et concentrez-vous sur les axes qui ressortent le plus de votre scan.`
+            : `Votre équilibre visuel est à ${indicators.equilibre}/100. Continuez vos habitudes régulières et utilisez les prochains scans pour suivre la tendance.`,
       score: indicators.equilibre,
+      priority:
+        100 - indicators.equilibre +
+        goalBoost(["equilibre"]),
       tone: "bg-[#e8f7ee] text-[#3f9864]",
     },
   ];
 
   return candidates
-    .sort((a, b) => {
-      const aPriority = goals.includes(a.key) ? -20 : 0;
-      const bPriority = goals.includes(b.key) ? -20 : 0;
-      return a.score + aPriority - (b.score + bPriority);
-    })
+    .sort((a, b) => b.priority - a.priority)
     .slice(0, 3);
 }
 
