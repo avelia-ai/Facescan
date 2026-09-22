@@ -1281,12 +1281,15 @@ function scoreRecipe(
    * ---------------------------------------------------------
    */
 
-  // Peau faible : orienter davantage les recettes vers une
-  // alimentation variée et riche en végétaux.
+  // Peau faible : le scan devient un facteur important dans
+  // le choix des recettes, tout en conservant les contraintes du profil.
   if (
     typeof scan?.peau === "number" &&
     scan.peau < 75
   ) {
+    const skinNeed =
+      Math.min(8, Math.max(0, (75 - scan.peau) / 8));
+
     const skinSupportGoals = recipe.goals.filter((goal) =>
       [
         "peau",
@@ -1296,6 +1299,20 @@ function scoreRecipe(
         "eclat",
         "antioxydants",
       ].some((term) => normalize(goal).includes(term))
+    ).length;
+
+    const skinSupportTags = recipe.tags.filter((tag) =>
+      [
+        "fruit",
+        "legume",
+        "fibres",
+        "fibre",
+        "omega3",
+        "poisson",
+        "antioxydant",
+        "complet",
+        "equilibre",
+      ].some((term) => normalize(tag).includes(term))
     ).length;
 
     const skinSupportIngredients = recipe.ingredients.filter(
@@ -1310,31 +1327,91 @@ function scoreRecipe(
           "courgette",
           "avocat",
           "salade",
+          "haricot",
+          "lentille",
+          "pois chiche",
           "fruits",
           "pomme",
           "banane",
+          "orange",
+          "citron",
           "baies",
           "framboise",
           "myrtille",
-          "orange",
-          "citron",
           "noix",
           "amande",
           "graines",
           "saumon",
           "sardine",
+          "maquereau",
         ].some((term) =>
           normalize(ingredient.name).includes(term)
         )
     ).length;
 
-    score += Math.min(skinSupportGoals, 2) * 5;
-    score += Math.min(skinSupportIngredients, 4) * 2;
+    const plantDiversity = recipe.ingredients.filter(
+      (ingredient) =>
+        [
+          "tomate",
+          "carotte",
+          "epinard",
+          "brocoli",
+          "poivron",
+          "concombre",
+          "courgette",
+          "avocat",
+          "salade",
+          "haricot",
+          "lentille",
+          "pois chiche",
+          "pomme",
+          "banane",
+          "orange",
+          "citron",
+          "baies",
+          "framboise",
+          "myrtille",
+        ].some((term) =>
+          normalize(ingredient.name).includes(term)
+        )
+    ).length;
+
+    const sugarLike =
+      recipe.tags.some((tag) =>
+        ["sucre", "dessert"].some((term) =>
+          normalize(tag).includes(term)
+        )
+      );
+
+    const ultraProcessed =
+      recipe.tags.some((tag) =>
+        ["ultra-transforme", "transforme"].some((term) =>
+          normalize(tag).includes(term)
+        )
+      );
+
+    const supportScore =
+      Math.min(skinSupportGoals, 3) * 4 +
+      Math.min(skinSupportTags, 4) * 3 +
+      Math.min(skinSupportIngredients, 5) * 2 +
+      Math.min(plantDiversity, 4) * 2;
+
+    score += Math.round(supportScore * skinNeed / 3);
+
+    if (scan.peau < 60) {
+      score += Math.min(12, skinSupportIngredients * 2);
+    }
 
     if (scan.peau < 40) {
-      score += 2;
-    } else if (scan.peau < 60) {
-      score += 1;
+      score += Math.min(10, plantDiversity * 2);
+    }
+
+    if (sugarLike) {
+      score -= Math.round(skinNeed * 2);
+    }
+
+    if (ultraProcessed) {
+      score -= Math.round(skinNeed * 1.5);
     }
   }
 
@@ -1818,8 +1895,13 @@ export function buildOtavioNutritionPlan(
        */
       const bestScore = scored[0].score;
 
+      const shortlistGap =
+        typeof scan?.peau === "number" && scan.peau < 60
+          ? 2
+          : 4;
+
       const shortlist = scored.filter(
-        (item) => item.score >= bestScore - 4
+        (item) => item.score >= bestScore - shortlistGap
       );
 
       const selected =

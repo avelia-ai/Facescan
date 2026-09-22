@@ -229,20 +229,30 @@ export function buildOtavioSleepPlan(
     if (highFatigue) {
       actions.push({
         time: "12:30",
-        title: "Pause récupération",
+        title:
+          fatigue !== null && fatigue < 40
+            ? "Priorité récupération aujourd’hui"
+            : "Pause récupération",
         description:
-          `Votre dernier scan présente un indicateur visuel de fatigue de ${fatigue}/100. Prévoyez une vraie pause dans la journée, idéalement sans écran, pour éviter de repousser toute la récupération au soir.`,
+          fatigue !== null && fatigue < 40
+            ? `Votre dernier scan affiche ${fatigue}/100 en fatigue apparente. Otavio réduit aujourd’hui les sollicitations inutiles et donne davantage de place aux temps de récupération.`
+            : `Votre dernier scan présente un indicateur visuel de fatigue de ${fatigue}/100. Prévoyez une vraie pause dans la journée, idéalement sans écran, pour éviter de repousser toute la récupération au soir.`,
         category: "journee",
       });
     }
 
     actions.push({
       time: shiftTime(targetBedtime, -60),
-      title: "Début de la routine du soir",
+      title:
+        fatigue !== null && fatigue < 40
+          ? "Commencer plus tôt ma récupération"
+          : "Début de la routine du soir",
       description:
-        poorQuality || highFatigue
-          ? "Commencez environ une heure avant le coucher cible : lumière plus douce, notifications réduites et activité calme."
-          : "Commencez progressivement à ralentir : lumière plus douce, activité calme et environnement moins stimulant.",
+        fatigue !== null && fatigue < 40
+          ? "Avec ce niveau de fatigue visuelle, Otavio privilégie une soirée calme : lumière plus douce, notifications réduites et activités peu stimulantes avant le coucher."
+          : poorQuality || highFatigue
+            ? "Commencez environ une heure avant le coucher cible : lumière plus douce, notifications réduites et activité calme."
+            : "Commencez progressivement à ralentir : lumière plus douce, activité calme et environnement moins stimulant.",
       category: "soir",
     });
 
@@ -287,19 +297,33 @@ export function buildOtavioSleepPlan(
     days.push({
       day,
       objective:
-        day === 1
-          ? "Stabiliser vos horaires"
-          : day === 2
-            ? "Installer les premiers repères"
-            : day === 3
-              ? "Réduire progressivement les stimulations du soir"
-              : day === 4
-                ? "Consolider la routine"
-                : day === 5
-                  ? "Renforcer la récupération"
-                  : day === 6
-                    ? "Observer ce qui fonctionne réellement"
-                    : "Faire le bilan de la semaine",
+        highFatigue && fatigue !== null && fatigue < 40
+          ? day === 1
+            ? `Priorité à la récupération après un score de fatigue visuelle de ${fatigue}/100`
+            : day === 2
+              ? "Réduire la charge de la journée et protéger la récupération"
+              : day === 3
+                ? "Installer une soirée plus calme et régulière"
+                : day === 4
+                  ? "Consolider les habitudes favorables à la récupération"
+                  : day === 5
+                    ? "Maintenir une récupération régulière"
+                    : day === 6
+                      ? "Observer l’effet des changements sur votre récupération"
+                      : "Faire le bilan de la semaine"
+          : day === 1
+            ? "Stabiliser vos horaires"
+            : day === 2
+              ? "Installer les premiers repères"
+              : day === 3
+                ? "Réduire progressivement les stimulations du soir"
+                : day === 4
+                  ? "Consolider la routine"
+                  : day === 5
+                    ? "Renforcer la récupération"
+                    : day === 6
+                      ? "Observer ce qui fonctionne réellement"
+                      : "Faire le bilan de la semaine",
       actions,
     });
   }
