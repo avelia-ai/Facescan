@@ -328,11 +328,43 @@ export default function ResultatsPage() {
       })
     : [];
 
+  const strongestIndicator = currentIndicators
+    ? [
+        { label: "Peau", value: currentIndicators.peau },
+        { label: "Hydratation", value: currentIndicators.hydratation },
+        { label: "Récupération", value: currentIndicators.fatigue },
+        { label: "Équilibre", value: currentIndicators.equilibre },
+      ].sort((a, b) => b.value - a.value)[0]
+    : null;
+
+  const weakestIndicator = currentIndicators
+    ? [
+        { label: "Peau", value: currentIndicators.peau },
+        { label: "Hydratation", value: currentIndicators.hydratation },
+        { label: "Récupération", value: currentIndicators.fatigue },
+        { label: "Équilibre", value: currentIndicators.equilibre },
+      ].sort((a, b) => a.value - b.value)[0]
+    : null;
+
   const positiveInsight =
+    (strongestIndicator
+      ? personalizedInsights.find(
+          (item) =>
+            item.type === "positive" &&
+            item.title.startsWith(strongestIndicator.label),
+        )
+      : null) ??
     personalizedInsights.find((item) => item.type === "positive") ??
     personalizedInsights[0];
 
   const attentionInsight =
+    (weakestIndicator
+      ? personalizedInsights.find(
+          (item) =>
+            item.type === "attention" &&
+            item.title.startsWith(weakestIndicator.label),
+        )
+      : null) ??
     personalizedInsights.find((item) => item.type === "attention") ??
     personalizedInsights[0];
 
@@ -340,26 +372,36 @@ export default function ResultatsPage() {
     ? buildDailyActions(currentIndicators, userGoals)
     : [];
 
-  const surveillanceGoals = userGoals.filter((goal) =>
-    ["peau", "hydratation", "recuperation", "equilibre"].includes(goal),
-  );
+  const surveillanceIndicators = currentIndicators
+    ? [
+        { key: "peau", label: "Peau", value: currentIndicators.peau },
+        {
+          key: "hydratation",
+          label: "Hydratation",
+          value: currentIndicators.hydratation,
+        },
+        {
+          key: "recuperation",
+          label: "Récupération",
+          value: currentIndicators.fatigue,
+        },
+        {
+          key: "equilibre",
+          label: "Équilibre",
+          value: currentIndicators.equilibre,
+        },
+      ]
+        .filter((item) => item.value < 75)
+        .sort((a, b) => a.value - b.value)
+    : [];
 
   const surveillanceTitle =
-    surveillanceGoals.length > 0
-      ? surveillanceGoals
+    surveillanceIndicators.length > 0
+      ? surveillanceIndicators
           .slice(0, 2)
-          .map((goal) => {
-            const labels: Record<string, string> = {
-              peau: "Peau",
-              hydratation: "Hydratation",
-              recuperation: "Récupération",
-              equilibre: "Équilibre",
-            };
-
-            return labels[goal];
-          })
+          .map((item) => item.label)
           .join(" · ")
-      : "Votre équilibre général";
+      : "Aucun axe prioritaire";
 
   return (
     <main className="app-background min-h-screen pb-28 text-[#14252d]">
