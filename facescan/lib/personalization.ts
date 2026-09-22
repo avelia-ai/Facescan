@@ -667,56 +667,57 @@ export function buildPersonalizedInsights({
 }): PersonalizedInsight[] {
   const items = [
     {
-      goal: "peau",
+      goalAliases: ["peau", "qualite_peau", "eclat"],
       label: "Peau",
       value: indicators.peau,
     },
     {
-      goal: "hydratation",
+      goalAliases: ["hydratation"],
       label: "Hydratation",
       value: indicators.hydratation,
     },
     {
-      goal: "recuperation",
+      goalAliases: ["recuperation", "fatigue", "sommeil"],
       label: "Récupération",
       value: indicators.fatigue,
     },
     {
-      goal: "equilibre",
+      goalAliases: ["equilibre", "bien_etre", "evolution"],
       label: "Équilibre",
       value: indicators.equilibre,
     },
   ];
 
-  const insights: PersonalizedInsight[] = [];
+  const insights: Array<PersonalizedInsight & { relevance: number }> =
+    items.map((item) => {
+      const priority = indicatorPriority(item.value);
 
-  for (const item of items) {
-    if (!goals.includes(item.goal)) continue;
+      const goalMatch = goals.some((goal) =>
+        item.goalAliases.includes(goal)
+      );
 
-    const priority = indicatorPriority(item.value);
+      return {
+        title:
+          priority === "high"
+            ? `${item.label} : priorité de suivi`
+            : priority === "medium"
+              ? `${item.label} : à suivre`
+              : `${item.label} : tendance favorable`,
 
-    insights.push({
-      title:
-        priority === "high"
-          ? `${item.label} : priorité de suivi`
-          : priority === "medium"
-            ? `${item.label} : à suivre`
-            : `${item.label} : tendance favorable`,
+        text:
+          priority === "high"
+            ? `Votre indicateur ${item.label.toLowerCase()} est actuellement à ${item.value}/100. Otavio en tient compte parmi les priorités de votre accompagnement.`
+            : priority === "medium"
+              ? `Votre indicateur ${item.label.toLowerCase()} est actuellement à ${item.value}/100. Otavio le conserve dans votre suivi et adapte progressivement les actions associées.`
+              : `Votre indicateur ${item.label.toLowerCase()} est actuellement favorable (${item.value}/100). Otavio privilégie le maintien et la régularité sur cet axe.`,
 
-      text:
-        priority === "high"
-          ? `Votre indicateur ${item.label.toLowerCase()} est actuellement à ${item.value}/100.`
-          : priority === "medium"
-            ? `Votre indicateur ${item.label.toLowerCase()} est actuellement à ${item.value}/100 et mérite un suivi régulier.`
-            : `Votre indicateur ${item.label.toLowerCase()} est actuellement favorable (${item.value}/100).`,
-
-      priority,
-      type:
-        priority === "low"
-          ? "positive"
-          : "attention",
+        priority,
+        type: priority === "low" ? "positive" : "attention",
+        relevance:
+          (priority === "high" ? 30 : priority === "medium" ? 15 : 0) +
+          (goalMatch ? 8 : 0),
+      };
     });
-  }
 
   if (insights.length === 0) {
     insights.push({
@@ -725,8 +726,26 @@ export function buildPersonalizedInsights({
         "Otavio affinera progressivement ses recommandations avec vos objectifs et vos prochains scans.",
       priority: "low",
       type: "neutral",
+      relevance: 0,
     });
   }
 
-  return insights;
+  return insights
+    .sort((a, b) => {
+      const rank = {
+        high: 0,
+        medium: 1,
+        low: 2,
+      };
+
+      const aRank = rank[a.priority];
+      const bRank = rank[b.priority];
+
+      if (aRank !== bRank) {
+        return aRank - bRank;
+      }
+
+      return b.relevance - a.relevance;
+    })
+    .map(({ relevance: _relevance, ...insight }) => insight);
 }
