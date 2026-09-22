@@ -218,8 +218,15 @@ export default function ResultatsPage() {
   const scanQualityScore =
     latestScan?.quality?.qualityScore ?? null;
 
-  const scanQualityLabel =
-    latestScan?.quality?.qualityLabel ?? "Bonne";
+  const scanQualityLabel = latestScan?.quality?.qualityLabel ?? null;
+
+  const scanDateLabel = latestScan?.date
+    ? new Intl.DateTimeFormat("fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }).format(new Date(latestScan.date))
+    : null;
 
   const faceDetected =
     Boolean(latestScan?.faceDetection?.detected) &&
@@ -330,7 +337,7 @@ export default function ResultatsPage() {
           </div>
 
           <div className="rounded-full border border-[#d8e5e7] bg-white px-3.5 py-2 text-[9px] font-semibold text-[#5c737a] shadow-[0_7px_22px_rgba(20,55,65,0.05)]">
-            Dernier scan · Aujourd’hui
+            {latestScan ? `Dernier scan · ${scanDateLabel}` : "Aucun scan"}
           </div>
         </header>
 
@@ -413,7 +420,7 @@ export default function ResultatsPage() {
                   Qualité du scan
                 </p>
                 <p className="mt-1.5 text-[13px] font-semibold text-white/88">
-                  {scanQualityLabel}
+                  {scanQualityLabel ?? "—"}
                 </p>
               </div>
 
@@ -1013,7 +1020,7 @@ export default function ResultatsPage() {
                         Conditions du scan
                       </p>
                       <p className="mt-1 text-[18px] font-semibold tracking-[-0.025em] text-[#20343c]">
-                        {scanQualityLabel}
+                        {scanQualityLabel ?? "—"}
                       </p>
                     </div>
 

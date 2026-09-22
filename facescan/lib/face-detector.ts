@@ -107,31 +107,10 @@ export async function detectFace(
     const result = faceDetector.detect(canvas);
     detections = result.detections ?? [];
   } catch (error) {
-    console.warn(
-      "MediaPipe indisponible sur cet appareil, utilisation du mode de secours.",
-      error
+    console.error("Erreur MediaPipe pendant la détection du visage.", error);
+    throw new Error(
+      "La détection du visage n’a pas pu être effectuée."
     );
-
-    /*
-     * Fallback mobile :
-     * on conserve l’analyse visuelle sans prétendre effectuer
-     * une détection biométrique précise du visage.
-     *
-     * La zone centrale est utilisée uniquement comme zone d’analyse.
-     */
-    return {
-      detected: true,
-      faceCount: 1,
-      confidence: 35,
-      faceBox: {
-        x: imageWidth * 0.20,
-        y: imageHeight * 0.12,
-        width: imageWidth * 0.60,
-        height: imageHeight * 0.76,
-      },
-      imageWidth,
-      imageHeight,
-    };
   }
 
   if (detections.length === 0) {
