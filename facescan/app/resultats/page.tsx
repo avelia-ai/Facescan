@@ -346,27 +346,31 @@ export default function ResultatsPage() {
       ].sort((a, b) => a.value - b.value)[0]
     : null;
 
-  const positiveInsight =
-    (strongestIndicator
-      ? personalizedInsights.find(
-          (item) =>
-            item.type === "positive" &&
-            item.title.startsWith(strongestIndicator.label),
-        )
-      : null) ??
-    personalizedInsights.find((item) => item.type === "positive") ??
-    personalizedInsights[0];
+  const positiveIndicator =
+    strongestIndicator && strongestIndicator.value >= 75
+      ? strongestIndicator
+      : null;
 
-  const attentionInsight =
-    (weakestIndicator
-      ? personalizedInsights.find(
-          (item) =>
-            item.type === "attention" &&
-            item.title.startsWith(weakestIndicator.label),
-        )
-      : null) ??
-    personalizedInsights.find((item) => item.type === "attention") ??
-    personalizedInsights[0];
+  const attentionIndicator =
+    weakestIndicator && weakestIndicator.value < 75
+      ? weakestIndicator
+      : null;
+
+  const positiveInsight = positiveIndicator
+    ? personalizedInsights.find(
+        (item) =>
+          item.type === "positive" &&
+          item.title.startsWith(positiveIndicator.label),
+      ) ?? null
+    : null;
+
+  const attentionInsight = attentionIndicator
+    ? personalizedInsights.find(
+        (item) =>
+          item.type === "attention" &&
+          item.title.startsWith(attentionIndicator.label),
+      ) ?? null
+    : null;
 
   const dailyActions = currentIndicators
     ? buildDailyActions(currentIndicators, userGoals)
@@ -1032,7 +1036,7 @@ export default function ResultatsPage() {
               <div className="relative mt-5 rounded-[22px] bg-[linear-gradient(145deg,#f5fbf7_0%,#eef8f2_100%)] px-4 py-4">
                 <p className="text-[11px] leading-5 text-[#5f757b]">
                   {positiveInsight?.text ??
-                    "Votre scan présente plusieurs observations favorables."}
+                    "Aucun indicateur ne se situe encore dans une zone favorable. Otavio continuera à suivre votre évolution au fil des prochains scans."}
                 </p>
               </div>
             </article>
@@ -1058,7 +1062,7 @@ export default function ResultatsPage() {
               <div className="relative mt-5 rounded-[22px] border border-white/70 bg-white/65 px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
                 <p className="text-[11px] leading-5 text-[#61767c]">
                   {attentionInsight?.text ??
-                    "Ces axes font partie de vos priorités de suivi et méritent une attention régulière."}
+                    "Vos quatre indicateurs se situent actuellement à 75/100 ou plus. Otavio privilégie la régularité et le maintien de vos habitudes."}
                 </p>
               </div>
             </article>
