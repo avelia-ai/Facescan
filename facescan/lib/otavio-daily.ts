@@ -237,6 +237,7 @@ function buildSleepTask(
 
 function buildNutritionTask(
   profile: ProfileForDaily,
+  scan: OtavioDailyScan | null,
   seed: number
 ): TaskCandidate {
   const constraints = profile.dietary_constraints ?? [];
@@ -244,8 +245,21 @@ function buildNutritionTask(
   const intolerances = profile.intolerances ?? [];
   const budget = profile.budget_level;
 
+  const hydrationScore = scan?.indicators?.hydratation ?? null;
+  const skinScore = scan?.indicators?.peau ?? null;
+  const fatigueScore = scan?.indicators?.fatigue ?? null;
+
   const budgetFriendly =
     budget === "faible" || budget === "serré";
+
+  const nutritionFocus =
+    hydrationScore !== null && hydrationScore < 70
+      ? "hydratation"
+      : skinScore !== null && skinScore < 70
+        ? "peau"
+        : fatigueScore !== null && fatigueScore < 70
+          ? "energie"
+          : "equilibre";
 
   let variants = [
     {
@@ -265,12 +279,53 @@ function buildNutritionTask(
     },
   ];
 
-  if (budgetFriendly) {
+  if (nutritionFocus === "hydratation") {
+    variants = [
+      {
+        title: "Associer alimentation et hydratation",
+        description:
+          "Aujourd’hui, choisissez aussi des aliments riches en eau comme les fruits, les légumes ou une soupe, en complément de vos boissons habituelles.",
+      },
+      {
+        title: "Prévoir un repas riche en végétaux",
+        description:
+          "Ajoutez une bonne portion de légumes ou de fruits à un repas pour apporter davantage d’eau et de variété à votre alimentation.",
+      },
+    ];
+  } else if (nutritionFocus === "peau") {
+    variants = [
+      {
+        title: "Composer un repas riche en végétaux",
+        description:
+          "Ajoutez plusieurs végétaux colorés à votre journée pour varier les apports alimentaires et garder une assiette diversifiée.",
+      },
+      {
+        title: "Ne pas oublier les protéines",
+        description:
+          "À votre prochain repas, prévoyez une source de protéines adaptée à vos habitudes alimentaires pour garder une alimentation complète.",
+      },
+    ];
+  } else if (nutritionFocus === "energie") {
+    variants = [
+      {
+        title: "Préparer un repas qui cale vraiment",
+        description:
+          "Associez une source de protéines, un féculent ou une céréale et des végétaux pour construire un repas simple et complet.",
+      },
+      {
+        title: "Éviter de sauter mon prochain repas",
+        description:
+          "Gardez un rythme alimentaire régulier aujourd’hui et prévoyez une option simple à l’avance si votre emploi du temps est chargé.",
+      },
+    ];
+  }
+
+  if (budgetFriendly && nutritionFocus === "equilibre") {
     variants = [
       {
         title: "Faire simple avec mon budget",
         description:
-          "Choisissez aujourd’hui une base économique et polyvalente : légumineuses, œufs, féculents, légumes de saison ou surgelés selon vos préférences.",
+          "Choisissez une base économique et polyvalente : légumineuses, œufs, féculents, légumes de saison ou surgelés selon vos préférences.",
       },
       {
         title: "Optimiser un repas",
@@ -287,56 +342,107 @@ function buildNutritionTask(
 
   const selected = pickVariant(variants, seed);
 
+  const scanUrgency = Math.max(
+    0,
+    ...[hydrationScore, skinScore, fatigueScore]
+      .filter((value): value is number => typeof value === "number")
+      .map((value) => 75 - value)
+  );
+
+  const priority =
+    hasGoal(profile, "nutrition") || scanUrgency >= 15
+      ? "high"
+      : scanUrgency >= 5
+        ? "medium"
+        : "low";
+
   return {
     ...selected,
     description: selected.description + safetySuffix,
     task_key: `nutrition_${seed % variants.length}`,
     category: "nutrition",
-    priority: hasGoal(profile, "nutrition") ? "high" : "medium",
-    score: hasGoal(profile, "nutrition") ? 45 : 10,
+    priority,
+    score:
+      (hasGoal(profile, "nutrition") ? 40 : 10) +
+      Math.round(scanUrgency * 1.2),
   };
 }
 
 function buildActivityTask(
   profile: ProfileForDaily,
+  scan: OtavioDailyScan | null,
   seed: number
 ): TaskCandidate {
   const lowActivity =
     profile.activity_level === "faible" ||
     profile.activity_level === "sédentaire";
 
-  const variants = lowActivity
+  const fatigueScore = scan?.indicators?.fatigue ?? null;
+  const equilibriumScore = scan?.indicators?.equilibre ?? null;
+
+  const needsRecovery =
+    (fatigueScore !== null && fatigueScore < 70) ||
+    (equilibriumScore !== null && equilibriumScore < 70);
+
+  const variants = needsRecovery
     ? [
         {
-          title: "Faire une courte marche",
+          title: "Bouger doucement aujourd’hui",
           description:
-            "Ajoutez aujourd’hui une courte marche à votre journée, à un moment facile à tenir.",
+            "Privilégiez une courte marche ou quelques mouvements doux plutôt qu’une séance exigeante si vous vous sentez fatigué.",
         },
         {
           title: "Faire une pause mouvement",
           description:
-            "Levez-vous quelques minutes pendant une période prolongée en position assise.",
+            "Levez-vous régulièrement, marchez quelques minutes et évitez de rester longtemps dans la même position.",
         },
       ]
-    : [
-        {
-          title: "Entretenir mon mouvement",
-          description:
-            "Conservez aujourd’hui un peu de mouvement en fonction de votre niveau habituel et de votre disponibilité.",
-        },
-        {
-          title: "Faire une pause active",
-          description:
-            "Profitez d’un moment libre pour marcher quelques minutes ou changer régulièrement de position.",
-        },
-      ];
+    : lowActivity
+      ? [
+          {
+            title: "Faire une courte marche",
+            description:
+              "Ajoutez aujourd’hui une courte marche à votre journée, à un moment facile à tenir.",
+          },
+          {
+            title: "Faire une pause mouvement",
+            description:
+              "Levez-vous quelques minutes pendant une période prolongée en position assise.",
+          },
+        ]
+      : [
+          {
+            title: "Entretenir mon mouvement",
+            description:
+              "Conservez aujourd’hui un peu de mouvement en fonction de votre niveau habituel et de votre disponibilité.",
+          },
+          {
+            title: "Faire une pause active",
+            description:
+              "Profitez d’un moment libre pour marcher quelques minutes ou changer régulièrement de position.",
+          },
+        ];
+
+  const scanUrgency = Math.max(
+    0,
+    ...[fatigueScore, equilibriumScore]
+      .filter((value): value is number => typeof value === "number")
+      .map((value) => 75 - value)
+  );
 
   return {
     ...pickVariant(variants, seed),
     task_key: `activity_${seed % variants.length}`,
     category: "activité",
-    priority: lowActivity ? "medium" : "low",
-    score: lowActivity ? 25 : 10,
+    priority:
+      needsRecovery
+        ? "high"
+        : lowActivity
+          ? "medium"
+          : "low",
+    score:
+      (needsRecovery ? 30 : lowActivity ? 25 : 10) +
+      Math.round(scanUrgency * 1.1),
   };
 }
 
@@ -398,8 +504,9 @@ export function buildOtavioDailyTasks(
   if (
     hasGoal(profile, "sommeil", "fatigue") ||
     profile.sleep_quality ||
-    profile.sleep_duration !== null ||
-    (scan?.indicators?.fatigue ?? 100) < 70
+    profile.sleep_duration != null ||
+    profile.sleep_regularity ||
+    (scan?.indicators?.fatigue ?? 100) < 75
   ) {
     candidates.push(buildSleepTask(profile, scan, daySeed + 2));
   }
@@ -407,12 +514,13 @@ export function buildOtavioDailyTasks(
   if (
     hasGoal(profile, "nutrition") ||
     profile.eating_style ||
-    profile.meals_per_day
+    profile.meals_per_day ||
+    scan
   ) {
-    candidates.push(buildNutritionTask(profile, daySeed + 3));
+    candidates.push(buildNutritionTask(profile, scan, daySeed + 3));
   }
 
-  candidates.push(buildActivityTask(profile, daySeed + 4));
+  candidates.push(buildActivityTask(profile, scan, daySeed + 4));
 
   if (hasGoal(profile, "bien_etre")) {
     candidates.push(buildWellbeingTask(profile, daySeed + 5));
