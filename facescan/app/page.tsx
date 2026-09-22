@@ -245,6 +245,8 @@ export default function HomePage() {
 
   useEffect(() => {
     const loadDailyTasks = async () => {
+      if (loading) return;
+
       const {
         data: { user },
       } = await supabase.auth.getUser();
@@ -253,7 +255,14 @@ export default function HomePage() {
 
       const today = new Date().toISOString().slice(0, 10);
 
-      const generatedTasks = buildOtavioDailyTasks(profile ?? {}, { score: latestScore, indicators: latestIndicators }, new Date());
+      const generatedTasks = buildOtavioDailyTasks(
+        profile ?? {},
+        {
+          score: latestScore,
+          indicators: latestIndicators,
+        },
+        new Date()
+      );
 
       const { data: existing } = await supabase
         .from("otavio_daily_tasks")
@@ -263,59 +272,86 @@ export default function HomePage() {
         .order("created_at", { ascending: true });
 
       const existingTasks = (existing ?? []) as DailyTask[];
+      const existingByKey = new Map(
+        existingTasks.map((task) => [task.task_key, task])
+      );
 
-      if (existingTasks.length === 0) {
+      const finalTasks: DailyTask[] = [];
+
+      for (const task of generatedTasks) {
+        const existingTask = existingByKey.get(task.task_key);
+
+        if (existingTask) {
+          const shouldUpdateContent =
+            existingTask.title !== task.title ||
+            existingTask.description !== task.description;
+
+          if (shouldUpdateContent) {
+            await supabase
+              .from("otavio_daily_tasks")
+              .update({
+                title: task.title,
+                description: task.description,
+              })
+              .eq("id", existingTask.id);
+          }
+
+          finalTasks.push({
+            ...existingTask,
+            title: task.title,
+            description: task.description,
+          });
+
+          continue;
+        }
+
         const { data: inserted } = await supabase
           .from("otavio_daily_tasks")
-          .insert(
-            generatedTasks.map((task) => ({
-              user_id: user.id,
-              task_date: today,
-              task_key: task.task_key,
-              title: task.title,
-              description: task.description,
-              completed: false,
-            }))
-          )
-          .select("id, task_key, title, description, completed");
+          .insert({
+            user_id: user.id,
+            task_date: today,
+            task_key: task.task_key,
+            title: task.title,
+            description: task.description,
+            completed: false,
+          })
+          .select("id, task_key, title, description, completed")
+          .maybeSingle();
 
-        setDailyTasks((inserted ?? []) as DailyTask[]);
-        return;
+        if (inserted) {
+          finalTasks.push(inserted as DailyTask);
+        }
       }
 
-      const existingKeys = new Set(
-        existingTasks.map((task) => task.task_key)
+      const generatedKeys = new Set(
+        generatedTasks.map((task) => task.task_key)
       );
 
-      const missingTasks = generatedTasks.filter(
-        (task) => !existingKeys.has(task.task_key)
+      const staleIncompleteTasks = existingTasks.filter(
+        (task) =>
+          !generatedKeys.has(task.task_key) &&
+          !task.completed
       );
 
-      let finalTasks = existingTasks;
-
-      if (missingTasks.length > 0) {
-        const { data: inserted } = await supabase
+      if (staleIncompleteTasks.length > 0) {
+        await supabase
           .from("otavio_daily_tasks")
-          .insert(
-            missingTasks.map((task) => ({
-              user_id: user.id,
-              task_date: today,
-              task_key: task.task_key,
-              title: task.title,
-              description: task.description,
-              completed: false,
-            }))
-          )
-          .select("id, task_key, title, description, completed");
-
-        finalTasks = [...existingTasks, ...((inserted ?? []) as DailyTask[])];
+          .delete()
+          .in("id", staleIncompleteTasks.map((task) => task.id));
       }
 
       setDailyTasks(finalTasks);
     };
 
     loadDailyTasks();
-  }, [hasScan, latestIndicators, profile, supabase]);
+  }, [
+    loading,
+    hasScan,
+    latestScore,
+    latestIndicators,
+    profile,
+    supabase,
+  ]);
 
   const toggleDailyTask = async (task: DailyTask) => {
     if (taskLoading) return;
