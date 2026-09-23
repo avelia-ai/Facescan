@@ -83,9 +83,9 @@ function priorityForMeal(type: OtavioMealType) {
 
 function scanNeed(value?: number | null) {
   if (typeof value !== "number") return 0;
-  if (value < 60) return 3;
-  if (value < 70) return 2;
-  if (value < 80) return 1;
+  if (value < 60) return 20;
+  if (value < 70) return 12;
+  if (value < 80) return 6;
   return 0;
 }
 
@@ -151,14 +151,6 @@ function calculateRelevance(
 
   if (item.category === "peau") {
     relevance += scanNeed(scan.peau);
-    relevance += scanNeed(scan.hydratation);
-
-    if (
-      typeof scan.equilibre === "number" &&
-      scan.equilibre < 70
-    ) {
-      relevance += 1;
-    }
   }
 
   if (item.category === "hydratation") {
@@ -170,19 +162,7 @@ function calculateRelevance(
   }
 
   if (item.category === "alimentation") {
-    if (
-      typeof scan.hydratation === "number" &&
-      scan.hydratation < 70
-    ) {
-      relevance += 1;
-    }
-
-    if (
-      typeof scan.equilibre === "number" &&
-      scan.equilibre < 70
-    ) {
-      relevance += 1;
-    }
+    relevance += scanNeed(scan.equilibre);
   }
 
   return relevance;
