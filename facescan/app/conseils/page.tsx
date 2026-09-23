@@ -164,10 +164,10 @@ export default function ConseilsPage() {
       ? buildPersonalizedRecommendations({
           profile,
           scan: {
-          ...latestScan,
-          score:
-            latestScan.score ?? latestScan.indicators.equilibre,
-        },
+            score:
+              latestScan.score ?? latestScan.indicators.equilibre,
+            indicators: latestScan.indicators,
+          },
         })
       : [];
 

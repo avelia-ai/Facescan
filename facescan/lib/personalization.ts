@@ -490,10 +490,12 @@ function buildNutritionRecommendation(
       ? "Les allergies, intolérances et contraintes alimentaires enregistrées doivent rester prioritaires. En cas d’allergie importante ou de régime médical, ne les contournez pas avec une simple recommandation générale."
       : "Les recommandations nutritionnelles restent générales et ne remplacent pas un accompagnement médical ou diététique lorsqu’il est nécessaire.";
 
+  const priority = indicatorPriority(scan.indicators.equilibre);
+
   return {
     id: "nutrition_balance",
     category: "Alimentation",
-    priority: profile.goals?.includes("nutrition") ? "high" : "medium",
+    priority,
 
     title:
       scan.indicators.equilibre < 70
@@ -630,7 +632,8 @@ export function buildPersonalizedRecommendations({
 
   if (
     profile.goals?.includes("nutrition") ||
-    profile.eating_style
+    profile.eating_style ||
+    scan.indicators.equilibre < 75
   ) {
     recommendations.push(
       buildNutritionRecommendation(profile, scan)

@@ -314,12 +314,16 @@ function buildIndicators(
       qualityFactor * 100 * 0.10
   );
 
+  /*
+   * L'équilibre représente le score global visible dans l'application.
+   * Il est calculé uniquement à partir des trois indicateurs principaux
+   * afin que le score global soit transparent et cohérent avec l'interface.
+   */
   const equilibre = clamp(
     average([
       peau,
       hydratation,
       fatigue,
-      signals.skinUniformity,
     ])
   );
 
