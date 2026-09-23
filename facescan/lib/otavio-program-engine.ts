@@ -2,6 +2,7 @@ import {
   buildOtavioNutritionPlan,
   type OtavioNutritionPlan,
   type OtavioMealType,
+  type OtavioMealFeedback,
 } from "@/lib/otavio-programs";
 import { buildOtavioSleepPlan, type OtavioSleepPlan } from "@/lib/otavio-sleep";
 import {
@@ -171,9 +172,15 @@ function calculateRelevance(
 export function buildOtavioDailyProgram(
   profile: OtavioProgramProfile,
   scan?: OtavioSkinScan | null,
+  feedback?: OtavioMealFeedback[],
   date = new Date()
 ): OtavioDailyProgram {
-  const nutrition = buildOtavioNutritionPlan(profile, 7, scan);
+  const nutrition = buildOtavioNutritionPlan(
+    profile,
+    7,
+    scan,
+    feedback
+  );
   const sleep = buildOtavioSleepPlan(profile, 7, scan);
   const skin = buildOtavioSkinPlan(profile, scan, 7);
 

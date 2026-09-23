@@ -1,6 +1,7 @@
 "use client";
 
 import { buildOtavioDailyProgram } from "@/lib/otavio-program-engine";
+import type { OtavioMealFeedback } from "@/lib/otavio-programs";
 
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
@@ -123,6 +124,9 @@ export default function HomePage() {
     fatigue: number;
     equilibre: number;
   } | null>(null);
+  const [nutritionFeedback, setNutritionFeedback] = useState<
+    OtavioMealFeedback[]
+  >([]);
   const [dailyTasks, setDailyTasks] = useState<DailyTask[]>([]);
   const [taskLoading, setTaskLoading] = useState(false);
   const [xpFeedback, setXpFeedback] = useState<number | null>(null);
@@ -132,9 +136,10 @@ export default function HomePage() {
     () =>
       buildOtavioDailyProgram(
         otavioProfile ?? {},
-        latestIndicators
+        latestIndicators,
+        nutritionFeedback
       ),
-    [otavioProfile, latestIndicators]
+    [otavioProfile, latestIndicators, nutritionFeedback]
   );
 
   const dailyProgramItems = useMemo(() => {
@@ -389,6 +394,50 @@ export default function HomePage() {
 
     loadHome();
   }, [router, supabase]);
+
+  useEffect(() => {
+    const loadNutritionFeedback = () => {
+      try {
+        const stored = localStorage.getItem(
+          "otavio-nutrition-feedback"
+        );
+
+        if (!stored) {
+          setNutritionFeedback([]);
+          return;
+        }
+
+        const parsed = JSON.parse(stored);
+        setNutritionFeedback(
+          Array.isArray(parsed) ? parsed : []
+        );
+      } catch {
+        setNutritionFeedback([]);
+      }
+    };
+
+    loadNutritionFeedback();
+
+    window.addEventListener(
+      "focus",
+      loadNutritionFeedback
+    );
+    window.addEventListener(
+      "storage",
+      loadNutritionFeedback
+    );
+
+    return () => {
+      window.removeEventListener(
+        "focus",
+        loadNutritionFeedback
+      );
+      window.removeEventListener(
+        "storage",
+        loadNutritionFeedback
+      );
+    };
+  }, []);
 
   useEffect(() => {
     const loadDailyTasks = async () => {
