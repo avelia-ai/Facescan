@@ -1,7 +1,7 @@
 "use client";
 
 import { buildPersonalizedRecommendations } from "@/lib/personalization";
-import { buildOtavioNutritionPlan } from "@/lib/otavio-programs";
+import { buildOtavioNutritionPlan, type OtavioMealFeedback } from "@/lib/otavio-programs";
 import { registerOtavioDailyAction } from "@/lib/otavio-streak";
 
 import { useEffect, useState } from "react";
@@ -50,6 +50,7 @@ export default function ConseilsPage() {
   const [expandedAdvice, setExpandedAdvice] = useState<string | null>(null);
   const [completedAdvice, setCompletedAdvice] = useState<string[]>([]);
   const [completingAdvice, setCompletingAdvice] = useState<string | null>(null);
+  const [nutritionFeedback, setNutritionFeedback] = useState<OtavioMealFeedback[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -107,6 +108,33 @@ export default function ConseilsPage() {
     };
 
     loadData();
+  }, []);
+
+  useEffect(() => {
+    const loadNutritionFeedback = () => {
+      try {
+        const stored = localStorage.getItem("otavio-nutrition-feedback");
+
+        if (!stored) {
+          setNutritionFeedback([]);
+          return;
+        }
+
+        const parsed = JSON.parse(stored);
+        setNutritionFeedback(Array.isArray(parsed) ? parsed : []);
+      } catch {
+        setNutritionFeedback([]);
+      }
+    };
+
+    loadNutritionFeedback();
+    window.addEventListener("focus", loadNutritionFeedback);
+    window.addEventListener("storage", loadNutritionFeedback);
+
+    return () => {
+      window.removeEventListener("focus", loadNutritionFeedback);
+      window.removeEventListener("storage", loadNutritionFeedback);
+    };
   }, []);
 
   const toggleAdviceCompletion = async (adviceId: string) => {
@@ -172,10 +200,17 @@ export default function ConseilsPage() {
       : [];
 
   const nutritionPlan =
-    profile && visibleRecommendations.some(
+    profile &&
+    latestScan &&
+    visibleRecommendations.some(
       (item) => item.category === "Alimentation"
     )
-      ? buildOtavioNutritionPlan(profile, 7)
+      ? buildOtavioNutritionPlan(
+          profile,
+          7,
+          latestScan.indicators,
+          nutritionFeedback
+        )
       : null;
 
   const expandedAdviceId = expandedAdvice;

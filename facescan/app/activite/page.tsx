@@ -17,6 +17,11 @@ type Profile = {
   activity_level: string | null;
 };
 
+type ActivityScan = {
+  fatigue: number | null;
+  equilibre: number | null;
+};
+
 const activityLabels: Record<string, string> = {
   sedentary: "Sédentaire",
   sedentaire: "Sédentaire",
@@ -59,6 +64,7 @@ function getActivityDescription(value: string | null) {
 
 export default function ActivitePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [scan, setScan] = useState<ActivityScan | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -82,8 +88,35 @@ export default function ActivitePage() {
           .maybeSingle();
 
         setProfile((data ?? {}) as Profile);
+
+        const rawScans = localStorage.getItem("facescan-scans");
+        const scans = rawScans ? JSON.parse(rawScans) : [];
+
+        const latestScan = Array.isArray(scans)
+          ? [...scans].sort(
+              (a, b) =>
+                new Date(b?.date ?? 0).getTime() -
+                new Date(a?.date ?? 0).getTime()
+            )[0]
+          : null;
+
+        if (latestScan?.indicators) {
+          setScan({
+            fatigue:
+              typeof latestScan.indicators.fatigue === "number"
+                ? latestScan.indicators.fatigue
+                : null,
+            equilibre:
+              typeof latestScan.indicators.equilibre === "number"
+                ? latestScan.indicators.equilibre
+                : null,
+          });
+        } else {
+          setScan(null);
+        }
       } catch {
         setProfile({ activity_level: null });
+        setScan(null);
       } finally {
         setLoading(false);
       }
@@ -103,6 +136,30 @@ export default function ActivitePage() {
   }
 
   const activity = profile?.activity_level ?? null;
+
+  const fatigueScore = scan?.fatigue ?? null;
+  const balanceScore = scan?.equilibre ?? null;
+
+  const recoveryNeed =
+    (fatigueScore !== null && fatigueScore < 70) ||
+    (balanceScore !== null && balanceScore < 70);
+
+  const priorityLabel =
+    recoveryNeed
+      ? "Privilégier la récupération"
+      : activity === "sedentary" ||
+          activity === "sedentaire" ||
+          activity === "low" ||
+          activity === "faible"
+        ? "Construire une routine régulière"
+        : "Maintenir une activité régulière";
+
+  const priorityDescription =
+    fatigueScore !== null && fatigueScore < 65
+      ? `Votre indicateur visuel de fatigue est de ${Math.round(fatigueScore)}/100. Otavio privilégie aujourd’hui des efforts modérés et davantage de récupération.`
+      : balanceScore !== null && balanceScore < 70
+        ? `Votre indicateur visuel d’équilibre est de ${Math.round(balanceScore)}/100. Otavio privilégie une activité régulière et adaptée plutôt qu’une intensification.`
+        : "Otavio combine votre niveau d’activité déclaré avec les repères disponibles pour ajuster progressivement vos recommandations.";
 
   return (
     <main className="app-background min-h-screen pb-12 text-[#171717]">
@@ -162,8 +219,7 @@ export default function ActivitePage() {
           </div>
 
           <p className="mb-6 text-sm leading-6 text-white/75">
-            Otavio adapte progressivement vos recommandations de mouvement,
-            d’activité et de récupération à votre rythme quotidien.
+            {priorityDescription}
           </p>
 
           <div className="grid gap-3 sm:grid-cols-2">
@@ -181,7 +237,7 @@ export default function ActivitePage() {
                 Priorité actuelle
               </p>
               <p className="text-sm font-medium leading-5">
-                Construire une routine régulière
+                {priorityLabel}
               </p>
             </div>
           </div>
@@ -191,19 +247,41 @@ export default function ActivitePage() {
           <div className="rounded-2xl border border-[#dce7e4] bg-white p-4 shadow-[0_8px_22px_rgba(35,70,60,0.04)]">
             <Footprints size={18} className="mb-3 text-[#287f72]" />
             <p className="text-xs text-[#8a928e]">Mouvement</p>
-            <p className="mt-1 font-semibold">À suivre</p>
+            <p className="mt-1 font-semibold">
+              {recoveryNeed
+                ? "Mouvement doux"
+                : activity === "sedentary" ||
+                    activity === "sedentaire" ||
+                    activity === "low" ||
+                    activity === "faible"
+                  ? "À renforcer"
+                  : "À maintenir"}
+            </p>
           </div>
 
           <div className="rounded-2xl border border-[#dddaf0] bg-white p-4 shadow-[0_8px_22px_rgba(82,75,130,0.04)]">
             <Dumbbell size={18} className="mb-3 text-[#756bd4]" />
             <p className="text-xs text-[#8a928e]">Sport</p>
-            <p className="mt-1 font-semibold">À personnaliser</p>
+            <p className="mt-1 font-semibold">
+              {fatigueScore !== null && fatigueScore < 65
+                ? "Intensité modérée"
+                : activity === "sedentary" ||
+                    activity === "sedentaire" ||
+                    activity === "low" ||
+                    activity === "faible"
+                  ? "Progressif"
+                  : "À structurer"}
+            </p>
           </div>
 
           <div className="rounded-2xl border border-[#ead8cf] bg-white p-4 shadow-[0_8px_22px_rgba(120,75,60,0.04)]">
             <Timer size={18} className="mb-3 text-[#b76b58]" />
             <p className="text-xs text-[#8a928e]">Régularité</p>
-            <p className="mt-1 font-semibold">À construire</p>
+            <p className="mt-1 font-semibold">
+              {recoveryNeed
+                ? "Priorité récupération"
+                : "À consolider"}
+            </p>
           </div>
         </section>
 
@@ -230,6 +308,16 @@ export default function ActivitePage() {
                 <p className="mt-2 text-sm leading-6 text-[#718088]">
                   {getActivityDescription(activity)}
                 </p>
+
+                {scan && (
+                  <p className="mt-3 text-[11px] leading-5 text-[#879596]">
+                    Repères du dernier scan : fatigue visuelle{" "}
+                    {fatigueScore !== null ? `${Math.round(fatigueScore)}/100` : "—"}
+                    {" · "}
+                    équilibre visuel{" "}
+                    {balanceScore !== null ? `${Math.round(balanceScore)}/100` : "—"}.
+                  </p>
+                )}
               </div>
             </div>
           </div>
