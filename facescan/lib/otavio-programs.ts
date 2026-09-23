@@ -896,6 +896,77 @@ function normalize(value?: string | null) {
     .trim();
 }
 
+function nutritionGoalsFromProfile(goals: string[]) {
+  const mapped = new Set<string>();
+
+  for (const goal of goals.map(normalize)) {
+    if (goal === "qualite_peau" || goal === "peau") {
+      mapped.add("equilibre");
+      mapped.add("fibres");
+      mapped.add("omega3");
+    }
+
+    if (goal === "eclat") {
+      mapped.add("equilibre");
+      mapped.add("fibres");
+      mapped.add("omega3");
+    }
+
+    if (goal === "hydratation") {
+      mapped.add("hydratation");
+    }
+
+    if (goal === "fatigue") {
+      mapped.add("energie");
+      mapped.add("proteines");
+      mapped.add("equilibre");
+    }
+
+    if (goal === "nutrition") {
+      mapped.add("equilibre");
+      mapped.add("digestion");
+    }
+
+    if (goal === "sommeil") {
+      mapped.add("equilibre");
+      mapped.add("digestion");
+    }
+
+    if (goal === "bien_etre") {
+      mapped.add("equilibre");
+      mapped.add("digestion");
+      mapped.add("energie");
+    }
+
+    /*
+     * evolution est un objectif de suivi.
+     * Il ne doit pas modifier artificiellement le choix des recettes.
+     */
+    if (goal === "evolution") {
+      continue;
+    }
+
+    /*
+     * Compatibilité avec les anciens objectifs éventuellement
+     * encore présents dans certains profils.
+     */
+    if (
+      [
+        "equilibre",
+        "energie",
+        "digestion",
+        "proteines",
+        "fibres",
+        "omega3",
+      ].includes(goal)
+    ) {
+      mapped.add(goal);
+    }
+  }
+
+  return Array.from(mapped);
+}
+
 function hasAny(values: string[], terms: string[]) {
   return terms.some((term) =>
     values.some(
@@ -1020,7 +1091,8 @@ function scoreRecipe(
 ) {
   let score = 0;
 
-  const goals = (profile.goals ?? []).map(normalize);
+  const profileGoals = (profile.goals ?? []).map(normalize);
+  const goals = nutritionGoalsFromProfile(profileGoals);
   const preferences = (profile.food_preferences ?? []).map(normalize);
   const constraints = (profile.dietary_constraints ?? []).map(normalize);
   const style = normalize(profile.eating_style);
