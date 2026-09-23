@@ -97,53 +97,76 @@ function calculateRelevance(
 ) {
   let relevance = 0;
 
-  const goals = (profile?.goals ?? []).map((goal) => goal.toLowerCase());
+  const goals = (profile?.goals ?? []).map((goal) =>
+    goal
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+  );
+
+  const hasGoal = (...values: string[]) =>
+    values.some((value) => goals.includes(value));
 
   if (item.priority === "haute") relevance += 2;
   if (item.priority === "moderee") relevance += 1;
 
+  /*
+   * QUALITE DE PEAU / ECLAT
+   */
   if (
     item.category === "peau" &&
-    goals.some((goal) =>
-      ["peau", "qualite_peau"].includes(goal)
-    )
+    hasGoal("qualite_peau", "peau")
   ) {
     relevance += 3;
   }
 
   if (
     item.category === "peau" &&
-    goals.includes("hydratation")
+    hasGoal("eclat")
+  ) {
+    relevance += 3;
+  }
+
+  /*
+   * HYDRATATION
+   */
+  if (
+    item.category === "peau" &&
+    hasGoal("hydratation")
   ) {
     relevance += 2;
   }
 
   if (
     item.category === "hydratation" &&
-    goals.includes("hydratation")
+    hasGoal("hydratation")
   ) {
     relevance += 4;
   }
 
+  /*
+   * SOMMEIL / FATIGUE
+   */
   if (
     item.category === "sommeil" &&
-    goals.some((goal) =>
-      ["sommeil", "fatigue", "recuperation"].includes(goal)
-    )
+    hasGoal("sommeil", "fatigue", "recuperation")
+  ) {
+    relevance += 3;
+  }
+
+  /*
+   * NUTRITION / BIEN-ETRE
+   */
+  if (
+    item.category === "alimentation" &&
+    hasGoal("nutrition")
   ) {
     relevance += 3;
   }
 
   if (
     item.category === "alimentation" &&
-    goals.includes("nutrition")
-  ) {
-    relevance += 3;
-  }
-
-  if (
-    item.category === "alimentation" &&
-    goals.includes("equilibre")
+    hasGoal("bien_etre", "equilibre")
   ) {
     relevance += 2;
   }
