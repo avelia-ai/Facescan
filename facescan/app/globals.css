@@ -2,6 +2,12 @@
 
 :root {
   --background: #ffffff;
+  --face-blue: #087ea4;
+  --face-teal: #12a6a6;
+  --face-coral: #ff8066;
+  --face-violet: #7767e8;
+  --face-yellow: #ffc857;
+  --face-green: #48b881;
   --foreground: #17202a;
 }
 
@@ -16,15 +22,17 @@ html {
 body {
   margin: 0;
   background:
+    radial-gradient(circle at 8% 10%, rgba(255, 140, 112, 0.18), transparent 24%),
+    radial-gradient(circle at 92% 18%, rgba(126, 108, 235, 0.16), transparent 24%),
     linear-gradient(
       180deg,
-      #0f4f6b 0%,
-      #1b6b84 10%,
-      #3b879b 22%,
-      #69aeb9 34%,
-      #a8ced2 48%,
-      #d7e9ea 62%,
-      #eef7f7 76%,
+      #0b5876 0%,
+      #087ea4 10%,
+      #12a6a6 22%,
+      #54cfc4 34%,
+      #a9e4de 48%,
+      #dff4f1 61%,
+      #f4fbfa 74%,
       #ffffff 100%
     );
   background-attachment: fixed;
@@ -104,17 +112,20 @@ a {
   min-height: 100%;
   background-color: #ffffff;
   background-image:
+    radial-gradient(circle at 4% 8%, rgba(255, 128, 102, 0.16), transparent 22%),
+    radial-gradient(circle at 96% 12%, rgba(119, 103, 232, 0.14), transparent 23%),
+    radial-gradient(circle at 48% 0%, rgba(18, 166, 166, 0.22), transparent 34%),
     linear-gradient(
       180deg,
-      #0f4f6b 0%,
-      #1b6b84 14%,
-      #3b879b 30%,
-      #69aeb9 46%,
-      #a8ced2 60%,
-      #d7e9ea 74%,
-      #eef7f7 88%,
+      #0b5876 0%,
+      #087ea4 14%,
+      #12a6a6 28%,
+      #54cfc4 42%,
+      #a9e4de 57%,
+      #dff4f1 70%,
+      #f4fbfa 84%,
       #ffffff 100%
     );
   background-repeat: no-repeat;
-  background-size: 100% 430px;
+  background-size: 100% 620px;
 }

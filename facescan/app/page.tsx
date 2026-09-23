@@ -206,9 +206,9 @@ export default function HomePage() {
           (goals.includes("qualite_peau") || goals.includes("eclat") ? 18 : 0),
         border: "border-[#b9d7d1]",
         shadow: "shadow-[0_12px_32px_rgba(35,90,84,0.07)]",
-        iconBg: "bg-[linear-gradient(160deg,#eefaf7_0%,#dcefe9_100%)]",
+        iconBg: "bg-[linear-gradient(160deg,#d9f8f3_0%,#aee7dd_100%)]",
         iconColor: "text-[#287f72]",
-        badgeBg: "bg-[#edf7f4]",
+        badgeBg: "bg-[#dff6f0]",
         badgeColor: "text-[#287f72]",
         titleColor: "text-[#244c50]",
       },
@@ -230,9 +230,9 @@ export default function HomePage() {
           (goals.includes("hydratation") ? 20 : 0),
         border: "border-[#b9d9e5]",
         shadow: "shadow-[0_12px_32px_rgba(37,98,116,0.07)]",
-        iconBg: "bg-[linear-gradient(160deg,#edf9fc_0%,#dceff4_100%)]",
+        iconBg: "bg-[linear-gradient(160deg,#dff7ff_0%,#a9deef_100%)]",
         iconColor: "text-[#2d8eae]",
-        badgeBg: "bg-[#edf7fa]",
+        badgeBg: "bg-[#dff3fa]",
         badgeColor: "text-[#2d7e9a]",
         titleColor: "text-[#245766]",
       },
@@ -254,9 +254,9 @@ export default function HomePage() {
           (goals.includes("sommeil") || goals.includes("fatigue") ? 18 : 0),
         border: "border-[#c9c7e2]",
         shadow: "shadow-[0_12px_32px_rgba(64,59,90,0.07)]",
-        iconBg: "bg-[linear-gradient(160deg,#f5f4fd_0%,#e7e6f6_100%)]",
+        iconBg: "bg-[linear-gradient(160deg,#f0edff_0%,#cfc7ff_100%)]",
         iconColor: "text-[#5d5b9d]",
-        badgeBg: "bg-[#f1f0fa]",
+        badgeBg: "bg-[#eeeaff]",
         badgeColor: "text-[#5d5b9d]",
         titleColor: "text-[#39395f]",
       },
@@ -283,9 +283,9 @@ export default function HomePage() {
           (goals.includes("nutrition") ? 16 : 0),
         border: "border-[#dfb7aa]",
         shadow: "shadow-[0_12px_32px_rgba(111,72,58,0.07)]",
-        iconBg: "bg-[linear-gradient(160deg,#fff5f0_0%,#f8dfd5_100%)]",
+        iconBg: "bg-[linear-gradient(160deg,#fff1eb_0%,#ffc7b8_100%)]",
         iconColor: "text-[#b76b58]",
-        badgeBg: "bg-[#fcf0eb]",
+        badgeBg: "bg-[#ffebe4]",
         badgeColor: "text-[#a35f4d]",
         titleColor: "text-[#77463b]",
       },
@@ -308,9 +308,9 @@ export default function HomePage() {
             : 0),
         border: "border-[#a9d1cb]",
         shadow: "shadow-[0_12px_32px_rgba(35,90,84,0.06)]",
-        iconBg: "bg-[linear-gradient(160deg,#ebfaf6_0%,#d7eee8_100%)]",
+        iconBg: "bg-[linear-gradient(160deg,#e1faf3_0%,#b9eadc_100%)]",
         iconColor: "text-[#168f91]",
-        badgeBg: "bg-[#eaf8f6]",
+        badgeBg: "bg-[#dff7f0]",
         badgeColor: "text-[#168f91]",
         titleColor: "text-[#21585d]",
       },
@@ -684,7 +684,7 @@ export default function HomePage() {
   if (loading) {
     return (
       
-<main className="relative min-h-screen bg-white">
+<main className="relative min-h-screen app-background">
         <div className="mx-auto flex min-h-screen max-w-md items-center justify-center px-5">
           <div className="text-sm font-medium text-[#64747b]">
             Préparation de votre espace Otavio…
@@ -846,9 +846,9 @@ export default function HomePage() {
           <button
             type="button"
             onClick={() => router.push("/resultats")}
-            className="relative mt-7 w-full overflow-hidden rounded-[32px] border border-[#9fc0c8] bg-[#fffdfb] text-left shadow-[0_20px_50px_rgba(24,55,68,0.10)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_55px_rgba(24,55,68,0.13)]"
+            className="relative mt-7 w-full overflow-hidden rounded-[32px] border border-[#8fc7cf] bg-white text-left shadow-[0_20px_50px_rgba(24,55,68,0.10)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_55px_rgba(24,55,68,0.13)]"
           >
-            <div className="relative flex items-center justify-between gap-5 overflow-hidden bg-[linear-gradient(135deg,#123544_0%,#184b5c_55%,#28677a_100%)] p-6 text-white">
+            <div className="relative flex items-center justify-between gap-5 overflow-hidden bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#12a6a6_100%)] p-6 text-white">
               <div className="min-w-0">
                 <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#9ce5de]">
                   <ScanFace size={15} />
@@ -888,7 +888,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="bg-[#fffdfb] p-5">
+            <div className="bg-white p-5">
               <div className="mb-4 flex items-center justify-between">
                 <div>
                   <p className="text-sm font-semibold text-[#183d48]">
@@ -899,7 +899,7 @@ export default function HomePage() {
                   </p>
                 </div>
 
-                <span className="rounded-full bg-[#e9f7f2] px-3 py-1.5 text-xs font-semibold text-[#287f72] transition hover:bg-[#dff1ea]">
+                <span className="rounded-full bg-[#dff7ef] px-3 py-1.5 text-xs font-semibold text-[#287f72] transition hover:bg-[#dff1ea]">
                   Voir l’analyse
                 </span>
               </div>
@@ -933,7 +933,7 @@ export default function HomePage() {
                 ].map((item) => (
                   <div
                     key={item.label}
-                    className="rounded-[22px] border border-[#d3d0c7] bg-[#fffefb] p-4 shadow-[0_6px_18px_rgba(70,55,40,0.035)]"
+                    className="rounded-[22px] border border-[#b9dfe0] bg-white p-4 shadow-[0_6px_18px_rgba(70,55,40,0.035)]"
                   >
                     <div
                       className={`inline-flex rounded-2xl px-3 py-1.5 text-xs font-bold ${item.bg} ${item.tone}`}
@@ -951,7 +951,7 @@ export default function HomePage() {
           </button>
         ) : (
           <section className="mt-7 overflow-hidden rounded-[30px] border border-[#b8cecf] bg-white shadow-[0_16px_40px_rgba(16,47,58,0.07)]">
-            <div className="relative overflow-hidden bg-[linear-gradient(135deg,#edf8f5_0%,#f9fcfb_55%,#eef3ff_100%)] px-5 py-7">
+            <div className="relative overflow-hidden bg-[linear-gradient(135deg,#dff8f4_0%,#eefcff_52%,#eee9ff_100%)] px-5 py-7">
               <div className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full bg-[#9ee7dc]/25 blur-3xl" />
               <div className="pointer-events-none absolute -bottom-12 -left-10 h-28 w-28 rounded-full bg-[#a9b2f7]/20 blur-3xl" />
 
@@ -1073,7 +1073,7 @@ export default function HomePage() {
             </div>
 
             <div className="mt-5 grid grid-cols-2 gap-3">
-              <div className="rounded-2xl bg-[#f7f5f1] px-4 py-3">
+              <div className="rounded-2xl bg-[#fff1eb] px-4 py-3">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#7c8b90]">
                   Série
                 </p>
@@ -1083,7 +1083,7 @@ export default function HomePage() {
                 </p>
               </div>
 
-              <div className="rounded-2xl bg-[#f7f5f1] px-4 py-3">
+              <div className="rounded-2xl bg-[#fff1eb] px-4 py-3">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#7c8b90]">
                   Aujourd’hui
                 </p>
@@ -1094,7 +1094,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="mt-3 rounded-2xl bg-[#e5faf7] px-4 py-3">
+            <div className="mt-3 rounded-2xl bg-[#def8f2] px-4 py-3">
               <p className="text-xs font-semibold text-[#176678]">
                 {hasScan
                   ? "Otavio progresse avec vous."
@@ -1128,9 +1128,9 @@ export default function HomePage() {
           </div>
 
           <div className="mt-4 grid grid-cols-2 gap-3">
-            <div className="rounded-[24px] border border-[#b8d7cf] bg-[linear-gradient(145deg,#ffffff_0%,#f4fbf8_100%)] p-5 shadow-[0_10px_20px_rgba(31,69,65,0.055),0_22px_42px_rgba(31,69,65,0.055),inset_0_1px_0_rgba(255,255,255,0.96)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_26px_rgba(31,69,65,0.075),0_28px_54px_rgba(31,69,65,0.10),inset_0_1px_0_rgba(255,255,255,1)]">
+            <div className="rounded-[24px] border border-[#b8d7cf] bg-[linear-gradient(145deg,#ffffff_0%,#e7f8f3_100%)] p-5 shadow-[0_10px_20px_rgba(31,69,65,0.055),0_22px_42px_rgba(31,69,65,0.055),inset_0_1px_0_rgba(255,255,255,0.96)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_26px_rgba(31,69,65,0.075),0_28px_54px_rgba(31,69,65,0.10),inset_0_1px_0_rgba(255,255,255,1)]">
               <div className="flex items-center justify-between">
-                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 bg-[linear-gradient(145deg,#f9fffd_0%,#dcefe9_100%)] text-[#287f72] shadow-[0_4px_8px_rgba(35,80,74,0.08),0_9px_18px_rgba(35,80,74,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 bg-[linear-gradient(145deg,#effffc_0%,#bdece1_100%)] text-[#287f72] shadow-[0_4px_8px_rgba(35,80,74,0.08),0_9px_18px_rgba(35,80,74,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
                   <Sparkles size={18} />
                 </div>
 
@@ -1148,9 +1148,9 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="rounded-[24px] border border-[#a9d5d7] bg-[linear-gradient(145deg,#ffffff_0%,#f2fbfb_100%)] p-5 shadow-[0_10px_20px_rgba(30,100,105,0.05),0_22px_42px_rgba(30,100,105,0.055),inset_0_1px_0_rgba(255,255,255,0.96)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_26px_rgba(30,100,105,0.07),0_28px_54px_rgba(30,100,105,0.10),inset_0_1px_0_rgba(255,255,255,1)]">
+            <div className="rounded-[24px] border border-[#a9d5d7] bg-[linear-gradient(145deg,#ffffff_0%,#e6f8fa_100%)] p-5 shadow-[0_10px_20px_rgba(30,100,105,0.05),0_22px_42px_rgba(30,100,105,0.055),inset_0_1px_0_rgba(255,255,255,0.96)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_26px_rgba(30,100,105,0.07),0_28px_54px_rgba(30,100,105,0.10),inset_0_1px_0_rgba(255,255,255,1)]">
               <div className="flex items-center justify-between">
-                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 bg-[linear-gradient(145deg,#f9fffd_0%,#dcefe9_100%)] text-[#287f72] shadow-[0_4px_8px_rgba(35,80,74,0.08),0_9px_18px_rgba(35,80,74,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 bg-[linear-gradient(145deg,#effffc_0%,#bdece1_100%)] text-[#287f72] shadow-[0_4px_8px_rgba(35,80,74,0.08),0_9px_18px_rgba(35,80,74,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
                   <Droplets size={18} />
                 </div>
 
@@ -1168,9 +1168,9 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="rounded-[24px] border border-[#c7c2e2] bg-[linear-gradient(145deg,#ffffff_0%,#f7f5fd_100%)] p-5 shadow-[0_10px_20px_rgba(82,75,130,0.05),0_22px_42px_rgba(82,75,130,0.055),inset_0_1px_0_rgba(255,255,255,0.96)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_26px_rgba(82,75,130,0.07),0_28px_54px_rgba(82,75,130,0.10),inset_0_1px_0_rgba(255,255,255,1)]">
+            <div className="rounded-[24px] border border-[#c7c2e2] bg-[linear-gradient(145deg,#ffffff_0%,#f0edff_100%)] p-5 shadow-[0_10px_20px_rgba(82,75,130,0.05),0_22px_42px_rgba(82,75,130,0.055),inset_0_1px_0_rgba(255,255,255,0.96)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_26px_rgba(82,75,130,0.07),0_28px_54px_rgba(82,75,130,0.10),inset_0_1px_0_rgba(255,255,255,1)]">
               <div className="flex items-center justify-between">
-                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 bg-[linear-gradient(145deg,#fbfaff_0%,#e8e4fa_100%)] text-[#655cc2] shadow-[0_4px_8px_rgba(82,75,130,0.08),0_9px_18px_rgba(82,75,130,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 bg-[linear-gradient(145deg,#fbfaff_0%,#d9d2ff_100%)] text-[#655cc2] shadow-[0_4px_8px_rgba(82,75,130,0.08),0_9px_18px_rgba(82,75,130,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
                   <Moon size={18} />
                 </div>
 
@@ -1188,9 +1188,9 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="rounded-[24px] border border-[#e0b9ad] bg-[linear-gradient(145deg,#ffffff_0%,#fff7f3_100%)] p-5 shadow-[0_10px_20px_rgba(120,75,60,0.05),0_22px_42px_rgba(120,75,60,0.055),inset_0_1px_0_rgba(255,255,255,0.96)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_26px_rgba(120,75,60,0.07),0_28px_54px_rgba(120,75,60,0.10),inset_0_1px_0_rgba(255,255,255,1)]">
+            <div className="rounded-[24px] border border-[#e0b9ad] bg-[linear-gradient(145deg,#ffffff_0%,#fff0ea_100%)] p-5 shadow-[0_10px_20px_rgba(120,75,60,0.05),0_22px_42px_rgba(120,75,60,0.055),inset_0_1px_0_rgba(255,255,255,0.96)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_26px_rgba(120,75,60,0.07),0_28px_54px_rgba(120,75,60,0.10),inset_0_1px_0_rgba(255,255,255,1)]">
               <div className="flex items-center justify-between">
-                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 bg-[linear-gradient(145deg,#fffaf7_0%,#f9e3da_100%)] text-[#c06450] shadow-[0_4px_8px_rgba(120,75,60,0.08),0_9px_18px_rgba(120,75,60,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 bg-[linear-gradient(145deg,#fffaf7_0%,#ffc9bb_100%)] text-[#c06450] shadow-[0_4px_8px_rgba(120,75,60,0.08),0_9px_18px_rgba(120,75,60,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
                   <Activity size={18} />
                 </div>
 
@@ -1444,7 +1444,7 @@ export default function HomePage() {
         </section>
       </div>
 
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-[#e7e2d9]/80 bg-[#fffdf9]/88 shadow-[0_-12px_35px_rgba(70,55,40,0.07)] backdrop-blur-2xl">
+      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-[#cfe1e3]/80 bg-white/92 shadow-[0_-12px_35px_rgba(70,55,40,0.07)] backdrop-blur-2xl">
         <div className="mx-auto grid max-w-md grid-cols-5 items-end px-3 pb-3 pt-2">
           <button
             type="button"
@@ -1467,7 +1467,7 @@ export default function HomePage() {
           <button
             type="button"
             onClick={() => router.push("/scanner")}
-            className="relative -mt-7 flex h-16 w-16 items-center justify-center justify-self-center rounded-full bg-[linear-gradient(135deg,#123544_0%,#1d596b_100%)] text-white shadow-[0_14px_32px_rgba(18,53,68,0.28)] ring-4 ring-[#fffdf9] transition hover:scale-[1.03]"
+            className="relative -mt-7 flex h-16 w-16 items-center justify-center justify-self-center rounded-full bg-[linear-gradient(135deg,#087ea4_0%,#12a6a6_55%,#7767e8_100%)] text-white shadow-[0_14px_32px_rgba(18,53,68,0.28)] ring-4 ring-white transition hover:scale-[1.03]"
             aria-label="Scanner"
           >
             <Camera size={25} strokeWidth={1.8} />

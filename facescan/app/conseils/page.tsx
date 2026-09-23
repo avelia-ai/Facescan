@@ -275,16 +275,16 @@ export default function ConseilsPage() {
 
           <Link
             href="/scanner"
-            className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-[#176678] to-[#287f88] px-5 py-3 text-[12px] font-semibold text-white shadow-[0_12px_30px_rgba(23,102,120,0.22)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(23,102,120,0.26)] sm:flex"
+            className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-[#087ea4] to-[#12a6a6] px-5 py-3 text-[12px] font-semibold text-white shadow-[0_12px_30px_rgba(23,102,120,0.22)] transition hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(23,102,120,0.26)] sm:flex"
           >
             <ScanFace size={16} strokeWidth={1.8} />
             Nouveau scan
           </Link>
         </header>
 
-        <section className="relative mt-8 overflow-hidden rounded-[34px] border border-[#326978] bg-gradient-to-br from-[#163947] via-[#1a5667] to-[#207f82] p-6 text-white shadow-[0_24px_60px_rgba(23,76,87,0.22)] sm:p-8">
-          <div className="pointer-events-none absolute -right-14 -top-16 h-40 w-40 rounded-full bg-[#78d9d0]/12 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-16 left-20 h-32 w-32 rounded-full bg-[#f2b58f]/10 blur-3xl" />
+        <section className="relative mt-8 overflow-hidden rounded-[34px] border border-[#326978] bg-gradient-to-br from-[#0b5876] via-[#087ea4] to-[#12a6a6] p-6 text-white shadow-[0_24px_60px_rgba(23,76,87,0.22)] sm:p-8">
+          <div className="pointer-events-none absolute -right-14 -top-16 h-40 w-40 rounded-full bg-[#42cfc2]/20 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-16 left-20 h-32 w-32 rounded-full bg-[#ff8066]/18 blur-3xl" />
 
           <div className="relative">
             <div className="min-w-0 max-w-2xl">
@@ -345,7 +345,7 @@ export default function ConseilsPage() {
                 Vos priorités
               </h2>
             </div>
-            <span className="rounded-full border border-[#bfe8e3] bg-[#effcf9] px-3 py-1.5 text-[10px] font-semibold text-[#287b78]">
+            <span className="rounded-full border border-[#9fe4d8] bg-[#dcf8f1] px-3 py-1.5 text-[10px] font-semibold text-[#287b78]">
               {visibleRecommendations.length} action
               {visibleRecommendations.length > 1 ? "s" : ""}
             </span>
@@ -355,7 +355,7 @@ export default function ConseilsPage() {
             {visibleRecommendations.map((item) => (
               <article
                 key={item.id}
-                className="group relative overflow-hidden rounded-[28px] border border-[#c8d9d5] bg-[linear-gradient(145deg,#ffffff_0%,#f8fcfb_100%)] shadow-[0_12px_24px_rgba(31,69,65,0.07),0_24px_50px_rgba(31,69,65,0.055),inset_0_1px_0_rgba(255,255,255,0.95)] transition-all duration-300 hover:-translate-y-1 hover:border-[#b9cfca] hover:shadow-[0_16px_30px_rgba(31,69,65,0.09),0_30px_60px_rgba(31,69,65,0.10),inset_0_1px_0_rgba(255,255,255,1)]"
+                className="group relative overflow-hidden rounded-[28px] border border-[#8fd2cc] bg-[linear-gradient(145deg,#ffffff_0%,#e4f8f3_100%)] shadow-[0_12px_24px_rgba(31,69,65,0.07),0_24px_50px_rgba(31,69,65,0.055),inset_0_1px_0_rgba(255,255,255,0.95)] transition-all duration-300 hover:-translate-y-1 hover:border-[#b9cfca] hover:shadow-[0_16px_30px_rgba(31,69,65,0.09),0_30px_60px_rgba(31,69,65,0.10),inset_0_1px_0_rgba(255,255,255,1)]"
               >
                 <div
                   role="button"
@@ -376,16 +376,16 @@ export default function ConseilsPage() {
                   }}
                   className={`flex cursor-pointer items-center justify-between gap-3 border-b px-5 py-3.5 ${
                     item.category === "Peau"
-                      ? "border-[#e4c5bb] bg-[linear-gradient(135deg,#fff0eb_0%,#f9dfd5_100%)]"
+                      ? "border-[#ffb19d] bg-[linear-gradient(135deg,#fff0eb_0%,#ffc7b8_100%)]"
                       : item.category === "Hydratation"
-                        ? "border-[#b9dfe0] bg-[linear-gradient(135deg,#eafafa_0%,#d9f0f1_100%)]"
+                        ? "border-[#8ed8df] bg-[linear-gradient(135deg,#e3fbff_0%,#b6eaf0_100%)]"
                         : item.category === "Sommeil"
-                          ? "border-[#c8c4e2] bg-[linear-gradient(135deg,#f2f0fc_0%,#e4e1f4_100%)]"
+                          ? "border-[#b8afff] bg-[linear-gradient(135deg,#f1efff_0%,#dcd6ff_100%)]"
                           : item.category === "Alimentation"
-                            ? "border-[#bfd6c7] bg-[linear-gradient(135deg,#edf7f0_0%,#dceee3_100%)]"
+                            ? "border-[#9ed9b9] bg-[linear-gradient(135deg,#e9fbf0_0%,#c9efd9_100%)]"
                             : String(item.category) === "Activité"
-                              ? "border-[#beded7] bg-[linear-gradient(135deg,#edf9f6_0%,#d9eee9_100%)]"
-                              : "border-[#e8d9a9] bg-[linear-gradient(135deg,#fff9e8_0%,#f8edc9_100%)]"
+                              ? "border-[#8fded0] bg-[linear-gradient(135deg,#e0fbf5_0%,#bceee3_100%)]"
+                              : "border-[#f2cf70] bg-[linear-gradient(135deg,#fff7d9_0%,#ffe8a8_100%)]"
                   }`}
                 >
                   <div className="flex min-w-0 items-center gap-2.5">
@@ -418,10 +418,10 @@ export default function ConseilsPage() {
                   <span
                     className={`rounded-full px-2.5 py-1 text-[9px] font-semibold ${
                       item.priority === "high"
-                        ? "bg-[#fff0eb] text-[#b45a48]"
+                        ? "bg-[#ffd9cf] text-[#d96550]"
                         : item.priority === "medium"
-                          ? "bg-[#fff8df] text-[#9a7a18]"
-                          : "bg-[#eaf8f5] text-[#167b82]"
+                          ? "bg-[#ffe6a8] text-[#a36f00]"
+                          : "bg-[#c9f2eb] text-[#087ea4]"
                     }`}
                   >
                     {item.priority === "high"
@@ -455,7 +455,7 @@ export default function ConseilsPage() {
                     expandedAdviceId === item.id ? "" : "hidden"
                   }`}
                 >
-                  <div className="rounded-2xl border border-[#d7ebe7] bg-[#f5fbf9] px-4 py-3">
+                  <div className="rounded-2xl border border-[#d7ebe7] bg-[#e8f8f3] px-4 py-3">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#668083]">
                       Cible
                     </p>
@@ -464,7 +464,7 @@ export default function ConseilsPage() {
                     </p>
                   </div>
 
-                  <div className="rounded-2xl border border-[#e0ddf1] bg-[#f9f8fe] px-4 py-3">
+                  <div className="rounded-2xl border border-[#e0ddf1] bg-[#f2efff] px-4 py-3">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7770a8]">
                       Fréquence
                     </p>
@@ -507,8 +507,8 @@ export default function ConseilsPage() {
                 <div
                   className={`mt-3 rounded-2xl px-4 py-3 ${
                     completedAdvice.includes(item.id)
-                      ? "bg-[#e5faf7] text-[#176678]"
-                      : "bg-[#f8faf9] text-[#35666b]"
+                      ? "bg-[#c9f2eb] text-[#087ea4]"
+                      : "bg-[#eef8f7] text-[#2b6d76]"
                   } ${
                     expandedAdviceId === item.id ? "" : "hidden"
                   }`}
@@ -540,7 +540,7 @@ export default function ConseilsPage() {
                       type="button"
                       onClick={() => toggleAdviceCompletion(item.id)}
                       disabled={completingAdvice === item.id}
-                      className="mt-3 rounded-full bg-gradient-to-r from-[#176678] to-[#287f88] px-4 py-2 text-[10px] font-semibold text-white shadow-[0_8px_20px_rgba(23,102,120,0.18)] transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(23,102,120,0.22)] disabled:opacity-50"
+                      className="mt-3 rounded-full bg-gradient-to-r from-[#087ea4] to-[#12a6a6] px-4 py-2 text-[10px] font-semibold text-white shadow-[0_8px_20px_rgba(23,102,120,0.18)] transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(23,102,120,0.22)] disabled:opacity-50"
                     >
                       {completingAdvice === item.id
                         ? "Enregistrement…"
@@ -572,7 +572,7 @@ export default function ConseilsPage() {
                 </button>
 
                 {expandedAdviceId === item.id && (
-                  <div className="mt-4 space-y-3 rounded-[22px] border border-[#cfe2dd] bg-[linear-gradient(145deg,#f8fcfb_0%,#edf7f4_100%)] p-4">
+                  <div className="mt-4 space-y-3 rounded-[22px] border border-[#9fddd3] bg-[linear-gradient(145deg,#e8fbf6_0%,#d5f2eb_100%)] p-4">
                     <div className="rounded-[18px] border border-[#d8e9e5] bg-white/80 p-4">
                       <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#287b78]">
                         Ce que votre scan a observé
@@ -613,7 +613,7 @@ export default function ConseilsPage() {
                       )}
                     </div>
 
-                    <div className="rounded-[18px] border border-[#dddaf0] bg-[#faf9fe] p-4">
+                    <div className="rounded-[18px] border border-[#c9c0ff] bg-[#f4f1ff] p-4">
                       <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#6b65a1]">
                         Pourquoi ce conseil vous concerne
                       </p>
@@ -678,7 +678,7 @@ export default function ConseilsPage() {
                           {item.basedOn.map((factor) => (
                             <span
                               key={factor}
-                              className="rounded-full border border-[#d5e5e1] bg-[#f5faf8] px-2.5 py-1.5 text-[10px] font-medium text-[#48686c]"
+                              className="rounded-full border border-[#d5e5e1] bg-[#e8f8f3] px-2.5 py-1.5 text-[10px] font-medium text-[#48686c]"
                             >
                               {factor}
                             </span>
@@ -688,7 +688,7 @@ export default function ConseilsPage() {
                     ) : null}
 
                     {item.safetyNote && (
-                      <div className="rounded-[18px] border border-[#eadfbe] bg-[#fffbf0] p-4">
+                      <div className="rounded-[18px] border border-[#eadfbe] bg-[#fff7dc] p-4">
                         <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#9a7a18]">
                           À garder en tête
                         </p>
@@ -736,9 +736,9 @@ export default function ConseilsPage() {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="group rounded-[26px] border border-[#cbdad7] bg-[linear-gradient(145deg,#ffffff_0%,#fbfdfc_100%)] p-4 text-left shadow-[0_10px_28px_rgba(36,78,70,0.055)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(36,78,70,0.08)]"
+                  className="group rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#e7f8f4_100%)] p-4 text-left shadow-[0_10px_28px_rgba(36,78,70,0.055)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(36,78,70,0.08)]"
                 >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#e8f8f3_0%,#d8eee7_100%)] text-[#287f72] shadow-[0_6px_16px_rgba(40,127,114,0.08)] transition group-hover:scale-[1.03]">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,#c9f2eb_0%,#9fe1d5_100%)] text-[#287f72] shadow-[0_6px_16px_rgba(40,127,114,0.08)] transition group-hover:scale-[1.03]">
                     <Icon size={18} strokeWidth={1.7} />
                   </div>
                   <p className="mt-4 text-[13px] font-semibold">{item.label}</p>
@@ -752,7 +752,7 @@ export default function ConseilsPage() {
         </section>
 
         <section className="mt-10 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
-          <div className="rounded-[28px] border border-[#cbdad7] bg-[linear-gradient(145deg,#ffffff_0%,#f9fcfa_100%)] p-6 shadow-[0_14px_34px_rgba(36,78,70,0.06)]">
+          <div className="rounded-[28px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#e8f8f4_100%)] p-6 shadow-[0_14px_34px_rgba(36,78,70,0.06)]">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e8f8f5]">
                 <SunMedium size={18} strokeWidth={1.7} />
@@ -802,7 +802,7 @@ export default function ConseilsPage() {
                 return (
                   <div
                     key={label}
-                    className="rounded-[20px] border border-[#cfe1dd] bg-[linear-gradient(145deg,#f8fcfa_0%,#eef8f4_100%)] px-3.5 py-3.5 shadow-[0_5px_14px_rgba(36,78,70,0.035)]"
+                    className="rounded-[20px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#e9fbf5_0%,#d4f3ea_100%)] px-3.5 py-3.5 shadow-[0_5px_14px_rgba(36,78,70,0.035)]"
                   >
                     <p className="text-[10px] text-[#8d887f]">{label}</p>
                     <div className="mt-2 flex items-baseline justify-between gap-2">
@@ -819,7 +819,7 @@ export default function ConseilsPage() {
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-[#cbc7df] bg-[linear-gradient(135deg,#f5f2ff_0%,#eaf8f4_100%)] p-6 shadow-[0_14px_34px_rgba(82,75,130,0.07)]">
+          <div className="rounded-[28px] border border-[#bdb3ff] bg-[linear-gradient(135deg,#eeeaff_0%,#dff8f2_100%)] p-6 shadow-[0_14px_34px_rgba(82,75,130,0.07)]">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/80">
               <UserRound size={18} strokeWidth={1.7} />
             </div>
@@ -871,7 +871,7 @@ export default function ConseilsPage() {
           <div className="flex w-16 flex-col items-center gap-1">
             <Link
               href="/scanner"
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#123544] to-[#287f88] text-white shadow-[0_12px_30px_rgba(18,53,68,0.24)] ring-4 ring-white"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#087ea4] to-[#12a6a6] text-white shadow-[0_12px_30px_rgba(18,53,68,0.24)] ring-4 ring-white"
               aria-label="Scanner"
             >
               <ScanFace size={21} strokeWidth={1.8} />
