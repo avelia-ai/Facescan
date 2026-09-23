@@ -137,10 +137,43 @@ export default function HomePage() {
     [otavioProfile, latestIndicators]
   );
 
-  const dailyProgramItems = useMemo(
-    () => otavioDailyProgram.items.slice(0, 3),
-    [otavioDailyProgram.items]
-  );
+  const dailyProgramItems = useMemo(() => {
+    const items = otavioDailyProgram.items;
+
+    if (items.length <= 3) {
+      return items;
+    }
+
+    const selected: typeof items = [];
+    const usedCategories = new Set<string>();
+
+    // La première carte reste toujours la plus pertinente selon le scan.
+    if (items[0]) {
+      selected.push(items[0]);
+      usedCategories.add(items[0].category);
+    }
+
+    // Pour les cartes suivantes, on privilégie une nouvelle catégorie.
+    for (const item of items) {
+      if (selected.length >= 3) break;
+
+      if (!usedCategories.has(item.category)) {
+        selected.push(item);
+        usedCategories.add(item.category);
+      }
+    }
+
+    // S'il n'y a pas assez de catégories différentes, on complète.
+    for (const item of items) {
+      if (selected.length >= 3) break;
+
+      if (!selected.includes(item)) {
+        selected.push(item);
+      }
+    }
+
+    return selected;
+  }, [otavioDailyProgram.items]);
 
   const dailyHabitItems = useMemo(() => {
     const scan = latestIndicators;
