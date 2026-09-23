@@ -1994,10 +1994,42 @@ export function buildOtavioNutritionPlan(
 
   const goals = (profile.goals ?? []).map(normalize);
 
+  const scanFocusCandidates = [
+    {
+      value: scan?.equilibre,
+      objective:
+        "Structurer des repas variés et réguliers pour renforcer l’équilibre global de votre alimentation.",
+    },
+    {
+      value: scan?.hydratation,
+      objective:
+        "Mettre davantage l’accent sur des aliments riches en eau et des repas cohérents avec votre hydratation.",
+    },
+    {
+      value: scan?.peau,
+      objective:
+        "Privilégier une alimentation variée riche en végétaux, fibres et sources d’oméga-3, en cohérence avec votre indicateur visuel de peau.",
+    },
+    {
+      value: scan?.fatigue,
+      objective:
+        "Favoriser des repas réguliers et suffisamment structurés pour soutenir votre énergie et votre récupération.",
+    },
+  ];
+
+  const scanFocus = scanFocusCandidates
+    .filter(
+      (item): item is { value: number; objective: string } =>
+        typeof item.value === "number"
+    )
+    .sort((a, b) => a.value - b.value)[0];
+
   let objective =
     "Construire une alimentation plus régulière et équilibrée.";
 
-  if (goals.includes("nutrition")) {
+  if (scanFocus && scanFocus.value < 70) {
+    objective = scanFocus.objective;
+  } else if (goals.includes("nutrition")) {
     objective =
       "Améliorer votre alimentation selon vos objectifs et contraintes.";
   } else if (
