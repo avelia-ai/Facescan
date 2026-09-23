@@ -85,9 +85,9 @@ export default function ParametresPage() {
           </div>
         </header>
 
-        <section className="mt-8 relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#183d48] via-[#195263] to-[#167b82] p-6 text-white shadow-[0_24px_60px_rgba(23,76,87,0.22)] sm:p-8">
-          <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#63e4d4]/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-24 -left-20 h-64 w-64 rounded-full bg-[#8d8df5]/20 blur-3xl" />
+        <section className="mt-8 relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#0b5876] via-[#087ea4] to-[#12a6a6] p-6 text-white shadow-[0_24px_60px_rgba(23,76,87,0.22)] sm:p-8">
+          <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#42cfc2]/28 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 -left-20 h-64 w-64 rounded-full bg-[#9b8cff]/24 blur-3xl" />
           <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/60">
             Configuration
           </p>
@@ -115,9 +115,9 @@ export default function ParametresPage() {
                 <Link
                   key={item.title}
                   href={item.href}
-                  className="group flex items-center gap-4 rounded-[22px] border border-[#e0e9e7] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)] transition hover:-translate-y-0.5"
+                  className="group flex items-center gap-4 rounded-[22px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)] transition hover:-translate-y-0.5"
                 >
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#e9f8f5]">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#d1f4ed]">
                     <Icon size={19} strokeWidth={1.7} />
                   </div>
 
@@ -139,7 +139,7 @@ export default function ParametresPage() {
           </div>
         </section>
 
-        <section className="mt-8 rounded-[24px] border border-[#dfe7e6] bg-white p-6 shadow-[0_12px_35px_rgba(35,55,60,0.045)]">
+        <section className="mt-8 rounded-[24px] border border-[#b9dfe3] bg-[linear-gradient(145deg,#ffffff_0%,#eefafa_100%)] p-6 shadow-[0_12px_35px_rgba(35,55,60,0.045)]">
           <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#668083]">
             Application
           </p>
@@ -161,7 +161,7 @@ export default function ParametresPage() {
           </div>
         </section>
 
-        <section className="mt-8 relative overflow-hidden rounded-[26px] bg-gradient-to-br from-[#f0edff] to-[#e8f8f4] p-6 shadow-[0_12px_35px_rgba(70,80,130,0.07)]">
+        <section className="mt-8 relative overflow-hidden rounded-[26px] bg-gradient-to-br from-[#eee9ff] via-[#dcf8f2] to-[#fff0eb] p-6 shadow-[0_12px_35px_rgba(70,80,130,0.07)]">
           <div className="flex items-start gap-4">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/80">
               <LogOut size={18} strokeWidth={1.7} />
@@ -184,7 +184,7 @@ export default function ParametresPage() {
                 type="button"
                 onClick={handleSignOut}
                 disabled={isSigningOut}
-                className="mt-5 rounded-full bg-gradient-to-r from-[#176678] to-[#756bd4] px-5 py-3 text-[11px] font-semibold text-white shadow-[0_8px_22px_rgba(34,91,105,0.20)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-5 rounded-full bg-gradient-to-r from-[#087ea4] via-[#12a6a6] to-[#7767e8] px-5 py-3 text-[11px] font-semibold text-white shadow-[0_8px_22px_rgba(34,91,105,0.20)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isSigningOut ? "Déconnexion…" : "Se déconnecter"}
               </button>
@@ -214,7 +214,7 @@ export default function ParametresPage() {
           <div className="flex w-16 flex-col items-center gap-1">
             <Link
               href="/scanner"
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#176678] to-[#756bd4] text-white shadow-[0_10px_28px_rgba(34,91,105,0.28)]"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#087ea4] via-[#12a6a6] to-[#7767e8] text-white shadow-[0_10px_28px_rgba(34,91,105,0.28)]"
               aria-label="Scanner"
             >
               <ScanFace size={21} strokeWidth={1.8} />
