@@ -138,7 +138,7 @@ export default function EvolutionPage() {
 
           <Link
             href="/scanner"
-            className="flex h-10 items-center gap-2 rounded-full bg-gradient-to-r from-[#176678] to-[#287f88] px-4 text-xs font-semibold text-white shadow-[0_8px_22px_rgba(23,102,120,0.18)]"
+            className="flex h-10 items-center gap-2 rounded-full bg-gradient-to-r from-[#087ea4] to-[#12a6a6] px-4 text-xs font-semibold text-white shadow-[0_8px_22px_rgba(23,102,120,0.18)]"
           >
             <ScanFace size={15} />
             <span className="hidden sm:inline">Nouveau scan</span>
@@ -222,7 +222,7 @@ export default function EvolutionPage() {
 
         {/* Main score */}
         <div className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="rounded-[30px] relative overflow-hidden bg-gradient-to-br from-[#183d48] via-[#195263] to-[#167b82] p-6 text-white shadow-[0_24px_60px_rgba(23,76,87,0.22)] md:p-8">
+          <div className="rounded-[30px] relative overflow-hidden bg-gradient-to-br from-[#0b5876] via-[#087ea4] to-[#12a6a6] p-6 text-white shadow-[0_24px_60px_rgba(23,76,87,0.22)] md:p-8">
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-xs uppercase tracking-[0.18em] text-white/60">
@@ -272,7 +272,7 @@ export default function EvolutionPage() {
                         className="group relative flex h-full flex-1 items-end"
                       >
                         <div
-                          className="w-full rounded-t-xl bg-gradient-to-t from-[#72e5d5]/55 to-[#b5f4eb]/25 transition-all group-hover:from-[#72e5d5]/80 group-hover:to-[#d8fbf6]/45"
+                          className="w-full rounded-t-xl bg-gradient-to-t from-[#42cfc2]/85 to-[#b9f5ed]/35 transition-all group-hover:from-[#72e5d5]/80 group-hover:to-[#d8fbf6]/45"
                           style={{ height: `${Math.max(8, score)}%` }}
                         />
                       </div>
@@ -340,7 +340,7 @@ export default function EvolutionPage() {
 
           {/* Period selector + summary */}
           <div className="rounded-[30px] border border-[#dfe7e6] bg-white p-6 shadow-[0_14px_40px_rgba(35,55,60,0.05)] md:p-8">
-            <div className="flex gap-2 rounded-full border border-[#e1ebe9] bg-[#f0f7f5] p-1">
+            <div className="flex gap-2 rounded-full border border-[#e1ebe9] bg-[#dff7f2] p-1">
               {[
                 ["7 jours", 7],
                 ["30 jours", 30],
@@ -387,7 +387,7 @@ export default function EvolutionPage() {
               </p>
             </div>
 
-            <div className="mt-7 rounded-2xl border border-[#e2eeeb] bg-[#f3faf8] p-4">
+            <div className="mt-7 rounded-2xl border border-[#e2eeeb] bg-[#e8f8f4] p-4">
               <div className="flex items-center gap-3">
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white">
                   <Sparkles size={16} />
@@ -453,7 +453,7 @@ export default function EvolutionPage() {
                 return (
               <div
                 key={metric.name}
-                className="rounded-2xl border border-[#e2eeeb] bg-[#f5faf9] p-4"
+                className="rounded-2xl border border-[#e2eeeb] bg-[#eaf8f6] p-4"
               >
                 <div className="flex items-center justify-between">
                   <p className="text-xs font-medium">{metric.name}</p>
@@ -493,7 +493,7 @@ export default function EvolutionPage() {
 
                 <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-black/[0.07]">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-[#42c9bd] to-[#6b8df4]"
+                    className="h-full rounded-full bg-gradient-to-r from-[#12a6a6] via-[#42cfc2] to-[#7767e8]"
                     style={{ width: `${metric.value}%` }}
                   />
                 </div>
@@ -507,7 +507,7 @@ export default function EvolutionPage() {
         {/* What changed */}
         <div className="mt-10 grid gap-5 lg:grid-cols-2">
           <div className="relative overflow-hidden rounded-[30px] border border-[#dce9e2] bg-white p-6 shadow-[0_16px_42px_rgba(20,55,65,0.055)] md:p-7">
-            <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#e8f7ee] opacity-60 blur-3xl" />
+            <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#dff6eb] opacity-60 blur-3xl" />
 
             <div className="relative">
               <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#3f9864]">
@@ -547,7 +547,7 @@ export default function EvolutionPage() {
                       className="flex items-center justify-between gap-4 border-b border-[#e5eeea] pb-4 last:border-0 last:pb-0"
                     >
                       <div className="flex min-w-0 items-center gap-3">
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#e9f8f2] text-[#3f9864]">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#d7f3e8] text-[#3f9864]">
                           <ArrowUp size={15} />
                         </div>
 
@@ -569,7 +569,7 @@ export default function EvolutionPage() {
                 })}
 
                 {scans.length <= 1 && (
-                  <div className="rounded-[20px] bg-[#f6faf8] p-4">
+                  <div className="rounded-[20px] bg-[#e8f8f3] p-4">
                     <p className="text-[11px] font-semibold text-[#304951]">
                       Pas encore de tendance
                     </p>
@@ -586,7 +586,7 @@ export default function EvolutionPage() {
                       ["peau", "hydratation", "fatigue", "equilibre"][index] as keyof StoredScan["indicators"];
                     return metric.value <= scans[scans.length - 1].indicators[key];
                   }) && (
-                    <div className="rounded-[20px] bg-[#f6faf8] p-4">
+                    <div className="rounded-[20px] bg-[#e8f8f3] p-4">
                       <p className="text-[11px] font-semibold text-[#304951]">
                         Pas de progression mesurable
                       </p>
@@ -599,8 +599,8 @@ export default function EvolutionPage() {
             </div>
           </div>
 
-          <div className="relative overflow-hidden rounded-[30px] border border-[#e5e1f6] bg-[linear-gradient(145deg,#ffffff_0%,#f7f5ff_100%)] p-6 shadow-[0_16px_42px_rgba(71,64,130,0.055)] md:p-7">
-            <div className="pointer-events-none absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-[#d8d3ff]/30 blur-3xl" />
+          <div className="relative overflow-hidden rounded-[30px] border border-[#e5e1f6] bg-[linear-gradient(145deg,#ffffff_0%,#ebe7ff_100%)] p-6 shadow-[0_16px_42px_rgba(71,64,130,0.055)] md:p-7">
+            <div className="pointer-events-none absolute -bottom-16 -right-16 h-40 w-40 rounded-full bg-[#9b8cff]/28 blur-3xl" />
 
             <div className="relative">
               <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#756bd4]">
@@ -640,7 +640,7 @@ export default function EvolutionPage() {
                       className="flex items-center justify-between gap-4 border-b border-[#e7e4f2] pb-4 last:border-0 last:pb-0"
                     >
                       <div className="flex min-w-0 items-center gap-3">
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#eeecff] text-[#756bd4]">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#e1dcff] text-[#756bd4]">
                           <ArrowDown size={15} />
                         </div>
 
@@ -705,7 +705,7 @@ export default function EvolutionPage() {
 
         {/* History */}
         <section className="mt-10 overflow-hidden rounded-[30px] border border-[#dce6e8] bg-white shadow-[0_16px_42px_rgba(20,55,65,0.055)]">
-          <div className="border-b border-[#edf2f2] bg-[linear-gradient(135deg,#fbfdfc_0%,#f5faf9_100%)] px-5 py-5 sm:px-6">
+          <div className="border-b border-[#edf2f2] bg-[linear-gradient(135deg,#e5faf5_0%,#f2edff_100%)] px-5 py-5 sm:px-6">
             <div className="flex items-center justify-between gap-4">
               <div>
                 <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#168f91]">
@@ -721,7 +721,7 @@ export default function EvolutionPage() {
                 </p>
               </div>
 
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#e8f7f5] text-[#168f91]">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#d5f5ee] text-[#168f91]">
                 <ScanFace size={18} strokeWidth={1.8} />
               </div>
             </div>
@@ -750,7 +750,7 @@ export default function EvolutionPage() {
                   return (
                     <div
                       key={scan.id}
-                      className="group rounded-[22px] border border-[#e1e9ea] bg-[#f8faf9] p-4 transition duration-300 hover:border-[#d4e3e3] hover:bg-white hover:shadow-[0_10px_26px_rgba(20,55,65,0.045)]"
+                      className="group rounded-[22px] border border-[#e1e9ea] bg-[#edf8f6] p-4 transition duration-300 hover:border-[#d4e3e3] hover:bg-white hover:shadow-[0_10px_26px_rgba(20,55,65,0.045)]"
                     >
                       <div className="flex items-center gap-4">
                         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-white text-[#168f91] shadow-[0_6px_16px_rgba(20,55,65,0.045)]">
@@ -764,7 +764,7 @@ export default function EvolutionPage() {
                             </p>
 
                             {index === 0 && (
-                              <span className="rounded-full bg-[#e8f7f5] px-2.5 py-1 text-[8px] font-bold text-[#168f91]">
+                              <span className="rounded-full bg-[#d5f5ee] px-2.5 py-1 text-[8px] font-bold text-[#168f91]">
                                 LE PLUS RÉCENT
                               </span>
                             )}
@@ -827,7 +827,7 @@ export default function EvolutionPage() {
                 })}
               </div>
             ) : (
-              <div className="rounded-[24px] border border-dashed border-[#d8e5e5] bg-[#f8faf9] px-5 py-10 text-center">
+              <div className="rounded-[24px] border border-dashed border-[#d8e5e5] bg-[#edf8f6] px-5 py-10 text-center">
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-[16px] bg-white text-[#168f91] shadow-[0_8px_20px_rgba(20,55,65,0.045)]">
                   <ScanFace size={20} strokeWidth={1.7} />
                 </div>
@@ -842,7 +842,7 @@ export default function EvolutionPage() {
 
                 <Link
                   href="/scanner"
-                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#173f4a] px-4 py-2.5 text-[9px] font-bold text-white shadow-[0_8px_20px_rgba(23,63,74,0.16)] transition hover:-translate-y-0.5"
+                  className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#087ea4] px-4 py-2.5 text-[9px] font-bold text-white shadow-[0_8px_20px_rgba(23,63,74,0.16)] transition hover:-translate-y-0.5"
                 >
                   Faire mon premier scan
                   <ArrowRight size={13} />
@@ -888,7 +888,7 @@ export default function EvolutionPage() {
 
           <Link
             href="/scanner"
-            className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#176678] to-[#756bd4] text-white shadow-[0_10px_28px_rgba(34,91,105,0.28)]"
+            className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#087ea4] via-[#12a6a6] to-[#7767e8] text-white shadow-[0_10px_28px_rgba(34,91,105,0.28)]"
           >
             <ScanFace size={21} strokeWidth={1.5} />
           </Link>
