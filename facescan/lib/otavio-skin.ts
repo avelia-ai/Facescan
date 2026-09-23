@@ -392,7 +392,7 @@ export function buildOtavioSkinPlan(
   } else if (lowHydration || dry) {
     objective =
       "Priorité à l’hydratation et au confort cutané avec une progression douce.";
-  } else if (veryLowSkinScore || lowBalance) {
+  } else if (lowBalance) {
     objective =
       "Stabiliser les fondamentaux de la routine avant d’intensifier les soins.";
   } else if (acne && !sensitivity) {
