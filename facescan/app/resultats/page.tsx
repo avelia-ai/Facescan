@@ -1062,7 +1062,7 @@ export default function ResultatsPage() {
               <div className="relative mt-5 rounded-[22px] border border-white/70 bg-white/65 px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
                 <p className="text-[11px] leading-5 text-[#61767c]">
                   {attentionInsight?.text ??
-                    "Vos quatre indicateurs se situent actuellement à 75/100 ou plus. Otavio privilégie la régularité et le maintien de vos habitudes."}
+                    "Les prochains scans permettront à Otavio de suivre vos quatre indicateurs dans le temps et d’identifier les évolutions qui méritent votre attention."}
                 </p>
               </div>
             </article>
