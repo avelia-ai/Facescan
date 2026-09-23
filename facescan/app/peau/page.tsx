@@ -86,7 +86,7 @@ export default function PeauPage() {
         <header className="flex items-center justify-between mb-7">
           <Link
             href="/conseils"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white border border-[#e8ebe9]"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white border border-[#c9dfe4]"
           >
             <ArrowLeft size={19} />
           </Link>
@@ -98,12 +98,14 @@ export default function PeauPage() {
             <h1 className="text-xl font-semibold text-white">Peau</h1>
           </div>
 
-          <div className="h-10 w-10 rounded-full bg-[#edf4f1] flex items-center justify-center">
+          <div className="h-10 w-10 rounded-full bg-[#dff3f1] flex items-center justify-center">
             <Sparkles size={18} className="text-[#39715f]" />
           </div>
         </header>
 
-        <section className="rounded-[28px] bg-[#18352d] text-white p-6 shadow-sm">
+        <section className="relative overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#12a6a6_72%,#7767e8_100%)] text-white p-6 shadow-[0_20px_48px_rgba(8,126,164,0.18)]">
+            <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#42cfc2]/22 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-16 left-8 h-36 w-36 rounded-full bg-[#ff8066]/20 blur-3xl" />
           <div className="flex items-start justify-between gap-4 mb-5">
             <div className="flex min-w-0 items-center gap-3">
               <div className="h-11 w-11 shrink-0 rounded-2xl bg-white/10 flex items-center justify-center">
@@ -149,19 +151,19 @@ export default function PeauPage() {
         </section>
 
         <section className="mt-5 grid grid-cols-3 gap-3">
-          <div className="rounded-2xl bg-white border border-[#e8ebe9] p-4">
+          <div className="rounded-2xl bg-white border border-[#c9dfe4] p-4">
             <Droplets size={18} className="text-[#39715f] mb-3" />
             <p className="text-xs text-[#8a928e]">Routine</p>
             <p className="font-semibold mt-1">Matin + soir</p>
           </div>
 
-          <div className="rounded-2xl bg-white border border-[#e8ebe9] p-4">
+          <div className="rounded-2xl bg-white border border-[#c9dfe4] p-4">
             <ShieldCheck size={18} className="text-[#39715f] mb-3" />
             <p className="text-xs text-[#8a928e]">Approche</p>
             <p className="font-semibold mt-1">Progressive</p>
           </div>
 
-          <div className="rounded-2xl bg-white border border-[#e8ebe9] p-4">
+          <div className="rounded-2xl bg-white border border-[#c9dfe4] p-4">
             <Sun size={18} className="text-[#39715f] mb-3" />
             <p className="text-xs text-[#8a928e]">Programme</p>
             <p className="font-semibold mt-1">7 jours</p>
@@ -188,10 +190,10 @@ export default function PeauPage() {
             {today?.actions.map((action, index) => (
               <div
                 key={`${action.title}-${index}`}
-                className="rounded-2xl bg-white border border-[#e8ebe9] p-4"
+                className="rounded-2xl bg-white border border-[#c9dfe4] p-4"
               >
                 <div className="flex items-start gap-4">
-                  <div className="h-10 w-10 shrink-0 rounded-xl bg-[#edf4f1] flex items-center justify-center">
+                  <div className="h-10 w-10 shrink-0 rounded-xl bg-[#dff3f1] flex items-center justify-center">
                     {action.moment === "matin" ? (
                       <Sun size={18} className="text-[#39715f]" />
                     ) : (
@@ -210,7 +212,7 @@ export default function PeauPage() {
                         </p>
                       </div>
 
-                      <span className="text-[10px] px-2 py-1 rounded-full bg-[#f1f4f2] text-[#39715f] whitespace-nowrap">
+                      <span className="text-[10px] px-2 py-1 rounded-full bg-[#ffe2d9] text-[#d96550] whitespace-nowrap">
                         {action.priority}
                       </span>
                     </div>
@@ -237,8 +239,8 @@ export default function PeauPage() {
                 onClick={() => setSelectedDay(day.day)}
                 className={`min-w-[64px] rounded-2xl border px-3 py-3 text-center transition ${
                   selectedDay === day.day
-                    ? "bg-[#18352d] text-white border-[#18352d]"
-                    : "bg-white border-[#e8ebe9] text-[#555]"
+                    ? "bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#12a6a6_72%,#7767e8_100%)] text-white border-[#18352d]"
+                    : "bg-white border-[#c9dfe4] text-[#355763]"
                 }`}
               >
                 <div className="text-[10px] uppercase tracking-wider opacity-60">
@@ -252,9 +254,9 @@ export default function PeauPage() {
           </div>
         </section>
 
-        <section className="mt-7 rounded-2xl bg-white border border-[#e8ebe9] p-5">
+        <section className="mt-7 rounded-2xl bg-white border border-[#c9dfe4] p-5">
           <div className="flex items-center gap-3 mb-4">
-            <div className="h-10 w-10 rounded-xl bg-[#edf4f1] flex items-center justify-center">
+            <div className="h-10 w-10 rounded-xl bg-[#dff3f1] flex items-center justify-center">
               <Droplets size={18} className="text-[#39715f]" />
             </div>
 
@@ -273,7 +275,7 @@ export default function PeauPage() {
                   key={index}
                   className="flex items-start gap-2 text-sm text-[#666d69]"
                 >
-                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#39715f] shrink-0" />
+                  <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#ff8066] shrink-0" />
                   <span>{item}</span>
                 </div>
               ))}

@@ -211,12 +211,14 @@ export default function HydratationPage() {
             </h1>
           </div>
 
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e9f8f5]">
-            <Droplets size={18} className="text-[#287f86]" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#cef3eb]">
+            <Droplets size={18} className="text-[#087ea4]" />
           </div>
         </header>
 
-        <section className="rounded-[28px] bg-[#163b43] p-6 text-white shadow-[0_20px_48px_rgba(22,59,67,0.16)] sm:p-7">
+        <section className="relative overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#12a6a6_100%)] p-6 text-white shadow-[0_22px_52px_rgba(8,126,164,0.18)] sm:p-7">
+              <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#42cfc2]/24 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-16 left-8 h-36 w-36 rounded-full bg-[#ff8066]/18 blur-3xl" />
           <div className="mb-5 flex items-start justify-between gap-4">
             <div className="flex min-w-0 items-center gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10">
@@ -277,20 +279,20 @@ export default function HydratationPage() {
         </section>
 
         <section className="mt-5 grid grid-cols-3 gap-3">
-          <div className="rounded-2xl border border-[#e2ebeb] bg-white p-4 shadow-[0_8px_22px_rgba(35,70,75,0.035)]">
-            <Droplets size={18} className="mb-3 text-[#287f86]" />
+          <div className="rounded-2xl border border-[#9ed7d9] bg-[linear-gradient(145deg,#ffffff_0%,#e8f9f8_100%)] p-4 shadow-[0_8px_22px_rgba(35,70,75,0.035)]">
+            <Droplets size={18} className="mb-3 text-[#087ea4]" />
             <p className="text-xs text-[#8a928e]">Routine</p>
             <p className="mt-1 font-semibold">Toute la journée</p>
           </div>
 
-          <div className="rounded-2xl border border-[#e2ebeb] bg-white p-4 shadow-[0_8px_22px_rgba(35,70,75,0.035)]">
-            <Clock3 size={18} className="mb-3 text-[#287f86]" />
+          <div className="rounded-2xl border border-[#9ed7d9] bg-[linear-gradient(145deg,#ffffff_0%,#e8f9f8_100%)] p-4 shadow-[0_8px_22px_rgba(35,70,75,0.035)]">
+            <Clock3 size={18} className="mb-3 text-[#087ea4]" />
             <p className="text-xs text-[#8a928e]">Approche</p>
             <p className="mt-1 font-semibold">Progressive</p>
           </div>
 
-          <div className="rounded-2xl border border-[#e2ebeb] bg-white p-4 shadow-[0_8px_22px_rgba(35,70,75,0.035)]">
-            <SunMedium size={18} className="mb-3 text-[#287f86]" />
+          <div className="rounded-2xl border border-[#9ed7d9] bg-[linear-gradient(145deg,#ffffff_0%,#e8f9f8_100%)] p-4 shadow-[0_8px_22px_rgba(35,70,75,0.035)]">
+            <SunMedium size={18} className="mb-3 text-[#087ea4]" />
             <p className="text-xs text-[#8a928e]">Programme</p>
             <p className="mt-1 font-semibold">7 jours</p>
           </div>
@@ -317,27 +319,27 @@ export default function HydratationPage() {
             onClick={() => toggleAction(today)}
             className={`group w-full rounded-[24px] border p-5 text-left transition ${
               currentDone
-                ? "border-[#b8dcd7] bg-[#effaf7]"
+                ? "border-[#73d1c6] bg-[#dff8f2]"
                 : "border-[#dfe8e7] bg-white shadow-[0_12px_30px_rgba(35,70,75,0.05)] hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(35,70,75,0.07)]"
             }`}
           >
             <div className="flex items-start gap-4">
               <div
                 className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${
-                  currentDone ? "bg-[#d7eee8]" : "bg-[#eaf8f5]"
+                  currentDone ? "bg-[#c6efe5]" : "bg-[#d8f6f0]"
                 }`}
               >
                 {currentDone ? (
-                  <Check size={19} className="text-[#287f86]" />
+                  <Check size={19} className="text-[#087ea4]" />
                 ) : (
-                  <Droplets size={19} className="text-[#287f86]" />
+                  <Droplets size={19} className="text-[#087ea4]" />
                 )}
               </div>
 
               <div className="min-w-0 flex-1">
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#287f86]">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#087ea4]">
                       {today.title}
                     </p>
                     <h3
@@ -349,7 +351,7 @@ export default function HydratationPage() {
                     </h3>
                   </div>
 
-                  <span className="shrink-0 rounded-full bg-[#edf7f7] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.08em] text-[#287f86]">
+                  <span className="shrink-0 rounded-full bg-[#d9f5f8] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.08em] text-[#087ea4]">
                     {today.task.priority === "high"
                       ? "Priorité"
                       : today.task.priority === "medium"
@@ -376,7 +378,7 @@ export default function HydratationPage() {
               Votre semaine
             </p>
 
-            <span className="text-[10px] font-medium text-[#287f86]">
+            <span className="text-[10px] font-medium text-[#087ea4]">
               {completedCount}/7 suivis
             </span>
           </div>
@@ -394,12 +396,12 @@ export default function HydratationPage() {
                   onClick={() => setSelectedDay(day.day)}
                   className={`relative min-w-[64px] rounded-2xl border px-3 py-3 text-center transition ${
                     selectedDay === day.day
-                      ? "border-[#163b43] bg-[#163b43] text-white"
-                      : "border-[#e8ebe9] bg-white text-[#555]"
+                      ? "border-[#163b43] bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#12a6a6_100%)] text-white"
+                      : "border-[#b9dfe3] bg-white text-[#355763]"
                   }`}
                 >
                   {done && (
-                    <span className="absolute right-1.5 top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#287f86] text-white">
+                    <span className="absolute right-1.5 top-1.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-[#12a6a6] text-white">
                       <Check size={9} strokeWidth={2.5} />
                     </span>
                   )}
@@ -416,8 +418,8 @@ export default function HydratationPage() {
 
         <section className="mt-7 rounded-[24px] border border-[#e1ebeb] bg-white p-5 shadow-[0_10px_28px_rgba(35,70,75,0.04)]">
           <div className="mb-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#eaf8f5]">
-              <Sparkles size={18} className="text-[#287f86]" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#d8f6f0]">
+              <Sparkles size={18} className="text-[#087ea4]" />
             </div>
 
             <div>
@@ -431,7 +433,7 @@ export default function HydratationPage() {
           <div className="space-y-2 text-sm leading-6 text-[#666d69]">
             {hydrationScore !== null && (
               <div className="flex items-start gap-2">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#287f86]" />
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#12a6a6]" />
                 <span>
                   Votre dernier scan présente un indicateur visuel
                   d’hydratation de <strong>{hydrationScore}/100</strong>.
@@ -441,7 +443,7 @@ export default function HydratationPage() {
 
             {profile?.hydration_level && (
               <div className="flex items-start gap-2">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#287f86]" />
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#12a6a6]" />
                 <span>
                   Votre niveau d’hydratation renseigné dans votre profil est
                   pris en compte.
@@ -451,7 +453,7 @@ export default function HydratationPage() {
 
             {profile?.activity_level && (
               <div className="flex items-start gap-2">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#287f86]" />
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#12a6a6]" />
                 <span>
                   Votre niveau d’activité peut influencer les moments auxquels
                   Otavio vous propose de renforcer vos repères.
@@ -461,7 +463,7 @@ export default function HydratationPage() {
 
             {profile?.goals?.includes("hydratation") && (
               <div className="flex items-start gap-2">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#287f86]" />
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#12a6a6]" />
                 <span>
                   L’hydratation fait partie de vos objectifs déclarés.
                 </span>

@@ -237,18 +237,18 @@ export default function AlimentationPage() {
             </h1>
           </div>
 
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#edf7f0]">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#d9f5ed]">
             <Utensils size={18} className="text-[#39775b]" />
           </div>
         </header>
 
         {loading ? (
-          <div className="mt-8 rounded-[28px] border border-[#cbdcd5] bg-[linear-gradient(145deg,#ffffff_0%,#fbfdfc_100%)] p-6 text-[12px] text-[#668083] shadow-[0_12px_30px_rgba(40,90,75,0.05)]">
+          <div className="mt-8 rounded-[28px] border border-[#8fd2cc] bg-[linear-gradient(145deg,#ffffff_0%,#e7f8f4_100%)] p-6 text-[12px] text-[#668083] shadow-[0_12px_30px_rgba(40,90,75,0.05)]">
             Préparation de votre programme…
           </div>
         ) : (
           <>
-            <section className="rounded-[28px] bg-[#18352d] p-6 text-white shadow-[0_20px_48px_rgba(24,53,45,0.16)] sm:p-7">
+            <section className="rounded-[28px] bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#12a6a6_100%)] p-6 text-white shadow-[0_20px_48px_rgba(24,53,45,0.16)] sm:p-7">
               <div className="mb-5 flex items-start justify-between gap-4">
                 <div className="flex min-w-0 items-center gap-3">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10">
@@ -307,15 +307,15 @@ export default function AlimentationPage() {
             </section>
 
             {feedback.length > 0 && (
-              <section className="mt-6 overflow-hidden rounded-[28px] border border-[#cbdcd5] bg-[linear-gradient(145deg,#ffffff_0%,#fbfdfc_100%)] p-5 shadow-[0_14px_36px_rgba(40,90,75,0.055)] sm:p-6">
+              <section className="mt-6 overflow-hidden rounded-[28px] border border-[#8fd2cc] bg-[linear-gradient(145deg,#ffffff_0%,#e7f8f4_100%)] p-5 shadow-[0_14px_36px_rgba(40,90,75,0.055)] sm:p-6">
                 <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#668083]">
                   Otavio apprend
                 </p>
 
-                <div className="relative mt-5 mb-0 overflow-hidden rounded-[26px] bg-[linear-gradient(135deg,#123a43_0%,#195563_55%,#247c78_100%)] px-5 py-5 text-white shadow-[0_16px_34px_rgba(25,72,66,0.14),inset_0_1px_0_rgba(255,255,255,0.14)] sm:px-6 sm:py-6">
+                <div className="relative mt-5 mb-0 overflow-hidden rounded-[26px] bg-[linear-gradient(135deg,#087ea4_0%,#12a6a6_58%,#7767e8_100%)] px-5 py-5 text-white shadow-[0_16px_34px_rgba(25,72,66,0.14),inset_0_1px_0_rgba(255,255,255,0.14)] sm:px-6 sm:py-6">
 
                   <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-white/[0.07] blur-2xl" />
-                  <div className="absolute -bottom-16 left-16 h-32 w-32 rounded-full bg-[#62d2bf]/10 blur-2xl" />
+                  <div className="absolute -bottom-16 left-16 h-32 w-32 rounded-full bg-[#42cfc2]/22 blur-2xl" />
 
                   <div className="relative flex items-center justify-between gap-4">
                     <div className="flex min-w-0 items-center gap-3.5">
@@ -358,7 +358,7 @@ export default function AlimentationPage() {
                 </p>
 
                 <div className="mt-4 grid gap-2 sm:grid-cols-3">
-                  <div className="rounded-[20px] border border-[#d3e6df] bg-[linear-gradient(145deg,#f9fdfb_0%,#eff8f4_100%)] p-3 shadow-[0_5px_14px_rgba(40,90,75,0.035)]">
+                  <div className="rounded-[20px] border border-[#d3e6df] bg-[linear-gradient(145deg,#e9fbf6_0%,#d8f3ec_100%)] p-3 shadow-[0_5px_14px_rgba(40,90,75,0.035)]">
                     <p className="text-[9px] uppercase tracking-[0.12em] text-[#7b8e90]">
                       Repas suivis
                     </p>
@@ -367,7 +367,7 @@ export default function AlimentationPage() {
                     </p>
                   </div>
 
-                  <div className="rounded-[20px] border border-[#d3e6df] bg-[linear-gradient(145deg,#f9fdfb_0%,#eff8f4_100%)] p-3 shadow-[0_5px_14px_rgba(40,90,75,0.035)]">
+                  <div className="rounded-[20px] border border-[#d3e6df] bg-[linear-gradient(145deg,#e9fbf6_0%,#d8f3ec_100%)] p-3 shadow-[0_5px_14px_rgba(40,90,75,0.035)]">
                     <p className="text-[9px] uppercase tracking-[0.12em] text-[#7b8e90]">
                       Réalisés
                     </p>
@@ -376,7 +376,7 @@ export default function AlimentationPage() {
                     </p>
                   </div>
 
-                  <div className="rounded-[20px] border border-[#d3e6df] bg-[linear-gradient(145deg,#f9fdfb_0%,#eff8f4_100%)] p-3 shadow-[0_5px_14px_rgba(40,90,75,0.035)]">
+                  <div className="rounded-[20px] border border-[#d3e6df] bg-[linear-gradient(145deg,#e9fbf6_0%,#d8f3ec_100%)] p-3 shadow-[0_5px_14px_rgba(40,90,75,0.035)]">
                     <p className="text-[9px] uppercase tracking-[0.12em] text-[#7b8e90]">
                       Satisfaction
                     </p>
@@ -406,7 +406,7 @@ export default function AlimentationPage() {
                     {adaptations.map((adaptation, index) => (
                       <div
                         key={`${adaptation.type}-${index}`}
-                        className="rounded-2xl border border-[#e6eceb] bg-[#fcfdfd] px-4 py-3"
+                        className="rounded-2xl border border-[#e6eceb] bg-[#f3fbfa] px-4 py-3"
                       >
                         <div className="flex items-start justify-between gap-3">
                           <p className="text-[11px] font-medium leading-5 text-[#183d48]">
@@ -416,10 +416,10 @@ export default function AlimentationPage() {
                           <span
                             className={`shrink-0 rounded-full px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.08em] ${
                               adaptation.priority === "haute"
-                                ? "bg-[#fff0eb] text-[#b55d42]"
+                                ? "bg-[#ffd9cf] text-[#d96550]"
                                 : adaptation.priority === "moderee"
-                                  ? "bg-[#fff8e8] text-[#9a741e]"
-                                  : "bg-[#eaf8f5] text-[#287b78]"
+                                  ? "bg-[#ffe7af] text-[#a66f00]"
+                                  : "bg-[#cef3eb] text-[#087ea4]"
                             }`}
                           >
                             {adaptation.priority}
@@ -432,7 +432,7 @@ export default function AlimentationPage() {
               </section>
             )}
 
-            <section className="mt-2 overflow-hidden rounded-[30px] border border-[#bcd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#f7fbf9_100%)] shadow-[0_16px_34px_rgba(35,70,60,0.07),0_28px_62px_rgba(35,70,60,0.055),inset_0_1px_0_rgba(255,255,255,0.98)]">
+            <section className="mt-2 overflow-hidden rounded-[30px] border border-[#78d2c8] bg-[linear-gradient(145deg,#ffffff_0%,#e8f9f5_100%)] shadow-[0_16px_34px_rgba(35,70,60,0.07),0_28px_62px_rgba(35,70,60,0.055),inset_0_1px_0_rgba(255,255,255,0.98)]">
               <button
                 type="button"
                 onClick={() => setShoppingListOpen((open) => !open)}
@@ -443,7 +443,7 @@ export default function AlimentationPage() {
                 <div className="pointer-events-none absolute -bottom-10 left-16 h-20 w-24 rounded-full bg-[#7e9ff2]/8 blur-2xl" />
 
                 <div className="relative flex min-w-0 items-center gap-3.5">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] border border-white/80 bg-[linear-gradient(145deg,#eefaf6_0%,#dcefe7_100%)] text-[#287b78] shadow-[0_5px_10px_rgba(40,127,114,0.08),0_10px_22px_rgba(40,127,114,0.07),inset_0_1px_0_rgba(255,255,255,1)]">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] border border-white/80 bg-[linear-gradient(145deg,#d8f8f1_0%,#b7eadd_100%)] text-[#287b78] shadow-[0_5px_10px_rgba(40,127,114,0.08),0_10px_22px_rgba(40,127,114,0.07),inset_0_1px_0_rgba(255,255,255,1)]">
                     <ShoppingBasket size={19} strokeWidth={1.7} />
                   </div>
 
@@ -471,7 +471,7 @@ export default function AlimentationPage() {
 <span
                   className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#d6e5df] bg-white text-[#287b78] shadow-[0_6px_14px_rgba(40,90,75,0.055)] transition-all duration-300 ${
                     shoppingListOpen
-                      ? "rotate-180 bg-[#edf8f4]"
+                      ? "rotate-180 bg-[#dff6f0]"
                       : "group-hover:scale-105"
                   }`}
                   aria-hidden="true"
@@ -488,7 +488,7 @@ export default function AlimentationPage() {
                 }`}
               >
                 <div className="min-h-0 overflow-hidden">
-                  <div className="border-t border-[#e0ebe7] bg-[linear-gradient(180deg,#f8fcfa_0%,#f4f9f7_100%)] px-5 pb-5 pt-5 sm:px-6">
+                  <div className="border-t border-[#e0ebe7] bg-[linear-gradient(180deg,#e8f8f5_0%,#f2edff_100%)] px-5 pb-5 pt-5 sm:px-6">
                     <div className="mb-4 flex items-center justify-between gap-3">
                       <div>
                         <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-[#7d918f]">
@@ -508,7 +508,7 @@ export default function AlimentationPage() {
                       {shoppingList.map((category, index) => (
                         <div
                           key={category.name}
-                          className="group rounded-[22px] border border-[#d5e4df] bg-[linear-gradient(145deg,#ffffff_0%,#f8fbfa_100%)] p-4 shadow-[0_7px_16px_rgba(40,90,75,0.04),0_14px_28px_rgba(40,90,75,0.035),inset_0_1px_0_rgba(255,255,255,0.98)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(40,90,75,0.055),0_18px_34px_rgba(40,90,75,0.05)]"
+                          className="group rounded-[22px] border border-[#d5e4df] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-4 shadow-[0_7px_16px_rgba(40,90,75,0.04),0_14px_28px_rgba(40,90,75,0.035),inset_0_1px_0_rgba(255,255,255,0.98)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_10px_20px_rgba(40,90,75,0.055),0_18px_34px_rgba(40,90,75,0.05)]"
                         >
                           <div className="flex items-center justify-between gap-3">
                             <div className="flex min-w-0 items-center gap-2.5">
@@ -567,9 +567,9 @@ export default function AlimentationPage() {
                   className="group overflow-hidden rounded-[30px] border border-[#cddfd9] bg-white shadow-[0_14px_30px_rgba(35,70,60,0.055),0_28px_58px_rgba(35,70,60,0.045),inset_0_1px_0_rgba(255,255,255,0.98)]"
                 >
                   <summary className="list-none cursor-pointer [&::-webkit-details-marker]:hidden">
-                  <div className="relative overflow-hidden bg-[linear-gradient(135deg,#143b43_0%,#1b5963_58%,#287b78_100%)] px-5 py-5 text-white sm:px-6">
-                    <div className="pointer-events-none absolute -right-12 -top-16 h-40 w-40 rounded-full bg-[#78d9d0]/10 blur-3xl" />
-                    <div className="pointer-events-none absolute -bottom-14 left-16 h-28 w-32 rounded-full bg-[#756bd4]/10 blur-3xl" />
+                  <div className="relative overflow-hidden bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_55%,#12a6a6_100%)] px-5 py-5 text-white sm:px-6">
+                    <div className="pointer-events-none absolute -right-12 -top-16 h-40 w-40 rounded-full bg-[#42cfc2]/20 blur-3xl" />
+                    <div className="pointer-events-none absolute -bottom-14 left-16 h-28 w-32 rounded-full bg-[#9b8cff]/22 blur-3xl" />
 
                     <div className="relative flex items-center justify-between gap-4">
                       <div className="flex min-w-0 items-center gap-3.5">
@@ -632,7 +632,7 @@ export default function AlimentationPage() {
                   </div>
                   </summary>
 
-                  <div className="grid gap-4 bg-[linear-gradient(180deg,#fbfdfc_0%,#f6faf8_100%)] p-4 sm:p-5 lg:grid-cols-2">
+                  <div className="grid gap-4 bg-[linear-gradient(180deg,#edf9f7_0%,#f2efff_100%)] p-4 sm:p-5 lg:grid-cols-2">
                     {day.meals.map((meal) => {
                       const feedback = getMealFeedback(day.day, meal.type);
 
@@ -641,7 +641,7 @@ export default function AlimentationPage() {
                           key={`${day.day}-${meal.type}`}
                           className="group overflow-hidden rounded-[26px] border border-[#d2e1dc] bg-white shadow-[0_8px_20px_rgba(40,90,75,0.04),0_16px_32px_rgba(40,90,75,0.035)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_26px_rgba(40,90,75,0.06),0_20px_38px_rgba(40,90,75,0.05)]"
                         >
-                          <div className="relative h-[170px] overflow-hidden bg-[#eaf1ee]">
+                          <div className="relative h-[170px] overflow-hidden bg-[#dff4f3]">
                             <img
                               src={meal.recipe.image ?? "/recipes/placeholder.svg"}
                               alt={meal.recipe.name}
@@ -659,12 +659,12 @@ export default function AlimentationPage() {
                           <div
                             className={`relative overflow-hidden px-4 py-4 ${
                               meal.type === "petit_dejeuner"
-                                ? "bg-[linear-gradient(135deg,#fff9e5_0%,#f7edcf_100%)]"
+                                ? "bg-[linear-gradient(135deg,#fff5d8_0%,#ffe6a8_100%)]"
                                 : meal.type === "dejeuner"
-                                  ? "bg-[linear-gradient(135deg,#edf8f0_0%,#d9eee0_100%)]"
+                                  ? "bg-[linear-gradient(135deg,#e1f8eb_0%,#bdeccf_100%)]"
                                   : meal.type === "diner"
-                                    ? "bg-[linear-gradient(135deg,#fff1eb_0%,#f5ddd4_100%)]"
-                                    : "bg-[linear-gradient(135deg,#f3f0fb_0%,#e5e1f2_100%)]"
+                                    ? "bg-[linear-gradient(135deg,#fff0eb_0%,#ffc9bb_100%)]"
+                                    : "bg-[linear-gradient(135deg,#f0edff_0%,#d9d2ff_100%)]"
                             }`}
                           >
                             <div className="flex items-center justify-between gap-3">
@@ -730,7 +730,7 @@ export default function AlimentationPage() {
                                 </span>
                               )}
 
-                              <span className="rounded-full border border-[#cae3dc] bg-[#edf8f4] px-2.5 py-1.5 text-[9px] font-semibold text-[#287b78]">
+                              <span className="rounded-full border border-[#cae3dc] bg-[#dff6f0] px-2.5 py-1.5 text-[9px] font-semibold text-[#287b78]">
                                 Préparation {meal.recipe.prepTime} min
                               </span>
                             </div>
@@ -753,7 +753,7 @@ export default function AlimentationPage() {
                                 )}
                               </div>
 
-                              <div className="mt-3 grid grid-cols-3 gap-1.5 rounded-[16px] bg-[#eaf0ed] p-1">
+                              <div className="mt-3 grid grid-cols-3 gap-1.5 rounded-[16px] bg-[#dff2ef] p-1">
                                 {[
                                   ["realise", "✓ Réalisé"],
                                   ["remplace", "↻ Remplacé"],
@@ -808,7 +808,7 @@ export default function AlimentationPage() {
                                         className={`flex h-7 w-7 items-center justify-center rounded-full text-[9px] font-semibold transition ${
                                           feedback?.satisfaction === value
                                             ? "bg-[#287b78] text-white shadow-[0_4px_10px_rgba(40,127,114,0.16)]"
-                                            : "bg-[#f7faf8] text-[#7b8e90] ring-1 ring-[#e1ebe7] hover:bg-[#edf7f4]"
+                                            : "bg-[#edf8f6] text-[#7b8e90] ring-1 ring-[#e1ebe7] hover:bg-[#edf7f4]"
                                         }`}
                                         aria-label={`Satisfaction ${value} sur 5`}
                                       >
@@ -895,7 +895,7 @@ export default function AlimentationPage() {
                                     </div>
                                   </div>
 
-                                  <div className="mt-2 flex items-center justify-between rounded-xl bg-[#edf7f3] px-3 py-2">
+                                  <div className="mt-2 flex items-center justify-between rounded-xl bg-[#dcf5ef] px-3 py-2">
                                     <span className="text-[9px] font-medium text-[#6b8280]">
                                       Recette de base
                                     </span>
@@ -953,7 +953,7 @@ export default function AlimentationPage() {
                                           key={instruction}
                                           className="flex items-start gap-2.5"
                                         >
-                                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#e7f4ef] text-[8px] font-bold text-[#287b78]">
+                                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#d6f3e8] text-[8px] font-bold text-[#287b78]">
                                             {index + 1}
                                           </span>
 
@@ -981,7 +981,7 @@ export default function AlimentationPage() {
         <div className="mt-8">
           <Link
             href="/conseils"
-            className="inline-flex rounded-full bg-[#176678] px-5 py-3 text-[11px] font-semibold text-white"
+            className="inline-flex rounded-full bg-[#087ea4] px-5 py-3 text-[11px] font-semibold text-white"
           >
             Retour aux conseils
           </Link>
