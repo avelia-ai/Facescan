@@ -1895,9 +1895,25 @@ export function buildOtavioNutritionPlan(
        */
       const bestScore = scored[0].score;
 
-      const shortlistGap =
-        typeof scan?.peau === "number" && scan.peau < 60
-          ? 2
+      const scanValues = [
+        scan?.peau,
+        scan?.hydratation,
+        scan?.fatigue,
+        scan?.equilibre,
+      ].filter((value): value is number => typeof value === "number");
+
+      const criticalScanNeed = scanValues.some(
+        (value) => value < 60
+      );
+
+      const strongScanNeed = scanValues.some(
+        (value) => value < 70
+      );
+
+      const shortlistGap = criticalScanNeed
+        ? 2
+        : strongScanNeed
+          ? 3
           : 4;
 
       const shortlist = scored.filter(
