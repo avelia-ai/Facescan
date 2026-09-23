@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f3f5f4;
+  --background: #ffffff;
   --foreground: #17202a;
 }
 
@@ -18,16 +18,14 @@ body {
   background:
     linear-gradient(
       180deg,
-      #103d53 0%,
-      #174f66 9%,
-      #256d7f 18%,
-      #438895 28%,
-      #649da5 38%,
-      #8db4b6 48%,
-      #b9cfcd 58%,
-      #dce8e5 69%,
-      #edf2f0 81%,
-      #f3f5f4 100%
+      #0f4f6b 0%,
+      #1b6b84 10%,
+      #3b879b 22%,
+      #69aeb9 34%,
+      #a8ced2 48%,
+      #d7e9ea 62%,
+      #eef7f7 76%,
+      #ffffff 100%
     );
   background-attachment: fixed;
   color: var(--foreground);
@@ -104,19 +102,18 @@ a {
 
 .app-background {
   min-height: 100%;
-  background-color: #f3f5f4;
+  background-color: #ffffff;
   background-image:
     linear-gradient(
       180deg,
-      #103d53 0%,
-      #174f66 16%,
-      #256d7f 34%,
-      #438895 50%,
-      #649da5 64%,
-      #8db4b6 76%,
-      #b9cfcd 86%,
-      #dce8e5 94%,
-      rgba(243, 245, 244, 0) 100%
+      #0f4f6b 0%,
+      #1b6b84 14%,
+      #3b879b 30%,
+      #69aeb9 46%,
+      #a8ced2 60%,
+      #d7e9ea 74%,
+      #eef7f7 88%,
+      #ffffff 100%
     );
   background-repeat: no-repeat;
   background-size: 100% 430px;
