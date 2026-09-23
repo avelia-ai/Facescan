@@ -66,6 +66,11 @@ function toNumber(value?: string | number | null) {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+function scanNeedScore(value?: number | null, reference = 75) {
+  if (typeof value !== "number") return 0;
+  return Math.max(0, reference - value);
+}
+
 function buildHydrationTask(
   profile: ProfileForDaily,
   scan: OtavioDailyScan | null,
@@ -113,8 +118,9 @@ function buildHydrationTask(
     category: "hydratation",
     priority: hydrationLow ? "high" : "medium",
     score:
-      (hasGoal(profile, "hydratation") ? 45 : 20) +
-      (hydrationLow ? 35 : 10),
+      (hasGoal(profile, "hydratation") ? 30 : 10) +
+      scanNeedScore(hydrationScore) * 2 +
+      (profile.hydration_level === "faible" ? 10 : 0),
   };
 }
 
@@ -173,9 +179,10 @@ function buildSkinTask(
     priority:
       skinScore !== null && skinScore < 70 ? "high" : "medium",
     score:
-      (hasGoal(profile, "qualite_peau", "eclat") ? 45 : 15) +
-      (skinScore !== null && skinScore < 70 ? 30 : 5) +
-      (sensitive ? 10 : 0),
+      (hasGoal(profile, "qualite_peau", "eclat") ? 30 : 10) +
+      scanNeedScore(skinScore) * 2 +
+      (sensitive ? 10 : 0) +
+      (concerns.length > 0 ? 5 : 0),
   };
 }
 
@@ -230,8 +237,9 @@ function buildSleepTask(
     category: "sommeil",
     priority: needsSleepSupport ? "high" : "medium",
     score:
-      (hasGoal(profile, "sommeil", "fatigue") ? 45 : 10) +
-      (needsSleepSupport ? 35 : 5),
+      (hasGoal(profile, "sommeil", "fatigue") ? 30 : 10) +
+      scanNeedScore(fatigueScore) * 2 +
+      (needsSleepSupport ? 20 : 5),
   };
 }
 
@@ -248,6 +256,7 @@ function buildNutritionTask(
   const hydrationScore = scan?.indicators?.hydratation ?? null;
   const skinScore = scan?.indicators?.peau ?? null;
   const fatigueScore = scan?.indicators?.fatigue ?? null;
+  const equilibriumScore = scan?.indicators?.equilibre ?? null;
 
   const budgetFriendly =
     budget === "faible" || budget === "serré";
@@ -344,7 +353,12 @@ function buildNutritionTask(
 
   const scanUrgency = Math.max(
     0,
-    ...[hydrationScore, skinScore, fatigueScore]
+    ...[
+      hydrationScore,
+      skinScore,
+      fatigueScore,
+      equilibriumScore,
+    ]
       .filter((value): value is number => typeof value === "number")
       .map((value) => 75 - value)
   );
@@ -363,8 +377,8 @@ function buildNutritionTask(
     category: "nutrition",
     priority,
     score:
-      (hasGoal(profile, "nutrition") ? 40 : 10) +
-      Math.round(scanUrgency * 1.2),
+      (hasGoal(profile, "nutrition") ? 30 : 10) +
+      Math.round(scanUrgency * 1.5),
   };
 }
 
@@ -442,7 +456,7 @@ function buildActivityTask(
           : "low",
     score:
       (needsRecovery ? 30 : lowActivity ? 25 : 10) +
-      Math.round(scanUrgency * 1.1),
+      Math.round(scanUrgency * 1.6),
   };
 }
 
