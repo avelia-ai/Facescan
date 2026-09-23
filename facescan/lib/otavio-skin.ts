@@ -60,6 +60,16 @@ export function buildOtavioSkinPlan(
   scan?: OtavioSkinScan | null,
   durationDays = 7
 ): OtavioSkinPlan {
+  const goals = (profile.goals ?? []).map(normalize);
+
+  const hasGoal = (...values: string[]) =>
+    values.some((value) => goals.includes(normalize(value)));
+
+  const skinGoal = hasGoal("qualite_peau", "peau");
+  const glowGoal = hasGoal("eclat");
+  const hydrationGoal = hasGoal("hydratation");
+  const wellbeingGoal = hasGoal("bien_etre");
+
   const sensitivity = has(profile, "sensible");
   const reactive = has(profile, "reactive");
   const dry = has(profile, "sec") || has(profile, "deshydrat");
@@ -74,6 +84,7 @@ export function buildOtavioSkinPlan(
     has(profile, "rouge") ||
     reactive;
   const dullness =
+    glowGoal ||
     has(profile, "eclat") ||
     has(profile, "terne");
   const texture =
@@ -165,9 +176,27 @@ export function buildOtavioSkinPlan(
     );
   }
 
-  if (dry || lowHydration) {
+  if (dry || lowHydration || hydrationGoal) {
     personalization.push(
       "L’hydratation et le confort cutané sont renforcés dans le programme."
+    );
+  }
+
+  if (skinGoal) {
+    personalization.push(
+      "Objectif qualité de peau : Otavio privilégie les fondamentaux et une routine régulière avant de multiplier les actifs."
+    );
+  }
+
+  if (glowGoal) {
+    personalization.push(
+      "Objectif éclat : Otavio privilégie progressivement les gestes qui favorisent un teint plus uniforme et lumineux, selon la tolérance de la peau."
+    );
+  }
+
+  if (wellbeingGoal) {
+    personalization.push(
+      "Objectif bien-être : la routine reste simple et confortable afin de faciliter sa régularité au quotidien."
     );
   }
 
@@ -214,7 +243,7 @@ export function buildOtavioSkinPlan(
       title:
         veryLowSkinScore
           ? "Prioriser le confort cutané"
-          : lowHydration || dry
+          : lowHydration || dry || hydrationGoal
             ? "Renforcer mon hydratation"
             : "Hydratation ciblée",
       description:
