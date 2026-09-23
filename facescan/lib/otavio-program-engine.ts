@@ -194,7 +194,7 @@ export function buildOtavioDailyProgram(
   date = new Date()
 ): OtavioDailyProgram {
   const nutrition = buildOtavioNutritionPlan(profile, 7, scan);
-  const sleep = buildOtavioSleepPlan(profile, 7);
+  const sleep = buildOtavioSleepPlan(profile, 7, scan);
   const skin = buildOtavioSkinPlan(profile, scan, 7);
 
   const items: OtavioDailyProgramItem[] = [];
