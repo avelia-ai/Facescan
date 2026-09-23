@@ -18,7 +18,7 @@ import {
 
 const goals = [
   {
-    id: "peau",
+    id: "qualite_peau",
     title: "Améliorer l’apparence de ma peau",
     text: "Suivre visuellement l’évolution de votre peau dans le temps.",
     icon: Sparkles,
@@ -43,6 +43,23 @@ const goals = [
   },
 ];
 
+const goalAliases: Record<string, string> = {
+  peau: "qualite_peau",
+  qualite_peau: "qualite_peau",
+  eclat: "qualite_peau",
+  hydratation: "hydratation",
+  recuperation: "recuperation",
+  fatigue: "recuperation",
+  sommeil: "recuperation",
+  equilibre: "equilibre",
+  bien_etre: "equilibre",
+  evolution: "equilibre",
+};
+
+function normalizeGoalId(value: string) {
+  return goalAliases[value] ?? value;
+}
+
 export default function ObjectifsPage() {
   const [selected, setSelected] = useState<string[]>([]);
   const [saved, setSaved] = useState(false);
@@ -58,7 +75,15 @@ export default function ObjectifsPage() {
         const parsed = JSON.parse(stored);
 
         if (Array.isArray(parsed)) {
-          setSelected(parsed);
+          const normalized = Array.from(
+            new Set(
+              parsed
+                .filter((value): value is string => typeof value === "string")
+                .map(normalizeGoalId)
+            )
+          );
+
+          setSelected(normalized);
           return;
         }
       } catch {
@@ -66,7 +91,7 @@ export default function ObjectifsPage() {
       }
     }
 
-    setSelected(["peau", "hydratation"]);
+    setSelected(["qualite_peau", "hydratation"]);
   }, []);
 
   useEffect(() => {
@@ -122,7 +147,12 @@ export default function ObjectifsPage() {
   };
 
   const saveGoals = () => {
-    localStorage.setItem("facescan-goals", JSON.stringify(selected));
+    const normalized = Array.from(
+      new Set(selected.map(normalizeGoalId))
+    );
+
+    localStorage.setItem("facescan-goals", JSON.stringify(normalized));
+    setSelected(normalized);
     setSaved(true);
   };
 
