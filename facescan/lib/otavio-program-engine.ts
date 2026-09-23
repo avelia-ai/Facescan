@@ -212,12 +212,13 @@ export function buildOtavioDailyProgram(
     });
   }
 
+  // Rotation hebdomadaire indépendante d'une date d'ancrage.
+  // Lundi = 0, mardi = 1, ..., dimanche = 6.
+  const programDate = new Date(
+    todayKey(date) + "T12:00:00"
+  );
   const programDayIndex =
-    Math.floor(
-      (new Date(todayKey(date) + "T00:00:00").getTime() -
-        new Date("2026-09-15T00:00:00").getTime()) /
-        86400000
-    ) % 7;
+    (programDate.getDay() + 6) % 7;
 
   const nutritionDay =
     nutrition.days[Math.max(0, programDayIndex)] ?? nutrition.days[0];
