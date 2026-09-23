@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 import {
   Activity,
   ArrowLeft,
@@ -20,40 +21,65 @@ const goals = [
   {
     id: "qualite_peau",
     title: "Améliorer l’apparence de ma peau",
-    text: "Suivre visuellement l’évolution de votre peau dans le temps.",
+    text: "Suivre visuellement la texture, les imperfections et l’évolution générale de votre peau.",
     icon: Sparkles,
   },
   {
     id: "hydratation",
     title: "Mieux suivre mon hydratation",
-    text: "Accorder davantage d’attention à cet indicateur dans votre suivi.",
+    text: "Accorder davantage d’attention à votre hydratation et à son évolution dans le temps.",
     icon: Droplets,
   },
   {
-    id: "recuperation",
-    title: "Mieux suivre ma récupération",
-    text: "Observer les tendances liées à la fatigue et au repos.",
+    id: "fatigue",
+    title: "Réduire les signes de fatigue",
+    text: "Observer les tendances visuelles liées à la fatigue et à la récupération.",
     icon: Moon,
   },
   {
-    id: "equilibre",
-    title: "Maintenir mon équilibre",
-    text: "Conserver une vision globale et régulière de votre évolution.",
+    id: "eclat",
+    title: "Retrouver de l’éclat",
+    text: "Suivre l’uniformité du teint et son aspect visuellement plus lumineux.",
+    icon: Sparkles,
+  },
+  {
+    id: "nutrition",
+    title: "Mieux manger",
+    text: "Recevoir des conseils alimentaires et des menus davantage adaptés à votre profil.",
     icon: Activity,
+  },
+  {
+    id: "sommeil",
+    title: "Améliorer mon sommeil",
+    text: "Travailler progressivement la régularité, la récupération et les habitudes de sommeil.",
+    icon: Moon,
+  },
+  {
+    id: "bien_etre",
+    title: "Prendre davantage soin de moi",
+    text: "Construire de meilleures habitudes au quotidien et soutenir votre équilibre global.",
+    icon: UserRound,
+  },
+  {
+    id: "evolution",
+    title: "Suivre mon évolution",
+    text: "Observer vos progrès à travers vos scans et vos tendances dans le temps.",
+    icon: TrendingUp,
   },
 ];
 
 const goalAliases: Record<string, string> = {
   peau: "qualite_peau",
   qualite_peau: "qualite_peau",
-  eclat: "qualite_peau",
+  eclat: "eclat",
   hydratation: "hydratation",
-  recuperation: "recuperation",
-  fatigue: "recuperation",
-  sommeil: "recuperation",
-  equilibre: "equilibre",
-  bien_etre: "equilibre",
-  evolution: "equilibre",
+  recuperation: "sommeil",
+  fatigue: "fatigue",
+  sommeil: "sommeil",
+  equilibre: "bien_etre",
+  nutrition: "nutrition",
+  bien_etre: "bien_etre",
+  evolution: "evolution",
 };
 
 function normalizeGoalId(value: string) {
@@ -63,35 +89,98 @@ function normalizeGoalId(value: string) {
 export default function ObjectifsPage() {
   const [selected, setSelected] = useState<string[]>([]);
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
   const [scanCount, setScanCount] = useState(0);
   const [latestScore, setLatestScore] = useState<number | null>(null);
   const [previousScore, setPreviousScore] = useState<number | null>(null);
 
   useEffect(() => {
-    const stored = localStorage.getItem("facescan-goals");
+    const loadGoals = async () => {
+      const localFallback = () => {
+        const stored = localStorage.getItem("facescan-goals");
 
-    if (stored) {
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+
+            if (Array.isArray(parsed)) {
+              const normalized = Array.from(
+                new Set(
+                  parsed
+                    .filter(
+                      (value): value is string => typeof value === "string"
+                    )
+                    .map(normalizeGoalId)
+                )
+              );
+
+              setSelected(normalized);
+              return;
+            }
+          } catch {
+            // Données locales invalides : on utilise les objectifs par défaut.
+          }
+        }
+
+        setSelected(["qualite_peau", "hydratation"]);
+      };
+
       try {
-        const parsed = JSON.parse(stored);
+        const supabase = createClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
-        if (Array.isArray(parsed)) {
+        if (!user) {
+          localFallback();
+          return;
+        }
+
+        const { data, error: profileError } = await supabase
+          .from("profiles")
+          .select("goals")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (
+          !profileError &&
+          data &&
+          Array.isArray(data.goals)
+        ) {
           const normalized = Array.from(
             new Set(
-              parsed
-                .filter((value): value is string => typeof value === "string")
+              data.goals
+                .filter(
+                  (value): value is string => typeof value === "string"
+                )
                 .map(normalizeGoalId)
             )
           );
 
-          setSelected(normalized);
+          setSelected(
+            normalized.length > 0
+              ? normalized
+              : ["qualite_peau", "hydratation"]
+          );
+          localStorage.setItem(
+            "facescan-goals",
+            JSON.stringify(
+              normalized.length > 0
+                ? normalized
+                : ["qualite_peau", "hydratation"]
+            )
+          );
           return;
         }
-      } catch {
-        // Données locales invalides : on repart sur une sélection vide.
-      }
-    }
 
-    setSelected(["qualite_peau", "hydratation"]);
+        localFallback();
+      } catch {
+        localFallback();
+      }
+    };
+
+    loadGoals();
   }, []);
 
   useEffect(() => {
@@ -138,22 +227,64 @@ export default function ObjectifsPage() {
 
   const toggleGoal = (id: string) => {
     setSaved(false);
+    setError("");
 
     setSelected((current) =>
       current.includes(id)
         ? current.filter((item) => item !== id)
-        : [...current, id]
+        : current.length >= 3
+          ? current
+          : [...current, id]
     );
   };
 
-  const saveGoals = () => {
+  const saveGoals = async () => {
+    if (selected.length === 0) {
+      setError("Choisissez au moins un objectif.");
+      return;
+    }
+
+    setSaving(true);
+    setSaved(false);
+    setError("");
+
     const normalized = Array.from(
       new Set(selected.map(normalizeGoalId))
-    );
+    ).slice(0, 3);
 
     localStorage.setItem("facescan-goals", JSON.stringify(normalized));
     setSelected(normalized);
-    setSaved(true);
+
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setSaved(true);
+        return;
+      }
+
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({
+          goals: normalized,
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", user.id);
+
+      if (updateError) {
+        setError("Impossible d’enregistrer vos objectifs.");
+        return;
+      }
+
+      setSaved(true);
+    } catch {
+      setError("Impossible d’enregistrer vos objectifs.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const scoreChange =
@@ -227,7 +358,7 @@ export default function ObjectifsPage() {
             </div>
 
             <span className="rounded-full bg-[#e9e5de] px-3 py-1.5 text-[10px] font-semibold text-[#668083]">
-              {selected.length} sélectionné{selected.length > 1 ? "s" : ""}
+              {selected.length} / 3 sélectionné{selected.length > 1 ? "s" : ""}
             </span>
           </div>
 
@@ -297,7 +428,11 @@ export default function ObjectifsPage() {
               disabled={selected.length === 0}
               className="rounded-full bg-gradient-to-br from-[#176678] to-[#756bd4] px-5 py-3 text-[11px] font-semibold text-white shadow-[0_10px_25px_rgba(34,91,105,0.22)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-30"
             >
-              {saved ? "Objectifs enregistrés" : "Enregistrer mes objectifs"}
+              {saving
+                ? "Enregistrement…"
+                : saved
+                  ? "Objectifs enregistrés"
+                  : "Enregistrer mes objectifs"}
             </button>
           </div>
 
