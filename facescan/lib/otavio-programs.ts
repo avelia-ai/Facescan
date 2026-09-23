@@ -1015,7 +1015,8 @@ function recipesFor(
 function scoreRecipe(
   recipe: OtavioRecipe,
   profile: OtavioProgramProfile,
-  scan?: OtavioNutritionScan | null
+  scan?: OtavioNutritionScan | null,
+  feedback?: OtavioMealFeedback[]
 ) {
   let score = 0;
 
@@ -1277,9 +1278,53 @@ function scoreRecipe(
 
   /*
    * ---------------------------------------------------------
+   * APPRENTISSAGE À PARTIR DES RETOURS REPAS
+   * ---------------------------------------------------------
+   */
+
+  const feedbackForRecipe = (feedback ?? []).filter(
+    (item) =>
+      item.mealType === recipe.mealType &&
+      item.recipeId === recipe.id
+  );
+
+  let feedbackScore = 0;
+
+  for (const item of feedbackForRecipe) {
+    if (item.status === "ignore") {
+      feedbackScore -= 8;
+    } else if (item.status === "remplace") {
+      feedbackScore -= 6;
+    } else if (item.status === "realise") {
+      feedbackScore += 2;
+    }
+
+    if (typeof item.satisfaction === "number") {
+      if (item.satisfaction <= 2) {
+        feedbackScore -= 6;
+      } else if (item.satisfaction >= 4) {
+        feedbackScore += 4;
+      }
+    }
+  }
+
+  const replacementMatches = (feedback ?? []).filter(
+    (item) =>
+      item.mealType === recipe.mealType &&
+      item.status === "remplace" &&
+      item.replacementRecipeId === recipe.id
+  ).length;
+
+  feedbackScore += Math.min(8, replacementMatches * 4);
+
+  score += Math.max(-12, Math.min(8, feedbackScore));
+
+  /*
+   * ---------------------------------------------------------
    * SCAN FACIAL
    * ---------------------------------------------------------
    */
+
 
   // Peau faible : le scan devient un facteur important dans
   // le choix des recettes, tout en conservant les contraintes du profil.
@@ -1824,7 +1869,8 @@ function buildPortion(
 export function buildOtavioNutritionPlan(
   profile: OtavioProgramProfile,
   durationDays = 7,
-  scan?: OtavioNutritionScan | null
+  scan?: OtavioNutritionScan | null,
+  feedback?: OtavioMealFeedback[]
 ): OtavioNutritionPlan {
   const days: OtavioMealPlanDay[] = [];
 
@@ -1884,7 +1930,7 @@ export function buildOtavioNutritionPlan(
       const scored = finalPool
         .map((recipe) => ({
           recipe,
-          score: scoreRecipe(recipe, profile, scan),
+          score: scoreRecipe(recipe, profile, scan, feedback),
         }))
         .sort((a, b) => b.score - a.score);
 

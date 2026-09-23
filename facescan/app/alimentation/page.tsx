@@ -125,7 +125,8 @@ export default function AlimentationPage() {
   const nutritionPlan = buildOtavioNutritionPlan(
     profile ?? {},
     7,
-    scan
+    scan,
+    feedback
   );
   const shoppingList = buildOtavioShoppingList(nutritionPlan);
   const adaptations = buildOtavioNutritionAdaptations(feedback);
