@@ -90,6 +90,20 @@ export function buildOtavioSleepPlan(
 ): OtavioSleepPlan {
   const personalization: string[] = [];
 
+  const goals = (profile.goals ?? []).map((goal) =>
+    goal
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+  );
+
+  const hasGoal = (...values: string[]) =>
+    values.some((value) => goals.includes(value));
+
+  const sleepGoal = hasGoal("sommeil");
+  const fatigueGoal = hasGoal("fatigue");
+  const wellbeingGoal = hasGoal("bien_etre", "equilibre");
+
   const bedtime = profile.bedtime || "23:00";
   const wakeTime = profile.wake_time || "07:00";
 
@@ -146,6 +160,24 @@ export function buildOtavioSleepPlan(
   if (profile.activity_level) {
     personalization.push(
       `Niveau d’activité : ${profile.activity_level}`
+    );
+  }
+
+  if (sleepGoal) {
+    personalization.push(
+      "Objectif sommeil : le programme donne la priorité à la régularité et à la qualité de la récupération nocturne."
+    );
+  }
+
+  if (fatigueGoal) {
+    personalization.push(
+      "Objectif fatigue : le programme renforce les temps de récupération et la réduction des sollicitations en fin de journée."
+    );
+  }
+
+  if (wellbeingGoal) {
+    personalization.push(
+      "Objectif bien-être : le programme privilégie une transition progressive vers une soirée plus calme."
     );
   }
 
@@ -244,15 +276,21 @@ export function buildOtavioSleepPlan(
     actions.push({
       time: shiftTime(targetBedtime, -60),
       title:
-        fatigue !== null && fatigue < 40
+        fatigueGoal || (fatigue !== null && fatigue < 40)
           ? "Commencer plus tôt ma récupération"
-          : "Début de la routine du soir",
+          : wellbeingGoal
+            ? "Créer une transition calme"
+            : sleepGoal
+              ? "Début de la routine du soir"
+              : "Début de la routine du soir",
       description:
-        fatigue !== null && fatigue < 40
-          ? "Avec ce niveau de fatigue visuelle, Otavio privilégie une soirée calme : lumière plus douce, notifications réduites et activités peu stimulantes avant le coucher."
-          : poorQuality || highFatigue
-            ? "Commencez environ une heure avant le coucher cible : lumière plus douce, notifications réduites et activité calme."
-            : "Commencez progressivement à ralentir : lumière plus douce, activité calme et environnement moins stimulant.",
+        fatigueGoal || (fatigue !== null && fatigue < 40)
+          ? "Votre objectif met l’accent sur la récupération : lumière plus douce, notifications réduites et activités peu stimulantes avant le coucher."
+          : wellbeingGoal
+            ? "Accordez-vous une vraie transition avant le coucher : baisse progressive des sollicitations, lumière plus douce et activité calme."
+            : sleepGoal || poorQuality || highFatigue
+              ? "Commencez environ une heure avant le coucher cible : lumière plus douce, notifications réduites et activité calme."
+              : "Commencez progressivement à ralentir : lumière plus douce, activité calme et environnement moins stimulant.",
       category: "soir",
     });
 
