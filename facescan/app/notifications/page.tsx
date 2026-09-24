@@ -76,6 +76,7 @@ export default function NotificationsPage() {
 
   const [userGoals, setUserGoals] = useState<string[]>([]);
   const [readIds, setReadIds] = useState<number[]>([]);
+  const [scanFrequency, setScanFrequency] = useState(7);
 
   useEffect(() => {
     let cancelled = false;
@@ -93,6 +94,15 @@ export default function NotificationsPage() {
         } = await supabase.auth.getUser();
 
         if (user) {
+          const storedFrequency = localStorage.getItem(
+            `facescan-scan-frequency-${user.id}`
+          );
+          const frequencyValue = Number(storedFrequency);
+
+          if ([3, 7, 14, 30].includes(frequencyValue) && !cancelled) {
+            setScanFrequency(frequencyValue);
+          }
+
           const [{ data: scans, error: scansError }, { data: profile, error: profileError }] =
             await Promise.all([
               supabase
@@ -262,15 +272,6 @@ export default function NotificationsPage() {
           (1000 * 60 * 60 * 24)
       )
     : null;
-
-  const scanFrequency = (() => {
-    if (typeof window === "undefined") return 7;
-
-    const stored = localStorage.getItem("facescan-scan-frequency");
-    const value = Number(stored);
-
-    return [3, 7, 14, 30].includes(value) ? value : 7;
-  })();
 
   const shouldRemindForScan =
     daysSinceLastScan === null || daysSinceLastScan >= scanFrequency;

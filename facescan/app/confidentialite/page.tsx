@@ -60,7 +60,23 @@ export default function ConfidentialitePage() {
 
       const storedScans = localStorage.getItem("facescan-scans");
       const storedGoals = localStorage.getItem("facescan-goals");
-      const storedFrequency = localStorage.getItem("facescan-scan-frequency");
+
+      let currentUserId: string | null = null;
+      let storedFrequency: string | null = null;
+
+      try {
+        const supabase = createClient();
+        const { data: authData } = await supabase.auth.getUser();
+
+        if (authData.user) {
+          currentUserId = authData.user.id;
+          storedFrequency = localStorage.getItem(
+            `facescan-scan-frequency-${authData.user.id}`
+          );
+        }
+      } catch {
+        storedFrequency = null;
+      }
 
       let readNotifications: string[] = [];
 
@@ -166,6 +182,9 @@ export default function ConfidentialitePage() {
     setActionMessage("");
 
     try {
+      const supabase = createClient();
+      const { data: authData } = await supabase.auth.getUser();
+
       const keys = [
         "facescan-scans",
         "facescan-goals",
@@ -175,8 +194,11 @@ export default function ConfidentialitePage() {
 
       keys.forEach((key) => localStorage.removeItem(key));
 
-      const supabase = createClient();
-      const { data: authData } = await supabase.auth.getUser();
+      if (authData.user) {
+        localStorage.removeItem(
+          `facescan-scan-frequency-${authData.user.id}`
+        );
+      }
 
       if (authData.user) {
         localStorage.removeItem(

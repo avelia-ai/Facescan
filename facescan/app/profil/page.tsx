@@ -399,20 +399,50 @@ export default function ProfilPage() {
   }, []);
 
   useEffect(() => {
-    const stored = localStorage.getItem("facescan-scan-frequency");
+    const loadScanFrequency = async () => {
+      try {
+        const supabase = createClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
-    if (!stored) return;
+        if (!user) return;
 
-    const value = Number(stored);
+        const stored = localStorage.getItem(
+          `facescan-scan-frequency-${user.id}`
+        );
 
-    if ([3, 7, 14, 30].includes(value)) {
-      setScanFrequency(value);
-    }
+        if (!stored) return;
+
+        const value = Number(stored);
+
+        if ([3, 7, 14, 30].includes(value)) {
+          setScanFrequency(value);
+        }
+      } catch {
+        // Conserver la valeur par défaut.
+      }
+    };
+
+    loadScanFrequency();
   }, []);
 
   const updateScanFrequency = (value: number) => {
     setScanFrequency(value);
-    localStorage.setItem("facescan-scan-frequency", String(value));
+
+    void createClient()
+      .auth.getUser()
+      .then(({ data: { user } }) => {
+        if (!user) return;
+
+        localStorage.setItem(
+          `facescan-scan-frequency-${user.id}`,
+          String(value)
+        );
+      })
+      .catch(() => {
+        // La préférence reste affichée localement même si la session échoue.
+      });
   };
 
   const latestScan = storedScans[0];

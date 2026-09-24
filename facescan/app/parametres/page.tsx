@@ -37,24 +37,53 @@ export default function ParametresPage() {
   const [isSigningOut, setIsSigningOut] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("facescan-scan-frequency");
+    const loadScanFrequency = async () => {
+      try {
+        const supabase = createClient();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
-    if (!stored) return;
+        if (!user) return;
 
-    const value = Number(stored);
+        const stored = localStorage.getItem(
+          `facescan-scan-frequency-${user.id}`
+        );
 
-    if ([3, 7, 14, 30].includes(value)) {
-      setScanFrequency(value);
-    }
+        if (!stored) return;
+
+        const value = Number(stored);
+
+        if ([3, 7, 14, 30].includes(value)) {
+          setScanFrequency(value);
+        }
+      } catch {
+        // Conserver la valeur par défaut.
+      }
+    };
+
+    loadScanFrequency();
   }, []);
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
 
-    const supabase = createClient();
-    await supabase.auth.signOut();
+    try {
+      const supabase = createClient();
+      const { data: authData } = await supabase.auth.getUser();
 
-    window.location.href = "/connexion";
+      if (authData.user) {
+        localStorage.removeItem(
+          `facescan-read-notifications-${authData.user.id}`,
+        );
+      }
+
+      await supabase.auth.signOut();
+
+      window.location.href = "/connexion";
+    } catch {
+      setIsSigningOut(false);
+    }
   };
 
   return (
