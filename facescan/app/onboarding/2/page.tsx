@@ -172,7 +172,7 @@ export default function OnboardingStepTwo() {
   if (loading) {
     return (
       <main className="flex min-h-screen items-center justify-center app-background">
-        <div className="text-sm font-medium text-[#64747b]">
+        <div className="text-sm font-medium text-white/80">
           Préparation de votre profil…
         </div>
       </main>
@@ -184,11 +184,11 @@ export default function OnboardingStepTwo() {
       <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-md flex-col">
         <div className="pt-4">
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-sm font-semibold text-[#168f91]">
+            <span className="text-sm font-semibold text-white/90">
               Votre peau
             </span>
 
-            <span className="text-sm text-[#89969c]">2 / 5</span>
+            <span className="text-sm text-white/70">2 / 5</span>
           </div>
 
           <div className="h-1.5 overflow-hidden rounded-full bg-[#cfe9ec]">
@@ -197,15 +197,15 @@ export default function OnboardingStepTwo() {
         </div>
 
         <div className="mt-9">
-          <p className="mb-2 text-sm font-semibold text-[#168f91]">
+          <p className="mb-2 text-sm font-semibold text-white/90">
             Étape 2
           </p>
 
-          <h1 className="text-3xl font-semibold tracking-tight text-[#102f3a]">
+          <h1 className="text-3xl font-semibold tracking-tight text-white">
             Parlons de votre peau
           </h1>
 
-          <p className="mt-3 text-base leading-6 text-[#66757d]">
+          <p className="mt-3 text-base leading-6 text-white/80">
             Ces informations aideront Otavio à adapter ses conseils et vos
             futures routines.
           </p>
