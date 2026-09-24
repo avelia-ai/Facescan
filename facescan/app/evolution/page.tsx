@@ -738,7 +738,7 @@ export default function EvolutionPage() {
                 {scans.length <= 1 && (
                   <div className="rounded-[20px] border border-white/70 bg-white/70 p-4">
                     <p className="text-[11px] font-semibold text-[#304951]">
-                      Suivi en construction
+                      Votre suivi commence
                     </p>
                     <p className="mt-1 text-[10px] leading-5 text-[#7b8e93]">
                       Otavio attend votre prochaine analyse pour identifier les
