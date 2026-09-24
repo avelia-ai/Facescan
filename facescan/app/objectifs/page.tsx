@@ -184,45 +184,76 @@ export default function ObjectifsPage() {
   }, []);
 
   useEffect(() => {
-    const storedScans = localStorage.getItem("facescan-scans");
+    let cancelled = false;
 
-    if (!storedScans) {
-      setScanCount(0);
-      setLatestScore(null);
-      setPreviousScore(null);
-      return;
-    }
+    async function loadScanStats() {
+      let scans: any[] = [];
 
-    try {
-      const parsed = JSON.parse(storedScans);
+      try {
+        const { createClient } = await import("@/lib/supabase/client");
+        const supabase = createClient();
 
-      if (!Array.isArray(parsed)) {
-        setScanCount(0);
-        setLatestScore(null);
-        setPreviousScore(null);
-        return;
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user) {
+          const { data: remoteScans, error } = await supabase
+            .from("scans")
+            .select("id, created_at, score")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false })
+            .limit(20);
+
+          if (!error && Array.isArray(remoteScans)) {
+            scans = remoteScans.filter(
+              (scan: any) =>
+                scan &&
+                typeof scan.score === "number" &&
+                typeof scan.created_at === "string"
+            );
+          }
+        }
+      } catch (error) {
+        console.error("Objectifs Supabase scans error:", error);
       }
 
-      const scans = parsed
-        .filter(
-          (scan) =>
-            scan &&
-            typeof scan.date === "string" &&
-            typeof scan.score === "number"
-        )
-        .sort(
-          (a, b) =>
-            new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
+      if (scans.length === 0) {
+        try {
+          const storedScans = localStorage.getItem("facescan-scans");
+          const parsed = storedScans ? JSON.parse(storedScans) : [];
 
-      setScanCount(scans.length);
-      setLatestScore(scans[0]?.score ?? null);
-      setPreviousScore(scans[1]?.score ?? null);
-    } catch {
-      setScanCount(0);
-      setLatestScore(null);
-      setPreviousScore(null);
+          scans = Array.isArray(parsed)
+            ? parsed
+                .filter(
+                  (scan: any) =>
+                    scan &&
+                    typeof scan.date === "string" &&
+                    typeof scan.score === "number"
+                )
+                .sort(
+                  (a: any, b: any) =>
+                    new Date(b.date).getTime() -
+                    new Date(a.date).getTime()
+                )
+            : [];
+        } catch {
+          scans = [];
+        }
+      }
+
+      if (!cancelled) {
+        setScanCount(scans.length);
+        setLatestScore(scans[0]?.score ?? null);
+        setPreviousScore(scans[1]?.score ?? null);
+      }
     }
+
+    loadScanStats();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const toggleGoal = (id: string) => {
@@ -317,14 +348,14 @@ export default function ObjectifsPage() {
 
           <Link
             href="/scanner"
-            className="hidden items-center gap-2 rounded-full bg-[#171717] px-5 py-3 text-[12px] font-medium text-white sm:flex"
+            className="hidden items-center gap-2 rounded-full bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_52%,#12a6a6_100%)] px-5 py-3 text-[12px] font-medium text-white sm:flex"
           >
             <ScanFace size={16} strokeWidth={1.8} />
             Nouveau scan
           </Link>
         </header>
 
-        <section className="mt-8 rounded-[28px] bg-[#171717] p-6 text-white shadow-[0_20px_60px_rgba(0,0,0,0.12)] sm:p-8">
+        <section className="mt-8 rounded-[28px] bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_52%,#12a6a6_100%)] p-6 text-white shadow-[0_20px_60px_rgba(0,0,0,0.12)] sm:p-8">
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/8">
               <Target size={20} strokeWidth={1.7} />
@@ -357,7 +388,7 @@ export default function ObjectifsPage() {
               </h2>
             </div>
 
-            <span className="rounded-full bg-[#e9e5de] px-3 py-1.5 text-[10px] font-semibold text-[#668083]">
+            <span className="rounded-full bg-[#ffe3d9] px-3 py-1.5 text-[10px] font-semibold text-[#668083]">
               {selected.length} / 3 sélectionné{selected.length > 1 ? "s" : ""}
             </span>
           </div>
@@ -374,14 +405,14 @@ export default function ObjectifsPage() {
                   onClick={() => toggleGoal(goal.id)}
                   className={`rounded-[24px] border p-5 text-left transition ${
                     isSelected
-                      ? "border-[#171717] bg-white shadow-[0_10px_35px_rgba(28,27,24,0.06)]"
-                      : "border-black/6 bg-white/70 hover:bg-white"
+                      ? "border-[#12a6a6] bg-[linear-gradient(145deg,#ffffff_0%,#dcf8f3_100%)] shadow-[0_10px_35px_rgba(8,126,164,0.12)]"
+                      : "border-[#c6dfe3] bg-white/90 hover:bg-[#eefafa]"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div
                       className={`flex h-11 w-11 items-center justify-center rounded-2xl ${
-                        isSelected ? "bg-[#171717] text-white" : "bg-[#eef7f5]"
+                        isSelected ? "bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_52%,#12a6a6_100%)] text-white" : "bg-[#d9f5ef]"
                       }`}
                     >
                       <Icon size={19} strokeWidth={1.7} />
@@ -390,7 +421,7 @@ export default function ObjectifsPage() {
                     <div
                       className={`flex h-6 w-6 items-center justify-center rounded-full border ${
                         isSelected
-                          ? "border-[#171717] bg-[#171717] text-white"
+                          ? "border-[#171717] bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_52%,#12a6a6_100%)] text-white"
                           : "border-black/10 bg-transparent text-transparent"
                       }`}
                     >
@@ -411,7 +442,7 @@ export default function ObjectifsPage() {
           </div>
         </section>
 
-        <section className="mt-8 rounded-[24px] border border-[#dfe7e6] bg-white shadow-[0_10px_30px_rgba(35,55,60,0.045)] p-6">
+        <section className="mt-8 rounded-[24px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] shadow-[0_10px_30px_rgba(35,55,60,0.045)] p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#668083]">
@@ -426,7 +457,7 @@ export default function ObjectifsPage() {
               type="button"
               onClick={saveGoals}
               disabled={selected.length === 0}
-              className="rounded-full bg-gradient-to-br from-[#176678] to-[#756bd4] px-5 py-3 text-[11px] font-semibold text-white shadow-[0_10px_25px_rgba(34,91,105,0.22)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-30"
+              className="rounded-full bg-gradient-to-br from-[#087ea4] via-[#12a6a6] to-[#7767e8] px-5 py-3 text-[11px] font-semibold text-white shadow-[0_10px_25px_rgba(34,91,105,0.22)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-30"
             >
               {saving
                 ? "Enregistrement…"
@@ -437,7 +468,7 @@ export default function ObjectifsPage() {
           </div>
 
           <div className="mt-6 flex items-start gap-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#eef7f5]">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#d9f5ef]">
               <TrendingUp size={18} strokeWidth={1.7} />
             </div>
 
@@ -476,7 +507,7 @@ export default function ObjectifsPage() {
                   : `${scoreChange >= 0 ? "+" : ""}${scoreChange}`,
               ],
             ].map(([label, value]) => (
-              <div key={label} className="rounded-2xl bg-[#f8fbfa] px-4 py-3">
+              <div key={label} className="rounded-2xl bg-[#edf8f6] px-4 py-3">
                 <p className="text-[9px] uppercase tracking-[0.13em] text-[#668083]">
                   {label}
                 </p>
@@ -486,9 +517,9 @@ export default function ObjectifsPage() {
           </div>
         </section>
 
-        <section className="mt-8 rounded-[26px] bg-gradient-to-br from-[#f0edff] to-[#e8f8f4] p-6 shadow-[0_12px_35px_rgba(70,80,130,0.07)]">
+        <section className="mt-8 rounded-[26px] bg-gradient-to-br from-[#eee9ff] via-[#dcf8f2] to-[#fff0eb] p-6 shadow-[0_12px_35px_rgba(70,80,130,0.07)]">
           <div className="flex items-start gap-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/65">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/80">
               <Sparkles size={18} strokeWidth={1.7} />
             </div>
 
@@ -509,7 +540,7 @@ export default function ObjectifsPage() {
 
               <Link
                 href="/scanner"
-                className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-[#176678] to-[#756bd4] px-5 py-3 text-[11px] font-semibold text-white shadow-[0_10px_25px_rgba(34,91,105,0.22)] transition hover:-translate-y-0.5"
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-gradient-to-br from-[#087ea4] via-[#12a6a6] to-[#7767e8] px-5 py-3 text-[11px] font-semibold text-white shadow-[0_10px_25px_rgba(34,91,105,0.22)] transition hover:-translate-y-0.5"
               >
                 Faire un scan
                 <ArrowRight size={14} strokeWidth={1.8} />
@@ -546,7 +577,7 @@ export default function ObjectifsPage() {
           <div className="flex w-16 flex-col items-center gap-1">
             <Link
               href="/scanner"
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#176678] to-[#756bd4] text-white shadow-[0_8px_25px_rgba(0,0,0,0.16)]"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#087ea4] via-[#12a6a6] to-[#7767e8] text-white shadow-[0_8px_25px_rgba(0,0,0,0.16)]"
               aria-label="Scanner"
             >
               <ScanFace size={21} strokeWidth={1.8} />

@@ -89,16 +89,34 @@ export default function ActivitePage() {
 
         setProfile((data ?? {}) as Profile);
 
-        const rawScans = localStorage.getItem("facescan-scans");
-        const scans = rawScans ? JSON.parse(rawScans) : [];
+        let latestScan: any = null;
 
-        const latestScan = Array.isArray(scans)
-          ? [...scans].sort(
-              (a, b) =>
-                new Date(b?.date ?? 0).getTime() -
-                new Date(a?.date ?? 0).getTime()
-            )[0]
-          : null;
+        try {
+          const { data: scans, error: scansError } = await supabase
+            .from("scans")
+            .select("id, created_at, score, indicators")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false })
+            .limit(1);
+
+          if (scansError) throw scansError;
+          latestScan = Array.isArray(scans) ? scans[0] : null;
+        } catch {
+          try {
+            const rawScans = localStorage.getItem("facescan-scans");
+            const scans = rawScans ? JSON.parse(rawScans) : [];
+
+            latestScan = Array.isArray(scans)
+              ? [...scans].sort(
+                  (a, b) =>
+                    new Date(b?.date ?? 0).getTime() -
+                    new Date(a?.date ?? 0).getTime()
+                )[0]
+              : null;
+          } catch {
+            latestScan = null;
+          }
+        }
 
         if (latestScan?.indicators) {
           setScan({
@@ -182,12 +200,14 @@ export default function ActivitePage() {
             </h1>
           </div>
 
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#e8f5f2]">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#d9f5ef]">
             <Activity size={18} className="text-[#287f72]" />
           </div>
         </header>
 
-        <section className="rounded-[28px] bg-[#18352d] p-6 text-white shadow-[0_20px_48px_rgba(24,53,45,0.16)] sm:p-7">
+        <section className="relative overflow-hidden rounded-[28px] bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#12a6a6_72%,#48b881_100%)] p-6 text-white shadow-[0_22px_52px_rgba(8,126,164,0.18)] sm:p-7">
+            <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#42cfc2]/22 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-16 left-8 h-36 w-36 rounded-full bg-[#ff8066]/18 blur-3xl" />
           <div className="mb-5 flex items-start justify-between gap-4">
             <div className="flex min-w-0 items-center gap-3">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/10">
@@ -244,7 +264,7 @@ export default function ActivitePage() {
         </section>
 
         <section className="mt-5 grid grid-cols-3 gap-3">
-          <div className="rounded-2xl border border-[#dce7e4] bg-white p-4 shadow-[0_8px_22px_rgba(35,70,60,0.04)]">
+          <div className="rounded-2xl border border-[#8fd8d1] bg-[linear-gradient(145deg,#ffffff_0%,#e6f8f4_100%)] p-4 shadow-[0_8px_22px_rgba(35,70,60,0.04)]">
             <Footprints size={18} className="mb-3 text-[#287f72]" />
             <p className="text-xs text-[#8a928e]">Mouvement</p>
             <p className="mt-1 font-semibold">
@@ -259,7 +279,7 @@ export default function ActivitePage() {
             </p>
           </div>
 
-          <div className="rounded-2xl border border-[#dddaf0] bg-white p-4 shadow-[0_8px_22px_rgba(82,75,130,0.04)]">
+          <div className="rounded-2xl border border-[#b8afff] bg-[linear-gradient(145deg,#ffffff_0%,#eeeaff_100%)] p-4 shadow-[0_8px_22px_rgba(82,75,130,0.04)]">
             <Dumbbell size={18} className="mb-3 text-[#756bd4]" />
             <p className="text-xs text-[#8a928e]">Sport</p>
             <p className="mt-1 font-semibold">
@@ -274,7 +294,7 @@ export default function ActivitePage() {
             </p>
           </div>
 
-          <div className="rounded-2xl border border-[#ead8cf] bg-white p-4 shadow-[0_8px_22px_rgba(120,75,60,0.04)]">
+          <div className="rounded-2xl border border-[#ffb19d] bg-[linear-gradient(145deg,#ffffff_0%,#fff0eb_100%)] p-4 shadow-[0_8px_22px_rgba(120,75,60,0.04)]">
             <Timer size={18} className="mb-3 text-[#b76b58]" />
             <p className="text-xs text-[#8a928e]">Régularité</p>
             <p className="mt-1 font-semibold">
@@ -295,9 +315,9 @@ export default function ActivitePage() {
             </h2>
           </div>
 
-          <div className="rounded-[26px] border border-[#dfe8e5] bg-white p-5 shadow-[0_12px_30px_rgba(30,70,65,0.045)]">
+          <div className="rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_12px_30px_rgba(30,70,65,0.045)]">
             <div className="flex items-start gap-4">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#eaf8f5] text-[#287f72]">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#c9f2eb] text-[#087ea4]">
                 <Footprints size={19} />
               </div>
 
@@ -323,9 +343,9 @@ export default function ActivitePage() {
           </div>
         </section>
 
-        <section className="mt-7 rounded-[26px] border border-[#dfe8e5] bg-white p-5 shadow-[0_12px_30px_rgba(30,70,65,0.045)]">
+        <section className="mt-7 rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_12px_30px_rgba(30,70,65,0.045)]">
           <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#eaf8f5] text-[#287f72]">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[#c9f2eb] text-[#087ea4]">
               <Sparkles size={18} />
             </div>
 

@@ -40,21 +40,44 @@ export default function PeauPage() {
 
         setProfile(data ?? {});
 
+        let loadedScan = false;
+
         try {
-          const rawScans = localStorage.getItem("facescan-scans");
-          const scans = rawScans ? JSON.parse(rawScans) : [];
+          const { data: scans, error: scansError } = await supabase
+            .from("scans")
+            .select("id, created_at, score, indicators")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false })
+            .limit(1);
 
-          const latestScan = Array.isArray(scans)
-            ? [...scans].sort(
-                (a, b) =>
-                  new Date(b?.date ?? 0).getTime() -
-                  new Date(a?.date ?? 0).getTime()
-              )[0]
-            : null;
+          if (scansError) throw scansError;
 
-          setScan(latestScan?.indicators ?? null);
+          const latestScan = Array.isArray(scans) ? scans[0] : null;
+          if (latestScan?.indicators) {
+            setScan(latestScan.indicators);
+            loadedScan = true;
+          }
         } catch {
-          setScan(null);
+          loadedScan = false;
+        }
+
+        if (!loadedScan) {
+          try {
+            const rawScans = localStorage.getItem("facescan-scans");
+            const scans = rawScans ? JSON.parse(rawScans) : [];
+
+            const latestScan = Array.isArray(scans)
+              ? [...scans].sort(
+                  (a, b) =>
+                    new Date(b?.date ?? 0).getTime() -
+                    new Date(a?.date ?? 0).getTime()
+                )[0]
+              : null;
+
+            setScan(latestScan?.indicators ?? null);
+          } catch {
+            setScan(null);
+          }
         }
       } catch {
         setProfile({});

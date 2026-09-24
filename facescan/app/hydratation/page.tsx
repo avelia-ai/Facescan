@@ -74,31 +74,63 @@ export default function HydratationPage() {
           setProfile({});
         }
 
-        try {
-          const rawScans = localStorage.getItem("facescan-scans");
-          const scans = rawScans ? JSON.parse(rawScans) : [];
+        let loadedScan = false;
 
-          const latestScan = Array.isArray(scans)
-            ? [...scans].sort(
-                (a, b) =>
-                  new Date(b?.date ?? 0).getTime() -
-                  new Date(a?.date ?? 0).getTime()
-              )[0]
-            : null;
+        if (user) {
+          try {
+            const { data: scans, error: scansError } = await supabase
+              .from("scans")
+              .select("id, created_at, score, indicators")
+              .eq("user_id", user.id)
+              .order("created_at", { ascending: false })
+              .limit(1);
 
-          setScan(
-            latestScan
-              ? {
-                  score:
-                    typeof latestScan.score === "number"
-                      ? latestScan.score
-                      : null,
-                  indicators: latestScan.indicators ?? null,
-                }
-              : null
-          );
-        } catch {
-          setScan(null);
+            if (scansError) throw scansError;
+
+            const latestScan = Array.isArray(scans) ? scans[0] : null;
+
+            if (latestScan) {
+              setScan({
+                score:
+                  typeof latestScan.score === "number"
+                    ? latestScan.score
+                    : null,
+                indicators: latestScan.indicators ?? null,
+              });
+              loadedScan = true;
+            }
+          } catch {
+            loadedScan = false;
+          }
+        }
+
+        if (!loadedScan) {
+          try {
+            const rawScans = localStorage.getItem("facescan-scans");
+            const scans = rawScans ? JSON.parse(rawScans) : [];
+
+            const latestScan = Array.isArray(scans)
+              ? [...scans].sort(
+                  (a, b) =>
+                    new Date(b?.date ?? 0).getTime() -
+                    new Date(a?.date ?? 0).getTime()
+                )[0]
+              : null;
+
+            setScan(
+              latestScan
+                ? {
+                    score:
+                      typeof latestScan.score === "number"
+                        ? latestScan.score
+                        : null,
+                    indicators: latestScan.indicators ?? null,
+                  }
+                : null
+            );
+          } catch {
+            setScan(null);
+          }
         }
 
         try {

@@ -15,6 +15,7 @@ import Link from "next/link";
 import { analyzeScanPhoto } from "@/lib/scan-analysis";
 import { detectFace } from "@/lib/face-detector";
 import { buildVisualAnalysis } from "@/lib/visual-analysis";
+import { createClient } from "@/lib/supabase/client";
 
 export default function ScannerPage() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -237,6 +238,33 @@ export default function ScannerPage() {
         visualSignals: visualAnalysis.visualSignals,
         indicators: visualAnalysis.indicators,
       };
+
+      const supabase = createClient();
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (authError || !user) {
+        throw new Error(
+          "Votre session a expiré. Reconnectez-vous avant d’enregistrer votre scan."
+        );
+      }
+
+      const { error: scanInsertError } = await supabase
+        .from("scans")
+        .insert({
+          user_id: user.id,
+          score: scan.score,
+          indicators: scan.indicators,
+          quality: scan.quality,
+          face_detection: scan.faceDetection,
+          visual_signals: scan.visualSignals,
+        });
+
+      if (scanInsertError) {
+        console.error("Supabase scan storage error:", scanInsertError);
+      }
 
       const scansToStore = [scan, ...existingScans]
         .map((item: any) => {

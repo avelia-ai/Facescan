@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 
 import { buildPersonalizedInsights } from "@/lib/personalization";
+import { createClient } from "@/lib/supabase/client";
 
 type StoredScan = {
   id: string;
@@ -60,8 +61,8 @@ const indicatorConfig = [
     description: "Qualité visuelle",
     icon: Sparkles,
     accent: "text-[#e06f59]",
-    iconBg: "bg-[#fff0eb]",
-    bar: "from-[#f39a82] to-[#d96550]",
+    iconBg: "bg-[#ffd9cf]",
+    bar: "from-[#ff8066] to-[#e45f4b]",
   },
   {
     key: "hydratation",
@@ -69,8 +70,8 @@ const indicatorConfig = [
     description: "Aspect hydrique",
     icon: Droplets,
     accent: "text-[#168f91]",
-    iconBg: "bg-[#e5faf7]",
-    bar: "from-[#56d9ca] to-[#168f91]",
+    iconBg: "bg-[#c9f2eb]",
+    bar: "from-[#42cfc2] to-[#087ea4]",
   },
   {
     key: "fatigue",
@@ -78,8 +79,8 @@ const indicatorConfig = [
     description: "Signes apparents",
     icon: Moon,
     accent: "text-[#756bd4]",
-    iconBg: "bg-[#eeecff]",
-    bar: "from-[#a49cff] to-[#756bd4]",
+    iconBg: "bg-[#e1dcff]",
+    bar: "from-[#9b8cff] to-[#6f5ee8]",
   },
   {
     key: "equilibre",
@@ -87,8 +88,8 @@ const indicatorConfig = [
     description: "Harmonie générale",
     icon: Activity,
     accent: "text-[#3f9864]",
-    iconBg: "bg-[#e8f7ee]",
-    bar: "from-[#82c99b] to-[#3f9864]",
+    iconBg: "bg-[#d6f3e3]",
+    bar: "from-[#65c991] to-[#35a56d]",
   },
 ] as const;
 
@@ -117,7 +118,7 @@ function buildDailyActions(
       score: indicators.hydratation,
       priority:
         100 - indicators.hydratation + goalBoost(["hydratation"]),
-      tone: "bg-[#e5faf7] text-[#168f91]",
+      tone: "bg-[#c9f2eb] text-[#087ea4]",
     },
     {
       key: "recuperation",
@@ -137,7 +138,7 @@ function buildDailyActions(
       priority:
         100 - indicators.fatigue +
         goalBoost(["recuperation", "fatigue", "sommeil"]),
-      tone: "bg-[#eeecff] text-[#756bd4]",
+      tone: "bg-[#e1dcff] text-[#6f5ee8]",
     },
     {
       key: "peau",
@@ -157,7 +158,7 @@ function buildDailyActions(
       priority:
         100 - indicators.peau +
         goalBoost(["peau", "qualite_peau", "eclat"]),
-      tone: "bg-[#fff0eb] text-[#d96550]",
+      tone: "bg-[#ffd9cf] text-[#e45f4b]",
     },
     {
       key: "equilibre",
@@ -177,7 +178,7 @@ function buildDailyActions(
       priority:
         100 - indicators.equilibre +
         goalBoost(["equilibre"]),
-      tone: "bg-[#e8f7ee] text-[#3f9864]",
+      tone: "bg-[#d6f3e3] text-[#35a56d]",
     },
   ];
 
@@ -207,53 +208,155 @@ export default function ResultatsPage() {
   const [previousScan, setPreviousScan] = useState<StoredScan | null>(null);
 
   useEffect(() => {
-    const photo = sessionStorage.getItem("facescan-scan-photo");
+    let cancelled = false;
 
-    if (photo) {
-      setScanPhoto(photo);
-    }
+    const loadResultats = async () => {
+      const photo = sessionStorage.getItem("facescan-scan-photo");
 
-    const scansStored = localStorage.getItem("facescan-scans");
+      if (photo && !cancelled) {
+        setScanPhoto(photo);
+      }
 
-    if (scansStored) {
+      const supabase = createClient();
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user || cancelled) {
+        return;
+      }
+
+      let loadedFromSupabase = false;
+
       try {
-        const scans = JSON.parse(scansStored);
+        const { data: scans, error: scansError } = await supabase
+          .from("scans")
+          .select(
+            "id, created_at, score, indicators, quality, face_detection, visual_signals"
+          )
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(20);
 
-        if (Array.isArray(scans) && scans.length > 0 && scans[0]?.indicators) {
-          const scan = scans[0] as StoredScan;
-          setLatestScan(scan);
+        if (scansError) {
+          throw scansError;
+        }
 
-          const previous = scans[1]?.indicators
-            ? (scans[1] as StoredScan)
-            : null;
+        if (Array.isArray(scans) && scans.length > 0) {
+          const normalizedScans = scans
+            .filter(
+              (scan) =>
+                scan &&
+                typeof scan.id === "string" &&
+                typeof scan.created_at === "string" &&
+                typeof scan.score === "number" &&
+                scan.indicators &&
+                typeof scan.indicators === "object"
+            )
+            .map((scan) => ({
+              id: scan.id,
+              date: scan.created_at,
+              score: scan.score,
+              indicators: scan.indicators as StoredScan["indicators"],
+              quality: scan.quality ?? undefined,
+              faceDetection: scan.face_detection ?? undefined,
+            })) as StoredScan[];
 
-          setPreviousScan(previous);
-
-          if (!photo && scan.photo) {
-            setScanPhoto(scan.photo);
+          if (normalizedScans.length > 0) {
+            if (!cancelled) {
+              setLatestScan(normalizedScans[0]);
+              setPreviousScan(normalizedScans[1] ?? null);
+            }
+            loadedFromSupabase = true;
           }
         }
-      } catch {
-        setLatestScan(null);
+      } catch (error) {
+        console.error("Supabase scans loading error:", error);
       }
-    }
 
-    const storedGoals = localStorage.getItem("facescan-goals");
+      // Filet de sécurité pendant la transition vers Supabase.
+      if (!loadedFromSupabase && !cancelled) {
+        const scansStored = localStorage.getItem("facescan-scans");
 
-    if (!storedGoals) {
-      setUserGoals(["peau", "hydratation"]);
-      return;
-    }
+        if (scansStored) {
+          try {
+            const scans = JSON.parse(scansStored);
 
-    try {
-      const parsed = JSON.parse(storedGoals);
+            if (
+              Array.isArray(scans) &&
+              scans.length > 0 &&
+              scans[0]?.indicators
+            ) {
+              const scan = scans[0] as StoredScan;
+              setLatestScan(scan);
 
-      setUserGoals(
-        Array.isArray(parsed) ? parsed : ["peau", "hydratation"],
-      );
-    } catch {
-      setUserGoals(["peau", "hydratation"]);
-    }
+              const previous = scans[1]?.indicators
+                ? (scans[1] as StoredScan)
+                : null;
+
+              setPreviousScan(previous);
+
+              if (!photo && scan.photo) {
+                setScanPhoto(scan.photo);
+              }
+            }
+          } catch {
+            setLatestScan(null);
+            setPreviousScan(null);
+          }
+        }
+      }
+
+      try {
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("goals")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if (profileError) {
+          throw profileError;
+        }
+
+        if (Array.isArray(profile?.goals)) {
+          setUserGoals(
+            profile.goals.filter(
+              (goal): goal is string => typeof goal === "string"
+            )
+          );
+        } else {
+          setUserGoals(["peau", "hydratation"]);
+        }
+      } catch (error) {
+        console.error("Supabase profile loading error:", error);
+
+        const storedGoals = localStorage.getItem("facescan-goals");
+
+        if (!storedGoals) {
+          setUserGoals(["peau", "hydratation"]);
+        } else {
+          try {
+            const parsed = JSON.parse(storedGoals);
+            setUserGoals(
+              Array.isArray(parsed)
+                ? parsed.filter(
+                    (goal): goal is string => typeof goal === "string"
+                  )
+                : ["peau", "hydratation"]
+            );
+          } catch {
+            setUserGoals(["peau", "hydratation"]);
+          }
+        }
+      }
+    };
+
+    loadResultats();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const currentIndicators = latestScan?.indicators ?? null;
@@ -441,9 +544,9 @@ export default function ResultatsPage() {
         <section className="mt-7 grid gap-5 lg:grid-cols-[0.92fr_1.08fr]">
 
           {/* SCORE CARD */}
-          <div className="relative overflow-hidden rounded-[34px] bg-[linear-gradient(145deg,#102f3a_0%,#143f4c_48%,#214f6f_100%)] p-6 text-white shadow-[0_28px_75px_rgba(16,47,58,0.22)] sm:p-8">
-            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#49ddcb]/15 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-[#7b74e1]/18 blur-3xl" />
+          <div className="relative overflow-hidden rounded-[34px] bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_45%,#12a6a6_72%,#7767e8_100%)] p-6 text-white shadow-[0_28px_75px_rgba(16,47,58,0.22)] sm:p-8">
+            <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-[#42cfc2]/28 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-[#9b8cff]/24 blur-3xl" />
             <div className="pointer-events-none absolute right-12 top-12 h-24 w-24 rounded-full border border-white/[0.06]" />
 
             <div className="relative flex items-start justify-between gap-4">
@@ -467,10 +570,10 @@ export default function ResultatsPage() {
               <div
                 className="relative flex h-[178px] w-[178px] shrink-0 items-center justify-center rounded-full"
                 style={{
-                  background: `conic-gradient(#72f0dc ${currentScore}%, rgba(255,255,255,0.08) ${currentScore}% 100%)`,
+                  background: `conic-gradient(#42cfc2 ${currentScore}%, rgba(255,255,255,0.08) ${currentScore}% 100%)`,
                 }}
               >
-                <div className="absolute inset-[10px] rounded-full bg-[#123943] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]" />
+                <div className="absolute inset-[10px] rounded-full bg-[#0a465d] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]" />
                 <div className="relative text-center">
                   <span className="block text-[64px] font-semibold leading-none tracking-[-0.08em]">
                     {currentScore}
@@ -502,7 +605,7 @@ export default function ResultatsPage() {
 
                   <div className="h-1.5 overflow-hidden rounded-full bg-white/[0.08]">
                     <div
-                      className="h-full rounded-full bg-gradient-to-r from-[#45d9ca] to-[#aaa4ff]"
+                      className="h-full rounded-full bg-gradient-to-r from-[#42cfc2] via-[#12a6a6] to-[#9b8cff]"
                       style={{ width: `${currentScore}%` }}
                     />
                   </div>
@@ -557,7 +660,7 @@ export default function ResultatsPage() {
             </div>
 
             <div className="p-5 sm:p-7">
-              <div className="relative mx-auto aspect-[4/3] max-w-[560px] overflow-hidden rounded-[28px] bg-[#e9f1f2] shadow-[0_14px_35px_rgba(20,55,65,0.08)]">
+              <div className="relative mx-auto aspect-[4/3] max-w-[560px] overflow-hidden rounded-[28px] bg-[#dff4f5] shadow-[0_14px_35px_rgba(20,55,65,0.08)]">
                 {scanPhoto ? (
                   <>
                     <img
@@ -667,7 +770,7 @@ export default function ResultatsPage() {
                 <Link
                   key={item.key}
                   href={`/indicateur?type=${item.key === "fatigue" ? "fatigue" : item.key}`}
-                  className="group relative overflow-hidden rounded-[28px] border border-[#dce6e8] bg-white p-5 shadow-[0_14px_38px_rgba(20,55,65,0.055),0_3px_8px_rgba(20,55,65,0.025)] transition duration-300 hover:-translate-y-1 hover:border-[#cfdedf] hover:shadow-[0_20px_48px_rgba(20,55,65,0.09)]"
+                  className="group relative overflow-hidden rounded-[28px] border border-[#b8dfe0] bg-[linear-gradient(145deg,#ffffff_0%,#eefafa_100%)] p-5 shadow-[0_14px_38px_rgba(20,55,65,0.055),0_3px_8px_rgba(20,55,65,0.025)] transition duration-300 hover:-translate-y-1 hover:border-[#cfdedf] hover:shadow-[0_20px_48px_rgba(20,55,65,0.09)]"
                 >
                   <div className={`pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full ${item.iconBg} opacity-60 blur-2xl`} />
 
@@ -690,7 +793,7 @@ export default function ResultatsPage() {
                         {item.change} pts
                       </span>
                     ) : (
-                      <span className="rounded-full bg-[#f3f6f6] px-2.5 py-1.5 text-[9px] font-semibold text-[#87979b]">
+                      <span className="rounded-full bg-[#e9f7f6] px-2.5 py-1.5 text-[9px] font-semibold text-[#87979b]">
                         Référence
                       </span>
                     )}
@@ -768,7 +871,7 @@ export default function ResultatsPage() {
             {dailyActions.map((action, index) => (
               <article
                 key={action.title}
-                className="group relative overflow-hidden rounded-[28px] border border-[#dce6e8] bg-white p-5 shadow-[0_14px_38px_rgba(20,55,65,0.055),0_3px_8px_rgba(20,55,65,0.025)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(20,55,65,0.09)]"
+                className="group relative overflow-hidden rounded-[28px] border border-[#b8dfe0] bg-[linear-gradient(145deg,#ffffff_0%,#eefafa_100%)] p-5 shadow-[0_14px_38px_rgba(20,55,65,0.055),0_3px_8px_rgba(20,55,65,0.025)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(20,55,65,0.09)]"
               >
                 <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-[#eef4ff] opacity-70 blur-2xl" />
 
@@ -836,7 +939,7 @@ export default function ResultatsPage() {
           </div>
 
           <div className="mt-6 overflow-hidden rounded-[30px] border border-[#dce6e8] bg-white shadow-[0_16px_42px_rgba(20,55,65,0.055)]">
-            <div className="border-b border-[#edf2f2] bg-[linear-gradient(135deg,#fbfdfc_0%,#f4faf7_100%)] px-5 py-5 sm:px-6">
+            <div className="border-b border-[#edf2f2] bg-[linear-gradient(135deg,#e2faf5_0%,#eef0ff_100%)] px-5 py-5 sm:px-6">
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3f9864]">
@@ -850,7 +953,7 @@ export default function ResultatsPage() {
                   </h3>
                 </div>
 
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#e8f7ee] text-[#3f9864]">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#d6f3e3] text-[#35a56d]">
                   <TrendingUp size={19} strokeWidth={1.8} />
                 </div>
               </div>
@@ -871,7 +974,7 @@ export default function ResultatsPage() {
                         <span
                           className={`mb-1 rounded-full px-2.5 py-1 text-[9px] font-bold ${
                             scoreChange !== null && scoreChange >= 0
-                              ? "bg-[#e8f7ee] text-[#3f9864]"
+                              ? "bg-[#d6f3e3] text-[#35a56d]"
                               : "bg-[#fff0ec] text-[#d96550]"
                           }`}
                         >
@@ -893,7 +996,7 @@ export default function ResultatsPage() {
                   </div>
                 ) : (
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-[#eef7f1] text-[#3f9864]">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-[#d9f4e5] text-[#35a56d]">
                       <Sparkles size={17} />
                     </div>
 
@@ -918,7 +1021,7 @@ export default function ResultatsPage() {
                 return (
                   <div
                     key={item.key}
-                    className="rounded-[22px] border border-[#e2e9ea] bg-[#f8faf9] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
+                    className="rounded-[22px] border border-[#e2e9ea] bg-[#edf8f6] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
@@ -1019,7 +1122,7 @@ export default function ResultatsPage() {
               <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#e8f7ee] opacity-70 blur-3xl" />
 
               <div className="relative flex items-start gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#e8f7ee] text-[#3f9864] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#d6f3e3] text-[#35a56d] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
                   <CheckCircle2 size={19} strokeWidth={1.8} />
                 </div>
 
@@ -1033,7 +1136,7 @@ export default function ResultatsPage() {
                 </div>
               </div>
 
-              <div className="relative mt-5 rounded-[22px] bg-[linear-gradient(145deg,#f5fbf7_0%,#eef8f2_100%)] px-4 py-4">
+              <div className="relative mt-5 rounded-[22px] bg-[linear-gradient(145deg,#e3faef_0%,#d5f3e6_100%)] px-4 py-4">
                 <p className="text-[11px] leading-5 text-[#5f757b]">
                   {positiveInsight?.text ??
                     "Aucun indicateur ne se situe encore dans une zone favorable. Otavio continuera à suivre votre évolution au fil des prochains scans."}
@@ -1041,8 +1144,8 @@ export default function ResultatsPage() {
               </div>
             </article>
 
-            <article className="relative overflow-hidden rounded-[30px] border border-[#e2defb] bg-[linear-gradient(145deg,#fbfaff_0%,#f2efff_100%)] p-5 shadow-[0_16px_42px_rgba(71,64,130,0.055)] sm:p-6">
-              <div className="pointer-events-none absolute -bottom-16 -right-10 h-36 w-36 rounded-full bg-[#c9c3ff]/25 blur-3xl" />
+            <article className="relative overflow-hidden rounded-[30px] border border-[#e2defb] bg-[linear-gradient(145deg,#f0edff_0%,#ddd7ff_100%)] p-5 shadow-[0_16px_42px_rgba(71,64,130,0.055)] sm:p-6">
+              <div className="pointer-events-none absolute -bottom-16 -right-10 h-36 w-36 rounded-full bg-[#9b8cff]/30 blur-3xl" />
 
               <div className="relative flex items-start gap-4">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-white/80 text-[#756bd4] shadow-[0_8px_20px_rgba(80,70,150,0.06)]">
@@ -1176,9 +1279,9 @@ export default function ResultatsPage() {
         </section>
 
         {/* NEXT STEP */}
-        <section className="relative mt-10 overflow-hidden rounded-[32px] bg-[linear-gradient(135deg,#102f3a_0%,#174b58_52%,#3b477f_100%)] p-6 text-white shadow-[0_24px_60px_rgba(16,47,58,0.18)] sm:p-7">
-          <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-[#72f0dc]/12 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-[#aaa5ff]/14 blur-3xl" />
+        <section className="relative mt-10 overflow-hidden rounded-[32px] bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#7767e8_100%)] p-6 text-white shadow-[0_24px_60px_rgba(16,47,58,0.18)] sm:p-7">
+          <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-[#42cfc2]/20 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 left-1/3 h-64 w-64 rounded-full bg-[#9b8cff]/22 blur-3xl" />
           <div className="pointer-events-none absolute right-10 top-10 h-28 w-28 rounded-full border border-white/[0.05]" />
 
           <div className="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
@@ -1260,7 +1363,7 @@ export default function ResultatsPage() {
             <Link
               href="/scanner"
               aria-label="Scanner"
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#168f91] to-[#756bd4] text-white shadow-[0_10px_28px_rgba(34,91,105,0.28)]"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#087ea4] via-[#12a6a6] to-[#7767e8] text-white shadow-[0_10px_28px_rgba(34,91,105,0.28)]"
             >
               <ScanFace size={21} strokeWidth={1.8} />
             </Link>

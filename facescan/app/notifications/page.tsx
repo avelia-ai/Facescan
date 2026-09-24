@@ -77,54 +77,123 @@ export default function NotificationsPage() {
   const [readIds, setReadIds] = useState<number[]>([]);
 
   useEffect(() => {
-    const storedScans = localStorage.getItem("facescan-scans");
+    let cancelled = false;
 
-    if (storedScans) {
+    async function loadData() {
+      let loadedScan = false;
+      let loadedGoals = false;
+
       try {
-        const parsed = JSON.parse(storedScans);
+        const { createClient } = await import("@/lib/supabase/client");
+        const supabase = createClient();
 
-        if (Array.isArray(parsed) && parsed[0]?.indicators) {
-          setLatestScan({
-            score: typeof parsed[0].score === "number" ? parsed[0].score : null,
-            date:
-              typeof parsed[0].date === "string"
-                ? parsed[0].date
-                : new Date().toISOString(),
-            indicators: parsed[0].indicators,
-          });
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user) {
+          const [{ data: scans, error: scansError }, { data: profile, error: profileError }] =
+            await Promise.all([
+              supabase
+                .from("scans")
+                .select("id, created_at, score, indicators")
+                .eq("user_id", user.id)
+                .order("created_at", { ascending: false })
+                .limit(1),
+              supabase
+                .from("profiles")
+                .select("goals")
+                .eq("id", user.id)
+                .maybeSingle(),
+            ]);
+
+          if (!scansError) {
+            const scan = Array.isArray(scans) ? scans[0] : null;
+
+            if (scan?.indicators && !cancelled) {
+              setLatestScan({
+                score: typeof scan.score === "number" ? scan.score : null,
+                date:
+                  typeof scan.created_at === "string"
+                    ? scan.created_at
+                    : new Date().toISOString(),
+                indicators: scan.indicators,
+              });
+              loadedScan = true;
+            }
+          }
+
+          if (
+            !profileError &&
+            Array.isArray(profile?.goals) &&
+            !cancelled
+          ) {
+            setUserGoals(
+              profile.goals.filter(
+                (goal: unknown): goal is string => typeof goal === "string"
+              )
+            );
+            loadedGoals = true;
+          }
+        }
+      } catch (error) {
+        console.error("Notifications Supabase error:", error);
+      }
+
+      if (!loadedScan && !cancelled) {
+        try {
+          const storedScans = localStorage.getItem("facescan-scans");
+          const parsed = storedScans ? JSON.parse(storedScans) : [];
+
+          if (Array.isArray(parsed) && parsed[0]?.indicators) {
+            setLatestScan({
+              score:
+                typeof parsed[0].score === "number" ? parsed[0].score : null,
+              date:
+                typeof parsed[0].date === "string"
+                  ? parsed[0].date
+                  : new Date().toISOString(),
+              indicators: parsed[0].indicators,
+            });
+          } else {
+            setLatestScan(null);
+          }
+        } catch {
+          setLatestScan(null);
+        }
+      }
+
+      if (!loadedGoals && !cancelled) {
+        try {
+          const storedGoals = localStorage.getItem("facescan-goals");
+          const parsed = storedGoals ? JSON.parse(storedGoals) : [];
+
+          setUserGoals(Array.isArray(parsed) ? parsed : []);
+        } catch {
+          setUserGoals([]);
+        }
+      }
+
+      try {
+        const storedRead = localStorage.getItem("facescan-read-notifications");
+
+        if (storedRead && !cancelled) {
+          const parsed = JSON.parse(storedRead);
+
+          if (Array.isArray(parsed)) {
+            setReadIds(parsed);
+          }
         }
       } catch {
-        setLatestScan(null);
+        if (!cancelled) setReadIds([]);
       }
     }
 
-    const storedGoals = localStorage.getItem("facescan-goals");
+    loadData();
 
-    if (storedGoals) {
-      try {
-        const parsed = JSON.parse(storedGoals);
-
-        if (Array.isArray(parsed)) {
-          setUserGoals(parsed);
-        }
-      } catch {
-        setUserGoals([]);
-      }
-    }
-
-    const storedRead = localStorage.getItem("facescan-read-notifications");
-
-    if (storedRead) {
-      try {
-        const parsed = JSON.parse(storedRead);
-
-        if (Array.isArray(parsed)) {
-          setReadIds(parsed);
-        }
-      } catch {
-        setReadIds([]);
-      }
-    }
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const notifications = useMemo(() => {
@@ -239,7 +308,7 @@ export default function NotificationsPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/profil"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#dce5e4] bg-white shadow-[0_8px_25px_rgba(30,55,60,0.06)]"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c4dde1] bg-white shadow-[0_8px_25px_rgba(30,55,60,0.06)]"
               aria-label="Retour au profil"
             >
               <ArrowLeft size={18} strokeWidth={1.8} />
@@ -258,14 +327,14 @@ export default function NotificationsPage() {
           <button
             type="button"
             onClick={markAllRead}
-            className="hidden items-center gap-2 rounded-full border border-[#dce5e4] bg-white px-4 py-3 text-[11px] font-medium text-[#587174] shadow-[0_6px_20px_rgba(30,55,60,0.05)] sm:flex"
+            className="hidden items-center gap-2 rounded-full border border-[#c4dde1] bg-white px-4 py-3 text-[11px] font-medium text-[#587174] shadow-[0_6px_20px_rgba(30,55,60,0.05)] sm:flex"
           >
             <Check size={15} strokeWidth={1.8} />
             Tout lire
           </button>
         </header>
 
-        <section className="mt-8 rounded-[28px] bg-gradient-to-br from-[#183d48] via-[#195263] to-[#167b82] p-6 text-white shadow-[0_24px_60px_rgba(23,76,87,0.22)] shadow-[0_20px_60px_rgba(0,0,0,0.12)] sm:p-8">
+        <section className="mt-8 rounded-[28px] bg-gradient-to-br from-[#0b5876] via-[#087ea4] to-[#12a6a6] p-6 text-white shadow-[0_24px_60px_rgba(23,76,87,0.22)] shadow-[0_20px_60px_rgba(0,0,0,0.12)] sm:p-8">
           <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
             <div>
               <div className="flex items-center gap-2 text-white/45">
@@ -324,22 +393,22 @@ export default function NotificationsPage() {
                   onClick={() => markRead(item.id)}
                   className={`rounded-[22px] border p-4 shadow-[0_8px_28px_rgba(28,27,24,0.035)] ${
                     item.unread
-                      ? "border-[#dfe7e6] bg-white"
-                      : "border-[#e6eceb] bg-[#fbfcfc]"
+                      ? "border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)]"
+                      : "border-[#b9dfe3] bg-[#f0fafb]"
                   }`}
                 >
                   <div className="flex items-start gap-4">
-                    <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#eaf8f5]">
+                    <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#d3f4ed]">
                       <Icon size={19} strokeWidth={1.7} />
                       {item.unread && (
-                        <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-[#171717] ring-2 ring-white" />
+                        <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-[#ff8066] ring-2 ring-white" />
                       )}
                     </div>
 
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <div className="flex items-center gap-2">
-                          <span className="rounded-full bg-[#eaf8f5] px-2.5 py-1 text-[9px] font-semibold text-[#69645d]">
+                          <span className="rounded-full bg-[#d3f4ed] px-2.5 py-1 text-[9px] font-semibold text-[#69645d]">
                             {item.type}
                           </span>
 
@@ -385,7 +454,7 @@ export default function NotificationsPage() {
         <section className="mt-10 grid gap-4 lg:grid-cols-2">
           <article className="rounded-[24px] border border-black/6 bg-white p-6">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#eaf8f5]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#d3f4ed]">
                 <Bell size={18} strokeWidth={1.7} />
               </div>
 
@@ -413,7 +482,7 @@ export default function NotificationsPage() {
             </Link>
           </article>
 
-          <article className="rounded-[24px] bg-gradient-to-br from-[#eef9f7] to-[#f1efff] p-6">
+          <article className="rounded-[24px] bg-gradient-to-br from-[#dcf8f2] via-[#eefaff] to-[#eee9ff] p-6">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/65">
                 <BellOff size={18} strokeWidth={1.7} />
@@ -451,7 +520,7 @@ export default function NotificationsPage() {
         </p>
       </div>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#dce5e4] bg-white/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#c4dde1] bg-white/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
         <div className="mx-auto flex max-w-md items-end justify-between">
           <Link
             href="/"
@@ -472,7 +541,7 @@ export default function NotificationsPage() {
           <div className="flex w-16 flex-col items-center gap-1">
             <Link
               href="/scanner"
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-[#176678] to-[#756bd4] text-white shadow-[0_10px_28px_rgba(23,102,120,0.22)]"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-r from-[#087ea4] via-[#12a6a6] to-[#7767e8] text-white shadow-[0_10px_28px_rgba(23,102,120,0.22)]"
               aria-label="Scanner"
             >
               <ScanFace size={21} strokeWidth={1.8} />

@@ -358,34 +358,91 @@ export default function HomePage() {
 
       setProfile(data ?? null);
 
-      const storedScans = localStorage.getItem("facescan-scans");
+      let loadedFromSupabase = false;
 
-      if (storedScans) {
-        try {
-          const scans = JSON.parse(storedScans);
+      try {
+        const { data: scans, error: scansError } = await supabase
+          .from("scans")
+          .select("id, created_at, score, indicators")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(20);
 
-          if (Array.isArray(scans) && scans.length > 0) {
+        if (scansError) {
+          throw scansError;
+        }
+
+        if (Array.isArray(scans) && scans.length > 0) {
+          const validScans = scans.filter(
+            (scan) =>
+              scan &&
+              typeof scan.id === "string" &&
+              typeof scan.created_at === "string" &&
+              typeof scan.score === "number" &&
+              scan.indicators &&
+              typeof scan.indicators === "object"
+          );
+
+          if (validScans.length > 0) {
+            loadedFromSupabase = true;
+
             setHasScan(true);
-            setScanCount(scans.length);
+            setScanCount(validScans.length);
+            setLatestScore(validScans[0].score);
 
-            if (typeof scans[0]?.score === "number") {
-              setLatestScore(scans[0].score);
-            }
+            const indicators = validScans[0].indicators;
 
             if (
-              scans[0]?.indicators &&
-              typeof scans[0].indicators.peau === "number" &&
-              typeof scans[0].indicators.hydratation === "number" &&
-              typeof scans[0].indicators.fatigue === "number" &&
-              typeof scans[0].indicators.equilibre === "number"
+              typeof indicators.peau === "number" &&
+              typeof indicators.hydratation === "number" &&
+              typeof indicators.fatigue === "number" &&
+              typeof indicators.equilibre === "number"
             ) {
-              setLatestIndicators(scans[0].indicators);
+              setLatestIndicators({
+                peau: indicators.peau,
+                hydratation: indicators.hydratation,
+                fatigue: indicators.fatigue,
+                equilibre: indicators.equilibre,
+              });
             }
           }
-        } catch {
-          setHasScan(false);
-          setScanCount(0);
-          setLatestScore(null);
+        }
+      } catch (error) {
+        console.error("Supabase home scans loading error:", error);
+      }
+
+      // Fallback temporaire pendant la migration des anciens scans locaux.
+      if (!loadedFromSupabase) {
+        const storedScans = localStorage.getItem("facescan-scans");
+
+        if (storedScans) {
+          try {
+            const scans = JSON.parse(storedScans);
+
+            if (Array.isArray(scans) && scans.length > 0) {
+              setHasScan(true);
+              setScanCount(scans.length);
+
+              if (typeof scans[0]?.score === "number") {
+                setLatestScore(scans[0].score);
+              }
+
+              if (
+                scans[0]?.indicators &&
+                typeof scans[0].indicators.peau === "number" &&
+                typeof scans[0].indicators.hydratation === "number" &&
+                typeof scans[0].indicators.fatigue === "number" &&
+                typeof scans[0].indicators.equilibre === "number"
+              ) {
+                setLatestIndicators(scans[0].indicators);
+              }
+            }
+          } catch {
+            setHasScan(false);
+            setScanCount(0);
+            setLatestScore(null);
+            setLatestIndicators(null);
+          }
         }
       }
 
@@ -630,54 +687,96 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    const refreshScanState = () => {
-      const storedScans = localStorage.getItem("facescan-scans");
+    let cancelled = false;
 
-      if (!storedScans) {
-        setHasScan(false);
-        setScanCount(0);
-        setLatestScore(null);
-        setLatestIndicators(null);
-        return;
-      }
+    const refreshScanState = async () => {
+      let loaded = false;
 
       try {
-        const scans = JSON.parse(storedScans);
+        const { createClient } = await import("@/lib/supabase/client");
+        const supabase = createClient();
 
-        if (Array.isArray(scans) && scans.length > 0) {
-          setHasScan(true);
-          setScanCount(scans.length);
-          setLatestScore(
-            typeof scans[0]?.score === "number" ? scans[0].score : null
-          );
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
-          setLatestIndicators(
-            scans[0]?.indicators &&
-              typeof scans[0].indicators.peau === "number" &&
-              typeof scans[0].indicators.hydratation === "number" &&
-              typeof scans[0].indicators.fatigue === "number" &&
-              typeof scans[0].indicators.equilibre === "number"
-              ? scans[0].indicators
-              : null
-          );
-        } else {
+        if (user) {
+          const { data: scans, error } = await supabase
+            .from("scans")
+            .select("id, created_at, score, indicators")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false })
+            .limit(20);
+
+          if (!error && Array.isArray(scans)) {
+            const latest = scans[0];
+
+            if (!cancelled) {
+              setHasScan(scans.length > 0);
+              setScanCount(scans.length);
+              setLatestScore(
+                typeof latest?.score === "number" ? latest.score : null
+              );
+              setLatestIndicators(
+                latest?.indicators &&
+                  typeof latest.indicators.peau === "number" &&
+                  typeof latest.indicators.hydratation === "number" &&
+                  typeof latest.indicators.fatigue === "number" &&
+                  typeof latest.indicators.equilibre === "number"
+                  ? latest.indicators
+                  : null
+              );
+            }
+
+            loaded = true;
+          }
+        }
+      } catch (error) {
+        console.error("Accueil refresh Supabase error:", error);
+      }
+
+      if (!loaded && !cancelled) {
+        try {
+          const storedScans = localStorage.getItem("facescan-scans");
+          const scans = storedScans ? JSON.parse(storedScans) : [];
+
+          if (Array.isArray(scans) && scans.length > 0) {
+            setHasScan(true);
+            setScanCount(scans.length);
+            setLatestScore(
+              typeof scans[0]?.score === "number" ? scans[0].score : null
+            );
+            setLatestIndicators(
+              scans[0]?.indicators &&
+                typeof scans[0].indicators.peau === "number" &&
+                typeof scans[0].indicators.hydratation === "number" &&
+                typeof scans[0].indicators.fatigue === "number" &&
+                typeof scans[0].indicators.equilibre === "number"
+                ? scans[0].indicators
+                : null
+            );
+          } else {
+            setHasScan(false);
+            setScanCount(0);
+            setLatestScore(null);
+            setLatestIndicators(null);
+          }
+        } catch {
           setHasScan(false);
           setScanCount(0);
           setLatestScore(null);
+          setLatestIndicators(null);
         }
-      } catch {
-        setHasScan(false);
-        setScanCount(0);
-        setLatestScore(null);
       }
     };
 
-    window.addEventListener("focus", refreshScanState);
-    window.addEventListener("storage", refreshScanState);
+    void refreshScanState();
+
+    window.addEventListener("focus", () => void refreshScanState());
+    window.addEventListener("storage", () => void refreshScanState());
 
     return () => {
-      window.removeEventListener("focus", refreshScanState);
-      window.removeEventListener("storage", refreshScanState);
+      cancelled = true;
     };
   }, []);
 

@@ -53,6 +53,8 @@ export default function ConseilsPage() {
   const [nutritionFeedback, setNutritionFeedback] = useState<OtavioMealFeedback[]>([]);
 
   useEffect(() => {
+    let cancelled = false;
+
     const loadData = async () => {
       const { createClient } = await import("@/lib/supabase/client");
       const supabase = createClient();
@@ -61,53 +63,148 @@ export default function ConseilsPage() {
         data: { user },
       } = await supabase.auth.getUser();
 
-      if (user) {
-        const { data: profileData } = await supabase
+      if (!user || cancelled) return;
+
+      let loadedProfile = false;
+      let loadedScan = false;
+
+      try {
+        const { data: profileData, error: profileError } = await supabase
           .from("profiles")
           .select("*")
           .eq("id", user.id)
           .maybeSingle();
 
-        setProfile(profileData ?? null);
+        if (profileError) {
+          throw profileError;
+        }
+
+        if (!cancelled) {
+          setProfile(profileData ?? null);
+        }
+
+        loadedProfile = Boolean(profileData);
+
+        if (Array.isArray(profileData?.goals)) {
+          const validGoals = profileData.goals.filter(
+            (goal: unknown): goal is string => typeof goal === "string"
+          );
+
+          if (!cancelled) {
+            setUserGoals(validGoals);
+          }
+        }
+      } catch (error) {
+        console.error("Supabase profile loading error:", error);
       }
 
-      const scansStored = localStorage.getItem("facescan-scans");
+      try {
+        const { data: scans, error: scansError } = await supabase
+          .from("scans")
+          .select("id, created_at, score, indicators")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(20);
 
-      if (scansStored) {
-        try {
-          const scans = JSON.parse(scansStored);
+        if (scansError) {
+          throw scansError;
+        }
 
-          if (Array.isArray(scans) && scans.length > 0) {
-            const first = scans[0];
-            const second = scans[1];
+        if (Array.isArray(scans) && scans.length > 0) {
+          const validScans = scans.filter(
+            (scan) =>
+              scan &&
+              typeof scan.score === "number" &&
+              typeof scan.created_at === "string" &&
+              scan.indicators &&
+              typeof scan.indicators === "object"
+          );
 
-            if (first?.indicators) {
-              setLatestScan({
-                score: typeof first.score === "number" ? first.score : null,
-                indicators: first.indicators,
-                previousIndicators: second?.indicators ?? null,
-              });
-            }
+          if (validScans.length > 0 && !cancelled) {
+            const first = validScans[0];
+            const second = validScans[1];
+
+            setLatestScan({
+              score: first.score,
+              indicators: first.indicators as {
+                peau: number;
+                hydratation: number;
+                fatigue: number;
+                equilibre: number;
+              },
+              previousIndicators:
+                second?.indicators &&
+                typeof second.indicators === "object"
+                  ? (second.indicators as {
+                      peau: number;
+                      hydratation: number;
+                      fatigue: number;
+                      equilibre: number;
+                    })
+                  : null,
+            });
+
+            loadedScan = true;
           }
-        } catch {
-          setLatestScan(null);
+        }
+      } catch (error) {
+        console.error("Supabase advice scan loading error:", error);
+      }
+
+      // Compatibilité temporaire avec les anciens scans locaux.
+      if (!loadedScan && !cancelled) {
+        const scansStored = localStorage.getItem("facescan-scans");
+
+        if (scansStored) {
+          try {
+            const scans = JSON.parse(scansStored);
+
+            if (Array.isArray(scans) && scans.length > 0) {
+              const first = scans[0];
+              const second = scans[1];
+
+              if (first?.indicators) {
+                setLatestScan({
+                  score:
+                    typeof first.score === "number" ? first.score : null,
+                  indicators: first.indicators,
+                  previousIndicators: second?.indicators ?? null,
+                });
+              }
+            }
+          } catch {
+            setLatestScan(null);
+          }
         }
       }
 
-      const stored = localStorage.getItem("facescan-goals");
+      // Compatibilité temporaire pour les objectifs des anciennes sessions.
+      if (!loadedProfile && !cancelled) {
+        const stored = localStorage.getItem("facescan-goals");
 
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
 
-          if (Array.isArray(parsed)) {
-            setUserGoals(parsed);
+            if (Array.isArray(parsed)) {
+              setUserGoals(
+                parsed.filter(
+                  (goal: unknown): goal is string => typeof goal === "string"
+                )
+              );
+            }
+          } catch {
+            setUserGoals([]);
           }
-        } catch {}
+        }
       }
     };
 
     loadData();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {

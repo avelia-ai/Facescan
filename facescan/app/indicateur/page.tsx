@@ -16,6 +16,8 @@ import {
   UserRound,
 } from "lucide-react";
 
+import { createClient } from "@/lib/supabase/client";
+
 const indicatorMeta = {
   peau: {
     title: "Peau",
@@ -100,25 +102,95 @@ function IndicateurContent() {
   const [scans, setScans] = useState<StoredScan[]>([]);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem("facescan-scans");
+    let cancelled = false;
 
-      if (!stored) return;
+    const loadScans = async () => {
+      const supabase = createClient();
 
-      const parsed = JSON.parse(stored);
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
 
-      if (Array.isArray(parsed)) {
-        setScans(
-          parsed.filter(
-            (scan): scan is StoredScan =>
-              Boolean(scan?.indicators) &&
-              typeof scan.indicators === "object"
-          )
-        );
+      if (!user || cancelled) return;
+
+      let loadedFromSupabase = false;
+
+      try {
+        const { data, error } = await supabase
+          .from("scans")
+          .select("id, created_at, score, indicators")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(20);
+
+        if (error) {
+          throw error;
+        }
+
+        if (Array.isArray(data)) {
+          const validScans = data
+            .filter(
+              (scan) =>
+                scan &&
+                typeof scan.id === "string" &&
+                typeof scan.created_at === "string" &&
+                typeof scan.score === "number" &&
+                scan.indicators &&
+                typeof scan.indicators === "object"
+            )
+            .map(
+              (scan): StoredScan => ({
+                id: scan.id,
+                date: scan.created_at,
+                score: scan.score,
+                indicators: scan.indicators as StoredScan["indicators"],
+              })
+            );
+
+          if (!cancelled) {
+            setScans(validScans);
+          }
+
+          loadedFromSupabase = true;
+        }
+      } catch (error) {
+        console.error("Supabase indicator loading error:", error);
       }
-    } catch {
-      setScans([]);
-    }
+
+      // Fallback temporaire pour les anciens scans encore présents localement.
+      if (!loadedFromSupabase && !cancelled) {
+        try {
+          const stored = localStorage.getItem("facescan-scans");
+
+          if (!stored) {
+            setScans([]);
+            return;
+          }
+
+          const parsed = JSON.parse(stored);
+
+          if (Array.isArray(parsed)) {
+            setScans(
+              parsed.filter(
+                (scan): scan is StoredScan =>
+                  Boolean(scan?.indicators) &&
+                  typeof scan.indicators === "object"
+              )
+            );
+          } else {
+            setScans([]);
+          }
+        } catch {
+          setScans([]);
+        }
+      }
+    };
+
+    loadScans();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const current =

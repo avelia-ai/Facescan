@@ -116,51 +116,72 @@ export default function ProfilPage() {
       setStage(progress.stage);
       setStreak(profile?.otavio_streak ?? 0);
 
-      const storedScans = localStorage.getItem("facescan-scans");
-
-      if (!storedScans) {
-        setStoredScans([]);
-        setScanCount(0);
-        setCurrentScore(null);
-        setPreviousScore(null);
-        return;
-      }
+      let scans: any[] = [];
+      let loadedFromSupabase = false;
 
       try {
-        const parsed = JSON.parse(storedScans);
+        const { data: remoteScans, error: scansError } = await supabase
+          .from("scans")
+          .select("id, created_at, score, indicators")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false })
+          .limit(20);
 
-        if (!Array.isArray(parsed)) {
-          setStoredScans([]);
-          setScanCount(0);
-          setCurrentScore(null);
-          setPreviousScore(null);
-          return;
+        if (scansError) throw scansError;
+
+        if (Array.isArray(remoteScans) && remoteScans.length > 0) {
+          scans = remoteScans
+            .filter(
+              (scan: any) =>
+                scan &&
+                typeof scan.id === "string" &&
+                typeof scan.created_at === "string" &&
+                typeof scan.score === "number" &&
+                scan.indicators
+            )
+            .map((scan: any) => ({
+              id: scan.id,
+              date: scan.created_at,
+              score: scan.score,
+              indicators: scan.indicators,
+            }));
+
+          loadedFromSupabase = scans.length > 0;
         }
-
-        const scans = parsed
-          .filter(
-            (scan) =>
-              scan &&
-              typeof scan.id === "string" &&
-              typeof scan.date === "string" &&
-              typeof scan.score === "number" &&
-              scan.indicators
-          )
-          .sort(
-            (a, b) =>
-              new Date(b.date).getTime() - new Date(a.date).getTime()
-          );
-
-        setStoredScans(scans);
-        setScanCount(scans.length);
-        setCurrentScore(scans[0]?.score ?? null);
-        setPreviousScore(scans[1]?.score ?? null);
-      } catch {
-        setStoredScans([]);
-        setScanCount(0);
-        setCurrentScore(null);
-        setPreviousScore(null);
+      } catch (error) {
+        console.error("Supabase profile scans error:", error);
       }
+
+      if (!loadedFromSupabase) {
+        try {
+          const storedScans = localStorage.getItem("facescan-scans");
+          const parsed = storedScans ? JSON.parse(storedScans) : [];
+
+          scans = Array.isArray(parsed)
+            ? parsed
+                .filter(
+                  (scan: any) =>
+                    scan &&
+                    typeof scan.id === "string" &&
+                    typeof scan.date === "string" &&
+                    typeof scan.score === "number" &&
+                    scan.indicators
+                )
+                .sort(
+                  (a: any, b: any) =>
+                    new Date(b.date).getTime() -
+                    new Date(a.date).getTime()
+                )
+            : [];
+        } catch {
+          scans = [];
+        }
+      }
+
+      setStoredScans(scans);
+      setScanCount(scans.length);
+      setCurrentScore(scans[0]?.score ?? null);
+      setPreviousScore(scans[1]?.score ?? null);
     };
 
     loadProfileStats();
@@ -229,7 +250,7 @@ export default function ProfilPage() {
 
           <Link
             href="/scanner"
-            className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-[#176678] to-[#287f88] px-5 py-3 text-[12px] font-semibold text-white shadow-[0_10px_25px_rgba(23,102,120,0.18)] sm:flex"
+            className="hidden items-center gap-2 rounded-full bg-gradient-to-r from-[#087ea4] to-[#12a6a6] px-5 py-3 text-[12px] font-semibold text-white shadow-[0_10px_25px_rgba(23,102,120,0.18)] sm:flex"
           >
             <ScanFace size={16} strokeWidth={1.8} />
             Nouveau scan
@@ -238,7 +259,7 @@ export default function ProfilPage() {
           <button
             type="button"
             onClick={handleSignOut}
-            className="flex items-center gap-2 rounded-full border border-[#ead8d4] bg-white px-4 py-3 text-[12px] font-semibold text-[#b45a48] shadow-sm transition hover:bg-[#fff5f2]"
+            className="flex items-center gap-2 rounded-full border border-[#ffb19d] bg-[linear-gradient(135deg,#ffffff_0%,#fff0eb_100%)] px-4 py-3 text-[12px] font-semibold text-[#b45a48] shadow-sm transition hover:bg-[#ffe3db]"
           >
             <LogOut size={15} strokeWidth={1.8} />
             Déconnexion
@@ -249,16 +270,16 @@ export default function ProfilPage() {
           <button
             type="button"
             onClick={handleSignOut}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-[#ead8d4] bg-white px-4 py-3.5 text-sm font-semibold text-[#b45a48]"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-[#ffb19d] bg-[linear-gradient(135deg,#ffffff_0%,#fff0eb_100%)] px-4 py-3.5 text-sm font-semibold text-[#b45a48]"
           >
             <LogOut size={17} strokeWidth={1.8} />
             Se déconnecter
           </button>
         </div>
 
-        <section className="mt-8 relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#183d48] via-[#195263] to-[#167b82] p-6 text-white shadow-[0_24px_60px_rgba(23,76,87,0.22)] sm:p-8">
-          <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#63e4d4]/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-24 -left-20 h-64 w-64 rounded-full bg-[#8d8df5]/20 blur-3xl" />
+        <section className="mt-8 relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#0b5876] via-[#087ea4] to-[#7767e8] p-6 text-white shadow-[0_24px_60px_rgba(23,76,87,0.22)] sm:p-8">
+          <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#42cfc2]/28 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 -left-20 h-64 w-64 rounded-full bg-[#ff8066]/18 blur-3xl" />
           <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
             <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-white/12">
               <UserRound size={34} strokeWidth={1.5} />
@@ -317,13 +338,13 @@ export default function ProfilPage() {
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             <Link
               href="/objectifs"
-              className="group block w-full rounded-[24px] border border-[#e0e9e7] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)] text-left transition hover:-translate-y-0.5"
+              className="group block w-full rounded-[24px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)] text-left transition hover:-translate-y-0.5"
             >
               <div className="flex items-start justify-between gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#e9f8f5]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#d1f4ed]">
                   <Target size={18} strokeWidth={1.7} />
                 </div>
-                <span className="rounded-full bg-[#e9f8f5] px-2.5 py-1 text-[9px] font-semibold text-[#287b78]">
+                <span className="rounded-full bg-[#d1f4ed] px-2.5 py-1 text-[9px] font-semibold text-[#087ea4]">
                   À compléter
                 </span>
               </div>
@@ -347,13 +368,13 @@ export default function ProfilPage() {
               </div>
             </Link>
 
-            <article className="rounded-[24px] border border-[#e0e9e7] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+            <article className="rounded-[24px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
               <div className="flex items-start justify-between gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#e9f8f5]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#d1f4ed]">
                   <Activity size={18} strokeWidth={1.7} />
                 </div>
 
-                <span className="rounded-full bg-[#e9f8f5] px-2.5 py-1 text-[9px] font-semibold text-[#287b78]">
+                <span className="rounded-full bg-[#d1f4ed] px-2.5 py-1 text-[9px] font-semibold text-[#087ea4]">
                   {scanFrequency} jours
                 </span>
               </div>
@@ -378,8 +399,8 @@ export default function ProfilPage() {
                       onClick={() => updateScanFrequency(days)}
                       className={`rounded-xl border px-2 py-2.5 text-[10px] font-semibold transition ${
                         active
-                          ? "border-[#167b82] bg-[#eaf8f5] text-[#167b82]"
-                          : "border-[#e2e9e8] bg-[#fafcfc] text-[#708486] hover:bg-[#f2f8f7]"
+                          ? "border-[#087ea4] bg-[#c9f2eb] text-[#087ea4]"
+                          : "border-[#b9dfe3] bg-white text-[#557078] hover:bg-[#e9f8f7]"
                       }`}
                     >
                       {days} j
@@ -435,10 +456,10 @@ export default function ProfilPage() {
                     .toLowerCase()
                     .normalize("NFD")
                     .replace(/[\u0300-\u036f]/g, "")}`}
-                  className="rounded-[22px] border border-[#e0e9e7] bg-white p-4 shadow-[0_10px_30px_rgba(35,55,60,0.045)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(35,55,60,0.07)]"
+                  className="rounded-[22px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-4 shadow-[0_10px_30px_rgba(35,55,60,0.045)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_34px_rgba(35,55,60,0.07)]"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#e9f8f5]">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#d1f4ed]">
                       <Icon size={17} strokeWidth={1.7} />
                     </div>
 
@@ -509,9 +530,9 @@ export default function ProfilPage() {
                   <Link
                     key={item.title}
                     href={href}
-                    className="group flex items-center gap-4 rounded-[22px] border border-[#e0e9e7] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)] text-left transition hover:-translate-y-0.5"
+                    className="group flex items-center gap-4 rounded-[22px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)] text-left transition hover:-translate-y-0.5"
                   >
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#e9f8f5]">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#d1f4ed]">
                       <Icon size={19} strokeWidth={1.7} />
                     </div>
 
@@ -535,9 +556,9 @@ export default function ProfilPage() {
                 <button
                   key={item.title}
                   type="button"
-                  className="group flex items-center gap-4 rounded-[22px] border border-[#e0e9e7] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)] text-left transition hover:-translate-y-0.5"
+                  className="group flex items-center gap-4 rounded-[22px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)] text-left transition hover:-translate-y-0.5"
                 >
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#e9f8f5]">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#d1f4ed]">
                     <Icon size={19} strokeWidth={1.7} />
                   </div>
 
@@ -559,7 +580,7 @@ export default function ProfilPage() {
           </div>
         </section>
 
-        <section className="mt-8 rounded-[24px] bg-gradient-to-br from-[#f0edff] to-[#e8f8f4] p-6">
+        <section className="mt-8 rounded-[24px] bg-gradient-to-br from-[#eee9ff] via-[#def7f1] to-[#fff0eb] p-6">
           <div className="flex items-start gap-4">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/80">
               <LockKeyhole size={18} strokeWidth={1.7} />
@@ -611,7 +632,7 @@ export default function ProfilPage() {
           <div className="flex w-16 flex-col items-center gap-1">
             <Link
               href="/scanner"
-              className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#176678] to-[#756bd4] text-white shadow-[0_10px_28px_rgba(34,91,105,0.28)]"
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#087ea4] via-[#12a6a6] to-[#7767e8] text-white shadow-[0_10px_28px_rgba(34,91,105,0.28)]"
               aria-label="Scanner"
             >
               <ScanFace size={21} strokeWidth={1.8} />

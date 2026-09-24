@@ -198,22 +198,61 @@ export default function AlimentationPage() {
   }
 
   useEffect(() => {
-    try {
-      const rawScans = localStorage.getItem("facescan-scans");
-      const scans = rawScans ? JSON.parse(rawScans) : [];
+    let cancelled = false;
 
-      const latestScan = Array.isArray(scans)
-        ? [...scans].sort(
-            (a, b) =>
-              new Date(b?.date ?? 0).getTime() -
-              new Date(a?.date ?? 0).getTime()
-          )[0]
-        : null;
+    async function loadScan() {
+      let latestScan: any = null;
 
-      setScan(latestScan?.indicators ?? null);
-    } catch {
-      setScan(null);
+      try {
+        const { createClient } = await import("@/lib/supabase/client");
+        const supabase = createClient();
+
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (user) {
+          const { data: scans, error: scansError } = await supabase
+            .from("scans")
+            .select("id, created_at, score, indicators")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false })
+            .limit(1);
+
+          if (scansError) throw scansError;
+          latestScan = Array.isArray(scans) ? scans[0] : null;
+        }
+      } catch {
+        latestScan = null;
+      }
+
+      if (!latestScan) {
+        try {
+          const rawScans = localStorage.getItem("facescan-scans");
+          const scans = rawScans ? JSON.parse(rawScans) : [];
+
+          latestScan = Array.isArray(scans)
+            ? [...scans].sort(
+                (a, b) =>
+                  new Date(b?.date ?? 0).getTime() -
+                  new Date(a?.date ?? 0).getTime()
+              )[0]
+            : null;
+        } catch {
+          latestScan = null;
+        }
+      }
+
+      if (!cancelled) {
+        setScan(latestScan?.indicators ?? null);
+      }
     }
+
+    loadScan();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return (
