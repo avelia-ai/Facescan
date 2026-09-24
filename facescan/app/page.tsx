@@ -390,20 +390,24 @@ export default function HomePage() {
             setScanCount(validScans.length);
             setLatestScore(validScans[0].score);
 
-            const indicators = validScans[0].indicators;
+            const completeScan = validScans.find(
+              (scan) =>
+                scan.indicators &&
+                typeof scan.indicators.peau === "number" &&
+                typeof scan.indicators.hydratation === "number" &&
+                typeof scan.indicators.fatigue === "number" &&
+                typeof scan.indicators.equilibre === "number"
+            );
 
-            if (
-              typeof indicators.peau === "number" &&
-              typeof indicators.hydratation === "number" &&
-              typeof indicators.fatigue === "number" &&
-              typeof indicators.equilibre === "number"
-            ) {
+            if (completeScan) {
               setLatestIndicators({
-                peau: indicators.peau,
-                hydratation: indicators.hydratation,
-                fatigue: indicators.fatigue,
-                equilibre: indicators.equilibre,
+                peau: completeScan.indicators.peau,
+                hydratation: completeScan.indicators.hydratation,
+                fatigue: completeScan.indicators.fatigue,
+                equilibre: completeScan.indicators.equilibre,
               });
+            } else {
+              setLatestIndicators(null);
             }
           }
         }
@@ -427,15 +431,18 @@ export default function HomePage() {
                 setLatestScore(scans[0].score);
               }
 
-              if (
-                scans[0]?.indicators &&
-                typeof scans[0].indicators.peau === "number" &&
-                typeof scans[0].indicators.hydratation === "number" &&
-                typeof scans[0].indicators.fatigue === "number" &&
-                typeof scans[0].indicators.equilibre === "number"
-              ) {
-                setLatestIndicators(scans[0].indicators);
-              }
+              const completeLocalScan = scans.find(
+                (scan: any) =>
+                  scan?.indicators &&
+                  typeof scan.indicators.peau === "number" &&
+                  typeof scan.indicators.hydratation === "number" &&
+                  typeof scan.indicators.fatigue === "number" &&
+                  typeof scan.indicators.equilibre === "number"
+              );
+
+              setLatestIndicators(
+                completeLocalScan?.indicators ?? null
+              );
             }
           } catch {
             setHasScan(false);
@@ -686,105 +693,7 @@ export default function HomePage() {
     setTaskLoading(false);
   };
 
-  useEffect(() => {
-    let cancelled = false;
 
-    const refreshScanState = async () => {
-      let loaded = false;
-
-      try {
-        const { createClient } = await import("@/lib/supabase/client");
-        const supabase = createClient();
-
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
-
-        if (user) {
-          const { data: scans, error } = await supabase
-            .from("scans")
-            .select("id, created_at, score, indicators")
-            .eq("user_id", user.id)
-            .order("created_at", { ascending: false })
-            .limit(20);
-
-          if (!error && Array.isArray(scans)) {
-            const latest = scans[0];
-
-            if (!cancelled) {
-              setHasScan(scans.length > 0);
-              setScanCount(scans.length);
-              setLatestScore(
-                typeof latest?.score === "number" ? latest.score : null
-              );
-              setLatestIndicators(
-                latest?.indicators &&
-                  typeof latest.indicators.peau === "number" &&
-                  typeof latest.indicators.hydratation === "number" &&
-                  typeof latest.indicators.fatigue === "number" &&
-                  typeof latest.indicators.equilibre === "number"
-                  ? latest.indicators
-                  : null
-              );
-            }
-
-            loaded = true;
-          }
-        }
-      } catch (error) {
-        console.error("Accueil refresh Supabase error:", error);
-      }
-
-      if (!loaded && !cancelled) {
-        try {
-          const storedScans = localStorage.getItem("facescan-scans");
-          const scans = storedScans ? JSON.parse(storedScans) : [];
-
-          if (Array.isArray(scans) && scans.length > 0) {
-            setHasScan(true);
-            setScanCount(scans.length);
-            setLatestScore(
-              typeof scans[0]?.score === "number" ? scans[0].score : null
-            );
-            setLatestIndicators(
-              scans[0]?.indicators &&
-                typeof scans[0].indicators.peau === "number" &&
-                typeof scans[0].indicators.hydratation === "number" &&
-                typeof scans[0].indicators.fatigue === "number" &&
-                typeof scans[0].indicators.equilibre === "number"
-                ? scans[0].indicators
-                : null
-            );
-          } else {
-            setHasScan(false);
-            setScanCount(0);
-            setLatestScore(null);
-            setLatestIndicators(null);
-          }
-        } catch {
-          setHasScan(false);
-          setScanCount(0);
-          setLatestScore(null);
-          setLatestIndicators(null);
-        }
-      }
-    };
-
-    const handleRefresh = () => {
-      void refreshScanState();
-    };
-
-    void refreshScanState();
-
-    window.addEventListener("focus", handleRefresh);
-    window.addEventListener("storage", handleRefresh);
-
-    return () => {
-      cancelled = true;
-      window.removeEventListener("focus", handleRefresh);
-      window.removeEventListener("storage", handleRefresh);
-    };
-  }, []);
 
   if (loading) {
     return (
@@ -809,7 +718,7 @@ export default function HomePage() {
 
   const nextStep = (() => {
     // Aucun scan : première étape
-    if (!hasScan || !latestIndicators) {
+    if (!hasScan) {
       return {
         title: "Commencez par votre premier scan",
         description: primaryGoal
@@ -818,6 +727,18 @@ export default function HomePage() {
         cta: "Faire mon premier scan",
         href: "/scanner",
         score: null as number | null,
+      };
+    }
+
+    // Scan enregistré mais indicateurs momentanément indisponibles.
+    if (!latestIndicators) {
+      return {
+        title: "Votre scan est bien enregistré",
+        description:
+          "Votre analyse figure dans votre historique. Consultez vos résultats pour retrouver le détail de vos indicateurs.",
+        cta: "Voir mes résultats",
+        href: "/resultats",
+        score: latestScore,
       };
     }
 
