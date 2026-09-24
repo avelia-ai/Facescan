@@ -357,7 +357,6 @@ export default function ProfilPage() {
       setStreak(profile?.otavio_streak ?? 0);
 
       let scans: any[] = [];
-      let loadedFromSupabase = false;
 
       try {
         const { data: remoteScans, error: scansError } = await supabase
@@ -369,7 +368,7 @@ export default function ProfilPage() {
 
         if (scansError) throw scansError;
 
-        if (Array.isArray(remoteScans) && remoteScans.length > 0) {
+        if (Array.isArray(remoteScans)) {
           scans = remoteScans
             .filter(
               (scan: any) =>
@@ -385,37 +384,9 @@ export default function ProfilPage() {
               score: scan.score,
               indicators: scan.indicators,
             }));
-
-          loadedFromSupabase = scans.length > 0;
         }
       } catch (error) {
         console.error("Supabase profile scans error:", error);
-      }
-
-      if (!loadedFromSupabase) {
-        try {
-          const storedScans = localStorage.getItem("facescan-scans");
-          const parsed = storedScans ? JSON.parse(storedScans) : [];
-
-          scans = Array.isArray(parsed)
-            ? parsed
-                .filter(
-                  (scan: any) =>
-                    scan &&
-                    typeof scan.id === "string" &&
-                    typeof scan.date === "string" &&
-                    typeof scan.score === "number" &&
-                    scan.indicators
-                )
-                .sort(
-                  (a: any, b: any) =>
-                    new Date(b.date).getTime() -
-                    new Date(a.date).getTime()
-                )
-            : [];
-        } catch {
-          scans = [];
-        }
       }
 
       setStoredScans(scans);
