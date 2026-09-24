@@ -133,13 +133,61 @@ export default function HydratationPage() {
           }
         }
 
-        try {
-          const stored =
-            localStorage.getItem("facescan-hydration-actions") || "[]";
-          const parsed = JSON.parse(stored);
-          setCompletedActions(Array.isArray(parsed) ? parsed : []);
-        } catch {
-          setCompletedActions([]);
+        let loadedActionsFromSupabase = false;
+
+        if (user) {
+          try {
+            const todayKey = new Date().toISOString().slice(0, 10);
+            const endDate = addDays(new Date(), 6)
+              .toISOString()
+              .slice(0, 10);
+
+            const { data: tasks, error: tasksError } = await supabase
+              .from("otavio_daily_tasks")
+              .select("task_date, task_key, completed")
+              .eq("user_id", user.id)
+              .gte("task_date", todayKey)
+              .lte("task_date", endDate)
+              .eq("completed", true)
+              .like("task_key", "hydration_%");
+
+            if (tasksError) throw tasksError;
+
+            if (Array.isArray(tasks)) {
+              const completedKeys = tasks.map((task) => {
+                const dayNumber =
+                  Math.floor(
+                    (new Date(`${task.task_date}T00:00:00`).getTime() -
+                      new Date(`${todayKey}T00:00:00`).getTime()) /
+                      86400000
+                  ) + 1;
+
+                return `${dayNumber}-${String(task.task_key).replace(
+                  /^hydration_/,
+                  ""
+                )}`;
+              });
+
+              setCompletedActions(completedKeys);
+              loadedActionsFromSupabase = true;
+            }
+          } catch (error) {
+            console.error(
+              "Hydration actions Supabase loading error:",
+              error
+            );
+          }
+        }
+
+        if (!loadedActionsFromSupabase) {
+          try {
+            const stored =
+              localStorage.getItem("facescan-hydration-actions") || "[]";
+            const parsed = JSON.parse(stored);
+            setCompletedActions(Array.isArray(parsed) ? parsed : []);
+          } catch {
+            setCompletedActions([]);
+          }
         }
       } catch {
         setProfile({});
@@ -191,11 +239,12 @@ export default function HydratationPage() {
     completedActions.includes(`${day.day}-${day.task.task_key}`)
   ).length;
 
-  const toggleAction = (day: HydrationDay) => {
+  const toggleAction = async (day: HydrationDay) => {
     const key = `${day.day}-${day.task.task_key}`;
+    const isCurrentlyDone = completedActions.includes(key);
 
     setCompletedActions((current) => {
-      const next = current.includes(key)
+      const next = isCurrentlyDone
         ? current.filter((item) => item !== key)
         : [...current, key];
 
@@ -206,6 +255,68 @@ export default function HydratationPage() {
 
       return next;
     });
+
+    try {
+      const { createClient } = await import("@/lib/supabase/client");
+      const supabase = createClient();
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) return;
+
+      const taskDate = addDays(new Date(), day.day - 1)
+        .toISOString()
+        .slice(0, 10);
+
+      const databaseTaskKey = `hydration_${day.task.task_key}`;
+
+      if (isCurrentlyDone) {
+        const { error } = await supabase
+          .from("otavio_daily_tasks")
+          .delete()
+          .eq("user_id", user.id)
+          .eq("task_date", taskDate)
+          .eq("task_key", databaseTaskKey);
+
+        if (error) {
+          console.error(
+            "Hydration action removal error:",
+            error
+          );
+        }
+      } else {
+        const { error } = await supabase
+          .from("otavio_daily_tasks")
+          .upsert(
+            {
+              user_id: user.id,
+              task_date: taskDate,
+              task_key: databaseTaskKey,
+              title: day.task.title,
+              description: day.task.description,
+              completed: true,
+              completed_at: new Date().toISOString(),
+            },
+            {
+              onConflict: "user_id,task_date,task_key",
+            }
+          );
+
+        if (error) {
+          console.error(
+            "Hydration action save error:",
+            error
+          );
+        }
+      }
+    } catch (error) {
+      console.error(
+        "Hydration action persistence error:",
+        error
+      );
+    }
   };
 
   if (loading) {
