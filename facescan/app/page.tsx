@@ -770,13 +770,19 @@ export default function HomePage() {
       }
     };
 
+    const handleRefresh = () => {
+      void refreshScanState();
+    };
+
     void refreshScanState();
 
-    window.addEventListener("focus", () => void refreshScanState());
-    window.addEventListener("storage", () => void refreshScanState());
+    window.addEventListener("focus", handleRefresh);
+    window.addEventListener("storage", handleRefresh);
 
     return () => {
       cancelled = true;
+      window.removeEventListener("focus", handleRefresh);
+      window.removeEventListener("storage", handleRefresh);
     };
   }, []);
 
