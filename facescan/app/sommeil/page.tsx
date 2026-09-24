@@ -4,12 +4,15 @@ import Link from "next/link";
 import { ArrowLeft, Moon, Sun, Clock3, CheckCircle2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { buildOtavioSleepPlan } from "@/lib/otavio-sleep";
+import { registerOtavioDailyAction } from "@/lib/otavio-streak";
 
 export default function SommeilPage() {
   const [profile, setProfile] = useState<any>(null);
   const [scan, setScan] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [selectedDay, setSelectedDay] = useState(1);
+  const [completedToday, setCompletedToday] = useState(false);
+  const [completingToday, setCompletingToday] = useState(false);
 
   useEffect(() => {
     async function loadProfile() {
@@ -73,6 +76,29 @@ export default function SommeilPage() {
             setScan(null);
           }
         }
+
+        try {
+          const todayKey = new Date().toISOString().slice(0, 10);
+
+          const { data: completedTask, error: completedTaskError } =
+            await supabase
+              .from("otavio_daily_tasks")
+              .select("task_key, completed")
+              .eq("user_id", user.id)
+              .eq("task_date", todayKey)
+              .eq("task_key", "sleep_program_day_1")
+              .eq("completed", true)
+              .maybeSingle();
+
+          if (!completedTaskError) {
+            setCompletedToday(Boolean(completedTask));
+          }
+        } catch (error) {
+          console.error(
+            "Sleep completion loading error:",
+            error
+          );
+        }
       } catch {
         setProfile({});
       } finally {
@@ -89,6 +115,57 @@ export default function SommeilPage() {
     scan ? { fatigue: scan.fatigue ?? null } : null
   );
   const today = sleepPlan.days[selectedDay - 1] ?? sleepPlan.days[0];
+
+  const markTodayComplete = async () => {
+    if (completedToday || completingToday || !today) return;
+
+    setCompletingToday(true);
+
+    try {
+      const { createClient } = await import("@/lib/supabase/client");
+      const supabase = createClient();
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        window.location.href = "/connexion";
+        return;
+      }
+
+      const todayKey = new Date().toISOString().slice(0, 10);
+
+      const { error } = await supabase
+        .from("otavio_daily_tasks")
+        .upsert(
+          {
+            user_id: user.id,
+            task_date: todayKey,
+            task_key: "sleep_program_day_1",
+            title: today.objective,
+            description: today.actions.map(
+              (action) => `${action.title} — ${action.description}`
+            ),
+            completed: true,
+            completed_at: new Date().toISOString(),
+          },
+          {
+            onConflict: "user_id,task_date,task_key",
+          }
+        );
+
+      if (error) throw error;
+
+      await registerOtavioDailyAction("sommeil_program");
+
+      setCompletedToday(true);
+    } catch (error) {
+      console.error("Sleep completion error:", error);
+    } finally {
+      setCompletingToday(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -247,6 +324,26 @@ export default function SommeilPage() {
               </div>
             ))}
           </div>
+
+          <button
+            type="button"
+            onClick={markTodayComplete}
+            disabled={completedToday || completingToday || selectedDay !== 1}
+            className={`mt-4 flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-3.5 text-sm font-semibold transition ${
+              completedToday
+                ? "border border-[#78d2c8] bg-[#dff8f2] text-[#087ea4]"
+                : "bg-[linear-gradient(135deg,#173d69_0%,#087ea4_48%,#7767e8_100%)] text-white shadow-[0_10px_26px_rgba(8,126,164,0.16)] hover:-translate-y-0.5"
+            } disabled:cursor-default disabled:opacity-90`}
+          >
+            <CheckCircle2 size={17} />
+            {completedToday
+              ? "Journée sommeil suivie"
+              : completingToday
+                ? "Enregistrement…"
+                : selectedDay === 1
+                  ? "J’ai suivi ma journée sommeil"
+                  : "Sélectionnez aujourd’hui pour valider"}
+          </button>
         </section>
 
         <section className="mt-7">
