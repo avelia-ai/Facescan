@@ -198,6 +198,36 @@ export default function ConseilsPage() {
           }
         }
       }
+
+      if (!cancelled) {
+        try {
+          const today = new Date().toISOString().slice(0, 10);
+
+          const { data: completedTasks, error: tasksError } = await supabase
+            .from("otavio_daily_tasks")
+            .select("task_key, completed")
+            .eq("user_id", user.id)
+            .eq("task_date", today)
+            .eq("completed", true);
+
+          if (!tasksError && Array.isArray(completedTasks)) {
+            const completedAdviceIds = completedTasks
+              .map((task) =>
+                typeof task.task_key === "string" &&
+                task.task_key.startsWith("advice_")
+                  ? task.task_key.slice("advice_".length)
+                  : null
+              )
+              .filter(
+                (id): id is string => typeof id === "string" && id.length > 0
+              );
+
+            setCompletedAdvice(completedAdviceIds);
+          }
+        } catch (error) {
+          console.error("Advice completion loading error:", error);
+        }
+      }
     };
 
     loadData();
