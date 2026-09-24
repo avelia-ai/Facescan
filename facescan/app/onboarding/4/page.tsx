@@ -167,7 +167,7 @@ export default function OnboardingStepFour() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-white">
+      <main className="flex min-h-screen items-center justify-center app-background">
         <div className="text-sm font-medium text-[#64747b]">
           Préparation de votre profil…
         </div>
@@ -176,7 +176,7 @@ export default function OnboardingStepFour() {
   }
 
   return (
-    <main className="min-h-screen bg-white px-5 py-8">
+    <main className="min-h-screen app-background px-5 py-8">
       <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-md flex-col">
         <div className="pt-4">
           <div className="mb-3 flex items-center justify-between">
@@ -186,8 +186,8 @@ export default function OnboardingStepFour() {
             <span className="text-sm text-[#89969c]">4 / 5</span>
           </div>
 
-          <div className="h-1.5 overflow-hidden rounded-full bg-[#dfe8e9]">
-            <div className="h-full w-[80%] rounded-full bg-[#168f91]" />
+          <div className="h-1.5 overflow-hidden rounded-full bg-[#cfe9ec]">
+            <div className="h-full w-[80%] rounded-full bg-gradient-to-r from-[#087ea4] via-[#12a6a6] to-[#42cfc2]" />
           </div>
         </div>
 
@@ -206,7 +206,7 @@ export default function OnboardingStepFour() {
           </p>
         </div>
 
-        <section className="mt-7 rounded-[26px] border border-[#dce7e8] bg-white p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
+        <section className="mt-7 rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
           <p className="mb-4 text-sm font-semibold text-[#183d48]">
             Quel est votre niveau d’activité ?
           </p>
@@ -222,8 +222,8 @@ export default function OnboardingStepFour() {
                   onClick={() => setActivity(option.value)}
                   className={`w-full rounded-2xl border px-4 py-4 text-left transition ${
                     selected
-                      ? "border-[#168f91] bg-[#e5faf7]"
-                      : "border-[#d7e2e4] bg-white hover:bg-[#f8fafb]"
+                      ? "border-[#12a6a6] bg-[#d4f6ef]"
+                      : "border-[#afd9df] bg-white hover:bg-[#e9f8fa]"
                   }`}
                 >
                   <div
@@ -242,7 +242,7 @@ export default function OnboardingStepFour() {
           </div>
         </section>
 
-        <section className="mt-5 rounded-[26px] border border-[#dce7e8] bg-white p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
+        <section className="mt-5 rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
           <p className="mb-4 text-sm font-semibold text-[#183d48]">
             À quelle fréquence êtes-vous actif ?
           </p>
@@ -251,11 +251,11 @@ export default function OnboardingStepFour() {
             value={frequency}
             onChange={(event) => setFrequency(event.target.value)}
             placeholder="Ex. 3 séances par semaine"
-            className="w-full rounded-2xl border border-[#d7e2e4] bg-[#f9fbfb] px-4 py-4 text-sm text-[#183d48] outline-none placeholder:text-[#9aa7ad] focus:border-[#168f91]"
+            className="w-full rounded-2xl border border-[#9ed8df] bg-[#f0fbfc] px-4 py-4 text-sm text-[#183d48] outline-none placeholder:text-[#9aa7ad] focus:border-[#168f91]"
           />
         </section>
 
-        <section className="mt-5 rounded-[26px] border border-[#dce7e8] bg-white p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
+        <section className="mt-5 rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
           <p className="mb-4 text-sm font-semibold text-[#183d48]">
             Comment vous hydratez-vous ?
           </p>
@@ -271,8 +271,8 @@ export default function OnboardingStepFour() {
                   onClick={() => setHydration(option.value)}
                   className={`rounded-2xl border px-4 py-4 text-left text-sm font-semibold transition ${
                     selected
-                      ? "border-[#168f91] bg-[#e5faf7] text-[#176678]"
-                      : "border-[#d7e2e4] bg-white text-[#526168]"
+                      ? "border-[#12a6a6] bg-[#d4f6ef] text-[#176678]"
+                      : "border-[#afd9df] bg-white text-[#526168]"
                   }`}
                 >
                   {option.label}
@@ -282,7 +282,7 @@ export default function OnboardingStepFour() {
           </div>
         </section>
 
-        <section className="mt-5 rounded-[26px] border border-[#dce7e8] bg-white p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
+        <section className="mt-5 rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
           <p className="mb-4 text-sm font-semibold text-[#183d48]">
             Votre sommeil
           </p>
@@ -296,7 +296,7 @@ export default function OnboardingStepFour() {
                 type="time"
                 value={bedtime}
                 onChange={(event) => setBedtime(event.target.value)}
-                className="w-full rounded-2xl border border-[#d7e2e4] bg-[#f9fbfb] px-3 py-3.5 text-sm text-[#183d48] outline-none focus:border-[#756bd4]"
+                className="w-full rounded-2xl border border-[#9ed8df] bg-[#f0fbfc] px-3 py-3.5 text-sm text-[#183d48] outline-none focus:border-[#756bd4]"
               />
             </div>
 
@@ -308,7 +308,7 @@ export default function OnboardingStepFour() {
                 type="time"
                 value={wakeTime}
                 onChange={(event) => setWakeTime(event.target.value)}
-                className="w-full rounded-2xl border border-[#d7e2e4] bg-[#f9fbfb] px-3 py-3.5 text-sm text-[#183d48] outline-none focus:border-[#756bd4]"
+                className="w-full rounded-2xl border border-[#9ed8df] bg-[#f0fbfc] px-3 py-3.5 text-sm text-[#183d48] outline-none focus:border-[#756bd4]"
               />
             </div>
           </div>
@@ -326,7 +326,7 @@ export default function OnboardingStepFour() {
               value={sleepDuration}
               onChange={(event) => setSleepDuration(event.target.value)}
               placeholder="Ex. 7.5 heures"
-              className="w-full rounded-2xl border border-[#d7e2e4] bg-[#f9fbfb] px-4 py-3.5 text-sm text-[#183d48] outline-none placeholder:text-[#9aa7ad] focus:border-[#756bd4]"
+              className="w-full rounded-2xl border border-[#9ed8df] bg-[#f0fbfc] px-4 py-3.5 text-sm text-[#183d48] outline-none placeholder:text-[#9aa7ad] focus:border-[#756bd4]"
             />
           </div>
 
@@ -346,8 +346,8 @@ export default function OnboardingStepFour() {
                     onClick={() => setSleepQuality(option.value)}
                     className={`rounded-2xl border px-3 py-3 text-sm font-semibold transition ${
                       selected
-                        ? "border-[#756bd4] bg-[#eeecff] text-[#5d55bd]"
-                        : "border-[#d7e2e4] bg-white text-[#526168]"
+                        ? "border-[#9b8cff] bg-[#e8e3ff] text-[#5d55bd]"
+                        : "border-[#afd9df] bg-white text-[#526168]"
                     }`}
                   >
                     {option.label}
@@ -373,8 +373,8 @@ export default function OnboardingStepFour() {
                     onClick={() => setSleepRegularity(option.value)}
                     className={`rounded-2xl border px-2 py-3 text-xs font-semibold transition ${
                       selected
-                        ? "border-[#756bd4] bg-[#eeecff] text-[#5d55bd]"
-                        : "border-[#d7e2e4] bg-white text-[#526168]"
+                        ? "border-[#9b8cff] bg-[#e8e3ff] text-[#5d55bd]"
+                        : "border-[#afd9df] bg-white text-[#526168]"
                     }`}
                   >
                     {option.label}
@@ -386,7 +386,7 @@ export default function OnboardingStepFour() {
         </section>
 
         {error && (
-          <div className="mt-5 rounded-2xl bg-[#fff0eb] px-4 py-3 text-sm leading-5 text-[#a64f3d]">
+          <div className="mt-5 rounded-2xl bg-[#ffdcd3] px-4 py-3 text-sm leading-5 text-[#d96550]">
             {error}
           </div>
         )}
@@ -396,7 +396,7 @@ export default function OnboardingStepFour() {
             type="button"
             onClick={handleContinue}
             disabled={saving}
-            className="w-full rounded-2xl bg-[#102f3a] px-5 py-4 text-base font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40"
+            className="w-full rounded-2xl bg-gradient-to-r from-[#087ea4] via-[#12a6a6] to-[#7767e8] px-5 py-4 text-base font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40"
           >
             {saving ? "Enregistrement…" : "Continuer"}
           </button>

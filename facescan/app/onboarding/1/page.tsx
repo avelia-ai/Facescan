@@ -122,7 +122,7 @@ export default function OnboardingStepOne() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-white">
+      <main className="flex min-h-screen items-center justify-center app-background">
         <div className="text-sm font-medium text-[#64747b]">
           Préparation de votre profil…
         </div>
@@ -131,7 +131,7 @@ export default function OnboardingStepOne() {
   }
 
   return (
-    <main className="min-h-screen bg-white px-5 py-8">
+    <main className="min-h-screen app-background px-5 py-8">
       <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-md flex-col">
         <div className="pt-4">
           <div className="mb-3 flex items-center justify-between">
@@ -142,12 +142,12 @@ export default function OnboardingStepOne() {
             <span className="text-sm text-[#89969c]">1 / 5</span>
           </div>
 
-          <div className="h-1.5 overflow-hidden rounded-full bg-[#dfe8e9]">
-            <div className="h-full w-[20%] rounded-full bg-[#168f91]" />
+          <div className="h-1.5 overflow-hidden rounded-full bg-[#cfe9ec]">
+            <div className="h-full w-[20%] rounded-full bg-gradient-to-r from-[#087ea4] via-[#12a6a6] to-[#42cfc2]" />
           </div>
         </div>
 
-        <div className="mt-8 overflow-hidden rounded-[28px] border border-[#dce7e8] bg-white shadow-[0_16px_40px_rgba(16,47,58,0.07)]">
+        <div className="mt-8 overflow-hidden rounded-[28px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] shadow-[0_16px_40px_rgba(16,47,58,0.07)]">
           <div className="relative aspect-[16/8] overflow-hidden bg-white">
             <video
               src="/otavio/profile.mp4"
@@ -162,7 +162,7 @@ export default function OnboardingStepOne() {
 
           <div className="px-5 py-4">
             <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#168f91]" />
+              <span className="h-2 w-2 rounded-full bg-gradient-to-r from-[#087ea4] via-[#12a6a6] to-[#42cfc2]" />
               <span className="text-xs font-semibold uppercase tracking-[0.12em] text-[#168f91]">
                 Otavio
               </span>
@@ -191,7 +191,7 @@ export default function OnboardingStepOne() {
         </div>
 
         <div className="mt-8 space-y-5">
-          <section className="rounded-[26px] border border-[#dce7e8] bg-white p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
+          <section className="rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
             <label
               htmlFor="age"
               className="mb-3 block text-sm font-semibold text-[#183d48]"
@@ -208,11 +208,11 @@ export default function OnboardingStepOne() {
               value={age}
               onChange={(event) => setAge(event.target.value)}
               placeholder="Votre âge"
-              className="w-full rounded-2xl border border-[#d7e2e4] bg-[#f9fbfb] px-4 py-4 text-base text-[#183d48] outline-none transition placeholder:text-[#9aa7ad] focus:border-[#168f91]"
+              className="w-full rounded-2xl border border-[#9ed8df] bg-[#f0fbfc] px-4 py-4 text-base text-[#183d48] outline-none transition placeholder:text-[#9aa7ad] focus:border-[#168f91]"
             />
           </section>
 
-          <section className="rounded-[26px] border border-[#dce7e8] bg-white p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
+          <section className="rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
             <p className="mb-3 text-sm font-semibold text-[#183d48]">
               Comment souhaitez-vous être pris en compte ?
             </p>
@@ -235,8 +235,8 @@ export default function OnboardingStepOne() {
                     onClick={() => setSex(option.value)}
                     className={`w-full rounded-2xl border px-4 py-4 text-left text-sm font-semibold transition ${
                       selected
-                        ? "border-[#168f91] bg-[#e5faf7] text-[#176678]"
-                        : "border-[#d7e2e4] bg-white text-[#526168] hover:bg-[#f8fafb]"
+                        ? "border-[#12a6a6] bg-[#d4f6ef] text-[#176678]"
+                        : "border-[#afd9df] bg-white text-[#526168] hover:bg-[#edf9f8]"
                     }`}
                   >
                     {option.label}
@@ -248,7 +248,7 @@ export default function OnboardingStepOne() {
         </div>
 
         {error && (
-          <div className="mt-5 rounded-2xl bg-[#fff0eb] px-4 py-3 text-sm leading-5 text-[#a64f3d]">
+          <div className="mt-5 rounded-2xl bg-[#ffdcd3] px-4 py-3 text-sm leading-5 text-[#d96550]">
             {error}
           </div>
         )}
@@ -258,7 +258,7 @@ export default function OnboardingStepOne() {
             type="button"
             onClick={handleContinue}
             disabled={saving}
-            className="w-full rounded-2xl bg-[#102f3a] px-5 py-4 text-base font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40"
+            className="w-full rounded-2xl bg-gradient-to-r from-[#087ea4] via-[#12a6a6] to-[#7767e8] px-5 py-4 text-base font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40"
           >
             {saving ? "Enregistrement…" : "Continuer"}
           </button>

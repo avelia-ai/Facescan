@@ -190,7 +190,7 @@ export default function OnboardingStepFive() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-white">
+      <main className="flex min-h-screen items-center justify-center app-background">
         <div className="text-sm font-medium text-[#64747b]">
           Finalisation de votre profil…
         </div>
@@ -199,7 +199,7 @@ export default function OnboardingStepFive() {
   }
 
   return (
-    <main className="min-h-screen bg-white px-5 py-8">
+    <main className="min-h-screen app-background px-5 py-8">
       <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-md flex-col">
         <div className="pt-4">
           <div className="mb-3 flex items-center justify-between">
@@ -209,8 +209,8 @@ export default function OnboardingStepFive() {
             <span className="text-sm text-[#89969c]">5 / 5</span>
           </div>
 
-          <div className="h-1.5 overflow-hidden rounded-full bg-[#dfe8e9]">
-            <div className="h-full w-full rounded-full bg-[#168f91]" />
+          <div className="h-1.5 overflow-hidden rounded-full bg-[#cfe9ec]">
+            <div className="h-full w-full rounded-full bg-gradient-to-r from-[#087ea4] via-[#12a6a6] to-[#42cfc2]" />
           </div>
         </div>
 
@@ -229,7 +229,7 @@ export default function OnboardingStepFive() {
           </p>
         </div>
 
-        <div className="mt-8 overflow-hidden rounded-[28px] border border-[#dce7e8] bg-white shadow-[0_16px_40px_rgba(16,47,58,0.07)]">
+        <div className="mt-8 overflow-hidden rounded-[28px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] shadow-[0_16px_40px_rgba(16,47,58,0.07)]">
           <div className="relative aspect-[16/8] overflow-hidden bg-white">
             <video
               src="/otavio/daily.mp4"
@@ -244,7 +244,7 @@ export default function OnboardingStepFive() {
 
           <div className="px-5 py-4">
             <div className="flex items-center gap-2">
-              <span className="h-2 w-2 rounded-full bg-[#168f91]" />
+              <span className="h-2 w-2 rounded-full bg-gradient-to-r from-[#087ea4] via-[#12a6a6] to-[#42cfc2]" />
               <span className="text-xs font-semibold uppercase tracking-[0.12em] text-[#168f91]">
                 Otavio
               </span>
@@ -257,7 +257,7 @@ export default function OnboardingStepFive() {
           </div>
         </div>
 
-        <section className="mt-7 rounded-[26px] border border-[#dce7e8] bg-white p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
+        <section className="mt-7 rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
           <p className="mb-4 text-sm font-semibold text-[#183d48]">
             Comment mangez-vous principalement ?
           </p>
@@ -273,8 +273,8 @@ export default function OnboardingStepFive() {
                   onClick={() => setEatingStyle(option)}
                   className={`rounded-full border px-4 py-2.5 text-xs font-semibold transition ${
                     selected
-                      ? "border-[#168f91] bg-[#e5faf7] text-[#176678]"
-                      : "border-[#d7e2e4] bg-white text-[#5f6d74]"
+                      ? "border-[#12a6a6] bg-[#d4f6ef] text-[#176678]"
+                      : "border-[#afd9df] bg-white text-[#5f6d74]"
                   }`}
                 >
                   {option}
@@ -291,7 +291,7 @@ export default function OnboardingStepFive() {
             <select
               value={mealsPerDay}
               onChange={(event) => setMealsPerDay(event.target.value)}
-              className="w-full rounded-2xl border border-[#d7e2e4] bg-[#f9fbfb] px-4 py-4 text-sm text-[#183d48] outline-none focus:border-[#168f91]"
+              className="w-full rounded-2xl border border-[#9ed8df] bg-[#f0fbfc] px-4 py-4 text-sm text-[#183d48] outline-none focus:border-[#168f91]"
             >
               <option value="">Choisir</option>
               <option value="2">2 repas</option>
@@ -302,7 +302,7 @@ export default function OnboardingStepFive() {
           </div>
         </section>
 
-        <section className="mt-5 rounded-[26px] border border-[#dce7e8] bg-white p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
+        <section className="mt-5 rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
           <p className="mb-4 text-sm font-semibold text-[#183d48]">
             Quel budget souhaitez-vous privilégier ?
           </p>
@@ -318,8 +318,8 @@ export default function OnboardingStepFive() {
                   onClick={() => setBudget(option.value)}
                   className={`w-full rounded-2xl border px-4 py-4 text-left transition ${
                     selected
-                      ? "border-[#e06f59] bg-[#fff0eb]"
-                      : "border-[#d7e2e4] bg-white"
+                      ? "border-[#e06f59] bg-[#ffdcd3]"
+                      : "border-[#afd9df] bg-white"
                   }`}
                 >
                   <div
@@ -339,7 +339,7 @@ export default function OnboardingStepFive() {
           </div>
         </section>
 
-        <section className="mt-5 rounded-[26px] border border-[#dce7e8] bg-white p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
+        <section className="mt-5 rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
           <p className="text-sm font-semibold text-[#183d48]">
             Qu’est-ce qui vous correspond ?
           </p>
@@ -359,8 +359,8 @@ export default function OnboardingStepFive() {
                   onClick={() => toggleItem(option, setFoodPreferences)}
                   className={`rounded-full border px-3.5 py-2.5 text-xs font-semibold transition ${
                     selected
-                      ? "border-[#756bd4] bg-[#eeecff] text-[#5d55bd]"
-                      : "border-[#d7e2e4] bg-white text-[#5f6d74]"
+                      ? "border-[#9b8cff] bg-[#e8e3ff] text-[#5d55bd]"
+                      : "border-[#afd9df] bg-white text-[#5f6d74]"
                   }`}
                 >
                   {option}
@@ -370,7 +370,7 @@ export default function OnboardingStepFive() {
           </div>
         </section>
 
-        <section className="mt-5 rounded-[26px] border border-[#dce7e8] bg-white p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
+        <section className="mt-5 rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
           <p className="text-sm font-semibold text-[#183d48]">
             Y a-t-il des contraintes à prendre en compte ?
           </p>
@@ -388,8 +388,8 @@ export default function OnboardingStepFive() {
                   }
                   className={`rounded-full border px-3.5 py-2.5 text-xs font-semibold transition ${
                     selected
-                      ? "border-[#168f91] bg-[#e5faf7] text-[#176678]"
-                      : "border-[#d7e2e4] bg-white text-[#5f6d74]"
+                      ? "border-[#12a6a6] bg-[#d4f6ef] text-[#176678]"
+                      : "border-[#afd9df] bg-white text-[#5f6d74]"
                   }`}
                 >
                   {option}
@@ -403,19 +403,19 @@ export default function OnboardingStepFive() {
               value={allergies}
               onChange={(event) => setAllergies(event.target.value)}
               placeholder="Allergies, si besoin"
-              className="w-full rounded-2xl border border-[#d7e2e4] bg-[#f9fbfb] px-4 py-3.5 text-sm text-[#183d48] outline-none placeholder:text-[#9aa7ad] focus:border-[#168f91]"
+              className="w-full rounded-2xl border border-[#9ed8df] bg-[#f0fbfc] px-4 py-3.5 text-sm text-[#183d48] outline-none placeholder:text-[#9aa7ad] focus:border-[#168f91]"
             />
 
             <input
               value={intolerances}
               onChange={(event) => setIntolerances(event.target.value)}
               placeholder="Intolérances, si besoin"
-              className="w-full rounded-2xl border border-[#d7e2e4] bg-[#f9fbfb] px-4 py-3.5 text-sm text-[#183d48] outline-none placeholder:text-[#9aa7ad] focus:border-[#168f91]"
+              className="w-full rounded-2xl border border-[#9ed8df] bg-[#f0fbfc] px-4 py-3.5 text-sm text-[#183d48] outline-none placeholder:text-[#9aa7ad] focus:border-[#168f91]"
             />
           </div>
         </section>
 
-        <section className="mt-5 rounded-[26px] border border-[#dce7e8] bg-white p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
+        <section className="mt-5 rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_16px_40px_rgba(16,47,58,0.06)]">
           <p className="mb-3 text-sm font-semibold text-[#183d48]">
             Utilisez-vous déjà certains produits ?
           </p>
@@ -425,12 +425,12 @@ export default function OnboardingStepFive() {
             onChange={(event) => setCurrentProducts(event.target.value)}
             rows={3}
             placeholder="Ex. nettoyant, sérum, crème, SPF…"
-            className="w-full resize-none rounded-2xl border border-[#d7e2e4] bg-[#f9fbfb] px-4 py-3.5 text-sm leading-5 text-[#183d48] outline-none placeholder:text-[#9aa7ad] focus:border-[#168f91]"
+            className="w-full resize-none rounded-2xl border border-[#9ed8df] bg-[#f0fbfc] px-4 py-3.5 text-sm leading-5 text-[#183d48] outline-none placeholder:text-[#9aa7ad] focus:border-[#168f91]"
           />
         </section>
 
         {error && (
-          <div className="mt-5 rounded-2xl bg-[#fff0eb] px-4 py-3 text-sm leading-5 text-[#a64f3d]">
+          <div className="mt-5 rounded-2xl bg-[#ffdcd3] px-4 py-3 text-sm leading-5 text-[#d96550]">
             {error}
           </div>
         )}
@@ -440,7 +440,7 @@ export default function OnboardingStepFive() {
             type="button"
             onClick={handleContinue}
             disabled={saving}
-            className="w-full rounded-2xl bg-[#102f3a] px-5 py-4 text-base font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40"
+            className="w-full rounded-2xl bg-gradient-to-r from-[#087ea4] via-[#12a6a6] to-[#7767e8] px-5 py-4 text-base font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-40"
           >
             {saving ? "Enregistrement…" : "Créer mon programme"}
           </button>
