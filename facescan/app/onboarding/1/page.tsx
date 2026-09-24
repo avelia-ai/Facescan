@@ -117,7 +117,11 @@ export default function OnboardingStepOne() {
       return;
     }
 
-    router.push("/onboarding/2");
+    const fromProfile =
+      typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).get("from") === "profil";
+
+    router.push(fromProfile ? "/profil" : "/onboarding/2");
   };
 
   if (loading) {

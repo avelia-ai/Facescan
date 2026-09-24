@@ -36,6 +36,107 @@ type StoredScan = {
   photo?: string;
 };
 
+type ProfileData = {
+  age: number | null;
+  sex: string | null;
+  skin_type: string | null;
+  skin_sensitivity: string | null;
+  skin_concerns: string[];
+  activity_level: string | null;
+  activity_frequency: string | null;
+  hydration_level: string | null;
+  bedtime: string | null;
+  wake_time: string | null;
+  sleep_duration: number | null;
+  sleep_quality: string | null;
+  sleep_regularity: string | null;
+  eating_style: string | null;
+  meals_per_day: number | null;
+  budget_level: string | null;
+  food_preferences: string[];
+  dietary_constraints: string[];
+  allergies: string[];
+  intolerances: string[];
+  current_products: string | null;
+};
+
+const goalAliases: Record<string, string> = {
+  peau: "qualite_peau",
+  qualite_peau: "qualite_peau",
+  eclat: "eclat",
+  hydratation: "hydratation",
+  recuperation: "sommeil",
+  fatigue: "fatigue",
+  sommeil: "sommeil",
+  equilibre: "bien_etre",
+  nutrition: "nutrition",
+  bien_etre: "bien_etre",
+  evolution: "evolution",
+};
+
+function normalizeGoalId(value: string) {
+  return goalAliases[value] ?? value;
+}
+
+const labelMaps = {
+  sex: {
+    homme: "Homme",
+    femme: "Femme",
+    autre: "Autre",
+    non_precise: "Non précisé",
+  },
+  skinType: {
+    seche: "Sèche",
+    normale: "Normale",
+    mixte: "Mixte",
+    grasse: "Grasse",
+    inconnue: "À préciser",
+  },
+  sensitivity: {
+    faible: "Faible",
+    moderee: "Modérée",
+    forte: "Forte",
+    inconnue: "À préciser",
+  },
+  activity: {
+    sedentaire: "Sédentaire",
+    peu_actif: "Peu actif",
+    actif: "Actif",
+    tres_actif: "Très actif",
+  },
+  hydration: {
+    faible: "Je bois peu",
+    moderee: "Je bois régulièrement",
+    bonne: "Bonne",
+    inconnue: "À préciser",
+  },
+  sleepQuality: {
+    mauvaise: "Mauvaise",
+    moyenne: "Moyenne",
+    bonne: "Bonne",
+    tres_bonne: "Très bonne",
+  },
+  sleepRegularity: {
+    irreguliere: "Irrégulière",
+    variable: "Variable",
+    reguliere: "Régulière",
+  },
+  budget: {
+    economique: "Économique",
+    standard: "Standard",
+    confort: "Confort",
+  },
+};
+
+function displayLabel(
+  value: string | null | undefined,
+  map: Record<string, string>,
+  fallback = "À préciser"
+) {
+  if (!value) return fallback;
+  return map[value] ?? value;
+}
+
 const profileSections = [
   {
     icon: Target,
@@ -69,13 +170,26 @@ export default function ProfilPage() {
   const [stage, setStage] = useState(1);
   const [streak, setStreak] = useState(0);
   const [displayName, setDisplayName] = useState("vous");
+  const [profileGoals, setProfileGoals] = useState<string[]>([]);
+  const [profileData, setProfileData] = useState<ProfileData | null>(null);
 
   const handleSignOut = async () => {
-    const { createClient } = await import("@/lib/supabase/client");
-    const supabase = createClient();
+    try {
+      const supabase = createClient();
+      const { data: authData } = await supabase.auth.getUser();
 
-    await supabase.auth.signOut();
-    window.location.href = "/connexion";
+      if (authData.user) {
+        localStorage.removeItem(
+          `facescan-read-notifications-${authData.user.id}`,
+        );
+      }
+
+      await supabase.auth.signOut();
+
+      window.location.href = "/connexion";
+    } catch {
+      window.location.href = "/connexion";
+    }
   };
 
   useEffect(() => {
@@ -105,9 +219,135 @@ export default function ProfilPage() {
 
       const { data: profile } = await supabase
         .from("profiles")
-        .select("otavio_xp, otavio_stage, otavio_streak")
+        .select(
+          "age, sex, skin_type, skin_sensitivity, skin_concerns, activity_level, activity_frequency, hydration_level, bedtime, wake_time, sleep_duration, sleep_quality, sleep_regularity, eating_style, meals_per_day, budget_level, food_preferences, dietary_constraints, allergies, intolerances, current_products, otavio_xp, otavio_stage, otavio_streak, goals"
+        )
         .eq("id", user.id)
         .maybeSingle();
+
+      if (profile) {
+        setProfileData({
+          age: typeof profile.age === "number" ? profile.age : null,
+          sex: typeof profile.sex === "string" ? profile.sex : null,
+          skin_type:
+            typeof profile.skin_type === "string"
+              ? profile.skin_type
+              : null,
+          skin_sensitivity:
+            typeof profile.skin_sensitivity === "string"
+              ? profile.skin_sensitivity
+              : null,
+          skin_concerns: Array.isArray(profile.skin_concerns)
+            ? profile.skin_concerns.filter(
+                (value): value is string => typeof value === "string"
+              )
+            : [],
+          activity_level:
+            typeof profile.activity_level === "string"
+              ? profile.activity_level
+              : null,
+          activity_frequency:
+            typeof profile.activity_frequency === "string"
+              ? profile.activity_frequency
+              : profile.activity_frequency != null
+                ? String(profile.activity_frequency)
+                : null,
+          hydration_level:
+            typeof profile.hydration_level === "string"
+              ? profile.hydration_level
+              : null,
+          bedtime:
+            typeof profile.bedtime === "string" ? profile.bedtime : null,
+          wake_time:
+            typeof profile.wake_time === "string" ? profile.wake_time : null,
+          sleep_duration:
+            typeof profile.sleep_duration === "number"
+              ? profile.sleep_duration
+              : null,
+          sleep_quality:
+            typeof profile.sleep_quality === "string"
+              ? profile.sleep_quality
+              : null,
+          sleep_regularity:
+            typeof profile.sleep_regularity === "string"
+              ? profile.sleep_regularity
+              : null,
+          eating_style:
+            typeof profile.eating_style === "string"
+              ? profile.eating_style
+              : null,
+          meals_per_day:
+            typeof profile.meals_per_day === "number"
+              ? profile.meals_per_day
+              : null,
+          budget_level:
+            typeof profile.budget_level === "string"
+              ? profile.budget_level
+              : null,
+          food_preferences: Array.isArray(profile.food_preferences)
+            ? profile.food_preferences.filter(
+                (value): value is string => typeof value === "string"
+              )
+            : [],
+          dietary_constraints: Array.isArray(profile.dietary_constraints)
+            ? profile.dietary_constraints.filter(
+                (value): value is string => typeof value === "string"
+              )
+            : [],
+          allergies: Array.isArray(profile.allergies)
+            ? profile.allergies.filter(
+                (value): value is string => typeof value === "string"
+              )
+            : [],
+          intolerances: Array.isArray(profile.intolerances)
+            ? profile.intolerances.filter(
+                (value): value is string => typeof value === "string"
+              )
+            : [],
+          current_products:
+            typeof profile.current_products === "string"
+              ? profile.current_products
+              : null,
+        });
+      }
+
+      const remoteGoals =
+        profile && Array.isArray(profile.goals)
+          ? Array.from(
+              new Set(
+                profile.goals
+                  .filter(
+                    (value): value is string => typeof value === "string"
+                  )
+                  .map(normalizeGoalId)
+              )
+            )
+          : [];
+
+      let resolvedGoals = remoteGoals;
+
+      if (resolvedGoals.length === 0) {
+        try {
+          const storedGoals = localStorage.getItem("facescan-goals");
+          const parsedGoals = storedGoals ? JSON.parse(storedGoals) : [];
+
+          if (Array.isArray(parsedGoals)) {
+            resolvedGoals = Array.from(
+              new Set(
+                parsedGoals
+                  .filter(
+                    (value): value is string => typeof value === "string"
+                  )
+                  .map(normalizeGoalId)
+              )
+            );
+          }
+        } catch {
+          resolvedGoals = [];
+        }
+      }
+
+      setProfileGoals(resolvedGoals);
 
       const nextXp = profile?.otavio_xp ?? 0;
       const progress = getOtavioProgress(nextXp);
@@ -345,7 +585,9 @@ export default function ProfilPage() {
                   <Target size={18} strokeWidth={1.7} />
                 </div>
                 <span className="rounded-full bg-[#d1f4ed] px-2.5 py-1 text-[9px] font-semibold text-[#087ea4]">
-                  À compléter
+                  {profileGoals.length > 0
+                    ? `${profileGoals.length} objectif${profileGoals.length > 1 ? "s" : ""}`
+                    : "À compléter"}
                 </span>
               </div>
 
@@ -359,7 +601,7 @@ export default function ProfilPage() {
               </p>
 
               <div className="mt-5 flex items-center gap-2 text-[11px] font-semibold">
-                Configurer
+                {profileGoals.length > 0 ? "Modifier mes objectifs" : "Configurer"}
                 <ChevronRight
                   size={14}
                   strokeWidth={1.8}
@@ -417,6 +659,219 @@ export default function ProfilPage() {
               <p className="mt-5 text-[10px] font-medium text-[#7b8e91]">
                 Enregistré automatiquement
               </p>
+            </article>
+          </div>
+        </section>
+
+        <section className="mt-10">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#668083]">
+            Mes informations
+          </p>
+
+          <h2 className="mt-1 text-xl font-semibold tracking-[-0.025em]">
+            Votre profil personnel
+          </h2>
+
+          <p className="mt-2 max-w-2xl text-[12px] leading-6 text-[#718487]">
+            Ces informations permettent à Otavio d’adapter ses recommandations
+            à votre profil et à vos habitudes.
+          </p>
+
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <article className="rounded-[24px] border border-[#dce6e5] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#edf5f5]">
+                  <UserRound size={18} strokeWidth={1.7} />
+                </div>
+
+                <Link
+                  href="/onboarding/1?from=profil"
+                  className="text-[10px] font-semibold text-[#087ea4]"
+                >
+                  Modifier
+                </Link>
+              </div>
+
+              <h3 className="mt-5 text-[16px] font-semibold">
+                Profil général
+              </h3>
+
+              <div className="mt-4 space-y-2 text-[12px] text-[#587174]">
+                <p>
+                  Âge :{" "}
+                  <span className="font-semibold text-[#26393d]">
+                    {profileData?.age ?? "À préciser"}
+                  </span>
+                </p>
+                <p>
+                  Sexe :{" "}
+                  <span className="font-semibold text-[#26393d]">
+                    {displayLabel(profileData?.sex, labelMaps.sex)}
+                  </span>
+                </p>
+              </div>
+            </article>
+
+            <article className="rounded-[24px] border border-[#dce6e5] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#edf5f5]">
+                  <Sparkles size={18} strokeWidth={1.7} />
+                </div>
+
+                <Link
+                  href="/onboarding/2?from=profil"
+                  className="text-[10px] font-semibold text-[#087ea4]"
+                >
+                  Modifier
+                </Link>
+              </div>
+
+              <h3 className="mt-5 text-[16px] font-semibold">
+                Peau
+              </h3>
+
+              <div className="mt-4 space-y-2 text-[12px] text-[#587174]">
+                <p>
+                  Type :{" "}
+                  <span className="font-semibold text-[#26393d]">
+                    {displayLabel(profileData?.skin_type, labelMaps.skinType)}
+                  </span>
+                </p>
+                <p>
+                  Sensibilité :{" "}
+                  <span className="font-semibold text-[#26393d]">
+                    {displayLabel(
+                      profileData?.skin_sensitivity,
+                      labelMaps.sensitivity
+                    )}
+                  </span>
+                </p>
+                <p>
+                  Préoccupations :{" "}
+                  <span className="font-semibold text-[#26393d]">
+                    {profileData?.skin_concerns?.length
+                      ? profileData.skin_concerns.join(", ")
+                      : "Aucune renseignée"}
+                  </span>
+                </p>
+              </div>
+            </article>
+
+            <article className="rounded-[24px] border border-[#dce6e5] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#edf5f5]">
+                  <Activity size={18} strokeWidth={1.7} />
+                </div>
+
+                <Link
+                  href="/onboarding/4?from=profil"
+                  className="text-[10px] font-semibold text-[#087ea4]"
+                >
+                  Modifier
+                </Link>
+              </div>
+
+              <h3 className="mt-5 text-[16px] font-semibold">
+                Activité, hydratation & sommeil
+              </h3>
+
+              <div className="mt-4 space-y-2 text-[12px] text-[#587174]">
+                <p>
+                  Activité :{" "}
+                  <span className="font-semibold text-[#26393d]">
+                    {displayLabel(
+                      profileData?.activity_level,
+                      labelMaps.activity
+                    )}
+                  </span>
+                </p>
+                <p>
+                  Hydratation :{" "}
+                  <span className="font-semibold text-[#26393d]">
+                    {displayLabel(
+                      profileData?.hydration_level,
+                      labelMaps.hydration
+                    )}
+                  </span>
+                </p>
+                <p>
+                  Sommeil :{" "}
+                  <span className="font-semibold text-[#26393d]">
+                    {profileData?.sleep_duration != null
+                      ? `${profileData.sleep_duration} h`
+                      : "À préciser"}
+                    {profileData?.sleep_quality
+                      ? ` · ${displayLabel(
+                          profileData.sleep_quality,
+                          labelMaps.sleepQuality
+                        )}`
+                      : ""}
+                  </span>
+                </p>
+                <p>
+                  Régularité :{" "}
+                  <span className="font-semibold text-[#26393d]">
+                    {displayLabel(
+                      profileData?.sleep_regularity,
+                      labelMaps.sleepRegularity
+                    )}
+                  </span>
+                </p>
+              </div>
+            </article>
+
+            <article className="rounded-[24px] border border-[#dce6e5] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#edf5f5]">
+                  <Droplets size={18} strokeWidth={1.7} />
+                </div>
+
+                <Link
+                  href="/onboarding/5?from=profil"
+                  className="text-[10px] font-semibold text-[#087ea4]"
+                >
+                  Modifier
+                </Link>
+              </div>
+
+              <h3 className="mt-5 text-[16px] font-semibold">
+                Alimentation
+              </h3>
+
+              <div className="mt-4 space-y-2 text-[12px] text-[#587174]">
+                <p>
+                  Style :{" "}
+                  <span className="font-semibold text-[#26393d]">
+                    {profileData?.eating_style || "À préciser"}
+                  </span>
+                </p>
+                <p>
+                  Repas par jour :{" "}
+                  <span className="font-semibold text-[#26393d]">
+                    {profileData?.meals_per_day ?? "À préciser"}
+                  </span>
+                </p>
+                <p>
+                  Budget :{" "}
+                  <span className="font-semibold text-[#26393d]">
+                    {displayLabel(profileData?.budget_level, labelMaps.budget)}
+                  </span>
+                </p>
+                <p>
+                  Allergies / intolérances :{" "}
+                  <span className="font-semibold text-[#26393d]">
+                    {[
+                      ...(profileData?.allergies ?? []),
+                      ...(profileData?.intolerances ?? []),
+                    ].length > 0
+                      ? [
+                          ...(profileData?.allergies ?? []),
+                          ...(profileData?.intolerances ?? []),
+                        ].join(", ")
+                      : "Aucune renseignée"}
+                  </span>
+                </p>
+              </div>
             </article>
           </div>
         </section>

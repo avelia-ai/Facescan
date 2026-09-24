@@ -166,7 +166,11 @@ export default function OnboardingStepTwo() {
       return;
     }
 
-    router.push("/onboarding/3");
+    const fromProfile =
+      typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).get("from") === "profil";
+
+    router.push(fromProfile ? "/profil" : "/onboarding/3");
   };
 
   if (loading) {

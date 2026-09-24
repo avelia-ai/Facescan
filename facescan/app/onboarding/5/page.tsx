@@ -185,7 +185,11 @@ export default function OnboardingStepFive() {
       return;
     }
 
-    router.push("/onboarding/finalisation");
+    const fromProfile =
+      typeof window !== "undefined" &&
+      new URLSearchParams(window.location.search).get("from") === "profil";
+
+    router.push(fromProfile ? "/profil" : "/onboarding/finalisation");
   };
 
   if (loading) {
