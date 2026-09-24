@@ -176,15 +176,15 @@ export default function OnboardingStepOne() {
         </div>
 
         <div className="mt-7">
-          <p className="mb-2 text-sm font-semibold text-white/90">
+          <p className="mb-2 text-sm font-semibold text-[#087ea4]">
             Commençons simplement
           </p>
 
-          <h1 className="text-3xl font-semibold tracking-tight text-white">
+          <h1 className="text-3xl font-semibold tracking-tight text-[#102f3a]">
             Parlez-nous un peu de vous
           </h1>
 
-          <p className="mt-3 text-base leading-6 text-white/80">
+          <p className="mt-3 text-base leading-6 text-[#47656e]">
             Ces premières informations aideront Otavio à personnaliser votre
             expérience.
           </p>
