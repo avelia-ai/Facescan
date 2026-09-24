@@ -89,6 +89,7 @@ export default function AlimentationPage() {
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState<OtavioMealFeedback[]>([]);
   const [scan, setScan] = useState<any>(null);
+  const [nutritionStorageKey, setNutritionStorageKey] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadProfile() {
@@ -132,22 +133,55 @@ export default function AlimentationPage() {
   const adaptations = buildOtavioNutritionAdaptations(feedback);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem("otavio-nutrition-feedback");
-      if (stored) {
-        setFeedback(JSON.parse(stored));
+    let cancelled = false;
+
+    async function loadNutritionFeedback() {
+      try {
+        const { createClient } = await import("@/lib/supabase/client");
+        const supabase = createClient();
+
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user || cancelled) return;
+
+        const storageKey = `otavio-nutrition-feedback-${user.id}`;
+        setNutritionStorageKey(storageKey);
+
+        const stored = localStorage.getItem(storageKey);
+
+        if (!stored) {
+          if (!cancelled) setFeedback([]);
+          return;
+        }
+
+        const parsed = JSON.parse(stored);
+
+        if (!cancelled) {
+          setFeedback(Array.isArray(parsed) ? parsed : []);
+        }
+      } catch {
+        if (!cancelled) setFeedback([]);
       }
-    } catch {
-      setFeedback([]);
     }
+
+    loadNutritionFeedback();
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  function updateMealStatus(
+  async function updateMealStatus(
     day: number,
     mealType: OtavioMealFeedback["mealType"],
     recipeId: string,
     status: OtavioMealStatus
   ) {
+    const storageKey = nutritionStorageKey;
+    if (!storageKey) return;
+
     setFeedback((current) => {
       const next = [
         ...current.filter(
@@ -161,20 +195,20 @@ export default function AlimentationPage() {
         },
       ];
 
-      localStorage.setItem(
-        "otavio-nutrition-feedback",
-        JSON.stringify(next)
-      );
+      localStorage.setItem(storageKey, JSON.stringify(next));
 
       return next;
     });
   }
 
-  function setMealSatisfaction(
+  async function setMealSatisfaction(
     day: number,
     mealType: OtavioMealFeedback["mealType"],
     value: number
   ) {
+    const storageKey = nutritionStorageKey;
+    if (!storageKey) return;
+
     setFeedback((current) => {
       const next = current.map((item) =>
         item.day === day && item.mealType === mealType
@@ -182,10 +216,7 @@ export default function AlimentationPage() {
           : item
       );
 
-      localStorage.setItem(
-        "otavio-nutrition-feedback",
-        JSON.stringify(next)
-      );
+      localStorage.setItem(storageKey, JSON.stringify(next));
 
       return next;
     });

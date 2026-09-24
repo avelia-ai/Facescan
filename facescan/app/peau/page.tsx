@@ -3,19 +3,24 @@
 import Link from "next/link";
 import {
   ArrowLeft,
+  CheckCircle2,
   Droplets,
   ShieldCheck,
   Sparkles,
   Sun,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 import { buildOtavioSkinPlan } from "@/lib/otavio-skin";
+import { registerOtavioDailyAction } from "@/lib/otavio-streak";
 
 export default function PeauPage() {
   const [profile, setProfile] = useState<any>(null);
   const [scan, setScan] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [selectedDay, setSelectedDay] = useState(1);
+  const [completedToday, setCompletedToday] = useState(false);
+  const [completingToday, setCompletingToday] = useState(false);
 
   useEffect(() => {
     async function loadProfile() {
@@ -91,6 +96,93 @@ export default function PeauPage() {
 
   const skinPlan = buildOtavioSkinPlan(profile ?? {}, scan, 7);
   const today = skinPlan.days[selectedDay - 1] ?? skinPlan.days[0];
+
+  useEffect(() => {
+    async function loadCompletion() {
+      try {
+        const supabase = createClient();
+
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) return;
+
+        const todayKey = new Date().toISOString().slice(0, 10);
+
+        const { data, error } = await supabase
+          .from("otavio_daily_tasks")
+          .select("task_key, completed")
+          .eq("user_id", user.id)
+          .eq("task_date", todayKey)
+          .eq("task_key", "skin_program_day_1")
+          .eq("completed", true)
+          .maybeSingle();
+
+        if (!error) {
+          setCompletedToday(Boolean(data));
+        }
+      } catch (error) {
+        console.error("Skin completion loading error:", error);
+      }
+    }
+
+    loadCompletion();
+  }, []);
+
+  const markTodayComplete = async () => {
+    if (completedToday || completingToday || !today || selectedDay !== 1) {
+      return;
+    }
+
+    setCompletingToday(true);
+
+    try {
+      const supabase = createClient();
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        window.location.href = "/connexion";
+        return;
+      }
+
+      const todayKey = new Date().toISOString().slice(0, 10);
+
+      const { error } = await supabase
+        .from("otavio_daily_tasks")
+        .upsert(
+          {
+            user_id: user.id,
+            task_date: todayKey,
+            task_key: "skin_program_day_1",
+            title: today.objective,
+            description: today.actions
+              .map(
+                (action) =>
+                  `${action.title} — ${action.description}`
+              )
+              .join("\n"),
+            completed: true,
+            completed_at: new Date().toISOString(),
+          },
+          {
+            onConflict: "user_id,task_date,task_key",
+          }
+        );
+
+      if (error) throw error;
+
+      await registerOtavioDailyAction("peau_program");
+      setCompletedToday(true);
+    } catch (error) {
+      console.error("Skin completion error:", error);
+    } finally {
+      setCompletingToday(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -248,6 +340,54 @@ export default function PeauPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section className="mt-7 rounded-[26px] bg-white border border-[#c9dfe4] p-5 shadow-[0_12px_30px_rgba(35,70,75,0.045)]">
+          <div className="flex items-start gap-3">
+            <div
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl ${
+                completedToday ? "bg-[#c6efe5]" : "bg-[#dff3f1]"
+              }`}
+            >
+              <CheckCircle2 size={18} className="text-[#39715f]" />
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <p className="text-[10px] uppercase tracking-[0.14em] text-[#89918d]">
+                Routine du jour
+              </p>
+              <h2 className="mt-1 text-lg font-semibold">
+                {today?.objective}
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-[#737a76]">
+                Validez votre routine après avoir réalisé les actions prévues aujourd’hui.
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={markTodayComplete}
+            disabled={
+              completedToday ||
+              completingToday ||
+              selectedDay !== 1
+            }
+            className={`mt-4 flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-3.5 text-sm font-semibold transition ${
+              completedToday
+                ? "border border-[#78d2c8] bg-[#dff8f2] text-[#39715f]"
+                : "bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#12a6a6_72%,#7767e8_100%)] text-white shadow-[0_10px_26px_rgba(8,126,164,0.16)] hover:-translate-y-0.5"
+            } disabled:cursor-default disabled:opacity-90`}
+          >
+            <CheckCircle2 size={17} />
+            {completedToday
+              ? "Routine peau suivie"
+              : completingToday
+                ? "Enregistrement…"
+                : selectedDay === 1
+                  ? "J’ai suivi ma routine peau"
+                  : "Sélectionnez aujourd’hui pour valider"}
+          </button>
         </section>
 
         <section className="mt-7">

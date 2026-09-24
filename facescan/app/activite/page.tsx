@@ -6,12 +6,15 @@ import {
   Activity,
   ArrowLeft,
   ArrowRight,
+  CheckCircle2,
   Dumbbell,
   Footprints,
   Sparkles,
   Timer,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { buildOtavioDailyTasks } from "@/lib/otavio-daily";
+import { registerOtavioDailyAction } from "@/lib/otavio-streak";
 
 type Profile = {
   activity_level: string | null;
@@ -66,6 +69,8 @@ export default function ActivitePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [scan, setScan] = useState<ActivityScan | null>(null);
   const [loading, setLoading] = useState(true);
+  const [activityCompleted, setActivityCompleted] = useState(false);
+  const [activityCompleting, setActivityCompleting] = useState(false);
 
   useEffect(() => {
     async function loadProfile() {
@@ -143,6 +148,118 @@ export default function ActivitePage() {
     loadProfile();
   }, []);
 
+  const activity = profile?.activity_level ?? null;
+  const fatigueScore = scan?.fatigue ?? null;
+  const balanceScore = scan?.equilibre ?? null;
+
+  const recoveryNeed =
+    (fatigueScore !== null && fatigueScore < 70) ||
+    (balanceScore !== null && balanceScore < 70);
+
+  const activityTask =
+    buildOtavioDailyTasks(
+      profile ?? {},
+      scan
+        ? {
+            indicators: {
+              fatigue: fatigueScore,
+              equilibre: balanceScore,
+            },
+          }
+        : null,
+      new Date()
+    ).find((task) => task.category === "activité") ?? {
+      task_key: "activity_daily",
+      title: recoveryNeed
+        ? "Bouger doucement aujourd’hui"
+        : "Entretenir mon mouvement",
+      description: recoveryNeed
+        ? "Privilégiez une courte marche ou quelques mouvements doux plutôt qu’une séance exigeante si vous vous sentez fatigué."
+        : "Conservez aujourd’hui un peu de mouvement en fonction de votre niveau habituel et de votre disponibilité.",
+      category: "activité",
+      priority: recoveryNeed ? "high" : "low",
+    };
+
+  useEffect(() => {
+    async function loadActivityCompletion() {
+      try {
+        const supabase = createClient();
+
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user) return;
+
+        const todayKey = new Date().toISOString().slice(0, 10);
+
+        const { data, error } = await supabase
+          .from("otavio_daily_tasks")
+          .select("task_key, completed")
+          .eq("user_id", user.id)
+          .eq("task_date", todayKey)
+          .eq("task_key", activityTask.task_key)
+          .eq("completed", true)
+          .maybeSingle();
+
+        if (!error) {
+          setActivityCompleted(Boolean(data));
+        }
+      } catch (error) {
+        console.error("Activity completion loading error:", error);
+      }
+    }
+
+    loadActivityCompletion();
+  }, [activityTask.task_key]);
+
+  const markActivityComplete = async () => {
+    if (activityCompleted || activityCompleting) return;
+
+    setActivityCompleting(true);
+
+    try {
+      const supabase = createClient();
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        window.location.href = "/connexion";
+        return;
+      }
+
+      const todayKey = new Date().toISOString().slice(0, 10);
+
+      const { error } = await supabase
+        .from("otavio_daily_tasks")
+        .upsert(
+          {
+            user_id: user.id,
+            task_date: todayKey,
+            task_key: activityTask.task_key,
+            title: activityTask.title,
+            description: activityTask.description,
+            completed: true,
+            completed_at: new Date().toISOString(),
+          },
+          {
+            onConflict: "user_id,task_date,task_key",
+          }
+        );
+
+      if (error) throw error;
+
+      await registerOtavioDailyAction("activite_program");
+      setActivityCompleted(true);
+    } catch (error) {
+      console.error("Activity completion error:", error);
+    } finally {
+      setActivityCompleting(false);
+    }
+  };
+
   if (loading) {
     return (
       <main className="app-background flex min-h-screen items-center justify-center">
@@ -152,15 +269,6 @@ export default function ActivitePage() {
       </main>
     );
   }
-
-  const activity = profile?.activity_level ?? null;
-
-  const fatigueScore = scan?.fatigue ?? null;
-  const balanceScore = scan?.equilibre ?? null;
-
-  const recoveryNeed =
-    (fatigueScore !== null && fatigueScore < 70) ||
-    (balanceScore !== null && balanceScore < 70);
 
   const priorityLabel =
     recoveryNeed
@@ -341,6 +449,48 @@ export default function ActivitePage() {
               </div>
             </div>
           </div>
+        </section>
+
+        <section className="mt-7 rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_12px_30px_rgba(30,70,65,0.045)]">
+          <div className="flex items-start gap-3">
+            <div
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl ${
+                activityCompleted ? "bg-[#c6efe5]" : "bg-[#c9f2eb]"
+              }`}
+            >
+              <CheckCircle2 size={18} className="text-[#087ea4]" />
+            </div>
+
+            <div className="min-w-0 flex-1">
+              <p className="text-xs uppercase tracking-wider text-[#89918d]">
+                Action du jour
+              </p>
+              <h2 className="mt-1 text-lg font-semibold text-[#183d48]">
+                {activityTask.title}
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-[#718088]">
+                {activityTask.description}
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={markActivityComplete}
+            disabled={activityCompleted || activityCompleting}
+            className={`mt-4 flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-3.5 text-sm font-semibold transition ${
+              activityCompleted
+                ? "border border-[#78d2c8] bg-[#dff8f2] text-[#087ea4]"
+                : "bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#12a6a6_72%,#48b881_100%)] text-white shadow-[0_10px_26px_rgba(8,126,164,0.16)] hover:-translate-y-0.5"
+            } disabled:cursor-default disabled:opacity-90`}
+          >
+            <CheckCircle2 size={17} />
+            {activityCompleted
+              ? "Activité suivie"
+              : activityCompleting
+                ? "Enregistrement…"
+                : "J’ai suivi cette activité"}
+          </button>
         </section>
 
         <section className="mt-7 rounded-[26px] border border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)] p-5 shadow-[0_12px_30px_rgba(30,70,65,0.045)]">

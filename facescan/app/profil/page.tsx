@@ -517,13 +517,15 @@ export default function ProfilPage() {
               const Icon = item.icon;
 
               const href =
-                item.title === "Notifications"
-                  ? "/notifications"
-                  : item.title === "Confidentialité"
-                    ? "/confidentialite"
-                    : item.title === "Paramètres"
-                      ? "/parametres"
-                      : "#";
+                item.title === "Mes objectifs"
+                  ? "/objectifs"
+                  : item.title === "Notifications"
+                    ? "/notifications"
+                    : item.title === "Confidentialité"
+                      ? "/confidentialite"
+                      : item.title === "Paramètres"
+                        ? "/parametres"
+                        : "#";
 
               if (href !== "#") {
                 return (

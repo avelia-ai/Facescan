@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 import {
   Activity,
   ArrowLeft,
@@ -175,13 +176,24 @@ export default function NotificationsPage() {
       }
 
       try {
-        const storedRead = localStorage.getItem("facescan-read-notifications");
+        const { createClient } = await import("@/lib/supabase/client");
+        const supabase = createClient();
 
-        if (storedRead && !cancelled) {
-          const parsed = JSON.parse(storedRead);
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
 
-          if (Array.isArray(parsed)) {
-            setReadIds(parsed);
+        if (user && !cancelled) {
+          const storedRead = localStorage.getItem(
+            `facescan-read-notifications-${user.id}`
+          );
+
+          if (storedRead) {
+            const parsed = JSON.parse(storedRead);
+
+            if (Array.isArray(parsed)) {
+              setReadIds(parsed);
+            }
           }
         }
       } catch {
@@ -289,16 +301,34 @@ export default function NotificationsPage() {
     (item) => item.unread
   ).length;
 
+  const saveReadIds = async (ids: number[]) => {
+    try {
+      const supabase = createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) return;
+
+      localStorage.setItem(
+        `facescan-read-notifications-${user.id}`,
+        JSON.stringify(ids)
+      );
+    } catch (error) {
+      console.error("Notification read state error:", error);
+    }
+  };
+
   const markAllRead = () => {
     const ids = dynamicNotifications.map((item) => item.id);
     setReadIds(ids);
-    localStorage.setItem("facescan-read-notifications", JSON.stringify(ids));
+    void saveReadIds(ids);
   };
 
   const markRead = (id: number) => {
     const updated = Array.from(new Set([...readIds, id]));
     setReadIds(updated);
-    localStorage.setItem("facescan-read-notifications", JSON.stringify(updated));
+    void saveReadIds(updated);
   };
 
   return (
@@ -503,13 +533,13 @@ export default function NotificationsPage() {
               souhaitez recevoir et leur fréquence.
             </p>
 
-            <button
-              type="button"
+            <Link
+              href="/profil"
               className="mt-5 flex items-center gap-2 text-[11px] font-semibold"
             >
-              Gérer les notifications
+              Gérer mes préférences
               <ChevronRight size={14} strokeWidth={1.8} />
-            </button>
+            </Link>
           </article>
         </section>
 

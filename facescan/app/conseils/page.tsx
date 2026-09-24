@@ -238,9 +238,22 @@ export default function ConseilsPage() {
   }, []);
 
   useEffect(() => {
-    const loadNutritionFeedback = () => {
+    let cancelled = false;
+
+    const loadNutritionFeedback = async () => {
       try {
-        const stored = localStorage.getItem("otavio-nutrition-feedback");
+        const { createClient } = await import("@/lib/supabase/client");
+        const supabase = createClient();
+
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user || cancelled) return;
+
+        const stored = localStorage.getItem(
+          `otavio-nutrition-feedback-${user.id}`
+        );
 
         if (!stored) {
           setNutritionFeedback([]);
@@ -248,9 +261,14 @@ export default function ConseilsPage() {
         }
 
         const parsed = JSON.parse(stored);
-        setNutritionFeedback(Array.isArray(parsed) ? parsed : []);
+
+        if (!cancelled) {
+          setNutritionFeedback(
+            Array.isArray(parsed) ? parsed : []
+          );
+        }
       } catch {
-        setNutritionFeedback([]);
+        if (!cancelled) setNutritionFeedback([]);
       }
     };
 
@@ -259,6 +277,7 @@ export default function ConseilsPage() {
     window.addEventListener("storage", loadNutritionFeedback);
 
     return () => {
+      cancelled = true;
       window.removeEventListener("focus", loadNutritionFeedback);
       window.removeEventListener("storage", loadNutritionFeedback);
     };
