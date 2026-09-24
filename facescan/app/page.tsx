@@ -1240,7 +1240,9 @@ export default function HomePage() {
                 </div>
 
                 <span className="text-xs font-semibold text-[#9aa7ad]">
-                  {hasScan && latestScore !== null ? `${latestScore}` : "—"}
+                  {latestIndicators?.peau != null
+                    ? `${Math.round(latestIndicators.peau)}`
+                    : "—"}
                 </span>
               </div>
 
@@ -1260,7 +1262,9 @@ export default function HomePage() {
                 </div>
 
                 <span className="text-xs font-semibold text-[#9aa7ad]">
-                  —
+                  {latestIndicators?.hydratation != null
+                    ? `${Math.round(latestIndicators.hydratation)}`
+                    : "—"}
                 </span>
               </div>
 
@@ -1280,7 +1284,9 @@ export default function HomePage() {
                 </div>
 
                 <span className="text-xs font-semibold text-[#9aa7ad]">
-                  —
+                  {latestIndicators?.fatigue != null
+                    ? `${Math.round(latestIndicators.fatigue)}`
+                    : "—"}
                 </span>
               </div>
 
@@ -1300,7 +1306,9 @@ export default function HomePage() {
                 </div>
 
                 <span className="text-xs font-semibold text-[#9aa7ad]">
-                  —
+                  {latestIndicators?.equilibre != null
+                    ? `${Math.round(latestIndicators.equilibre)}`
+                    : "—"}
                 </span>
               </div>
 
