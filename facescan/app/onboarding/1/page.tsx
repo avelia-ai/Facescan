@@ -123,7 +123,7 @@ export default function OnboardingStepOne() {
   if (loading) {
     return (
       <main className="flex min-h-screen items-center justify-center app-background">
-        <div className="text-sm font-medium text-white/80">
+        <div className="text-sm font-medium text-[#64747b]">
           Préparation de votre profil…
         </div>
       </main>
