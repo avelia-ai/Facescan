@@ -446,6 +446,7 @@ export default function ProfilPage() {
   };
 
   const latestScan = storedScans[0];
+  const otavioProgress = getOtavioProgress(xp);
 
   const indicatorItems = [
     {
@@ -662,6 +663,62 @@ export default function ProfilPage() {
               </p>
             </article>
           </div>
+        </section>
+
+        <section className="mt-10">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#668083]">
+            Progression Otavio
+          </p>
+
+          <h2 className="mt-1 text-xl font-semibold tracking-[-0.025em]">
+            Votre progression avec Otavio
+          </h2>
+
+          <article className="relative mt-5 overflow-hidden rounded-[26px] border border-[#b8c8f4] bg-[linear-gradient(145deg,#ffffff_0%,#f0efff_55%,#e8f8f5_100%)] p-6 shadow-[0_14px_34px_rgba(35,55,60,0.06)]">
+            <div className="pointer-events-none absolute -right-12 -top-16 h-40 w-40 rounded-full bg-[#7767e8]/10 blur-3xl" />
+            <div className="relative">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#718789]">
+                    Niveau {otavioProgress.stage}
+                  </p>
+
+                  <h3 className="mt-1 text-[22px] font-semibold tracking-[-0.03em]">
+                    {otavioProgress.name}
+                  </h3>
+                </div>
+
+                <div className="rounded-full border border-white/80 bg-white/80 px-3 py-1.5 text-[10px] font-semibold text-[#087ea4]">
+                  {xp} XP
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <div className="flex items-center justify-between text-[10px] font-semibold">
+                  <span className="text-[#587174]">
+                    Progression du niveau
+                  </span>
+
+                  <span className="text-[#087ea4]">
+                    {Math.round(otavioProgress.progress)} %
+                  </span>
+                </div>
+
+                <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-white/80">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-[#087ea4] via-[#12a6a6] to-[#7767e8] transition-all"
+                    style={{ width: `${otavioProgress.progress}%` }}
+                  />
+                </div>
+              </div>
+
+              <p className="mt-4 text-[11px] leading-5 text-[#718789]">
+                {otavioProgress.nextXp !== null
+                  ? `${otavioProgress.nextXp - xp} XP avant le niveau suivant.`
+                  : "Vous avez atteint le niveau maximal d’Otavio."}
+              </p>
+            </div>
+          </article>
         </section>
 
         <section className="mt-10">
