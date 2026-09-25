@@ -98,7 +98,15 @@ type StoredScan = {
 
 function IndicateurContent() {
   const searchParams = useSearchParams();
-  const type = searchParams.get("type") || "hydratation";
+  const requestedType = searchParams.get("type") || "hydratation";
+  const validIndicatorTypes = Object.keys(indicatorMeta) as Array<
+    keyof typeof indicatorMeta
+  >;
+  const type = validIndicatorTypes.includes(
+    requestedType as keyof typeof indicatorMeta
+  )
+    ? (requestedType as keyof typeof indicatorMeta)
+    : "hydratation";
   const [scans, setScans] = useState<StoredScan[]>([]);
 
   useEffect(() => {
@@ -147,11 +155,13 @@ function IndicateurContent() {
               })
             );
 
-          if (!cancelled) {
-            setScans(validScans);
-          }
+          if (validScans.length > 0) {
+            if (!cancelled) {
+              setScans(validScans);
+            }
 
-          loadedFromSupabase = true;
+            loadedFromSupabase = true;
+          }
         }
       } catch (error) {
         console.error("Supabase indicator loading error:", error);
@@ -193,13 +203,10 @@ function IndicateurContent() {
     };
   }, []);
 
-  const current =
-    indicatorMeta[type as keyof typeof indicatorMeta] ??
-    indicatorMeta.hydratation;
+  const current = indicatorMeta[type];
   const Icon = current.icon;
 
-  const indicatorKey =
-    type as keyof StoredScan["indicators"];
+  const indicatorKey = type as keyof StoredScan["indicators"];
 
   const currentValue: number | null =
     scans[0]?.indicators?.[indicatorKey] ?? null;
@@ -261,7 +268,7 @@ function IndicateurContent() {
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#759095]">
                 Otavio · Indicateur
               </p>
-              <h1 className="mt-1 text-2xl font-semibold tracking-[-0.035em] text-[#102f3a] text-white">
+              <h1 className="mt-1 text-2xl font-semibold tracking-[-0.035em] text-white">
                 {current.title}
               </h1>
             </div>
@@ -344,13 +351,15 @@ function IndicateurContent() {
 
           <div className="relative mt-8">
             <div className="h-2 overflow-hidden rounded-full bg-white/10">
-              <div
-                className="h-full rounded-full transition-all duration-500"
-                style={{
-                  width: `${currentValue ?? 0}%`,
-                  background: `linear-gradient(90deg, ${current.accent}, #8bded4)`,
-                }}
-              />
+              {currentValue !== null && (
+                <div
+                  className="h-full rounded-full transition-all duration-500"
+                  style={{
+                    width: `${currentValue}%`,
+                    background: `linear-gradient(90deg, ${current.accent}, #8bded4)`,
+                  }}
+                />
+              )}
             </div>
 
             <div className="mt-3 flex justify-between">
