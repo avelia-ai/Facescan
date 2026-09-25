@@ -498,10 +498,14 @@ export function buildOtavioDailyTasks(
 
   const candidates: TaskCandidate[] = [];
 
+  const hydrationScanScore = scan?.indicators?.hydratation ?? null;
+  const skinScanScore = scan?.indicators?.peau ?? null;
+  const fatigueScanScore = scan?.indicators?.fatigue ?? null;
+
   if (
     hasGoal(profile, "hydratation") ||
     profile.hydration_level ||
-    (scan?.indicators?.hydratation ?? 100) < 70
+    (hydrationScanScore !== null && hydrationScanScore < 70)
   ) {
     candidates.push(buildHydrationTask(profile, scan, daySeed));
   }
@@ -510,7 +514,7 @@ export function buildOtavioDailyTasks(
     hasGoal(profile, "qualite_peau", "eclat") ||
     profile.skin_type ||
     profile.skin_sensitivity ||
-    (scan?.indicators?.peau ?? 100) < 70
+    (skinScanScore !== null && skinScanScore < 70)
   ) {
     candidates.push(buildSkinTask(profile, scan, daySeed + 1));
   }
@@ -520,7 +524,7 @@ export function buildOtavioDailyTasks(
     profile.sleep_quality ||
     profile.sleep_duration != null ||
     profile.sleep_regularity ||
-    (scan?.indicators?.fatigue ?? 100) < 75
+    (fatigueScanScore !== null && fatigueScanScore < 75)
   ) {
     candidates.push(buildSleepTask(profile, scan, daySeed + 2));
   }
