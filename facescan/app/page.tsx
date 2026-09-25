@@ -517,10 +517,12 @@ export default function HomePage() {
 
       const generatedTasks = buildOtavioDailyTasks(
         profile ?? {},
-        {
-          score: latestScore,
-          indicators: latestIndicators,
-        },
+        latestIndicators
+          ? {
+              score: latestScore,
+              indicators: latestIndicators,
+            }
+          : null,
         new Date()
       );
 
