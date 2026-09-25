@@ -570,16 +570,19 @@ export default function ResultatsPage() {
               <div
                 className="relative flex h-[178px] w-[178px] shrink-0 items-center justify-center rounded-full"
                 style={{
-                  background: `conic-gradient(#42cfc2 ${currentScore}%, rgba(255,255,255,0.08) ${currentScore}% 100%)`,
+                  background:
+                    currentScore !== null
+                      ? `conic-gradient(#42cfc2 ${currentScore}%, rgba(255,255,255,0.08) ${currentScore}% 100%)`
+                      : "conic-gradient(rgba(255,255,255,0.10) 0 100%)",
                 }}
               >
                 <div className="absolute inset-[10px] rounded-full bg-[#0a465d] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.05)]" />
                 <div className="relative text-center">
                   <span className="block text-[64px] font-semibold leading-none tracking-[-0.08em]">
-                    {currentScore}
+                    {currentScore ?? "—"}
                   </span>
                   <span className="mt-2 block text-[10px] font-semibold uppercase tracking-[0.16em] text-white/38">
-                    sur 100
+                    {currentScore !== null ? "sur 100" : "en attente"}
                   </span>
                 </div>
               </div>
@@ -595,21 +598,30 @@ export default function ResultatsPage() {
                     : "Votre premier scan permettra à Otavio d’établir votre première observation."}
                 </p>
 
-                <div className="mt-5 space-y-2">
-                  <div className="flex items-center justify-between text-[9px]">
-                    <span className="text-white/38">Niveau actuel</span>
-                    <span className="font-semibold text-white/72">
-                      {currentScore}/100
-                    </span>
-                  </div>
+                {currentScore !== null ? (
+                  <div className="mt-5 space-y-2">
+                    <div className="flex items-center justify-between text-[9px]">
+                      <span className="text-white/38">Niveau actuel</span>
+                      <span className="font-semibold text-white/72">
+                        {currentScore}/100
+                      </span>
+                    </div>
 
-                  <div className="h-1.5 overflow-hidden rounded-full bg-white/[0.08]">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-[#42cfc2] via-[#12a6a6] to-[#9b8cff]"
-                      style={{ width: `${currentScore}%` }}
-                    />
+                    <div className="h-1.5 overflow-hidden rounded-full bg-white/[0.08]">
+                      <div
+                        className="h-full rounded-full bg-gradient-to-r from-[#42cfc2] via-[#12a6a6] to-[#9b8cff]"
+                        style={{ width: `${currentScore}%` }}
+                      />
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <Link
+                    href="/scanner"
+                    className="mt-5 inline-flex items-center justify-center rounded-full border border-white/15 bg-white/[0.10] px-4 py-2.5 text-[10px] font-bold text-white shadow-sm backdrop-blur-sm transition hover:-translate-y-0.5 hover:bg-white/[0.15]"
+                  >
+                    Faire mon premier scan
+                  </Link>
+                )}
               </div>
             </div>
 
