@@ -102,7 +102,7 @@ export default function EvolutionPage() {
 
       // Fallback temporaire pendant la migration du stockage local vers Supabase.
       if (!loadedFromSupabase && !cancelled) {
-        const stored = localStorage.getItem("facescan-scans");
+        const stored = localStorage.getItem(`facescan-scans-${user.id}`);
 
         if (!stored) {
           setStoredScans([]);

@@ -68,7 +68,7 @@ export default function PeauPage() {
 
         if (!loadedScan) {
           try {
-            const rawScans = localStorage.getItem("facescan-scans");
+            const rawScans = localStorage.getItem(`facescan-scans-${user.id}`);
             const scans = rawScans ? JSON.parse(rawScans) : [];
 
             const latestScan = Array.isArray(scans)

@@ -153,7 +153,7 @@ export default function ConseilsPage() {
 
       // Compatibilité temporaire avec les anciens scans locaux.
       if (!loadedScan && !cancelled) {
-        const scansStored = localStorage.getItem("facescan-scans");
+        const scansStored = localStorage.getItem(`facescan-scans-${user.id}`);
 
         if (scansStored) {
           try {
@@ -180,7 +180,7 @@ export default function ConseilsPage() {
 
       // Compatibilité temporaire pour les objectifs des anciennes sessions.
       if (!loadedProfile && !cancelled) {
-        const stored = localStorage.getItem("facescan-goals");
+        const stored = localStorage.getItem(`facescan-goals-${user.id}`);
 
         if (stored) {
           try {

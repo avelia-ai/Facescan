@@ -84,6 +84,7 @@ export default function NotificationsPage() {
     async function loadData() {
       let loadedScan = false;
       let loadedGoals = false;
+      let userId: string | null = null;
 
       try {
         const { createClient } = await import("@/lib/supabase/client");
@@ -94,6 +95,8 @@ export default function NotificationsPage() {
         } = await supabase.auth.getUser();
 
         if (user) {
+          userId = user.id;
+
           const storedFrequency = localStorage.getItem(
             `facescan-scan-frequency-${user.id}`
           );
@@ -151,9 +154,11 @@ export default function NotificationsPage() {
         console.error("Notifications Supabase error:", error);
       }
 
-      if (!loadedScan && !cancelled) {
+      if (!loadedScan && !cancelled && userId) {
         try {
-          const storedScans = localStorage.getItem("facescan-scans");
+          const storedScans = localStorage.getItem(
+            `facescan-scans-${userId}`
+          );
           const parsed = storedScans ? JSON.parse(storedScans) : [];
 
           if (Array.isArray(parsed) && parsed[0]?.indicators) {
@@ -174,9 +179,11 @@ export default function NotificationsPage() {
         }
       }
 
-      if (!loadedGoals && !cancelled) {
+      if (!loadedGoals && !cancelled && userId) {
         try {
-          const storedGoals = localStorage.getItem("facescan-goals");
+          const storedGoals = localStorage.getItem(
+            `facescan-goals-${userId}`
+          );
           const parsed = storedGoals ? JSON.parse(storedGoals) : [];
 
           setUserGoals(Array.isArray(parsed) ? parsed : []);

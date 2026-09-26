@@ -417,7 +417,7 @@ export default function HomePage() {
 
       // Fallback temporaire pendant la migration des anciens scans locaux.
       if (!loadedFromSupabase) {
-        const storedScans = localStorage.getItem("facescan-scans");
+        const storedScans = localStorage.getItem(`facescan-scans-${user.id}`);
 
         if (storedScans) {
           try {
@@ -460,48 +460,58 @@ export default function HomePage() {
   }, [router, supabase]);
 
   useEffect(() => {
-    const loadNutritionFeedback = () => {
+    let cancelled = false;
+    let storageKey = "";
+
+    const loadNutritionFeedback = async () => {
       try {
-        const stored = localStorage.getItem(
-          "otavio-nutrition-feedback"
-        );
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        if (!user || cancelled) {
+          if (!cancelled) setNutritionFeedback([]);
+          return;
+        }
+
+        storageKey = `otavio-nutrition-feedback-${user.id}`;
+
+        const stored = localStorage.getItem(storageKey);
 
         if (!stored) {
-          setNutritionFeedback([]);
+          if (!cancelled) setNutritionFeedback([]);
           return;
         }
 
         const parsed = JSON.parse(stored);
-        setNutritionFeedback(
-          Array.isArray(parsed) ? parsed : []
-        );
+
+        if (!cancelled) {
+          setNutritionFeedback(
+            Array.isArray(parsed) ? parsed : []
+          );
+        }
       } catch {
-        setNutritionFeedback([]);
+        if (!cancelled) setNutritionFeedback([]);
       }
     };
 
     loadNutritionFeedback();
 
-    window.addEventListener(
-      "focus",
-      loadNutritionFeedback
-    );
-    window.addEventListener(
-      "storage",
-      loadNutritionFeedback
-    );
+    const handleStorage = (event: StorageEvent) => {
+      if (!storageKey || event.key === storageKey) {
+        loadNutritionFeedback();
+      }
+    };
+
+    window.addEventListener("focus", loadNutritionFeedback);
+    window.addEventListener("storage", handleStorage);
 
     return () => {
-      window.removeEventListener(
-        "focus",
-        loadNutritionFeedback
-      );
-      window.removeEventListener(
-        "storage",
-        loadNutritionFeedback
-      );
+      cancelled = true;
+      window.removeEventListener("focus", loadNutritionFeedback);
+      window.removeEventListener("storage", handleStorage);
     };
-  }, []);
+  }, [supabase]);
 
   useEffect(() => {
     const loadDailyTasks = async () => {

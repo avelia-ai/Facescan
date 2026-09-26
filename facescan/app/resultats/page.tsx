@@ -277,7 +277,7 @@ export default function ResultatsPage() {
 
       // Filet de sécurité pendant la transition vers Supabase.
       if (!loadedFromSupabase && !cancelled) {
-        const scansStored = localStorage.getItem("facescan-scans");
+        const scansStored = localStorage.getItem(`facescan-scans-${user.id}`);
 
         if (scansStored) {
           try {
@@ -331,7 +331,7 @@ export default function ResultatsPage() {
       } catch (error) {
         console.error("Supabase profile loading error:", error);
 
-        const storedGoals = localStorage.getItem("facescan-goals");
+        const storedGoals = localStorage.getItem(`facescan-goals-${user.id}`);
 
         if (!storedGoals) {
           setUserGoals(["peau", "hydratation"]);

@@ -97,8 +97,15 @@ export default function ObjectifsPage() {
 
   useEffect(() => {
     const loadGoals = async () => {
-      const localFallback = () => {
-        const stored = localStorage.getItem("facescan-goals");
+      const localFallback = (userId?: string) => {
+        if (!userId) {
+          setSelected(["qualite_peau", "hydratation"]);
+          return;
+        }
+
+        const stored = localStorage.getItem(
+          `facescan-goals-${userId}`
+        );
 
         if (stored) {
           try {
@@ -164,7 +171,7 @@ export default function ObjectifsPage() {
               : ["qualite_peau", "hydratation"]
           );
           localStorage.setItem(
-            "facescan-goals",
+            `facescan-goals-${user.id}`,
             JSON.stringify(
               normalized.length > 0
                 ? normalized
@@ -174,7 +181,7 @@ export default function ObjectifsPage() {
           return;
         }
 
-        localFallback();
+        localFallback(user.id);
       } catch {
         localFallback();
       }
@@ -188,6 +195,7 @@ export default function ObjectifsPage() {
 
     async function loadScanStats() {
       let scans: any[] = [];
+      let userId: string | null = null;
 
       try {
         const { createClient } = await import("@/lib/supabase/client");
@@ -198,6 +206,8 @@ export default function ObjectifsPage() {
         } = await supabase.auth.getUser();
 
         if (user) {
+          userId = user.id;
+
           const { data: remoteScans, error } = await supabase
             .from("scans")
             .select("id, created_at, score")
@@ -218,9 +228,11 @@ export default function ObjectifsPage() {
         console.error("Objectifs Supabase scans error:", error);
       }
 
-      if (scans.length === 0) {
+      if (scans.length === 0 && userId) {
         try {
-          const storedScans = localStorage.getItem("facescan-scans");
+          const storedScans = localStorage.getItem(
+            `facescan-scans-${userId}`
+          );
           const parsed = storedScans ? JSON.parse(storedScans) : [];
 
           scans = Array.isArray(parsed)
@@ -283,15 +295,20 @@ export default function ObjectifsPage() {
       new Set(selected.map(normalizeGoalId))
     ).slice(0, 3);
 
-    localStorage.setItem("facescan-goals", JSON.stringify(normalized));
+    const supabase = createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (user) {
+      localStorage.setItem(
+        `facescan-goals-${user.id}`,
+        JSON.stringify(normalized)
+      );
+    }
     setSelected(normalized);
 
     try {
-      const supabase = createClient();
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
       if (!user) {
         setSaved(true);
         return;

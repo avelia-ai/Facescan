@@ -233,6 +233,7 @@ export default function AlimentationPage() {
 
     async function loadScan() {
       let latestScan: any = null;
+      let userId: string | null = null;
 
       try {
         const { createClient } = await import("@/lib/supabase/client");
@@ -243,6 +244,7 @@ export default function AlimentationPage() {
         } = await supabase.auth.getUser();
 
         if (user) {
+          userId = user.id;
           const { data: scans, error: scansError } = await supabase
             .from("scans")
             .select("id, created_at, score, indicators")
@@ -257,9 +259,11 @@ export default function AlimentationPage() {
         latestScan = null;
       }
 
-      if (!latestScan) {
+      if (!latestScan && userId) {
         try {
-          const rawScans = localStorage.getItem("facescan-scans");
+          const rawScans = localStorage.getItem(
+            `facescan-scans-${userId}`
+          );
           const scans = rawScans ? JSON.parse(rawScans) : [];
 
           latestScan = Array.isArray(scans)

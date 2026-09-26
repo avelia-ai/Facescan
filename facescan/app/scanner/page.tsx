@@ -225,10 +225,6 @@ export default function ScannerPage() {
         faceAnalysis
       );
 
-      const existingScans = JSON.parse(
-        localStorage.getItem("facescan-scans") || "[]"
-      );
-
       const scan = {
         id: Date.now().toString(),
         date: new Date().toISOString(),
@@ -250,6 +246,10 @@ export default function ScannerPage() {
           "Votre session a expiré. Reconnectez-vous avant d’enregistrer votre scan."
         );
       }
+
+      const existingScans = JSON.parse(
+        localStorage.getItem(`facescan-scans-${user.id}`) || "[]"
+      );
 
       const { error: scanInsertError } = await supabase
         .from("scans")
@@ -275,16 +275,16 @@ export default function ScannerPage() {
 
       try {
         localStorage.setItem(
-          "facescan-scans",
+          `facescan-scans-${user.id}`,
           JSON.stringify(scansToStore)
         );
       } catch (storageError) {
         console.error("Scan storage error:", storageError);
 
-        localStorage.removeItem("facescan-scans");
+        localStorage.removeItem(`facescan-scans-${user.id}`);
 
         localStorage.setItem(
-          "facescan-scans",
+          `facescan-scans-${user.id}`,
           JSON.stringify([scan])
         );
       }

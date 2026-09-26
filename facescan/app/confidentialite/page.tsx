@@ -58,11 +58,11 @@ export default function ConfidentialitePage() {
         profile = null;
       }
 
-      const storedScans = localStorage.getItem("facescan-scans");
-      const storedGoals = localStorage.getItem("facescan-goals");
 
       let currentUserId: string | null = null;
       let storedFrequency: string | null = null;
+        let storedScans: string | null = null;
+        let storedGoals: string | null = null;
 
       try {
         const supabase = createClient();
@@ -73,6 +73,8 @@ export default function ConfidentialitePage() {
           storedFrequency = localStorage.getItem(
             `facescan-scan-frequency-${authData.user.id}`
           );
+            storedScans = localStorage.getItem(`facescan-scans-${authData.user.id}`);
+            storedGoals = localStorage.getItem(`facescan-goals-${authData.user.id}`);
         }
       } catch {
         storedFrequency = null;
@@ -185,29 +187,28 @@ export default function ConfidentialitePage() {
       const supabase = createClient();
       const { data: authData } = await supabase.auth.getUser();
 
-      const keys = [
-        "facescan-scans",
-        "facescan-goals",
-        "facescan-scan-photo",
-        "facescan-scan-frequency",
-      ];
+    const keys = [
+      "facescan-scans",
+      "facescan-goals",
+      "facescan-hydration-actions",
+      "facescan-scan-frequency",
+      "facescan-read-notifications",
+      "otavio-nutrition-feedback",
+    ];
 
-      keys.forEach((key) => localStorage.removeItem(key));
+    keys.forEach((key) => localStorage.removeItem(key));
+    sessionStorage.removeItem("facescan-scan-photo");
 
-      if (authData.user) {
-        localStorage.removeItem(
-          `facescan-scan-frequency-${authData.user.id}`
-        );
-      }
-
-      if (authData.user) {
-        localStorage.removeItem(
-          `facescan-read-notifications-${authData.user.id}`,
-        );
-
-        await supabase.auth.signOut();
-      }
-
+    if (authData.user) {
+      const userId = authData.user.id;
+      localStorage.removeItem(`facescan-scans-${userId}`);
+      localStorage.removeItem(`facescan-goals-${userId}`);
+      localStorage.removeItem(`facescan-hydration-actions-${userId}`);
+      localStorage.removeItem(`facescan-scan-frequency-${userId}`);
+      localStorage.removeItem(`facescan-read-notifications-${userId}`);
+      localStorage.removeItem(`otavio-nutrition-feedback-${userId}`);
+      await supabase.auth.signOut();
+    }
       setData({
         profile: null,
         goals: [],

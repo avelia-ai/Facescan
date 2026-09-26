@@ -328,7 +328,9 @@ export default function ProfilPage() {
 
       if (resolvedGoals.length === 0) {
         try {
-          const storedGoals = localStorage.getItem("facescan-goals");
+          const storedGoals = localStorage.getItem(
+            `facescan-goals-${user.id}`
+          );
           const parsedGoals = storedGoals ? JSON.parse(storedGoals) : [];
 
           if (Array.isArray(parsedGoals)) {

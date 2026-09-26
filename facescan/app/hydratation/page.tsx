@@ -47,6 +47,7 @@ function addDays(date: Date, amount: number) {
 
 export default function HydratationPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [scan, setScan] = useState<OtavioDailyScan | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedDay, setSelectedDay] = useState(1);
@@ -63,6 +64,8 @@ export default function HydratationPage() {
         } = await supabase.auth.getUser();
 
         if (user) {
+          setUserId(user.id);
+
           const { data } = await supabase
             .from("profiles")
             .select("*")
@@ -104,9 +107,11 @@ export default function HydratationPage() {
           }
         }
 
-        if (!loadedScan) {
+        if (!loadedScan && user) {
           try {
-            const rawScans = localStorage.getItem("facescan-scans");
+            const rawScans = localStorage.getItem(
+              `facescan-scans-${user.id}`
+            );
             const scans = rawScans ? JSON.parse(rawScans) : [];
 
             const latestScan = Array.isArray(scans)
@@ -181,8 +186,13 @@ export default function HydratationPage() {
 
         if (!loadedActionsFromSupabase) {
           try {
-            const stored =
-              localStorage.getItem("facescan-hydration-actions") || "[]";
+            const storageKey = user
+              ? `facescan-hydration-actions-${user.id}`
+              : null;
+
+            const stored = storageKey
+              ? localStorage.getItem(storageKey) || "[]"
+              : "[]";
             const parsed = JSON.parse(stored);
             setCompletedActions(Array.isArray(parsed) ? parsed : []);
           } catch {
@@ -248,10 +258,16 @@ export default function HydratationPage() {
         ? current.filter((item) => item !== key)
         : [...current, key];
 
-      localStorage.setItem(
-        "facescan-hydration-actions",
-        JSON.stringify(next)
-      );
+      const storageKey = userId
+        ? `facescan-hydration-actions-${userId}`
+        : null;
+
+      if (storageKey) {
+        localStorage.setItem(
+          storageKey,
+          JSON.stringify(next)
+        );
+      }
 
       return next;
     });

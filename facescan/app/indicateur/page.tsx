@@ -170,7 +170,7 @@ function IndicateurContent() {
       // Fallback temporaire pour les anciens scans encore présents localement.
       if (!loadedFromSupabase && !cancelled) {
         try {
-          const stored = localStorage.getItem("facescan-scans");
+          const stored = localStorage.getItem(`facescan-scans-${user.id}`);
 
           if (!stored) {
             setScans([]);
