@@ -565,7 +565,8 @@ export default function HomePage() {
                 title: task.title,
                 description: task.description,
               })
-              .eq("id", existingTask.id);
+              .eq("id", existingTask.id)
+              .eq("user_id", user.id);
           }
 
           finalTasks.push({
@@ -609,7 +610,8 @@ export default function HomePage() {
         await supabase
           .from("otavio_daily_tasks")
           .delete()
-          .in("id", staleIncompleteTasks.map((task) => task.id));
+          .in("id", staleIncompleteTasks.map((task) => task.id))
+          .eq("user_id", user.id);
       }
 
       setDailyTasks(finalTasks);
