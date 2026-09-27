@@ -199,16 +199,23 @@ export default function ConfidentialitePage() {
     keys.forEach((key) => localStorage.removeItem(key));
     sessionStorage.removeItem("facescan-scan-photo");
 
-    if (authData.user) {
-      const userId = authData.user.id;
-      localStorage.removeItem(`facescan-scans-${userId}`);
-      localStorage.removeItem(`facescan-goals-${userId}`);
-      localStorage.removeItem(`facescan-hydration-actions-${userId}`);
-      localStorage.removeItem(`facescan-scan-frequency-${userId}`);
-      localStorage.removeItem(`facescan-read-notifications-${userId}`);
-      localStorage.removeItem(`otavio-nutrition-feedback-${userId}`);
-      await supabase.auth.signOut();
-    }
+      if (authData.user) {
+        const response = await fetch("/api/account/delete", {
+          method: "DELETE",
+        });
+
+        if (!response.ok) {
+          throw new Error("La suppression du compte a échoué.");
+        }
+
+        const userId = authData.user.id;
+        localStorage.removeItem(`facescan-scans-${userId}`);
+        localStorage.removeItem(`facescan-goals-${userId}`);
+        localStorage.removeItem(`facescan-hydration-actions-${userId}`);
+        localStorage.removeItem(`facescan-scan-frequency-${userId}`);
+        localStorage.removeItem(`facescan-read-notifications-${userId}`);
+        localStorage.removeItem(`otavio-nutrition-feedback-${userId}`);
+      }
       setData({
         profile: null,
         goals: [],
