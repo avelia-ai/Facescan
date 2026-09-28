@@ -1,14 +1,38 @@
 @import "tailwindcss";
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 :root {
   --background: #ffffff;
+  --surface: #ffffff;
+  --surface-soft: #f4fbfa;
+  --surface-muted: #eaf8f5;
+  --border: #dce5e4;
+  --foreground: #17202a;
+  --foreground-muted: #587174;
+
   --face-blue: #087ea4;
   --face-teal: #12a6a6;
   --face-coral: #ff8066;
   --face-violet: #7767e8;
   --face-yellow: #ffc857;
   --face-green: #48b881;
-  --foreground: #17202a;
+}
+
+html[data-theme="dark"] {
+  --background: #07191f;
+  --surface: #102d35;
+  --surface-soft: #0d252d;
+  --surface-muted: #173a43;
+  --border: #28515a;
+  --foreground: #f3f8f7;
+  --foreground-muted: #a9c0c3;
+
+  --face-blue: #36b9df;
+  --face-teal: #35c8c1;
+  --face-coral: #ff927d;
+  --face-violet: #9589f2;
+  --face-yellow: #ffd36b;
+  --face-green: #65d49a;
 }
 
 * {
@@ -40,6 +64,20 @@ body {
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+html[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at 8% 8%, rgba(53, 200, 193, 0.13), transparent 25%),
+    radial-gradient(circle at 92% 12%, rgba(149, 137, 242, 0.12), transparent 25%),
+    linear-gradient(
+      180deg,
+      #0a2933 0%,
+      #081e26 35%,
+      #07191f 72%,
+      #06151a 100%
+    );
 }
 
 a {
@@ -110,7 +148,7 @@ a {
 
 .app-background {
   min-height: 100%;
-  background-color: #ffffff;
+  background-color: var(--background);
   background-image:
     radial-gradient(circle at 4% 8%, rgba(255, 128, 102, 0.16), transparent 22%),
     radial-gradient(circle at 96% 12%, rgba(119, 103, 232, 0.14), transparent 23%),
@@ -128,4 +166,19 @@ a {
     );
   background-repeat: no-repeat;
   background-size: 100% 620px;
+}
+
+html[data-theme="dark"] .app-background {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(circle at 4% 8%, rgba(255, 128, 102, 0.10), transparent 22%),
+    radial-gradient(circle at 96% 12%, rgba(119, 103, 232, 0.10), transparent 23%),
+    radial-gradient(circle at 48% 0%, rgba(18, 166, 166, 0.13), transparent 34%),
+    linear-gradient(
+      180deg,
+      #0a2933 0%,
+      #081f27 24%,
+      #07191f 62%,
+      #06151a 100%
+    );
 }
