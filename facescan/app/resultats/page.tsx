@@ -211,12 +211,6 @@ export default function ResultatsPage() {
     let cancelled = false;
 
     const loadResultats = async () => {
-      const photo = sessionStorage.getItem("facescan-scan-photo");
-
-      if (photo && !cancelled) {
-        setScanPhoto(photo);
-      }
-
       const supabase = createClient();
 
       const {
@@ -225,6 +219,12 @@ export default function ResultatsPage() {
 
       if (!user || cancelled) {
         return;
+      }
+
+      const photo = sessionStorage.getItem(`facescan-scan-photo-${user.id}`);
+
+      if (photo && !cancelled) {
+        setScanPhoto(photo);
       }
 
       let loadedFromSupabase = false;

@@ -24,6 +24,7 @@ export default function ScannerPage() {
 
   const [cameraActive, setCameraActive] = useState(false);
   const [photo, setPhoto] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisStep, setAnalysisStep] = useState(0);
@@ -34,6 +35,16 @@ export default function ScannerPage() {
     return () => {
       stopCamera();
     };
+  }, []);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) setUserId(user.id);
+    };
+
+    loadUser();
   }, []);
 
   async function startCamera() {
@@ -147,7 +158,7 @@ export default function ScannerPage() {
     context.drawImage(video, x, y, size, size, 0, 0, size, size);
 
     const image = canvas.toDataURL("image/jpeg", 0.9);
-    sessionStorage.setItem("facescan-scan-photo", image);
+    if (userId) sessionStorage.setItem(`facescan-scan-photo-${userId}`, image);
     setPhoto(image);
     stopCamera();
     setCameraActive(false);
@@ -167,7 +178,7 @@ export default function ScannerPage() {
 
     reader.onload = () => {
       const image = reader.result as string;
-      sessionStorage.setItem("facescan-scan-photo", image);
+      if (userId) sessionStorage.setItem(`facescan-scan-photo-${userId}`, image);
       setPhoto(image);
       stopCamera();
       setCameraActive(false);
@@ -178,7 +189,7 @@ export default function ScannerPage() {
   }
 
   function retake() {
-    sessionStorage.removeItem("facescan-scan-photo");
+    if (userId) sessionStorage.removeItem(`facescan-scan-photo-${userId}`);
     setPhoto(null);
     setIsAnalyzing(false);
     setAnalysisStep(0);
