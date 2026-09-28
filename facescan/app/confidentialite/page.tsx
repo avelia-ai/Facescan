@@ -228,7 +228,7 @@ export default function ConfidentialitePage() {
 
       setShowDeleteConfirm(false);
       setActionMessage(
-        "Les données locales FaceScan ont été supprimées. Vous allez être redirigé.",
+        "Votre compte FaceScan et les données associées ont été supprimés. Vous allez être redirigé.",
       );
 
       window.setTimeout(() => {
@@ -292,8 +292,8 @@ export default function ConfidentialitePage() {
 
           <p className="mt-4 max-w-2xl text-[13px] leading-6 text-white/70">
             Consultez les données utilisées par FaceScan, téléchargez une
-            copie de votre historique ou supprimez les données enregistrées
-            localement sur cet appareil.
+            copie de votre historique ou supprimez votre compte et les données
+            associées.
           </p>
         </section>
 
@@ -468,7 +468,7 @@ export default function ConfidentialitePage() {
                 Supprimer mes données
               </h3>
               <p className="mt-1 text-[11px] leading-5 text-[#755f5a]">
-                Supprimer les données FaceScan enregistrées sur cet appareil.
+                Supprimer votre compte et les données FaceScan associées.
               </p>
             </div>
 
@@ -499,9 +499,9 @@ export default function ConfidentialitePage() {
                   Confirmer la suppression
                 </h3>
                 <p className="mt-2 text-[12px] leading-5 text-[#755f5a]">
-                  Les scans, objectifs, préférences locales et données de
-                  notification enregistrées sur cet appareil seront supprimés.
-                  Cette action vous déconnectera également du compte.
+                  Votre compte FaceScan ainsi que les données qui lui sont
+                  associées seront supprimés. Les données locales de cet appareil
+                  seront également effacées et vous serez déconnecté.
                 </p>
               </div>
             </div>
@@ -545,7 +545,7 @@ export default function ConfidentialitePage() {
 
               <p className="mt-2 text-[12px] leading-6 text-[#587174]">
                 Vous pouvez consulter les données disponibles, en télécharger
-                une copie et supprimer les données locales utilisées par
+                une copie et supprimer les données associées à
                 l’expérience FaceScan.
               </p>
             </div>
@@ -553,9 +553,9 @@ export default function ConfidentialitePage() {
         </section>
 
         <p className="mt-8 max-w-3xl text-[10px] leading-5 text-[#718789]">
-          L’export concerne les données accessibles depuis cette interface.
-          Les données éventuellement conservées côté serveur Supabase
-          nécessiteront une gestion dédiée avant la mise en production.
+          L’export concerne les données actuellement accessibles depuis cette
+          interface. La suppression du compte déclenche également la suppression
+          des données associées stockées côté serveur.
         </p>
       </div>
 
