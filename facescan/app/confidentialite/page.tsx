@@ -24,6 +24,9 @@ type StoredData = {
   profile: unknown;
   goals: unknown;
   scans: unknown;
+  otavioDailyTasks: unknown;
+  otavioXpEvents: unknown;
+  otavioDailyActivity: unknown;
   preferences: {
     scanFrequency: number | null;
     readNotifications: string[];
@@ -63,6 +66,9 @@ export default function ConfidentialitePage() {
       let storedFrequency: string | null = null;
       let storedScans: string | null = null;
       let storedGoals: string | null = null;
+      let otavioDailyTasksExport: unknown[] = [];
+      let otavioXpEventsExport: unknown[] = [];
+      let otavioDailyActivityExport: unknown[] = [];
 
       try {
         const supabase = createClient();
@@ -77,6 +83,50 @@ export default function ConfidentialitePage() {
           storedGoals = localStorage.getItem(`facescan-goals-${authData.user.id}`);
           const { data: remoteScans, error: remoteScansError } = await supabase.from("scans").select("*").eq("user_id", authData.user.id).order("created_at", { ascending: false });
           if (!remoteScansError && Array.isArray(remoteScans)) storedScans = JSON.stringify(remoteScans);
+
+          const [
+            { data: otavioDailyTasks, error: otavioDailyTasksError },
+            { data: otavioXpEvents, error: otavioXpEventsError },
+            { data: otavioDailyActivity, error: otavioDailyActivityError },
+          ] = await Promise.all([
+            supabase
+              .from("otavio_daily_tasks")
+              .select("task_date, task_key, title, description, completed, completed_at")
+              .eq("user_id", authData.user.id)
+              .order("task_date", { ascending: false }),
+            supabase
+              .from("otavio_xp_events")
+              .select("event_type, xp, metadata, created_at")
+              .eq("user_id", authData.user.id)
+              .order("created_at", { ascending: false }),
+            supabase
+              .from("otavio_daily_activity")
+              .select("activity_date, completed_actions")
+              .eq("user_id", authData.user.id)
+              .order("activity_date", { ascending: false }),
+          ]);
+
+          if (otavioDailyTasksError) {
+            console.error("Erreur export otavio_daily_tasks:", otavioDailyTasksError);
+          }
+
+          if (otavioXpEventsError) {
+            console.error("Erreur export otavio_xp_events:", otavioXpEventsError);
+          }
+
+          if (otavioDailyActivityError) {
+            console.error("Erreur export otavio_daily_activity:", otavioDailyActivityError);
+          }
+
+          otavioDailyTasksExport = Array.isArray(otavioDailyTasks)
+            ? otavioDailyTasks
+            : [];
+          otavioXpEventsExport = Array.isArray(otavioXpEvents)
+            ? otavioXpEvents
+            : [];
+          otavioDailyActivityExport = Array.isArray(otavioDailyActivity)
+            ? otavioDailyActivity
+            : [];
         }
       } catch {
         storedFrequency = null;
@@ -130,6 +180,9 @@ export default function ConfidentialitePage() {
         profile,
         goals,
         scans,
+        otavioDailyTasks: otavioDailyTasksExport,
+        otavioXpEvents: otavioXpEventsExport,
+        otavioDailyActivity: otavioDailyActivityExport,
         preferences: {
           scanFrequency: storedFrequency ? Number(storedFrequency) : null,
           readNotifications,
@@ -160,6 +213,9 @@ export default function ConfidentialitePage() {
         profile: null,
         goals: [],
         scans: [],
+        otavioDailyTasks: [],
+        otavioXpEvents: [],
+        otavioDailyActivity: [],
         preferences: {
           scanFrequency: null,
           readNotifications: [],
@@ -229,6 +285,9 @@ export default function ConfidentialitePage() {
         profile: null,
         goals: [],
         scans: [],
+        otavioDailyTasks: [],
+        otavioXpEvents: [],
+        otavioDailyActivity: [],
         preferences: {
           scanFrequency: null,
           readNotifications: [],
