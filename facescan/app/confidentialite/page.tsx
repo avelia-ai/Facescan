@@ -61,20 +61,22 @@ export default function ConfidentialitePage() {
 
       let currentUserId: string | null = null;
       let storedFrequency: string | null = null;
-        let storedScans: string | null = null;
-        let storedGoals: string | null = null;
+      let storedScans: string | null = null;
+      let storedGoals: string | null = null;
 
       try {
         const supabase = createClient();
         const { data: authData } = await supabase.auth.getUser();
 
-        if (authData.user) {
+                  if (authData.user) {
           currentUserId = authData.user.id;
           storedFrequency = localStorage.getItem(
             `facescan-scan-frequency-${authData.user.id}`
           );
-            storedScans = localStorage.getItem(`facescan-scans-${authData.user.id}`);
-            storedGoals = localStorage.getItem(`facescan-goals-${authData.user.id}`);
+          storedScans = localStorage.getItem(`facescan-scans-${authData.user.id}`);
+          storedGoals = localStorage.getItem(`facescan-goals-${authData.user.id}`);
+          const { data: remoteScans, error: remoteScansError } = await supabase.from("scans").select("*").eq("user_id", authData.user.id).order("created_at", { ascending: false });
+          if (!remoteScansError && Array.isArray(remoteScans)) storedScans = JSON.stringify(remoteScans);
         }
       } catch {
         storedFrequency = null;
@@ -115,6 +117,13 @@ export default function ConfidentialitePage() {
         goals = storedGoals ? JSON.parse(storedGoals) : [];
       } catch {
         goals = [];
+      }
+
+      if (profile && typeof profile === "object" && "goals" in profile) {
+        const profileGoals = (profile as { goals?: unknown }).goals;
+        if (Array.isArray(profileGoals)) {
+          goals = profileGoals;
+        }
       }
 
       setData({
