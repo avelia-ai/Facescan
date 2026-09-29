@@ -100,10 +100,10 @@ export default function ConnexionPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white px-5 py-8">
+    <main className="min-h-screen bg-white dark:bg-[#091f27] px-5 py-8">
       <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-md flex-col">
         <div className="pt-6 text-center">
-          <div className="mb-3 text-3xl font-semibold tracking-tight text-[#102f3a]">
+          <div className="mb-3 text-3xl font-semibold tracking-tight text-[#102f3a] dark:text-[#e0edf0]">
             Otavio
           </div>
 
@@ -112,8 +112,8 @@ export default function ConnexionPage() {
           </p>
         </div>
 
-        <div className="mt-10 rounded-[30px] border border-[#dce7e8] bg-white p-6 shadow-[0_20px_60px_rgba(16,47,58,0.08)]">
-          <div className="mb-6 grid grid-cols-2 rounded-2xl bg-[#f2f6f7] p-1">
+        <div className="mt-10 rounded-[30px] border border-[#dce7e8] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-6 shadow-[0_20px_60px_rgba(16,47,58,0.08)]">
+          <div className="mb-6 grid grid-cols-2 rounded-2xl bg-[#f2f6f7] dark:bg-[#173a43] p-1">
             <button
               type="button"
               onClick={() => {
@@ -123,7 +123,7 @@ export default function ConnexionPage() {
               }}
               className={`rounded-xl px-4 py-3 text-sm font-semibold transition ${
                 mode === "inscription"
-                  ? "bg-white text-[#102f3a] shadow-sm"
+                  ? "bg-white dark:bg-[#173f47] text-[#102f3a] dark:text-[#e0edf0] shadow-sm"
                   : "text-[#738189]"
               }`}
             >
@@ -139,7 +139,7 @@ export default function ConnexionPage() {
               }}
               className={`rounded-xl px-4 py-3 text-sm font-semibold transition ${
                 mode === "connexion"
-                  ? "bg-white text-[#102f3a] shadow-sm"
+                  ? "bg-white dark:bg-[#173f47] text-[#102f3a] dark:text-[#e0edf0] shadow-sm"
                   : "text-[#738189]"
               }`}
             >
@@ -148,7 +148,7 @@ export default function ConnexionPage() {
           </div>
 
           <div className="mb-6">
-            <h1 className="text-2xl font-semibold tracking-tight text-[#102f3a]">
+            <h1 className="text-2xl font-semibold tracking-tight text-[#102f3a] dark:text-[#e0edf0]">
               {mode === "inscription"
                 ? "Bienvenue chez Otavio"
                 : "Bon retour"}
@@ -165,7 +165,7 @@ export default function ConnexionPage() {
             <div>
               <label
                 htmlFor="email"
-                className="mb-2 block text-sm font-semibold text-[#183d48]"
+                className="mb-2 block text-sm font-semibold text-[#183d48] dark:text-[#d5e4e7]"
               >
                 Adresse e-mail
               </label>
@@ -177,14 +177,14 @@ export default function ConnexionPage() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 placeholder="vous@exemple.com"
-                className="w-full rounded-2xl border border-[#d7e2e4] bg-[#f9fbfb] px-4 py-4 text-sm text-[#183d48] outline-none transition placeholder:text-[#9aa7ad] focus:border-[#168f91]"
+                className="w-full rounded-2xl border border-[#d7e2e4] dark:border-[#28515a] bg-[#f9fbfb] dark:bg-[#173a43] px-4 py-4 text-sm text-[#183d48] dark:text-[#d5e4e7] outline-none transition placeholder:text-[#9aa7ad] dark:placeholder:text-[#7f989d] focus:border-[#168f91]"
               />
             </div>
 
             <div>
               <label
                 htmlFor="password"
-                className="mb-2 block text-sm font-semibold text-[#183d48]"
+                className="mb-2 block text-sm font-semibold text-[#183d48] dark:text-[#d5e4e7]"
               >
                 Mot de passe
               </label>
@@ -198,7 +198,7 @@ export default function ConnexionPage() {
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder="Votre mot de passe"
-                className="w-full rounded-2xl border border-[#d7e2e4] bg-[#f9fbfb] px-4 py-4 text-sm text-[#183d48] outline-none transition placeholder:text-[#9aa7ad] focus:border-[#168f91]"
+                className="w-full rounded-2xl border border-[#d7e2e4] dark:border-[#28515a] bg-[#f9fbfb] dark:bg-[#173a43] px-4 py-4 text-sm text-[#183d48] dark:text-[#d5e4e7] outline-none transition placeholder:text-[#9aa7ad] dark:placeholder:text-[#7f989d] focus:border-[#168f91]"
               />
             </div>
 
@@ -218,7 +218,7 @@ export default function ConnexionPage() {
             )}
 
             {error && (
-              <div className="rounded-2xl bg-[#fff0eb] px-4 py-3 text-sm leading-5 text-[#a64f3d]">
+              <div className="rounded-2xl bg-[#fff0eb] dark:bg-[#4b302b] px-4 py-3 text-sm leading-5 text-[#a64f3d] dark:text-[#ff9a86]">
                 {error}
               </div>
             )}
@@ -246,7 +246,7 @@ export default function ConnexionPage() {
             type="button"
             onClick={handleGoogle}
             disabled={loading}
-            className="w-full rounded-2xl border border-[#d7e2e4] bg-white px-5 py-4 text-sm font-semibold text-[#183d48] transition hover:bg-[#f7fafb] disabled:opacity-50"
+            className="w-full rounded-2xl border border-[#d7e2e4] dark:border-[#28515a] bg-white dark:bg-[#173a43] px-5 py-4 text-sm font-semibold text-[#183d48] dark:text-[#d5e4e7] transition hover:bg-[#f7fafb] dark:hover:bg-[#20434b] disabled:opacity-50"
           >
             Continuer avec Google
           </button>
