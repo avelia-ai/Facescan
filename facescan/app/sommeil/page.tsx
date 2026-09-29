@@ -182,7 +182,7 @@ export default function SommeilPage() {
         <header className="flex items-center justify-between mb-7">
           <Link
             href="/conseils"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white border border-[#c9dfe4]"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a]"
           >
             <ArrowLeft size={19} />
           </Link>
@@ -261,12 +261,12 @@ export default function SommeilPage() {
         </section>
 
         <section className="mt-5 grid grid-cols-2 gap-3">
-          <div className="rounded-2xl bg-white border border-[#c9dfe4] p-4">
+          <div className="rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-4">
             <p className="text-xs text-[#8a928e] mb-1">Programme</p>
             <p className="font-semibold">7 jours</p>
           </div>
 
-          <div className="rounded-2xl bg-white border border-[#c9dfe4] p-4">
+          <div className="rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-4">
             <p className="text-xs text-[#8a928e] mb-1">Objectif</p>
             <p className="font-semibold">Régularité</p>
           </div>
@@ -292,7 +292,7 @@ export default function SommeilPage() {
             {today?.actions.map((action, index) => (
               <div
                 key={`${action.title}-${index}`}
-                className="rounded-2xl bg-white border border-[#c9dfe4] p-4"
+                className="rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-4"
               >
                 <div className="flex items-start gap-4">
                   <div className="h-10 w-10 shrink-0 rounded-xl bg-[#e8e3ff] flex items-center justify-center">
@@ -364,7 +364,7 @@ export default function SommeilPage() {
                 className={`min-w-[64px] rounded-2xl border px-3 py-3 text-center transition ${
                   selectedDay === day.day
                     ? "bg-[linear-gradient(135deg,#173d69_0%,#087ea4_48%,#7767e8_100%)] text-white border-[#18352d]"
-                    : "bg-white border-[#c9dfe4] text-[#355763]"
+                    : "bg-white dark:bg-[#102d35] border-[#c9dfe4] dark:border-[#28515a] text-[#355763] dark:text-[#d5e4e7]"
                 }`}
               >
                 <div className="text-[10px] uppercase tracking-wider opacity-60">
@@ -378,7 +378,7 @@ export default function SommeilPage() {
           </div>
         </section>
 
-        <section className="mt-7 rounded-2xl bg-white border border-[#c9dfe4] p-5">
+        <section className="mt-7 rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-5">
           <div className="flex items-center gap-3 mb-4">
             <div className="h-10 w-10 rounded-xl bg-[#e8e3ff] flex items-center justify-center">
               <CheckCircle2 size={18} className="text-[#39715f]" />
