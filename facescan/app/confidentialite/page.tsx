@@ -318,7 +318,7 @@ export default function ConfidentialitePage() {
           <div className="flex items-center gap-3">
             <Link
               href="/profil"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#dce5e4] bg-white shadow-[0_8px_25px_rgba(30,55,60,0.06)]"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#dce5e4] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_8px_25px_rgba(30,55,60,0.06)]"
               aria-label="Retour au profil"
             >
               <ArrowLeft size={18} strokeWidth={1.8} />
@@ -334,7 +334,7 @@ export default function ConfidentialitePage() {
             </div>
           </div>
 
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-[#173a43]">
             <ShieldCheck size={18} strokeWidth={1.7} />
           </div>
         </header>
@@ -402,7 +402,7 @@ export default function ConfidentialitePage() {
               return (
                 <div
                   key={item.title}
-                  className="flex items-center gap-4 rounded-[22px] border border-[#e0e9e7] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]"
+                  className="flex items-center gap-4 rounded-[22px] border border-[#e0e9e7] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]"
                 >
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#e9f8f5]">
                     <Icon size={19} strokeWidth={1.7} />
@@ -454,9 +454,9 @@ export default function ConfidentialitePage() {
           </button>
 
           {showData && (
-            <div className="rounded-[22px] border border-[#e0e9e7] bg-[#f8fbfa] p-5">
+            <div className="rounded-[22px] border border-[#e0e9e7] dark:border-[#28515a] bg-[#f8fbfa] dark:bg-[#173a43] p-5">
               <div className="grid gap-3 sm:grid-cols-2">
-                <div className="rounded-2xl bg-white p-4">
+                <div className="rounded-2xl bg-white dark:bg-[#102d35] p-4">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-[#718789]">
                     Profil
                   </p>
@@ -465,7 +465,7 @@ export default function ConfidentialitePage() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl bg-white p-4">
+                <div className="rounded-2xl bg-white dark:bg-[#102d35] p-4">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-[#718789]">
                     Scans
                   </p>
@@ -474,7 +474,7 @@ export default function ConfidentialitePage() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl bg-white p-4">
+                <div className="rounded-2xl bg-white dark:bg-[#102d35] p-4">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-[#718789]">
                     Objectifs
                   </p>
@@ -483,7 +483,7 @@ export default function ConfidentialitePage() {
                   </p>
                 </div>
 
-                <div className="rounded-2xl bg-white p-4">
+                <div className="rounded-2xl bg-white dark:bg-[#102d35] p-4">
                   <p className="text-[10px] uppercase tracking-[0.14em] text-[#718789]">
                     Préférences
                   </p>
@@ -525,7 +525,7 @@ export default function ConfidentialitePage() {
           <button
             type="button"
             onClick={() => setShowDeleteConfirm(true)}
-            className="flex w-full items-center gap-4 rounded-[22px] border border-[#ead6d1] bg-[#fff4f1] p-5 text-left"
+            className="flex w-full items-center gap-4 rounded-[22px] border border-[#ead6d1] dark:border-[#614238] bg-[#fff4f1] dark:bg-[#40302c] p-5 text-left"
           >
             <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/85">
               <Trash2 size={19} strokeWidth={1.7} />
@@ -556,9 +556,9 @@ export default function ConfidentialitePage() {
         )}
 
         {showDeleteConfirm && (
-          <div className="mt-5 rounded-[24px] border border-[#ead6d1] bg-white p-5 shadow-[0_15px_45px_rgba(70,50,45,0.08)]">
+          <div className="mt-5 rounded-[24px] border border-[#ead6d1] dark:border-[#614238] bg-white dark:bg-[#102d35] p-5 shadow-[0_15px_45px_rgba(70,50,45,0.08)]">
             <div className="flex items-start gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#fff0ec]">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#fff0ec] dark:bg-[#4b302b]">
                 <Trash2 size={18} strokeWidth={1.8} />
               </div>
 
@@ -579,7 +579,7 @@ export default function ConfidentialitePage() {
                 type="button"
                 onClick={() => setShowDeleteConfirm(false)}
                 disabled={isDeleting}
-                className="flex-1 rounded-2xl border border-[#dce5e4] bg-white px-4 py-3 text-[12px] font-semibold"
+                className="flex-1 rounded-2xl border border-[#dce5e4] dark:border-[#28515a] bg-white dark:bg-[#102d35] px-4 py-3 text-[12px] font-semibold"
               >
                 Annuler
               </button>
@@ -627,7 +627,7 @@ export default function ConfidentialitePage() {
         </p>
       </div>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#dce5e4] bg-white/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#28515a] bg-white/95 dark:bg-[#0c252d]/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
         <div className="mx-auto flex max-w-md items-end justify-between">
           <Link
             href="/"
