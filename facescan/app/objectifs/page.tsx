@@ -347,7 +347,7 @@ export default function ObjectifsPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/profil"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#dce5e4] bg-white shadow-[0_8px_25px_rgba(30,55,60,0.06)]"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#dce5e4] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_8px_25px_rgba(30,55,60,0.06)]"
               aria-label="Retour au profil"
             >
               <ArrowLeft size={18} strokeWidth={1.8} />
@@ -405,7 +405,7 @@ export default function ObjectifsPage() {
               </h2>
             </div>
 
-            <span className="rounded-full bg-[#ffe3d9] px-3 py-1.5 text-[10px] font-semibold text-[#668083]">
+            <span className="rounded-full bg-[#ffe3d9] dark:bg-[#4b302b] px-3 py-1.5 text-[10px] font-semibold text-[#668083] dark:text-[#c5d5d8]">
               {selected.length} / 3 sélectionné{selected.length > 1 ? "s" : ""}
             </span>
           </div>
@@ -423,7 +423,7 @@ export default function ObjectifsPage() {
                   className={`rounded-[24px] border p-5 text-left transition ${
                     isSelected
                       ? "border-[#12a6a6] bg-[linear-gradient(145deg,#ffffff_0%,#dcf8f3_100%)] shadow-[0_10px_35px_rgba(8,126,164,0.12)]"
-                      : "border-[#c6dfe3] bg-white/90 hover:bg-[#eefafa]"
+                      : "border-[#c6dfe3] dark:border-[#28515a] bg-white/90 dark:bg-[#173a43] hover:bg-[#eefafa] dark:hover:bg-[#173f47]"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -573,7 +573,7 @@ export default function ObjectifsPage() {
         </p>
       </div>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#dce5e4] bg-white/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#28515a] bg-white/95 dark:bg-[#0c252d]/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
         <div className="mx-auto flex max-w-md items-end justify-between">
           <Link
             href="/"
