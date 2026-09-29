@@ -403,7 +403,7 @@ export default function ConseilsPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c9d9d4] bg-white shadow-[0_8px_25px_rgba(30,55,60,0.07)] transition hover:-translate-y-0.5"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c9d9d4] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_8px_25px_rgba(30,55,60,0.07)] transition hover:-translate-y-0.5"
               aria-label="Retour à l'accueil"
             >
               <ArrowLeft size={18} strokeWidth={1.8} />
@@ -536,7 +536,7 @@ export default function ConseilsPage() {
                 >
                   <div className="flex min-w-0 items-center gap-2.5">
                     <span
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[13px] border border-white/80 bg-[linear-gradient(145deg,rgba(255,255,255,0.95)_0%,rgba(231,246,242,0.82)_100%)] text-[#287f72] shadow-[0_5px_10px_rgba(33,79,73,0.08),0_10px_20px_rgba(33,79,73,0.06),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 group-hover:scale-[1.04]"
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[13px] border border-white/80 dark:border-[#28515a] bg-[linear-gradient(145deg,rgba(255,255,255,0.95)_0%,rgba(231,246,242,0.82)_100%)] dark:bg-[linear-gradient(145deg,#183d3f_0%,#245650_100%)] text-[#287f72] shadow-[0_5px_10px_rgba(33,79,73,0.08),0_10px_20px_rgba(33,79,73,0.06),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 group-hover:scale-[1.04]"
                       aria-hidden="true"
                     >
                       {renderCategoryIcon(String(item.category))}
@@ -564,9 +564,9 @@ export default function ConseilsPage() {
                   <span
                     className={`rounded-full px-2.5 py-1 text-[9px] font-semibold ${
                       item.priority === "high"
-                        ? "bg-[#ffd9cf] text-[#d96550]"
+                        ? "bg-[#ffd9cf] dark:bg-[#4b302b] text-[#d96550] dark:text-[#ff9a86]"
                         : item.priority === "medium"
-                          ? "bg-[#ffe6a8] text-[#a36f00]"
+                          ? "bg-[#ffe6a8] dark:bg-[#4b4327] text-[#a36f00] dark:text-[#f2ca72]"
                           : "bg-[#c9f2eb] text-[#087ea4]"
                     }`}
                   >
@@ -578,7 +578,7 @@ export default function ConseilsPage() {
                   </span>
 
                   <span
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-black/5 bg-white/55 text-[#55757b] transition-transform duration-200 ${
+                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-black/5 dark:border-[#28515a] bg-white/55 dark:bg-[#173a43] text-[#55757b] dark:text-[#c5d5d8] transition-transform duration-200 ${
                       expandedAdviceId === item.id ? "rotate-180" : ""
                     }`}
                     aria-hidden="true"
@@ -610,7 +610,7 @@ export default function ConseilsPage() {
                     </p>
                   </div>
 
-                  <div className="rounded-2xl border border-[#e0ddf1] bg-[#f2efff] px-4 py-3">
+                  <div className="rounded-2xl border border-[#e0ddf1] dark:border-[#3a3a63] bg-[#f2efff] dark:bg-[#29294a] px-4 py-3">
                     <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#7770a8]">
                       Fréquence
                     </p>
@@ -703,7 +703,7 @@ export default function ConseilsPage() {
                     )
                   }
                   aria-expanded={expandedAdviceId === item.id}
-                  className={`mt-4 flex items-center gap-2 text-[11px] font-medium text-[#183d48] ${
+                  className={`mt-4 flex items-center gap-2 text-[11px] font-medium text-[#183d48] dark:text-[#d5e4e7] ${
                     expandedAdviceId === item.id ? "" : "hidden"
                   }`}
                 >
@@ -719,7 +719,7 @@ export default function ConseilsPage() {
 
                 {expandedAdviceId === item.id && (
                   <div className="mt-4 space-y-3 rounded-[22px] border border-[#9fddd3] bg-[linear-gradient(145deg,#e8fbf6_0%,#d5f2eb_100%)] p-4">
-                    <div className="rounded-[18px] border border-[#d8e9e5] bg-white/80 p-4">
+                    <div className="rounded-[18px] border border-[#d8e9e5] dark:border-[#28515a] bg-white/80 dark:bg-[#173a43]/80 p-4">
                       <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#287b78]">
                         Ce que votre scan a observé
                       </p>
@@ -728,7 +728,7 @@ export default function ConseilsPage() {
                       </p>
                     </div>
 
-                    <div className="rounded-[18px] border border-[#d8e9e5] bg-white/80 p-4">
+                    <div className="rounded-[18px] border border-[#d8e9e5] dark:border-[#28515a] bg-white/80 dark:bg-[#173a43]/80 p-4">
                       <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#287b78]">
                         Votre plan Otavio
                       </p>
@@ -736,7 +736,7 @@ export default function ConseilsPage() {
                         {item.steps.map((step, index) => (
                           <div
                             key={`${item.id}-step-${index}`}
-                            className="flex items-start gap-3 rounded-[15px] border border-[#dfeae7] bg-white/75 px-3.5 py-3"
+                            className="flex items-start gap-3 rounded-[15px] border border-[#dfeae7] dark:border-[#28515a] bg-white/75 dark:bg-[#173a43] px-3.5 py-3"
                           >
                             <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#176678] text-[10px] font-bold text-white">
                               {index + 1}
@@ -759,7 +759,7 @@ export default function ConseilsPage() {
                       )}
                     </div>
 
-                    <div className="rounded-[18px] border border-[#c9c0ff] bg-[#f4f1ff] p-4">
+                    <div className="rounded-[18px] border border-[#c9c0ff] dark:border-[#3a3a63] bg-[#f4f1ff] dark:bg-[#29294a] p-4">
                       <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#6b65a1]">
                         Pourquoi ce conseil vous concerne
                       </p>
@@ -771,7 +771,7 @@ export default function ConseilsPage() {
                     {(item.quantity || item.duration) && (
                       <div className="grid grid-cols-2 gap-2">
                         {item.quantity && (
-                          <div className="rounded-[16px] border border-[#dfe9e7] bg-white/75 px-3.5 py-3">
+                          <div className="rounded-[16px] border border-[#dfe9e7] dark:border-[#28515a] bg-white/75 dark:bg-[#173a43] px-3.5 py-3">
                             <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#668083]">
                               Repère
                             </p>
@@ -782,7 +782,7 @@ export default function ConseilsPage() {
                         )}
 
                         {item.duration && (
-                          <div className="rounded-[16px] border border-[#dfe9e7] bg-white/75 px-3.5 py-3">
+                          <div className="rounded-[16px] border border-[#dfe9e7] dark:border-[#28515a] bg-white/75 dark:bg-[#173a43] px-3.5 py-3">
                             <p className="text-[9px] font-semibold uppercase tracking-[0.14em] text-[#668083]">
                               Durée
                             </p>
@@ -795,7 +795,7 @@ export default function ConseilsPage() {
                     )}
 
                     {item.alternatives?.length ? (
-                      <div className="rounded-[18px] border border-[#d8e9e5] bg-white/80 p-4">
+                      <div className="rounded-[18px] border border-[#d8e9e5] dark:border-[#28515a] bg-white/80 dark:bg-[#173a43]/80 p-4">
                         <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#287b78]">
                           Alternatives adaptées
                         </p>
@@ -815,7 +815,7 @@ export default function ConseilsPage() {
                     ) : null}
 
                     {item.basedOn?.length ? (
-                      <div className="rounded-[18px] border border-[#e3e8e7] bg-white/70 p-4">
+                      <div className="rounded-[18px] border border-[#e3e8e7] dark:border-[#28515a] bg-white/70 dark:bg-[#173a43] p-4">
                         <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#668083]">
                           Ce qu’Otavio a pris en compte
                         </p>
@@ -834,7 +834,7 @@ export default function ConseilsPage() {
                     ) : null}
 
                     {item.safetyNote && (
-                      <div className="rounded-[18px] border border-[#eadfbe] bg-[#fff7dc] p-4">
+                      <div className="rounded-[18px] border border-[#eadfbe] dark:border-[#5a4b2c] bg-[#fff7dc] dark:bg-[#40371f] p-4">
                         <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#9a7a18]">
                           À garder en tête
                         </p>
@@ -996,7 +996,7 @@ export default function ConseilsPage() {
         </p>
       </div>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#d9e1df] bg-white/92 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 shadow-[0_-12px_30px_rgba(36,78,70,0.06)] backdrop-blur-2xl">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#28515a] bg-white/92 dark:bg-[#0c252d]/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 shadow-[0_-12px_30px_rgba(36,78,70,0.06)] backdrop-blur-2xl">
         <div className="mx-auto flex max-w-md items-end justify-between">
           <Link
             href="/"
@@ -1008,7 +1008,7 @@ export default function ConseilsPage() {
 
           <Link
             href="/conseils"
-            className="flex w-16 flex-col items-center gap-1.5 text-[#183d48]"
+            className="flex w-16 flex-col items-center gap-1.5 text-[#183d48] dark:text-[#d5e4e7]"
           >
             <Sparkles size={18} strokeWidth={2} />
             <span className="text-[9px] font-medium">Conseils</span>
