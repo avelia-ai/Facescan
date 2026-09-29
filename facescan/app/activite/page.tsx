@@ -293,7 +293,7 @@ export default function ActivitePage() {
         <header className="mb-7 flex items-center justify-between">
           <Link
             href="/"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e8ebe9] bg-white shadow-[0_6px_18px_rgba(35,55,60,0.05)] transition hover:-translate-y-0.5"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e8ebe9] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_6px_18px_rgba(35,55,60,0.05)] transition hover:-translate-y-0.5"
             aria-label="Retour à l'accueil"
           >
             <ArrowLeft size={19} />
@@ -430,10 +430,10 @@ export default function ActivitePage() {
               </div>
 
               <div className="min-w-0">
-                <p className="text-sm font-semibold text-[#183d48]">
+                <p className="text-sm font-semibold text-[#183d48] dark:text-[#d5e4e7]">
                   Votre activité aujourd’hui
                 </p>
-                <p className="mt-2 text-sm leading-6 text-[#718088]">
+                <p className="mt-2 text-sm leading-6 text-[#718088] dark:text-[#a9c0c3]">
                   {getActivityDescription(activity)}
                 </p>
 
@@ -468,7 +468,7 @@ export default function ActivitePage() {
               <h2 className="mt-1 text-lg font-semibold text-[#183d48]">
                 {activityTask.title}
               </h2>
-              <p className="mt-2 text-sm leading-6 text-[#718088]">
+              <p className="mt-2 text-sm leading-6 text-[#718088] dark:text-[#a9c0c3]">
                 {activityTask.description}
               </p>
             </div>
@@ -480,7 +480,7 @@ export default function ActivitePage() {
             disabled={activityCompleted || activityCompleting}
             className={`mt-4 flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-3.5 text-sm font-semibold transition ${
               activityCompleted
-                ? "border border-[#78d2c8] bg-[#dff8f2] text-[#087ea4]"
+                ? "border border-[#78d2c8] dark:border-[#285c5a] bg-[#dff8f2] dark:bg-[#173f47] text-[#087ea4] dark:text-[#71d8d0]"
                 : "bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#12a6a6_72%,#48b881_100%)] text-white shadow-[0_10px_26px_rgba(8,126,164,0.16)] hover:-translate-y-0.5"
             } disabled:cursor-default disabled:opacity-90`}
           >
@@ -500,11 +500,11 @@ export default function ActivitePage() {
             </div>
 
             <div className="min-w-0">
-              <p className="text-sm font-semibold text-[#183d48]">
+              <p className="text-sm font-semibold text-[#183d48] dark:text-[#d5e4e7]">
                 Ce qu’Otavio peut suivre
               </p>
 
-              <p className="mt-2 text-xs leading-5 text-[#718088]">
+              <p className="mt-2 text-xs leading-5 text-[#718088] dark:text-[#a9c0c3]">
                 Votre fréquence de pratique, votre mouvement quotidien, votre
                 récupération et votre régularité pourront progressivement
                 enrichir votre accompagnement.
