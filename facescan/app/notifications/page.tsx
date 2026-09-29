@@ -346,7 +346,7 @@ export default function NotificationsPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/profil"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c4dde1] bg-white shadow-[0_8px_25px_rgba(30,55,60,0.06)]"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#c4dde1] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_8px_25px_rgba(30,55,60,0.06)]"
               aria-label="Retour au profil"
             >
               <ArrowLeft size={18} strokeWidth={1.8} />
@@ -365,7 +365,7 @@ export default function NotificationsPage() {
           <button
             type="button"
             onClick={markAllRead}
-            className="hidden items-center gap-2 rounded-full border border-[#c4dde1] bg-white px-4 py-3 text-[11px] font-medium text-[#587174] shadow-[0_6px_20px_rgba(30,55,60,0.05)] sm:flex"
+            className="hidden items-center gap-2 rounded-full border border-[#c4dde1] dark:border-[#28515a] bg-white dark:bg-[#173a43] px-4 py-3 text-[11px] font-medium text-[#587174] dark:text-[#c4d5d9] shadow-[0_6px_20px_rgba(30,55,60,0.05)] sm:flex"
           >
             <Check size={15} strokeWidth={1.8} />
             Tout lire
@@ -432,7 +432,7 @@ export default function NotificationsPage() {
                   className={`rounded-[22px] border p-4 shadow-[0_8px_28px_rgba(28,27,24,0.035)] ${
                     item.unread
                       ? "border-[#9fd8d0] bg-[linear-gradient(145deg,#ffffff_0%,#eaf8f5_100%)]"
-                      : "border-[#b9dfe3] bg-[#f0fafb]"
+                      : "border-[#b9dfe3] dark:border-[#28515a] bg-[#f0fafb] dark:bg-[#173f47]"
                   }`}
                 >
                   <div className="flex items-start gap-4">
@@ -490,7 +490,7 @@ export default function NotificationsPage() {
         </section>
 
         <section className="mt-10 grid gap-4 lg:grid-cols-2">
-          <article className="rounded-[24px] border border-black/6 bg-white p-6">
+          <article className="rounded-[24px] border border-black/6 dark:border-[#28515a] bg-white dark:bg-[#102d35] p-6">
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#d3f4ed]">
                 <Bell size={18} strokeWidth={1.7} />
@@ -522,7 +522,7 @@ export default function NotificationsPage() {
 
           <article className="rounded-[24px] bg-gradient-to-br from-[#dcf8f2] via-[#eefaff] to-[#eee9ff] p-6">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/65">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/65 dark:bg-[#173a43]">
                 <BellOff size={18} strokeWidth={1.7} />
               </div>
 
@@ -558,7 +558,7 @@ export default function NotificationsPage() {
         </p>
       </div>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#c4dde1] bg-white/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#28515a] bg-white/95 dark:bg-[#0c252d]/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
         <div className="mx-auto flex max-w-md items-end justify-between">
           <Link
             href="/"
