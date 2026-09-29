@@ -296,7 +296,7 @@ export default function AlimentationPage() {
         <header className="mb-7 flex items-center justify-between">
           <Link
             href="/conseils"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e8ebe9] bg-white shadow-[0_6px_18px_rgba(35,55,60,0.05)] transition hover:-translate-y-0.5"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e8ebe9] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_6px_18px_rgba(35,55,60,0.05)] transition hover:-translate-y-0.5"
             aria-label="Retour aux conseils"
           >
             <ArrowLeft size={19} />
@@ -480,19 +480,19 @@ export default function AlimentationPage() {
                     {adaptations.map((adaptation, index) => (
                       <div
                         key={`${adaptation.type}-${index}`}
-                        className="rounded-2xl border border-[#e6eceb] bg-[#f3fbfa] px-4 py-3"
+                        className="rounded-2xl border border-[#e6eceb] dark:border-[#28515a] bg-[#f3fbfa] dark:bg-[#173a43] px-4 py-3"
                       >
                         <div className="flex items-start justify-between gap-3">
-                          <p className="text-[11px] font-medium leading-5 text-[#183d48]">
+                          <p className="text-[11px] font-medium leading-5 text-[#183d48] dark:text-[#d5e4e7]">
                             {adaptation.message}
                           </p>
 
                           <span
                             className={`shrink-0 rounded-full px-2 py-1 text-[8px] font-semibold uppercase tracking-[0.08em] ${
                               adaptation.priority === "haute"
-                                ? "bg-[#ffd9cf] text-[#d96550]"
+                                ? "bg-[#ffd9cf] dark:bg-[#4b302b] text-[#d96550] dark:text-[#ff9a86]"
                                 : adaptation.priority === "moderee"
-                                  ? "bg-[#ffe7af] text-[#a66f00]"
+                                  ? "bg-[#ffe7af] dark:bg-[#4b4327] text-[#a66f00] dark:text-[#f2ca72]"
                                   : "bg-[#cef3eb] text-[#087ea4]"
                             }`}
                           >
@@ -511,13 +511,13 @@ export default function AlimentationPage() {
                 type="button"
                 onClick={() => setShoppingListOpen((open) => !open)}
                 aria-expanded={shoppingListOpen}
-                className="group relative flex w-full items-center justify-between gap-4 overflow-hidden px-5 py-5 text-left transition hover:-translate-y-0.5 hover:bg-[#fbfdfc] sm:px-6"
+                className="group relative flex w-full items-center justify-between gap-4 overflow-hidden px-5 py-5 text-left transition hover:-translate-y-0.5 hover:bg-[#fbfdfc] dark:hover:bg-[#143640] sm:px-6"
               >
                 <div className="pointer-events-none absolute -right-10 -top-12 h-28 w-28 rounded-full bg-[#88d6ca]/12 blur-2xl" />
                 <div className="pointer-events-none absolute -bottom-10 left-16 h-20 w-24 rounded-full bg-[#7e9ff2]/8 blur-2xl" />
 
                 <div className="relative flex min-w-0 items-center gap-3.5">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] border border-white/80 bg-[linear-gradient(145deg,#d8f8f1_0%,#b7eadd_100%)] text-[#287b78] shadow-[0_5px_10px_rgba(40,127,114,0.08),0_10px_22px_rgba(40,127,114,0.07),inset_0_1px_0_rgba(255,255,255,1)]">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] border border-white/80 dark:border-[#28515a] bg-[linear-gradient(145deg,#d8f8f1_0%,#b7eadd_100%)] dark:bg-[linear-gradient(145deg,#183d3f_0%,#245650_100%)] text-[#287b78] shadow-[0_5px_10px_rgba(40,127,114,0.08),0_10px_22px_rgba(40,127,114,0.07),inset_0_1px_0_rgba(255,255,255,1)]">
                     <ShoppingBasket size={19} strokeWidth={1.7} />
                   </div>
 
@@ -527,12 +527,12 @@ export default function AlimentationPage() {
                         Courses
                       </p>
 
-                      <span className="rounded-full border border-[#cce1da] bg-white/90 px-2.5 py-1 text-[9px] font-semibold text-[#668083] shadow-[0_4px_10px_rgba(40,90,75,0.04)]">
+                      <span className="rounded-full border border-[#cce1da] dark:border-[#28515a] bg-white/90 dark:bg-[#173a43] px-2.5 py-1 text-[9px] font-semibold text-[#668083] shadow-[0_4px_10px_rgba(40,90,75,0.04)]">
                         {shoppingList.length} catégories
                       </span>
                     </div>
 
-                    <h2 className="mt-1 text-[18px] font-semibold tracking-[-0.02em] text-[#183d48]">
+                    <h2 className="mt-1 text-[18px] font-semibold tracking-[-0.02em] text-[#183d48] dark:text-[#d5e4e7]">
                       Ma liste de courses
                     </h2>
 
@@ -543,7 +543,7 @@ export default function AlimentationPage() {
                 </div>
 
 <span
-                  className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#d6e5df] bg-white text-[#287b78] shadow-[0_6px_14px_rgba(40,90,75,0.055)] transition-all duration-300 ${
+                  className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#d6e5df] dark:border-[#28515a] bg-white dark:bg-[#173f47] text-[#287b78] dark:text-[#71d8d0] shadow-[0_6px_14px_rgba(40,90,75,0.055)] transition-all duration-300 ${
                     shoppingListOpen
                       ? "rotate-180 bg-[#dff6f0]"
                       : "group-hover:scale-105"
@@ -573,7 +573,7 @@ export default function AlimentationPage() {
                         </p>
                       </div>
 
-                      <span className="hidden rounded-full border border-[#d2e3dc] bg-white px-3 py-1.5 text-[9px] font-semibold text-[#39775b] shadow-[0_5px_12px_rgba(40,90,75,0.04)] sm:inline-flex">
+                      <span className="hidden rounded-full border border-[#d2e3dc] dark:border-[#28515a] bg-white dark:bg-[#173f47] px-3 py-1.5 text-[9px] font-semibold text-[#39775b] shadow-[0_5px_12px_rgba(40,90,75,0.04)] sm:inline-flex">
                         Programme Otavio
                       </span>
                     </div>
@@ -592,7 +592,7 @@ export default function AlimentationPage() {
                                 </span>
                               </div>
 
-                              <h3 className="text-[12px] font-semibold text-[#183d48]">
+                              <h3 className="text-[12px] font-semibold text-[#183d48] dark:text-[#d5e4e7]">
                                 {category.name}
                               </h3>
                             </div>
@@ -613,7 +613,7 @@ export default function AlimentationPage() {
                                   {item.name}
                                 </span>
 
-                                <span className="shrink-0 rounded-full bg-[#f1f7f4] px-2 py-1 text-[10px] font-semibold text-[#287b78]">
+                                <span className="shrink-0 rounded-full bg-[#f1f7f4] dark:bg-[#173f47] px-2 py-1 text-[10px] font-semibold text-[#287b78] dark:text-[#71d8d0]">
                                   {Number.isInteger(item.quantity)
                                     ? item.quantity
                                     : item.quantity.toFixed(1)}{" "}
@@ -638,7 +638,7 @@ export default function AlimentationPage() {
                   onToggle={(event) =>
                     toggleMenuDay(day.day, event.currentTarget.open)
                   }
-                  className="group overflow-hidden rounded-[30px] border border-[#cddfd9] bg-white shadow-[0_14px_30px_rgba(35,70,60,0.055),0_28px_58px_rgba(35,70,60,0.045),inset_0_1px_0_rgba(255,255,255,0.98)]"
+                  className="group overflow-hidden rounded-[30px] border border-[#cddfd9] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_14px_30px_rgba(35,70,60,0.055),0_28px_58px_rgba(35,70,60,0.045),inset_0_1px_0_rgba(255,255,255,0.98)]"
                 >
                   <summary className="list-none cursor-pointer [&::-webkit-details-marker]:hidden">
                   <div className="relative overflow-hidden bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_55%,#12a6a6_100%)] px-5 py-5 text-white sm:px-6">
@@ -713,7 +713,7 @@ export default function AlimentationPage() {
                       return (
                         <div
                           key={`${day.day}-${meal.type}`}
-                          className="group overflow-hidden rounded-[26px] border border-[#d2e1dc] bg-white shadow-[0_8px_20px_rgba(40,90,75,0.04),0_16px_32px_rgba(40,90,75,0.035)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_26px_rgba(40,90,75,0.06),0_20px_38px_rgba(40,90,75,0.05)]"
+                          className="group overflow-hidden rounded-[26px] border border-[#d2e1dc] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_8px_20px_rgba(40,90,75,0.04),0_16px_32px_rgba(40,90,75,0.035)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_26px_rgba(40,90,75,0.06),0_20px_38px_rgba(40,90,75,0.05)]"
                         >
                           <div className="relative h-[170px] overflow-hidden bg-[#dff4f3]">
                             <img
@@ -743,7 +743,7 @@ export default function AlimentationPage() {
                           >
                             <div className="flex items-center justify-between gap-3">
                               <div className="flex min-w-0 items-center gap-2.5">
-                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[12px] border border-white/80 bg-white/70 shadow-[0_4px_10px_rgba(35,55,60,0.05)]">
+                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[12px] border border-white/80 dark:border-[#28515a] bg-white/70 dark:bg-[#173a43] shadow-[0_4px_10px_rgba(35,55,60,0.05)]">
                                   <Utensils
                                     size={16}
                                     strokeWidth={1.7}
@@ -786,14 +786,14 @@ export default function AlimentationPage() {
                                 </div>
                               </div>
 
-                              <span className="shrink-0 rounded-full border border-white/80 bg-white/70 px-2.5 py-1 text-[9px] font-semibold text-[#587174] shadow-[0_4px_10px_rgba(35,55,60,0.04)]">
+                              <span className="shrink-0 rounded-full border border-white/80 dark:border-[#28515a] bg-white/70 dark:bg-[#173a43] px-2.5 py-1 text-[9px] font-semibold text-[#587174] shadow-[0_4px_10px_rgba(35,55,60,0.04)]">
                                 {meal.recipe.prepTime} min
                               </span>
                             </div>
                           </div>
 
                           <div className="p-4 sm:p-5">
-                            <h3 className="text-[16px] font-semibold leading-6 tracking-[-0.02em] text-[#183d48]">
+                            <h3 className="text-[16px] font-semibold leading-6 tracking-[-0.02em] text-[#183d48] dark:text-[#d5e4e7]">
                               {meal.recipe.name}
                             </h3>
 
@@ -847,7 +847,7 @@ export default function AlimentationPage() {
                                     className={`rounded-[12px] px-2 py-2 text-[8px] font-semibold transition ${
                                       feedback?.status === status
                                         ? "bg-white text-[#176678] shadow-[0_4px_12px_rgba(40,90,75,0.08)]"
-                                        : "text-[#7b8e90] hover:bg-white/80 hover:text-[#587174]"
+                                        : "text-[#7b8e90] dark:text-[#9fb2b6] hover:bg-white/80 dark:hover:bg-[#173a43] hover:text-[#587174] dark:hover:text-[#d0dfe2]"
                                     }`}
                                   >
                                     {label}
@@ -856,7 +856,7 @@ export default function AlimentationPage() {
                               </div>
 
                               {feedback && (
-                                <div className="mt-3 rounded-[16px] border border-[#e2ebe8] bg-white/80 p-3">
+                                <div className="mt-3 rounded-[16px] border border-[#e2ebe8] dark:border-[#28515a] bg-white/80 dark:bg-[#173a43]/80 p-3">
                                   <div className="flex items-center justify-between gap-3">
                                     <p className="text-[9px] font-medium text-[#668083]">
                                       Votre satisfaction
@@ -895,15 +895,15 @@ export default function AlimentationPage() {
                             </div>
 
                             <details className="group mt-4">
-                              <summary className="flex cursor-pointer list-none items-center justify-between rounded-[18px] border border-[#dfe9e5] bg-[linear-gradient(145deg,#fbfdfc_0%,#f4f8f6_100%)] px-4 py-3.5 text-[10px] font-semibold text-[#183d48] shadow-[0_5px_12px_rgba(40,90,75,0.035)] transition hover:bg-[#eef6f2]">
+                              <summary className="flex cursor-pointer list-none items-center justify-between rounded-[18px] border border-[#dfe9e5] dark:border-[#28515a] bg-[linear-gradient(145deg,#fbfdfc_0%,#f4f8f6_100%)] dark:bg-[linear-gradient(145deg,#173a43_0%,#102d35_100%)] px-4 py-3.5 text-[10px] font-semibold text-[#183d48] shadow-[0_5px_12px_rgba(40,90,75,0.035)] transition hover:bg-[#eef6f2]">
                                 <span>Voir la recette complète</span>
-                                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[15px] font-normal text-[#287b78] shadow-[0_4px_10px_rgba(40,90,75,0.05)] transition-transform group-open:rotate-45">
+                                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white dark:bg-[#173f47] text-[15px] font-normal text-[#287b78] dark:text-[#71d8d0] shadow-[0_4px_10px_rgba(40,90,75,0.05)] transition-transform group-open:rotate-45">
                                   +
                                 </span>
                               </summary>
 
                               <div className="mt-3 space-y-4 rounded-[20px] border border-[#e1eae7] bg-[linear-gradient(145deg,#f9fcfa_0%,#f1f7f4_100%)] p-4">
-                                <div className="rounded-[16px] border border-white/80 bg-white/75 p-3.5">
+                                <div className="rounded-[16px] border border-white/80 dark:border-[#28515a] bg-white/75 dark:bg-[#173a43] p-3.5">
                                   <div className="flex items-start justify-between gap-3">
                                     <div>
                                       <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#7b8e90]">
@@ -937,7 +937,7 @@ export default function AlimentationPage() {
                                               [meal.recipe.id]: Number(event.target.value),
                                             }));
                                           }}
-                                          className="h-9 w-full cursor-pointer appearance-none rounded-xl border border-[#cddfd8] bg-white px-3 pr-8 text-[10px] font-semibold text-[#226f6b] shadow-[0_4px_12px_rgba(40,90,75,0.05)] outline-none transition hover:border-[#9fc9bc] focus:border-[#287b78] focus:ring-2 focus:ring-[#72cfc0]/20"
+                                          className="h-9 w-full cursor-pointer appearance-none rounded-xl border border-[#cddfd8] dark:border-[#28515a] bg-white dark:bg-[#102d35] px-3 pr-8 text-[10px] font-semibold text-[#226f6b] dark:text-[#71d8d0] shadow-[0_4px_12px_rgba(40,90,75,0.05)] outline-none transition hover:border-[#9fc9bc] focus:border-[#287b78] focus:ring-2 focus:ring-[#72cfc0]/20"
                                         >
                                           {Array.from({ length: 8 }, (_, index) => index + 1).map(
                                             (people) => (
@@ -1015,7 +1015,7 @@ export default function AlimentationPage() {
                                   </div>
                                 </div>
 
-                                <div className="rounded-[16px] border border-white/80 bg-white/75 p-3.5">
+                                <div className="rounded-[16px] border border-white/80 dark:border-[#28515a] bg-white/75 dark:bg-[#173a43] p-3.5">
                                   <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#7b8e90]">
                                     Préparation
                                   </p>
