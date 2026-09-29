@@ -196,7 +196,7 @@ export default function EvolutionPage() {
         <div className="mx-auto flex h-[72px] max-w-6xl items-center justify-between px-5 md:px-8">
           <Link
             href="/"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#dce5e4] bg-white shadow-[0_8px_25px_rgba(30,55,60,0.06)] transition hover:bg-[#f7fbfa]"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#dce5e4] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_8px_25px_rgba(30,55,60,0.06)] transition hover:bg-[#f7fbfa] dark:hover:bg-[#173f47]"
           >
             <ArrowLeft size={18} />
           </Link>
@@ -239,7 +239,7 @@ export default function EvolutionPage() {
 
         {/* Evolution summary */}
         <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <div className="rounded-[22px] border border-[#dfe7e6] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+          <div className="rounded-[22px] border border-[#dfe7e6] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
             <p className="text-[10px] uppercase tracking-[0.16em] text-[#718789]">
               Scans réalisés
             </p>
@@ -255,7 +255,7 @@ export default function EvolutionPage() {
             </p>
           </div>
 
-          <div className="rounded-[22px] border border-[#dfe7e6] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+          <div className="rounded-[22px] border border-[#dfe7e6] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
             <p className="text-[10px] uppercase tracking-[0.16em] text-[#718789]">
               Score actuel
             </p>
@@ -272,7 +272,7 @@ export default function EvolutionPage() {
             </p>
           </div>
 
-          <div className="rounded-[22px] border border-[#dfe7e6] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+          <div className="rounded-[22px] border border-[#dfe7e6] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
             <p className="text-[10px] uppercase tracking-[0.16em] text-[#718789]">
               Évolution
             </p>
@@ -413,8 +413,8 @@ export default function EvolutionPage() {
           </div>
 
           {/* Period selector + summary */}
-          <div className="rounded-[30px] border border-[#dfe7e6] bg-white p-6 shadow-[0_14px_40px_rgba(35,55,60,0.05)] md:p-8">
-            <div className="flex gap-2 rounded-full border border-[#e1ebe9] bg-[#dff7f2] p-1">
+          <div className="rounded-[30px] border border-[#dfe7e6] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-6 shadow-[0_14px_40px_rgba(35,55,60,0.05)] md:p-8">
+            <div className="flex gap-2 rounded-full border border-[#e1ebe9] bg-[#dff7f2] dark:bg-[#173f47] p-1">
               {[
                 ["7 jours", 7],
                 ["30 jours", 30],
@@ -428,7 +428,7 @@ export default function EvolutionPage() {
                   }
                   className={`flex-1 rounded-full px-3 py-2 text-[11px] font-medium transition ${
                     selectedPeriod === days
-                      ? "bg-white text-[#171717] shadow-sm"
+                      ? "bg-white dark:bg-[#102d35] text-[#171717] dark:text-[#d9e7ea] shadow-sm"
                       : "text-[#718789] hover:text-[#304951]"
                   }`}
                 >
@@ -461,9 +461,9 @@ export default function EvolutionPage() {
               </p>
             </div>
 
-            <div className="mt-7 rounded-2xl border border-[#e2eeeb] bg-[#e8f8f4] p-4">
+            <div className="mt-7 rounded-2xl border border-[#e2eeeb] dark:border-[#28515a] bg-[#e8f8f4] dark:bg-[#173f47] p-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white">
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white dark:bg-[#173f47]">
                   <Sparkles size={16} />
                 </div>
                 <div>
@@ -492,7 +492,7 @@ export default function EvolutionPage() {
         </div>
 
         {/* Indicators */}
-        <div className="mt-6 rounded-[30px] border border-[#dfe7e6] bg-white p-6 shadow-[0_14px_40px_rgba(35,55,60,0.05)] md:p-8">
+        <div className="mt-6 rounded-[30px] border border-[#dfe7e6] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-6 shadow-[0_14px_40px_rgba(35,55,60,0.05)] md:p-8">
           <div className="flex items-end justify-between">
             <div>
               <p className="text-xs uppercase tracking-[0.16em] text-[#718789]">
@@ -527,7 +527,7 @@ export default function EvolutionPage() {
                 return (
               <div
                 key={metric.name}
-                className="rounded-2xl border border-[#e2eeeb] bg-[#eaf8f6] p-4"
+                className="rounded-2xl border border-[#e2eeeb] dark:border-[#28515a] bg-[#eaf8f6] dark:bg-[#173f47] p-4"
               >
                 <div className="flex items-center justify-between">
                   <p className="text-xs font-medium">{metric.name}</p>
@@ -545,7 +545,7 @@ export default function EvolutionPage() {
                   </p>
 
                   {change === null ? (
-                    <span className="rounded-full bg-white px-2.5 py-1 text-[9px] font-semibold text-[#8a9a9e]">
+                    <span className="rounded-full bg-white dark:bg-[#173a43] px-2.5 py-1 text-[9px] font-semibold text-[#8a9a9e] dark:text-[#b8c9cd]">
                       Référence
                     </span>
                   ) : (
@@ -580,7 +580,7 @@ export default function EvolutionPage() {
 
         {/* What changed */}
         <div className="mt-10 grid gap-5 lg:grid-cols-2">
-          <div className="relative overflow-hidden rounded-[30px] border border-[#dce9e2] bg-white p-6 shadow-[0_16px_42px_rgba(20,55,65,0.055)] md:p-7">
+          <div className="relative overflow-hidden rounded-[30px] border border-[#dce9e2] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-6 shadow-[0_16px_42px_rgba(20,55,65,0.055)] md:p-7">
             <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-[#dff6eb] opacity-60 blur-3xl" />
 
             <div className="relative">
@@ -643,7 +643,7 @@ export default function EvolutionPage() {
                 })}
 
                 {scans.length <= 1 && (
-                  <div className="rounded-[20px] bg-[#e8f8f3] p-4">
+                  <div className="rounded-[20px] bg-[#e8f8f3] dark:bg-[#173f47] p-4">
                     <p className="text-[11px] font-semibold text-[#304951]">
                       Pas encore de tendance
                     </p>
@@ -660,7 +660,7 @@ export default function EvolutionPage() {
                       ["peau", "hydratation", "fatigue", "equilibre"][index] as keyof StoredScan["indicators"];
                     return metric.value <= scans[scans.length - 1].indicators[key];
                   }) && (
-                    <div className="rounded-[20px] bg-[#e8f8f3] p-4">
+                    <div className="rounded-[20px] bg-[#e8f8f3] dark:bg-[#173f47] p-4">
                       <p className="text-[11px] font-semibold text-[#304951]">
                         Pas de progression mesurable
                       </p>
@@ -736,7 +736,7 @@ export default function EvolutionPage() {
                 })}
 
                 {scans.length <= 1 && (
-                  <div className="rounded-[20px] border border-white/70 bg-white/70 p-4">
+                  <div className="rounded-[20px] border border-white/70 dark:border-[#28515a] bg-white/70 dark:bg-[#173a43] p-4">
                     <p className="text-[11px] font-semibold text-[#304951]">
                       Votre suivi commence
                     </p>
@@ -753,7 +753,7 @@ export default function EvolutionPage() {
                       ["peau", "hydratation", "fatigue", "equilibre"][index] as keyof StoredScan["indicators"];
                     return metric.value >= scans[scans.length - 1].indicators[key];
                   }) && (
-                    <div className="rounded-[20px] border border-white/70 bg-white/70 p-4">
+                    <div className="rounded-[20px] border border-white/70 dark:border-[#28515a] bg-white/70 dark:bg-[#173a43] p-4">
                       <p className="text-[11px] font-semibold text-[#304951]">
                         Aucun indicateur en baisse
                       </p>
@@ -766,7 +766,7 @@ export default function EvolutionPage() {
 
               <Link
                 href="/scanner"
-                className="mt-6 flex items-center justify-between rounded-[20px] border border-white/80 bg-white/75 px-4 py-4 shadow-[0_8px_22px_rgba(71,64,130,0.045)] transition hover:-translate-y-0.5"
+                className="mt-6 flex items-center justify-between rounded-[20px] border border-white/80 dark:border-[#28515a] bg-white/75 dark:bg-[#173a43] px-4 py-4 shadow-[0_8px_22px_rgba(71,64,130,0.045)] transition hover:-translate-y-0.5"
               >
                 <span className="text-[10px] font-bold text-[#756bd4]">
                   Faire un nouveau scan
@@ -778,7 +778,7 @@ export default function EvolutionPage() {
         </div>
 
         {/* History */}
-        <section className="mt-10 overflow-hidden rounded-[30px] border border-[#dce6e8] bg-white shadow-[0_16px_42px_rgba(20,55,65,0.055)]">
+        <section className="mt-10 overflow-hidden rounded-[30px] border border-[#dce6e8] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_16px_42px_rgba(20,55,65,0.055)]">
           <div className="border-b border-[#edf2f2] bg-[linear-gradient(135deg,#e5faf5_0%,#f2edff_100%)] px-5 py-5 sm:px-6">
             <div className="flex items-center justify-between gap-4">
               <div>
@@ -824,10 +824,10 @@ export default function EvolutionPage() {
                   return (
                     <div
                       key={scan.id}
-                      className="group rounded-[22px] border border-[#e1e9ea] bg-[#edf8f6] p-4 transition duration-300 hover:border-[#d4e3e3] hover:bg-white hover:shadow-[0_10px_26px_rgba(20,55,65,0.045)]"
+                      className="group rounded-[22px] border border-[#e1e9ea] dark:border-[#28515a] bg-[#edf8f6] dark:bg-[#173f47] p-4 transition duration-300 hover:border-[#d4e3e3] hover:bg-white dark:hover:bg-[#173f47] hover:shadow-[0_10px_26px_rgba(20,55,65,0.045)]"
                     >
                       <div className="flex items-center gap-4">
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-white text-[#168f91] shadow-[0_6px_16px_rgba(20,55,65,0.045)]">
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-white dark:bg-[#173f47] text-[#168f91] dark:text-[#71d8d0] shadow-[0_6px_16px_rgba(20,55,65,0.045)]">
                           <ScanFace size={17} strokeWidth={1.8} />
                         </div>
 
@@ -885,7 +885,7 @@ export default function EvolutionPage() {
                         ].map(([label, value]) => (
                           <div
                             key={label}
-                            className="rounded-[15px] bg-white px-2.5 py-2.5"
+                            className="rounded-[15px] bg-white dark:bg-[#173f47] px-2.5 py-2.5"
                           >
                             <p className="truncate text-[8px] uppercase tracking-[0.08em] text-[#97a5a8]">
                               {label}
@@ -901,7 +901,7 @@ export default function EvolutionPage() {
                 })}
               </div>
             ) : (
-              <div className="rounded-[24px] border border-dashed border-[#d8e5e5] bg-[#edf8f6] px-5 py-10 text-center">
+              <div className="rounded-[24px] border border-dashed border-[#d8e5e5] dark:border-[#28515a] bg-[#edf8f6] dark:bg-[#173f47] px-5 py-10 text-center">
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-[16px] bg-white text-[#168f91] shadow-[0_8px_20px_rgba(20,55,65,0.045)]">
                   <ScanFace size={20} strokeWidth={1.7} />
                 </div>
@@ -942,7 +942,7 @@ export default function EvolutionPage() {
       </section>
 
       {/* Mobile navigation */}
-      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-[#dce5e4] bg-white/95 backdrop-blur-xl lg:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-[#28515a] bg-white/95 dark:bg-[#0c252d]/95 backdrop-blur-xl lg:hidden">
         <div className="mx-auto flex h-[72px] max-w-[500px] items-center justify-around px-3">
           <Link
             href="/"
