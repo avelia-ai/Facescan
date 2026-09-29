@@ -330,7 +330,7 @@ export default function ScannerPage() {
       <header className="flex items-center justify-between px-5 py-5 md:px-8">
         <Link
           href="/"
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#dce5e4] bg-white shadow-[0_8px_25px_rgba(30,55,60,0.06)] transition hover:bg-[#f4faf9]"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-[#dce5e4] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_8px_25px_rgba(30,55,60,0.06)] transition hover:bg-[#f4faf9] dark:hover:bg-[#173f47]"
           aria-label="Retour"
         >
           <ArrowLeft size={18} />
@@ -577,7 +577,7 @@ export default function ScannerPage() {
             ].map((item, index) => (
               <div
                 key={item}
-                className="rounded-[20px] border border-[#dfe7e6] bg-white px-3 py-3 text-center shadow-[0_8px_25px_rgba(35,55,60,0.045)]"
+                className="rounded-[20px] border border-[#dfe7e6] dark:border-[#28515a] bg-white dark:bg-[#102d35] px-3 py-3 text-center shadow-[0_8px_25px_rgba(35,55,60,0.045)]"
               >
                 <div className="mx-auto mb-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#e8f8f5]">
                   <Check size={13} />
@@ -588,7 +588,7 @@ export default function ScannerPage() {
           </div>
 
           {error && (
-            <div className="mt-4 rounded-2xl border border-[#c9d8d7] bg-white px-4 py-3 text-center text-xs leading-5 text-black/60">
+            <div className="mt-4 rounded-2xl border border-[#c9d8d7] dark:border-[#28515a] bg-white dark:bg-[#102d35] px-4 py-3 text-center text-xs leading-5 text-black/60 dark:text-white/65">
               {error}
             </div>
           )}

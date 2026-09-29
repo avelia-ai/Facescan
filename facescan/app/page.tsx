@@ -204,13 +204,13 @@ export default function HomePage() {
         relevance:
           urgency(scan?.peau) +
           (goals.includes("qualite_peau") || goals.includes("eclat") ? 18 : 0),
-        border: "border-[#b9d7d1]",
+        border: "border-[#b9d7d1] dark:border-[#28515a]",
         shadow: "shadow-[0_12px_32px_rgba(35,90,84,0.07)]",
-        iconBg: "bg-[linear-gradient(160deg,#d9f8f3_0%,#aee7dd_100%)]",
+        iconBg: "bg-[linear-gradient(160deg,#d9f8f3_0%,#aee7dd_100%)] dark:bg-[linear-gradient(160deg,#183d3f_0%,#1f5451_100%)]",
         iconColor: "text-[#287f72]",
-        badgeBg: "bg-[#dff6f0]",
+        badgeBg: "bg-[#dff6f0] dark:bg-[#193f3b]",
         badgeColor: "text-[#287f72]",
-        titleColor: "text-[#244c50]",
+        titleColor: "text-[#244c50] dark:text-[#f3f8f7]",
       },
       {
         key: "hydratation",
@@ -228,13 +228,13 @@ export default function HomePage() {
         relevance:
           urgency(scan?.hydratation) +
           (goals.includes("hydratation") ? 20 : 0),
-        border: "border-[#b9d9e5]",
+        border: "border-[#b9d9e5] dark:border-[#28515a]",
         shadow: "shadow-[0_12px_32px_rgba(37,98,116,0.07)]",
-        iconBg: "bg-[linear-gradient(160deg,#dff7ff_0%,#a9deef_100%)]",
+        iconBg: "bg-[linear-gradient(160deg,#dff7ff_0%,#a9deef_100%)] dark:bg-[linear-gradient(160deg,#163844_0%,#1d5363_100%)]",
         iconColor: "text-[#2d8eae]",
-        badgeBg: "bg-[#dff3fa]",
+        badgeBg: "bg-[#dff3fa] dark:bg-[#16404a]",
         badgeColor: "text-[#2d7e9a]",
-        titleColor: "text-[#245766]",
+        titleColor: "text-[#245766] dark:text-[#f3f8f7]",
       },
       {
         key: "sommeil",
@@ -252,13 +252,13 @@ export default function HomePage() {
         relevance:
           urgency(scan?.fatigue) +
           (goals.includes("sommeil") || goals.includes("fatigue") ? 18 : 0),
-        border: "border-[#c9c7e2]",
+        border: "border-[#c9c7e2] dark:border-[#3a3a63]",
         shadow: "shadow-[0_12px_32px_rgba(64,59,90,0.07)]",
-        iconBg: "bg-[linear-gradient(160deg,#f0edff_0%,#cfc7ff_100%)]",
+        iconBg: "bg-[linear-gradient(160deg,#f0edff_0%,#cfc7ff_100%)] dark:bg-[linear-gradient(160deg,#28294a_0%,#3a3b69_100%)]",
         iconColor: "text-[#5d5b9d]",
-        badgeBg: "bg-[#eeeaff]",
+        badgeBg: "bg-[#eeeaff] dark:bg-[#2b2b55]",
         badgeColor: "text-[#5d5b9d]",
-        titleColor: "text-[#39395f]",
+        titleColor: "text-[#39395f] dark:text-[#f3f8f7]",
       },
       {
         key: "alimentation",
@@ -281,13 +281,13 @@ export default function HomePage() {
           urgency(scan?.hydratation) * 0.35 +
           urgency(scan?.peau) * 0.20 +
           (goals.includes("nutrition") ? 16 : 0),
-        border: "border-[#dfb7aa]",
+        border: "border-[#dfb7aa] dark:border-[#614238]",
         shadow: "shadow-[0_12px_32px_rgba(111,72,58,0.07)]",
-        iconBg: "bg-[linear-gradient(160deg,#fff1eb_0%,#ffc7b8_100%)]",
+        iconBg: "bg-[linear-gradient(160deg,#fff1eb_0%,#ffc7b8_100%)] dark:bg-[linear-gradient(160deg,#452f2b_0%,#654139_100%)]",
         iconColor: "text-[#b76b58]",
-        badgeBg: "bg-[#ffebe4]",
+        badgeBg: "bg-[#ffebe4] dark:bg-[#55332d]",
         badgeColor: "text-[#a35f4d]",
-        titleColor: "text-[#77463b]",
+        titleColor: "text-[#77463b] dark:text-[#f3f8f7]",
       },
       {
         key: "activite",
@@ -306,13 +306,13 @@ export default function HomePage() {
           profile?.activity_level === "sédentaire"
             ? 12
             : 0),
-        border: "border-[#a9d1cb]",
+        border: "border-[#a9d1cb] dark:border-[#28515a]",
         shadow: "shadow-[0_12px_32px_rgba(35,90,84,0.06)]",
-        iconBg: "bg-[linear-gradient(160deg,#e1faf3_0%,#b9eadc_100%)]",
+        iconBg: "bg-[linear-gradient(160deg,#e1faf3_0%,#b9eadc_100%)] dark:bg-[linear-gradient(160deg,#173f3e_0%,#20534d_100%)]",
         iconColor: "text-[#168f91]",
-        badgeBg: "bg-[#dff7f0]",
+        badgeBg: "bg-[#dff7f0] dark:bg-[#1a4741]",
         badgeColor: "text-[#168f91]",
-        titleColor: "text-[#21585d]",
+        titleColor: "text-[#21585d] dark:text-[#f3f8f7]",
       },
     ];
 
@@ -714,7 +714,7 @@ export default function HomePage() {
       
 <main className="relative min-h-screen app-background">
         <div className="mx-auto flex min-h-screen max-w-md items-center justify-center px-5">
-          <div className="text-sm font-medium text-[#64747b]">
+          <div className="text-sm font-medium text-[#64747b] dark:text-[#a9c0c3]">
             Préparation de votre espace Otavio…
           </div>
         </div>
@@ -886,7 +886,7 @@ export default function HomePage() {
           <button
             type="button"
             onClick={() => router.push("/resultats")}
-            className="relative mt-7 w-full overflow-hidden rounded-[32px] border border-[#8fc7cf] bg-white text-left shadow-[0_20px_50px_rgba(24,55,68,0.10)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_55px_rgba(24,55,68,0.13)]"
+            className="relative mt-7 w-full overflow-hidden rounded-[32px] border border-[#8fc7cf] bg-white dark:border-[#28515a] dark:bg-[#102d35] text-left shadow-[0_20px_50px_rgba(24,55,68,0.10)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_55px_rgba(24,55,68,0.13)]"
           >
             <div className="relative flex items-center justify-between gap-5 overflow-hidden bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#12a6a6_100%)] p-6 text-white">
               <div className="min-w-0">
@@ -928,13 +928,13 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="bg-white p-5">
+            <div className="bg-white dark:bg-[#102d35] p-5">
               <div className="mb-4 flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-semibold text-[#163d4c]">
+                  <p className="text-sm font-semibold text-[#163d4c] dark:text-[#f3f8f7]">
                     Ce que le scan a observé
                   </p>
-                  <p className="mt-1 text-xs text-[#7b898f]">
+                  <p className="mt-1 text-xs text-[#7b898f] dark:text-[#a9c0c3]">
                     Des indicateurs visuels, pas un diagnostic médical.
                   </p>
                 </div>
@@ -950,7 +950,7 @@ export default function HomePage() {
                     label: "Peau",
                     value: latestIndicators?.peau,
                     tone: "text-[#d96550]",
-                    bg: "bg-[#fff0eb]",
+                    bg: "bg-[#fff0eb] dark:bg-[#4b302b]",
                   },
                   {
                     label: "Hydratation",
@@ -973,7 +973,7 @@ export default function HomePage() {
                 ].map((item) => (
                   <div
                     key={item.label}
-                    className="rounded-[22px] border border-[#b9dfe0] bg-white p-4 shadow-[0_6px_18px_rgba(70,55,40,0.035)]"
+                    className="rounded-[22px] border border-[#b9dfe0] bg-white dark:border-[#28515a] dark:bg-[#102d35] p-4 shadow-[0_6px_18px_rgba(70,55,40,0.035)]"
                   >
                     <div
                       className={`inline-flex rounded-2xl px-3 py-1.5 text-xs font-bold ${item.bg} ${item.tone}`}
@@ -981,7 +981,7 @@ export default function HomePage() {
                       {item.value ?? "—"}
                     </div>
 
-                    <p className="mt-3 text-xs font-semibold text-[#183d48]">
+                    <p className="mt-3 text-xs font-semibold text-[#183d48] dark:text-[#f3f8f7]">
                       {item.label}
                     </p>
                   </div>
@@ -990,14 +990,14 @@ export default function HomePage() {
             </div>
           </button>
         ) : (
-          <section className="mt-7 overflow-hidden rounded-[30px] border border-[#72c9cf] bg-white shadow-[0_18px_50px_rgba(8,126,164,0.16)]">
-            <div className="relative overflow-hidden bg-[linear-gradient(135deg,#dff8f4_0%,#eefcff_52%,#eee9ff_100%)] px-5 py-7">
+          <section className="mt-7 overflow-hidden rounded-[30px] border border-[#72c9cf] bg-white dark:bg-[#102d35] shadow-[0_18px_50px_rgba(8,126,164,0.16)]">
+            <div className="relative overflow-hidden bg-[linear-gradient(135deg,#dff8f4_0%,#eefcff_52%,#eee9ff_100%)] dark:bg-[linear-gradient(135deg,#123b3d_0%,#163844_52%,#292645_100%)] px-5 py-7">
               <div className="pointer-events-none absolute -right-10 -top-12 h-32 w-32 rounded-full bg-[#9ee7dc]/25 blur-3xl" />
               <div className="pointer-events-none absolute -bottom-12 -left-10 h-28 w-28 rounded-full bg-[#a9b2f7]/20 blur-3xl" />
 
               <div className="relative flex items-start gap-4">
                 <div className="shrink-0">
-                  <div className="relative h-20 w-20 overflow-hidden rounded-[22px] border border-white/90 bg-white shadow-[0_12px_30px_rgba(35,92,96,0.12)]">
+                  <div className="relative h-20 w-20 overflow-hidden rounded-[22px] border border-white/90 bg-white dark:border-[#28515a] dark:bg-[#173a43] shadow-[0_12px_30px_rgba(35,92,96,0.12)]">
                     <video
                       src="/otavio/premier-scan.mp4"
                       autoPlay
@@ -1011,20 +1011,20 @@ export default function HomePage() {
                 </div>
 
                 <div className="min-w-0 flex-1 pt-0.5">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-[#cfe6e3] bg-white/75 px-3 py-1.5 shadow-sm">
+                  <div className="inline-flex items-center gap-2 rounded-full border border-[#cfe6e3] bg-white/75 dark:border-[#28515a] dark:bg-[#102d35]/80 px-3 py-1.5 shadow-sm">
                     <span className="h-1.5 w-1.5 rounded-full bg-[#168f91]" />
                     <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#277d80]">
                       Votre première étape
                     </span>
                   </div>
 
-                  <h2 className="mt-3 text-[21px] font-semibold leading-tight tracking-tight text-[#183d48]">
+                  <h2 className="mt-3 text-[21px] font-semibold leading-tight tracking-tight text-[#183d48] dark:text-[#f3f8f7]">
                     Faites votre premier scan
                   </h2>
                 </div>
               </div>
 
-              <p className="relative mt-4 max-w-[340px] text-sm leading-5 text-[#617078]">
+              <p className="relative mt-4 max-w-[340px] text-sm leading-5 text-[#617078] dark:text-[#a9c0c3]">
                 Votre scan va établir votre point de départ et permettre à
                 Otavio de personnaliser votre accompagnement.
               </p>
@@ -1032,15 +1032,15 @@ export default function HomePage() {
               <button
                 type="button"
                 onClick={() => router.push("/scanner")}
-                className="relative mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#183d48] px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(24,61,72,0.18)] transition hover:-translate-y-0.5 hover:bg-[#214d59] hover:shadow-[0_14px_28px_rgba(24,61,72,0.22)]"
+                className="relative mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#183d48] dark:bg-[#35c8c1] px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_24px_rgba(24,61,72,0.18)] transition hover:-translate-y-0.5 hover:bg-[#214d59] hover:shadow-[0_14px_28px_rgba(24,61,72,0.22)]"
               >
                 <ScanFace size={17} strokeWidth={1.8} />
                 Faire mon premier scan
               </button>
             </div>
 
-            <div className="border-t border-[#e0e8e7] px-5 py-4">
-              <p className="text-xs leading-5 text-[#728087]">
+            <div className="border-t border-[#e0e8e7] dark:border-[#28515a] px-5 py-4">
+              <p className="text-xs leading-5 text-[#728087] dark:text-[#8eaaae]">
                 Quelques secondes suffisent pour obtenir vos premiers
                 indicateurs visuels.
               </p>
@@ -1049,8 +1049,8 @@ export default function HomePage() {
         )}
 
 
-        <section className="mt-5 overflow-hidden rounded-[30px] border border-[#72c9cf] bg-white shadow-[0_18px_50px_rgba(8,126,164,0.16)]">
-          <div className="relative aspect-[16/8] overflow-hidden bg-white">
+        <section className="mt-5 overflow-hidden rounded-[30px] border border-[#72c9cf] bg-white dark:bg-[#102d35] shadow-[0_18px_50px_rgba(8,126,164,0.16)]">
+          <div className="relative aspect-[16/8] overflow-hidden bg-white dark:bg-[#0d252d]">
             <video
               src="/otavio/compagnon.mp4"
               autoPlay
@@ -1062,7 +1062,7 @@ export default function HomePage() {
             />
           </div>
 
-          <div className="bg-white/96 px-5 py-5">
+          <div className="bg-white/96 dark:bg-[#102d35]/96 px-5 py-5">
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-[#168f91]" />
 
@@ -1073,28 +1073,28 @@ export default function HomePage() {
 
             <div className="mt-2 flex items-end justify-between gap-4">
               <div>
-                <h2 className="text-xl font-semibold tracking-tight text-[#183d48]">
+                <h2 className="text-xl font-semibold tracking-tight text-[#183d48] dark:text-[#f3f8f7]">
                   Otavio
                 </h2>
 
-                <p className="mt-1 text-sm text-[#66757d]">
+                <p className="mt-1 text-sm text-[#66757d] dark:text-[#a9c0c3]">
                   Stade {otavioProgress.stage} · {otavioProgress.name}
                 </p>
               </div>
 
               <div className="text-right">
-                <p className="text-2xl font-semibold tracking-tight text-[#102f3a]">
+                <p className="text-2xl font-semibold tracking-tight text-[#102f3a] dark:text-[#f3f8f7]">
                   {otavioXp}
                 </p>
 
-                <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#89969c]">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#89969c] dark:text-[#8eaaae]">
                   XP
                 </p>
               </div>
             </div>
 
             <div className="mt-5">
-              <div className="flex items-center justify-between text-[10px] font-semibold text-[#7c8b90]">
+              <div className="flex items-center justify-between text-[10px] font-semibold text-[#7c8b90] dark:text-[#8eaaae]">
                 <span>Progression</span>
 
                 <span>
@@ -1104,7 +1104,7 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#e6eceb]">
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-[#e6eceb] dark:bg-[#20434b]">
                 <div
                   className="h-full rounded-full bg-gradient-to-r from-[#087ea4] via-[#12a6a6] to-[#42cfc2] transition-all duration-700"
                   style={{ width: `${otavioProgress.progress}%` }}
@@ -1113,35 +1113,35 @@ export default function HomePage() {
             </div>
 
             <div className="mt-5 grid grid-cols-2 gap-3">
-              <div className="rounded-2xl border border-[#ffb7a4] bg-[linear-gradient(135deg,#fff1eb_0%,#ffd4c8_100%)] px-4 py-3 shadow-[0_8px_22px_rgba(255,128,102,0.10)]">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#7c8b90]">
+              <div className="rounded-2xl border border-[#ffb7a4] bg-[linear-gradient(135deg,#fff1eb_0%,#ffd4c8_100%)] dark:border-[#654139] dark:bg-[linear-gradient(135deg,#452f2b_0%,#5b3b34_100%)] px-4 py-3 shadow-[0_8px_22px_rgba(255,128,102,0.10)]">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#7c8b90] dark:text-[#8eaaae]">
                   Série
                 </p>
 
-                <p className="mt-1 text-sm font-semibold text-[#163d4c]">
+                <p className="mt-1 text-sm font-semibold text-[#163d4c] dark:text-[#f3f8f7]">
                   🔥 {otavioStreak} jour{otavioStreak > 1 ? "s" : ""}
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-[#ffb7a4] bg-[linear-gradient(135deg,#fff1eb_0%,#ffd4c8_100%)] px-4 py-3 shadow-[0_8px_22px_rgba(255,128,102,0.10)]">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#7c8b90]">
+              <div className="rounded-2xl border border-[#ffb7a4] bg-[linear-gradient(135deg,#fff1eb_0%,#ffd4c8_100%)] dark:border-[#654139] dark:bg-[linear-gradient(135deg,#452f2b_0%,#5b3b34_100%)] px-4 py-3 shadow-[0_8px_22px_rgba(255,128,102,0.10)]">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#7c8b90] dark:text-[#8eaaae]">
                   Aujourd’hui
                 </p>
 
-                <p className="mt-1 text-sm font-semibold text-[#163d4c]">
+                <p className="mt-1 text-sm font-semibold text-[#163d4c] dark:text-[#f3f8f7]">
                   {completedToday} / {dailyTasks.length || 4} actions
                 </p>
               </div>
             </div>
 
-            <div className="mt-3 rounded-2xl border border-[#8fddd3] bg-[linear-gradient(135deg,#d9f8f1_0%,#c5efea_48%,#eee8ff_100%)] px-4 py-3 shadow-[0_8px_22px_rgba(18,166,166,0.08)]">
-              <p className="text-xs font-semibold text-[#176678]">
+            <div className="mt-3 rounded-2xl border border-[#8fddd3] bg-[linear-gradient(135deg,#d9f8f1_0%,#c5efea_48%,#eee8ff_100%)] dark:border-[#285c5a] dark:bg-[linear-gradient(135deg,#163f3d_0%,#1d4c49_48%,#302d4e_100%)] px-4 py-3 shadow-[0_8px_22px_rgba(18,166,166,0.08)]">
+              <p className="text-xs font-semibold text-[#176678] dark:text-[#76d4cf]">
                 {hasScan
                   ? "Otavio progresse avec vous."
                   : "Votre aventure avec Otavio commence ici."}
               </p>
 
-              <p className="mt-1 text-xs leading-5 text-[#466d74]">
+              <p className="mt-1 text-xs leading-5 text-[#466d74] dark:text-[#a9c0c3]">
                 {hasScan
                   ? "Complétez votre programme régulièrement pour faire évoluer votre compagnon."
                   : "Votre premier scan vous permettra de commencer à faire évoluer Otavio."}
@@ -1157,12 +1157,12 @@ export default function HomePage() {
                 Votre aperçu
               </p>
 
-              <h2 className="mt-1 text-xl font-semibold tracking-tight text-[#183d48]">
+              <h2 className="mt-1 text-xl font-semibold tracking-tight text-[#183d48] dark:text-[#f3f8f7]">
                 Vos indicateurs
               </h2>
             </div>
 
-            <span className="text-xs font-medium text-[#8a989e]">
+            <span className="text-xs font-medium text-[#8a989e] dark:text-[#8eaaae]">
               {hasScan ? "Dernière analyse" : "Après votre scan"}
             </span>
           </div>
@@ -1170,7 +1170,7 @@ export default function HomePage() {
           <div className="mt-4 grid grid-cols-2 gap-3">
             <div className="rounded-[24px] border border-[#72d0c4] bg-[linear-gradient(145deg,#ffffff_0%,#d7f6ee_100%)] p-5 shadow-[0_10px_20px_rgba(31,69,65,0.055),0_22px_42px_rgba(31,69,65,0.055),inset_0_1px_0_rgba(255,255,255,0.96)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_26px_rgba(31,69,65,0.075),0_28px_54px_rgba(31,69,65,0.10),inset_0_1px_0_rgba(255,255,255,1)]">
               <div className="flex items-center justify-between">
-                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 bg-[linear-gradient(145deg,#effffc_0%,#bdece1_100%)] text-[#287f72] shadow-[0_4px_8px_rgba(35,80,74,0.08),0_9px_18px_rgba(35,80,74,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 dark:border-[#28515a] bg-[linear-gradient(145deg,#effffc_0%,#bdece1_100%)] dark:bg-[linear-gradient(145deg,#183d3f_0%,#245650_100%)] text-[#287f72] shadow-[0_4px_8px_rgba(35,80,74,0.08),0_9px_18px_rgba(35,80,74,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
                   <Sparkles size={18} />
                 </div>
 
@@ -1181,18 +1181,18 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <p className="mt-4 text-sm font-semibold text-[#183d48]">
+              <p className="mt-4 text-sm font-semibold text-[#183d48] dark:text-[#f3f8f7]">
                 Qualité de peau
               </p>
 
-              <p className="mt-1 text-xs leading-5 text-[#7b898f]">
+              <p className="mt-1 text-xs leading-5 text-[#7b898f] dark:text-[#a9c0c3]">
                 Votre premier score apparaîtra ici.
               </p>
             </div>
 
             <div className="rounded-[24px] border border-[#71cbd5] bg-[linear-gradient(145deg,#ffffff_0%,#d9f5f8_100%)] p-5 shadow-[0_10px_20px_rgba(30,100,105,0.05),0_22px_42px_rgba(30,100,105,0.055),inset_0_1px_0_rgba(255,255,255,0.96)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_26px_rgba(30,100,105,0.07),0_28px_54px_rgba(30,100,105,0.10),inset_0_1px_0_rgba(255,255,255,1)]">
               <div className="flex items-center justify-between">
-                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 bg-[linear-gradient(145deg,#effffc_0%,#bdece1_100%)] text-[#287f72] shadow-[0_4px_8px_rgba(35,80,74,0.08),0_9px_18px_rgba(35,80,74,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 dark:border-[#28515a] bg-[linear-gradient(145deg,#effffc_0%,#bdece1_100%)] dark:bg-[linear-gradient(145deg,#183d3f_0%,#245650_100%)] text-[#287f72] shadow-[0_4px_8px_rgba(35,80,74,0.08),0_9px_18px_rgba(35,80,74,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
                   <Droplets size={18} />
                 </div>
 
@@ -1203,18 +1203,18 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <p className="mt-4 text-sm font-semibold text-[#183d48]">
+              <p className="mt-4 text-sm font-semibold text-[#183d48] dark:text-[#f3f8f7]">
                 Hydratation
               </p>
 
-              <p className="mt-1 text-xs leading-5 text-[#7b898f]">
+              <p className="mt-1 text-xs leading-5 text-[#7b898f] dark:text-[#a9c0c3]">
                 Votre premier score apparaîtra ici.
               </p>
             </div>
 
             <div className="rounded-[24px] border border-[#b1a6f7] bg-[linear-gradient(145deg,#ffffff_0%,#e5e0ff_100%)] p-5 shadow-[0_10px_20px_rgba(82,75,130,0.05),0_22px_42px_rgba(82,75,130,0.055),inset_0_1px_0_rgba(255,255,255,0.96)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_26px_rgba(82,75,130,0.07),0_28px_54px_rgba(82,75,130,0.10),inset_0_1px_0_rgba(255,255,255,1)]">
               <div className="flex items-center justify-between">
-                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 bg-[linear-gradient(145deg,#fbfaff_0%,#d9d2ff_100%)] text-[#655cc2] shadow-[0_4px_8px_rgba(82,75,130,0.08),0_9px_18px_rgba(82,75,130,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 dark:border-[#3a3a63] bg-[linear-gradient(145deg,#fbfaff_0%,#d9d2ff_100%)] dark:bg-[linear-gradient(145deg,#29294a_0%,#3b3b68_100%)] text-[#655cc2] shadow-[0_4px_8px_rgba(82,75,130,0.08),0_9px_18px_rgba(82,75,130,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
                   <Moon size={18} />
                 </div>
 
@@ -1225,18 +1225,18 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <p className="mt-4 text-sm font-semibold text-[#183d48]">
+              <p className="mt-4 text-sm font-semibold text-[#183d48] dark:text-[#f3f8f7]">
                 Fatigue apparente
               </p>
 
-              <p className="mt-1 text-xs leading-5 text-[#7b898f]">
+              <p className="mt-1 text-xs leading-5 text-[#7b898f] dark:text-[#a9c0c3]">
                 Votre premier score apparaîtra ici.
               </p>
             </div>
 
             <div className="rounded-[24px] border border-[#ffad98] bg-[linear-gradient(145deg,#ffffff_0%,#ffe2d9_100%)] p-5 shadow-[0_10px_20px_rgba(120,75,60,0.05),0_22px_42px_rgba(120,75,60,0.055),inset_0_1px_0_rgba(255,255,255,0.96)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_26px_rgba(120,75,60,0.07),0_28px_54px_rgba(120,75,60,0.10),inset_0_1px_0_rgba(255,255,255,1)]">
               <div className="flex items-center justify-between">
-                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 bg-[linear-gradient(145deg,#fffaf7_0%,#ffc9bb_100%)] text-[#c06450] shadow-[0_4px_8px_rgba(120,75,60,0.08),0_9px_18px_rgba(120,75,60,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-[14px] border border-white/80 dark:border-[#614238] bg-[linear-gradient(145deg,#fffaf7_0%,#ffc9bb_100%)] dark:bg-[linear-gradient(145deg,#432e2a_0%,#613d34_100%)] text-[#c06450] shadow-[0_4px_8px_rgba(120,75,60,0.08),0_9px_18px_rgba(120,75,60,0.07),inset_0_1px_0_rgba(255,255,255,1)] transition-transform duration-300 hover:scale-[1.04]">
                   <Activity size={18} />
                 </div>
 
@@ -1247,11 +1247,11 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <p className="mt-4 text-sm font-semibold text-[#183d48]">
+              <p className="mt-4 text-sm font-semibold text-[#183d48] dark:text-[#f3f8f7]">
                 Équilibre visuel
               </p>
 
-              <p className="mt-1 text-xs leading-5 text-[#7b898f]">
+              <p className="mt-1 text-xs leading-5 text-[#7b898f] dark:text-[#a9c0c3]">
                 Votre premier score apparaîtra ici.
               </p>
             </div>
@@ -1264,15 +1264,15 @@ export default function HomePage() {
               <p className="text-sm font-semibold text-[#287f72]">
                 Votre programme
               </p>
-              <h2 className="mt-1 text-xl font-semibold tracking-[-0.025em] text-[#183d48]">
+              <h2 className="mt-1 text-xl font-semibold tracking-[-0.025em] text-[#183d48] dark:text-[#f3f8f7]">
                 Votre programme du jour
               </h2>
-              <p className="mt-1.5 text-xs leading-5 text-[#718088]">
+              <p className="mt-1.5 text-xs leading-5 text-[#718088] dark:text-[#a9c0c3]">
                 {otavioDailyProgram.subtitle}
               </p>
             </div>
 
-            <div className="relative h-[74px] w-[74px] shrink-0 overflow-hidden rounded-[22px] border border-white/90 bg-[#dce8e5] shadow-[0_9px_24px_rgba(25,68,80,0.12)]">
+            <div className="relative h-[74px] w-[74px] shrink-0 overflow-hidden rounded-[22px] border border-white/90 dark:border-[#28515a] bg-[#dce8e5] dark:bg-[#173a43] shadow-[0_9px_24px_rgba(25,68,80,0.12)]">
               <video
                 src="/otavio/video-quotidien.mp4"
                 autoPlay
@@ -1290,10 +1290,10 @@ export default function HomePage() {
               <Link
                 key={item.id}
                 href={item.href}
-                className="group block rounded-[22px] border border-[#dce7e4] bg-white px-4 py-4 shadow-[0_8px_24px_rgba(25,68,80,0.06)] transition hover:border-[#bcd5d0] hover:shadow-[0_10px_28px_rgba(25,68,80,0.09)]"
+                className="group block rounded-[22px] border border-[#dce7e4] dark:border-[#28515a] bg-white dark:bg-[#102d35] px-4 py-4 shadow-[0_8px_24px_rgba(25,68,80,0.06)] transition hover:border-[#bcd5d0] hover:shadow-[0_10px_28px_rgba(25,68,80,0.09)]"
               >
                 <div className="flex items-start gap-3">
-                  <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] bg-[#eef5f3] text-[#287f72]">
+                  <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] bg-[#eef5f3] dark:bg-[#173f47] text-[#287f72]">
                     {item.category === "hydratation" ? (
                       <Droplets className="h-5 w-5" />
                     ) : item.category === "alimentation" ? (
@@ -1318,32 +1318,32 @@ export default function HomePage() {
                       </span>
 
                       {item.time && (
-                        <span className="rounded-full bg-[#f3f6f5] px-2 py-0.5 text-[10px] font-medium text-[#718088]">
+                        <span className="rounded-full bg-[#f3f6f5] dark:bg-[#173a43] px-2 py-0.5 text-[10px] font-medium text-[#718088] dark:text-[#a9c0c3]">
                           {item.time}
                         </span>
                       )}
                     </div>
 
-                    <h3 className="mt-1.5 text-sm font-semibold leading-5 text-[#183d48]">
+                    <h3 className="mt-1.5 text-sm font-semibold leading-5 text-[#183d48] dark:text-[#f3f8f7]">
                       {item.title}
                     </h3>
 
-                    <p className="mt-1 text-xs leading-5 text-[#718088]">
+                    <p className="mt-1 text-xs leading-5 text-[#718088] dark:text-[#a9c0c3]">
                       {item.description}
                     </p>
                   </div>
 
-                  <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-[#9aaba8] transition-transform group-hover:translate-x-0.5" />
+                  <ChevronRight className="mt-1 h-4 w-4 shrink-0 text-[#9aaba8] dark:text-[#8eaaae] transition-transform group-hover:translate-x-0.5" />
                 </div>
               </Link>
             ))}
 
             {dailyProgramItems.length === 0 && (
-              <div className="rounded-[22px] border border-[#dce7e4] bg-white px-4 py-5 text-center shadow-[0_8px_24px_rgba(25,68,80,0.05)]">
-                <p className="text-sm font-medium text-[#183d48]">
+              <div className="rounded-[22px] border border-[#dce7e4] bg-white dark:border-[#28515a] dark:bg-[#102d35] px-4 py-5 text-center shadow-[0_8px_24px_rgba(25,68,80,0.05)]">
+                <p className="text-sm font-medium text-[#183d48] dark:text-[#f3f8f7]">
                   Votre programme se prépare
                 </p>
-                <p className="mt-1 text-xs leading-5 text-[#718088]">
+                <p className="mt-1 text-xs leading-5 text-[#718088] dark:text-[#a9c0c3]">
                   Complétez votre profil pour permettre à Otavio de personnaliser vos actions.
                 </p>
               </div>
@@ -1358,11 +1358,11 @@ export default function HomePage() {
                 Votre quotidien
               </p>
 
-              <h2 className="mt-1 text-xl font-semibold tracking-[-0.025em] text-[#183d48]">
+              <h2 className="mt-1 text-xl font-semibold tracking-[-0.025em] text-[#183d48] dark:text-[#f3f8f7]">
                 Les habitudes qui comptent
               </h2>
 
-              <p className="mt-1.5 text-xs leading-5 text-[#718088]">
+              <p className="mt-1.5 text-xs leading-5 text-[#718088] dark:text-[#a9c0c3]">
                 Otavio ajuste ces priorités à partir de votre profil et de votre dernier scan.
               </p>
             </div>
@@ -1373,14 +1373,14 @@ export default function HomePage() {
               <Link
                 key={item.key}
                 href={item.href}
-                className={`group relative block overflow-hidden rounded-[26px] border bg-white ${item.border} ${item.shadow} transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(25,68,80,0.11)]`}
+                className={`group relative block overflow-hidden rounded-[26px] border bg-white dark:bg-[#102d35] ${item.border} ${item.shadow} transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_38px_rgba(25,68,80,0.11)]`}
               >
                 <div className="flex items-stretch">
                   <div
                     className={`flex w-[88px] shrink-0 items-center justify-center ${item.iconBg}`}
                   >
                     <div
-                      className={`flex h-12 w-12 items-center justify-center rounded-[17px] bg-white/85 ${item.iconColor} shadow-[0_6px_16px_rgba(25,68,80,0.08)]`}
+                      className={`flex h-12 w-12 items-center justify-center rounded-[17px] bg-white/85 dark:bg-[#173a43] ${item.iconColor} shadow-[0_6px_16px_rgba(25,68,80,0.08)]`}
                     >
                       {item.key === "sommeil" ? (
                         <Moon size={21} strokeWidth={1.8} />
@@ -1414,7 +1414,7 @@ export default function HomePage() {
 
                       <ChevronRight
                         size={17}
-                        className="mt-1 shrink-0 text-[#a6b2b0] transition-transform group-hover:translate-x-0.5"
+                        className="mt-1 shrink-0 text-[#a6b2b0] dark:text-[#8eaaae] transition-transform group-hover:translate-x-0.5"
                       />
                     </div>
 
@@ -1425,12 +1425,12 @@ export default function HomePage() {
                         {item.badge}
                       </span>
 
-                      <span className="text-[10px] text-[#89909a]">
+                      <span className="text-[10px] text-[#89909a] dark:text-[#8eaaae]">
                         Personnalisé par Otavio
                       </span>
                     </div>
 
-                    <p className="mt-2 text-xs leading-5 text-[#7b898f]">
+                    <p className="mt-2 text-xs leading-5 text-[#7b898f] dark:text-[#a9c0c3]">
                       {item.description}
                     </p>
                   </div>
@@ -1440,9 +1440,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="mt-9 border-t border-[#d7e3e0] pt-6">
+        <section className="mt-9 border-t border-[#d7e3e0] dark:border-[#28515a] pt-6">
           <div className="flex items-start gap-4">
-            <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e8f5f2] text-[#287f72]">
+            <div className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#e8f5f2] dark:bg-[#173f47] text-[#287f72]">
               <Sparkles size={17} strokeWidth={1.8} />
             </div>
 
@@ -1453,12 +1453,12 @@ export default function HomePage() {
                     Votre prochaine étape
                   </p>
 
-                  <h2 className="mt-1.5 text-lg font-semibold tracking-[-0.02em] text-[#183d48]">
+                  <h2 className="mt-1.5 text-lg font-semibold tracking-[-0.02em] text-[#183d48] dark:text-[#f3f8f7]">
                     {nextStep.title}
                   </h2>
                 </div>
 
-                <div className="relative h-[88px] w-[88px] shrink-0 overflow-hidden rounded-[22px] border border-white bg-[#e7f1ef] shadow-[0_9px_24px_rgba(25,68,80,0.12)]">
+                <div className="relative h-[88px] w-[88px] shrink-0 overflow-hidden rounded-[22px] border border-white dark:border-[#28515a] bg-[#e7f1ef] dark:bg-[#173a43] shadow-[0_9px_24px_rgba(25,68,80,0.12)]">
                   <video
                     src="/prochaine-etape.mp4"
                     autoPlay
@@ -1475,7 +1475,7 @@ export default function HomePage() {
 
               </div>
 
-              <p className="mt-2 max-w-md text-sm leading-6 text-[#66757d]">
+              <p className="mt-2 max-w-md text-sm leading-6 text-[#66757d] dark:text-[#a9c0c3]">
                 {nextStep.description}
               </p>
 
@@ -1492,7 +1492,7 @@ export default function HomePage() {
         </section>
       </div>
 
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-[#cfe1e3]/80 bg-white/92 shadow-[0_-12px_35px_rgba(70,55,40,0.07)] backdrop-blur-2xl">
+      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-[#cfe1e3]/80 bg-white/92 dark:border-[#28515a] dark:bg-[#0d252d]/95 shadow-[0_-12px_35px_rgba(70,55,40,0.07)] backdrop-blur-2xl">
         <div className="mx-auto grid max-w-md grid-cols-5 items-end px-3 pb-3 pt-2">
           <button
             type="button"
@@ -1506,7 +1506,7 @@ export default function HomePage() {
           <button
             type="button"
             onClick={() => router.push("/conseils")}
-            className="flex flex-col items-center gap-1 py-2 text-[#718088]"
+            className="flex flex-col items-center gap-1 py-2 text-[#718088] dark:text-[#a9c0c3]"
           >
             <Target size={19} />
             <span className="text-[10px] font-semibold">Conseils</span>
@@ -1515,7 +1515,7 @@ export default function HomePage() {
           <button
             type="button"
             onClick={() => router.push("/scanner")}
-            className="relative -mt-7 flex h-16 w-16 items-center justify-center justify-self-center rounded-full bg-[linear-gradient(135deg,#087ea4_0%,#12a6a6_50%,#7767e8_100%)] text-white shadow-[0_14px_32px_rgba(18,53,68,0.28)] ring-4 ring-white transition hover:scale-[1.03]"
+            className="relative -mt-7 flex h-16 w-16 items-center justify-center justify-self-center rounded-full bg-[linear-gradient(135deg,#087ea4_0%,#12a6a6_50%,#7767e8_100%)] text-white shadow-[0_14px_32px_rgba(18,53,68,0.28)] ring-4 ring-white dark:ring-[#07191f] transition hover:scale-[1.03]"
             aria-label="Scanner"
           >
             <Camera size={25} strokeWidth={1.8} />
@@ -1524,7 +1524,7 @@ export default function HomePage() {
           <button
             type="button"
             onClick={() => router.push("/evolution")}
-            className="flex flex-col items-center gap-1 py-2 text-[#718088]"
+            className="flex flex-col items-center gap-1 py-2 text-[#718088] dark:text-[#a9c0c3]"
           >
             <ArrowRight size={19} />
             <span className="text-[10px] font-semibold">Évolution</span>
@@ -1533,7 +1533,7 @@ export default function HomePage() {
           <button
             type="button"
             onClick={() => router.push("/profil")}
-            className="flex flex-col items-center gap-1 py-2 text-[#718088]"
+            className="flex flex-col items-center gap-1 py-2 text-[#718088] dark:text-[#a9c0c3]"
           >
             <User size={19} />
             <span className="text-[10px] font-semibold">Profil</span>
