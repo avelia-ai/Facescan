@@ -201,7 +201,7 @@ export default function PeauPage() {
         <header className="flex items-center justify-between mb-7">
           <Link
             href="/conseils"
-            className="flex h-10 w-10 items-center justify-center rounded-full bg-white border border-[#c9dfe4]"
+            className="flex h-10 w-10 items-center justify-center rounded-full bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a]"
           >
             <ArrowLeft size={19} />
           </Link>
@@ -266,19 +266,19 @@ export default function PeauPage() {
         </section>
 
         <section className="mt-5 grid grid-cols-3 gap-3">
-          <div className="rounded-2xl bg-white border border-[#c9dfe4] p-4">
+          <div className="rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-4">
             <Droplets size={18} className="text-[#39715f] mb-3" />
             <p className="text-xs text-[#8a928e]">Routine</p>
             <p className="font-semibold mt-1">Matin + soir</p>
           </div>
 
-          <div className="rounded-2xl bg-white border border-[#c9dfe4] p-4">
+          <div className="rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-4">
             <ShieldCheck size={18} className="text-[#39715f] mb-3" />
             <p className="text-xs text-[#8a928e]">Approche</p>
             <p className="font-semibold mt-1">Progressive</p>
           </div>
 
-          <div className="rounded-2xl bg-white border border-[#c9dfe4] p-4">
+          <div className="rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-4">
             <Sun size={18} className="text-[#39715f] mb-3" />
             <p className="text-xs text-[#8a928e]">Programme</p>
             <p className="font-semibold mt-1">7 jours</p>
@@ -305,7 +305,7 @@ export default function PeauPage() {
             {today?.actions.map((action, index) => (
               <div
                 key={`${action.title}-${index}`}
-                className="rounded-2xl bg-white border border-[#c9dfe4] p-4"
+                className="rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-4"
               >
                 <div className="flex items-start gap-4">
                   <div className="h-10 w-10 shrink-0 rounded-xl bg-[#dff3f1] flex items-center justify-center">
@@ -327,7 +327,7 @@ export default function PeauPage() {
                         </p>
                       </div>
 
-                      <span className="text-[10px] px-2 py-1 rounded-full bg-[#ffe2d9] text-[#d96550] whitespace-nowrap">
+                      <span className="text-[10px] px-2 py-1 rounded-full bg-[#ffe2d9] dark:bg-[#4b302b] text-[#d96550] dark:text-[#ff9a86] whitespace-nowrap">
                         {action.priority}
                       </span>
                     </div>
@@ -403,7 +403,7 @@ export default function PeauPage() {
                 className={`min-w-[64px] rounded-2xl border px-3 py-3 text-center transition ${
                   selectedDay === day.day
                     ? "bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#12a6a6_72%,#7767e8_100%)] text-white border-[#18352d]"
-                    : "bg-white border-[#c9dfe4] text-[#355763]"
+                    : "bg-white dark:bg-[#102d35] border-[#c9dfe4] dark:border-[#28515a] text-[#355763] dark:text-[#d5e4e7]"
                 }`}
               >
                 <div className="text-[10px] uppercase tracking-wider opacity-60">

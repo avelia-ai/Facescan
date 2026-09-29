@@ -355,7 +355,7 @@ export default function HydratationPage() {
         <header className="mb-7 flex items-center justify-between">
           <Link
             href="/conseils"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e8ebe9] bg-white shadow-[0_6px_18px_rgba(35,55,60,0.05)] transition hover:-translate-y-0.5"
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-[#e8ebe9] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_6px_18px_rgba(35,55,60,0.05)] transition hover:-translate-y-0.5"
             aria-label="Retour aux conseils"
           >
             <ArrowLeft size={19} />
@@ -479,7 +479,7 @@ export default function HydratationPage() {
             className={`group w-full rounded-[24px] border p-5 text-left transition ${
               currentDone
                 ? "border-[#73d1c6] bg-[#dff8f2]"
-                : "border-[#dfe8e7] bg-white shadow-[0_12px_30px_rgba(35,70,75,0.05)] hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(35,70,75,0.07)]"
+                : "border-[#dfe8e7] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_12px_30px_rgba(35,70,75,0.05)] hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(35,70,75,0.07)]"
             }`}
           >
             <div className="flex items-start gap-4">
@@ -556,7 +556,7 @@ export default function HydratationPage() {
                   className={`relative min-w-[64px] rounded-2xl border px-3 py-3 text-center transition ${
                     selectedDay === day.day
                       ? "border-[#163b43] bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#12a6a6_100%)] text-white"
-                      : "border-[#b9dfe3] bg-white text-[#355763]"
+                      : "border-[#b9dfe3] dark:border-[#28515a] bg-white dark:bg-[#102d35] text-[#355763] dark:text-[#d5e4e7]"
                   }`}
                 >
                   {done && (
@@ -575,7 +575,7 @@ export default function HydratationPage() {
           </div>
         </section>
 
-        <section className="mt-7 rounded-[24px] border border-[#e1ebeb] bg-white p-5 shadow-[0_10px_28px_rgba(35,70,75,0.04)]">
+        <section className="mt-7 rounded-[24px] border border-[#e1ebeb] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 shadow-[0_10px_28px_rgba(35,70,75,0.04)]">
           <div className="mb-4 flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#d8f6f0]">
               <Sparkles size={18} className="text-[#087ea4]" />
