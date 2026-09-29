@@ -476,7 +476,7 @@ export default function ProfilPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#dce5e4] bg-white shadow-[0_8px_25px_rgba(30,55,60,0.06)]"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#dce5e4] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_8px_25px_rgba(30,55,60,0.06)]"
               aria-label="Retour à l’accueil"
             >
               <ArrowLeft size={18} strokeWidth={1.8} />
@@ -503,7 +503,7 @@ export default function ProfilPage() {
           <button
             type="button"
             onClick={handleSignOut}
-            className="flex items-center gap-2 rounded-full border border-[#ffb19d] bg-[linear-gradient(135deg,#ffffff_0%,#fff0eb_100%)] px-4 py-3 text-[12px] font-semibold text-[#b45a48] shadow-sm transition hover:bg-[#ffe3db]"
+            className="flex items-center gap-2 rounded-full border border-[#ffb19d] dark:border-[#614238] bg-[linear-gradient(135deg,#ffffff_0%,#fff0eb_100%)] dark:bg-[linear-gradient(135deg,#432e2a_0%,#4b302b_100%)] px-4 py-3 text-[12px] font-semibold text-[#b45a48] shadow-sm transition hover:bg-[#ffe3db]"
           >
             <LogOut size={15} strokeWidth={1.8} />
             Déconnexion
@@ -514,7 +514,7 @@ export default function ProfilPage() {
           <button
             type="button"
             onClick={handleSignOut}
-            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-[#ffb19d] bg-[linear-gradient(135deg,#ffffff_0%,#fff0eb_100%)] px-4 py-3.5 text-sm font-semibold text-[#b45a48]"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl border border-[#ffb19d] dark:border-[#614238] bg-[linear-gradient(135deg,#ffffff_0%,#fff0eb_100%)] dark:bg-[linear-gradient(135deg,#432e2a_0%,#4b302b_100%)] px-4 py-3.5 text-sm font-semibold text-[#b45a48]"
           >
             <LogOut size={17} strokeWidth={1.8} />
             Se déconnecter
@@ -646,7 +646,7 @@ export default function ProfilPage() {
                       className={`rounded-xl border px-2 py-2.5 text-[10px] font-semibold transition ${
                         active
                           ? "border-[#087ea4] bg-[#c9f2eb] text-[#087ea4]"
-                          : "border-[#b9dfe3] bg-white text-[#557078] hover:bg-[#e9f8f7]"
+                          : "border-[#b9dfe3] dark:border-[#28515a] bg-white dark:bg-[#102d35] text-[#557078] dark:text-[#c4d5d9] hover:bg-[#e9f8f7] dark:hover:bg-[#173f47]"
                       }`}
                     >
                       {days} j
@@ -738,7 +738,7 @@ export default function ProfilPage() {
           </p>
 
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            <article className="rounded-[24px] border border-[#dce6e5] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+            <article className="rounded-[24px] border border-[#dce6e5] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#edf5f5]">
                   <UserRound size={18} strokeWidth={1.7} />
@@ -772,7 +772,7 @@ export default function ProfilPage() {
               </div>
             </article>
 
-            <article className="rounded-[24px] border border-[#dce6e5] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+            <article className="rounded-[24px] border border-[#dce6e5] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#edf5f5]">
                   <Sparkles size={18} strokeWidth={1.7} />
@@ -817,7 +817,7 @@ export default function ProfilPage() {
               </div>
             </article>
 
-            <article className="rounded-[24px] border border-[#dce6e5] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+            <article className="rounded-[24px] border border-[#dce6e5] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#edf5f5]">
                   <Activity size={18} strokeWidth={1.7} />
@@ -880,7 +880,7 @@ export default function ProfilPage() {
               </div>
             </article>
 
-            <article className="rounded-[24px] border border-[#dce6e5] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+            <article className="rounded-[24px] border border-[#dce6e5] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#edf5f5]">
                   <Droplets size={18} strokeWidth={1.7} />
@@ -1128,7 +1128,7 @@ export default function ProfilPage() {
         </p>
       </div>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#dce5e4] bg-white/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#28515a] bg-white/95 dark:bg-[#0c252d]/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
         <div className="mx-auto flex max-w-md items-end justify-between">
           <Link
             href="/"
