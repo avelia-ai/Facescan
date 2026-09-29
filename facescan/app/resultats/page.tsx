@@ -61,7 +61,7 @@ const indicatorConfig = [
     description: "Qualité visuelle",
     icon: Sparkles,
     accent: "text-[#e06f59]",
-    iconBg: "bg-[#ffd9cf]",
+    iconBg: "bg-[#ffd9cf] dark:bg-[#4b302b]",
     bar: "from-[#ff8066] to-[#e45f4b]",
   },
   {
@@ -158,7 +158,7 @@ function buildDailyActions(
       priority:
         100 - indicators.peau +
         goalBoost(["peau", "qualite_peau", "eclat"]),
-      tone: "bg-[#ffd9cf] text-[#e45f4b]",
+      tone: "bg-[#ffd9cf] dark:bg-[#4b302b] text-[#e45f4b] dark:text-[#ff9a86]",
     },
     {
       key: "equilibre",
@@ -520,7 +520,7 @@ export default function ResultatsPage() {
             <Link
               href="/scanner"
               aria-label="Retour au scanner"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d9e4e7] bg-white text-[#36545d] shadow-[0_8px_25px_rgba(20,55,65,0.06)] transition hover:-translate-y-0.5"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#d9e4e7] dark:border-[#28515a] bg-white dark:bg-[#102d35] text-[#36545d] dark:text-[#d8e8eb] shadow-[0_8px_25px_rgba(20,55,65,0.06)] transition hover:-translate-y-0.5"
             >
               <ArrowLeft size={18} strokeWidth={1.8} />
             </Link>
@@ -535,7 +535,7 @@ export default function ResultatsPage() {
             </div>
           </div>
 
-          <div className="rounded-full border border-[#d8e5e7] bg-white px-3.5 py-2 text-[9px] font-semibold text-[#5c737a] shadow-[0_7px_22px_rgba(20,55,65,0.05)]">
+          <div className="rounded-full border border-[#d8e5e7] dark:border-[#28515a] bg-white dark:bg-[#173a43] px-3.5 py-2 text-[9px] font-semibold text-[#5c737a] dark:text-[#c4d5d9] shadow-[0_7px_22px_rgba(20,55,65,0.05)]">
             {latestScan ? `Dernier scan · ${scanDateLabel}` : "Aucun scan"}
           </div>
         </header>
@@ -654,7 +654,7 @@ export default function ResultatsPage() {
           </div>
 
           {/* PHOTO / ANALYSE */}
-          <div className="overflow-hidden rounded-[34px] border border-[#d9e5e7] bg-white shadow-[0_20px_55px_rgba(20,55,65,0.07)]">
+          <div className="overflow-hidden rounded-[34px] border border-[#d9e5e7] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_20px_55px_rgba(20,55,65,0.07)]">
             <div className="flex items-center justify-between border-b border-[#edf1f2] px-5 py-5 sm:px-7">
               <div>
                 <p className="text-[9px] font-bold uppercase tracking-[0.21em] text-[#168f91]">
@@ -712,7 +712,7 @@ export default function ResultatsPage() {
                   </>
                 ) : (
                   <div className="flex h-full flex-col items-center justify-center px-6 text-center">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-[#168f91] shadow-sm">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white dark:bg-[#173f47] text-[#168f91] dark:text-[#6fd4cb] shadow-sm">
                       <ScanFace size={25} strokeWidth={1.6} />
                     </div>
                     <p className="mt-4 text-[12px] font-semibold text-[#304b54]">
@@ -726,7 +726,7 @@ export default function ResultatsPage() {
               </div>
 
               <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto]">
-                <div className="rounded-[20px] border border-[#e0e8e9] bg-[#f6f9f9] px-4 py-3.5">
+                <div className="rounded-[20px] border border-[#e0e8e9] dark:border-[#28515a] bg-[#f6f9f9] dark:bg-[#173a43] px-4 py-3.5">
                   <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-[#74888d]">
                     Lecture du scan
                   </p>
@@ -739,7 +739,7 @@ export default function ResultatsPage() {
 
                 <Link
                   href="/scanner"
-                  className="inline-flex items-center justify-center gap-2 rounded-[20px] border border-[#d9e5e7] bg-white px-4 py-3 text-[10px] font-bold text-[#168f91] shadow-[0_8px_20px_rgba(20,55,65,0.045)] transition hover:-translate-y-0.5"
+                  className="inline-flex items-center justify-center gap-2 rounded-[20px] border border-[#d9e5e7] dark:border-[#28515a] bg-white dark:bg-[#173f47] px-4 py-3 text-[10px] font-bold text-[#168f91] dark:text-[#71d8d0] shadow-[0_8px_20px_rgba(20,55,65,0.045)] transition hover:-translate-y-0.5"
                 >
                   Nouveau scan
                   <ArrowRight size={13} />
@@ -765,7 +765,7 @@ export default function ResultatsPage() {
               </p>
             </div>
 
-            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[#dce7e8] bg-white px-3 py-2 text-[9px] font-semibold text-[#6f8388] shadow-[0_8px_22px_rgba(20,55,65,0.045)]">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[#dce7e8] dark:border-[#28515a] bg-white dark:bg-[#173a43] px-3 py-2 text-[9px] font-semibold text-[#6f8388] dark:text-[#c1d1d5] shadow-[0_8px_22px_rgba(20,55,65,0.045)]">
               <span className="h-1.5 w-1.5 rounded-full bg-[#42c9bd]" />
               Analyse du jour
             </div>
@@ -798,7 +798,7 @@ export default function ResultatsPage() {
                         className={`rounded-full px-2.5 py-1.5 text-[9px] font-bold ${
                           positive
                             ? "bg-[#e8f8f5] text-[#168f91]"
-                            : "bg-[#fff0ec] text-[#d96550]"
+                            : "bg-[#fff0ec] dark:bg-[#4b302b] text-[#d96550] dark:text-[#ff9a86]"
                         }`}
                       >
                         {positive ? "+" : ""}
@@ -873,7 +873,7 @@ export default function ResultatsPage() {
               </p>
             </div>
 
-            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-[#e0dcff] bg-[#f1efff] px-3 py-2 text-[9px] font-bold text-[#756bd4]">
+            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-[#e0dcff] dark:border-[#3a3a63] bg-[#f1efff] dark:bg-[#29294a] px-3 py-2 text-[9px] font-bold text-[#756bd4] dark:text-[#b8b3ff]">
               <Sparkles size={12} />
               Personnalisé
             </span>
@@ -896,7 +896,7 @@ export default function ResultatsPage() {
                     </span>
                   </div>
 
-                  <span className="rounded-full bg-[#f4f7f7] px-2.5 py-1.5 text-[8px] font-bold uppercase tracking-[0.12em] text-[#87979b]">
+                  <span className="rounded-full bg-[#f4f7f7] dark:bg-[#173a43] px-2.5 py-1.5 text-[8px] font-bold uppercase tracking-[0.12em] text-[#87979b] dark:text-[#afc0c4]">
                     Priorité
                   </span>
                 </div>
@@ -943,14 +943,14 @@ export default function ResultatsPage() {
 
             <Link
               href="/evolution"
-              className="inline-flex w-fit items-center gap-2 rounded-full border border-[#dce9e2] bg-white px-3.5 py-2 text-[9px] font-bold text-[#3f9864] shadow-[0_8px_22px_rgba(20,55,65,0.045)] transition hover:-translate-y-0.5"
+              className="inline-flex w-fit items-center gap-2 rounded-full border border-[#dce9e2] dark:border-[#294b3c] bg-white dark:bg-[#173c35] px-3.5 py-2 text-[9px] font-bold text-[#3f9864] dark:text-[#7dd99a] shadow-[0_8px_22px_rgba(20,55,65,0.045)] transition hover:-translate-y-0.5"
             >
               Ouvrir évolution
               <ArrowRight size={13} />
             </Link>
           </div>
 
-          <div className="mt-6 overflow-hidden rounded-[30px] border border-[#dce6e8] bg-white shadow-[0_16px_42px_rgba(20,55,65,0.055)]">
+          <div className="mt-6 overflow-hidden rounded-[30px] border border-[#dce6e8] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_16px_42px_rgba(20,55,65,0.055)]">
             <div className="border-b border-[#edf2f2] bg-[linear-gradient(135deg,#e2faf5_0%,#eef0ff_100%)] px-5 py-5 sm:px-6">
               <div className="flex items-center justify-between gap-4">
                 <div>
@@ -970,7 +970,7 @@ export default function ResultatsPage() {
                 </div>
               </div>
 
-              <div className="mt-5 rounded-[22px] border border-[#dcebe3] bg-white/80 p-4 shadow-[0_8px_22px_rgba(35,90,65,0.04)]">
+              <div className="mt-5 rounded-[22px] border border-[#dcebe3] dark:border-[#294b3c] bg-white/80 dark:bg-[#173c35]/80 p-4 shadow-[0_8px_22px_rgba(35,90,65,0.04)]">
                 {previousScan ? (
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
@@ -987,7 +987,7 @@ export default function ResultatsPage() {
                           className={`mb-1 rounded-full px-2.5 py-1 text-[9px] font-bold ${
                             scoreChange !== null && scoreChange >= 0
                               ? "bg-[#d6f3e3] text-[#35a56d]"
-                              : "bg-[#fff0ec] text-[#d96550]"
+                              : "bg-[#fff0ec] dark:bg-[#4b302b] text-[#d96550] dark:text-[#ff9a86]"
                           }`}
                         >
                           {scoreChange !== null
@@ -1130,7 +1130,7 @@ export default function ResultatsPage() {
           </div>
 
           <div className="mt-6 grid gap-4 lg:grid-cols-2">
-            <article className="relative overflow-hidden rounded-[30px] border border-[#dce9e2] bg-white p-5 shadow-[0_16px_42px_rgba(20,55,65,0.055)] sm:p-6">
+            <article className="relative overflow-hidden rounded-[30px] border border-[#dce9e2] dark:border-[#294b3c] bg-white dark:bg-[#102d35] p-5 shadow-[0_16px_42px_rgba(20,55,65,0.055)] sm:p-6">
               <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#e8f7ee] opacity-70 blur-3xl" />
 
               <div className="relative flex items-start gap-4">
@@ -1160,7 +1160,7 @@ export default function ResultatsPage() {
               <div className="pointer-events-none absolute -bottom-16 -right-10 h-36 w-36 rounded-full bg-[#9b8cff]/30 blur-3xl" />
 
               <div className="relative flex items-start gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-white/80 text-[#756bd4] shadow-[0_8px_20px_rgba(80,70,150,0.06)]">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-white/80 dark:bg-[#29294a]/80 text-[#756bd4] dark:text-[#b8b3ff] shadow-[0_8px_20px_rgba(80,70,150,0.06)]">
                   <Droplets size={19} strokeWidth={1.8} />
                 </div>
 
@@ -1174,7 +1174,7 @@ export default function ResultatsPage() {
                 </div>
               </div>
 
-              <div className="relative mt-5 rounded-[22px] border border-white/70 bg-white/65 px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+              <div className="relative mt-5 rounded-[22px] border border-white/70 dark:border-[#28515a] bg-white/65 dark:bg-[#173a43]/75 px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
                 <p className="text-[11px] leading-5 text-[#61767c]">
                   {attentionInsight?.text ??
                     "Les prochains scans permettront à Otavio de suivre vos quatre indicateurs dans le temps et d’identifier les évolutions qui méritent votre attention."}
@@ -1183,7 +1183,7 @@ export default function ResultatsPage() {
             </article>
           </div>
 
-          <div className="mt-4 flex items-start gap-3 rounded-[24px] border border-[#dce6e8] bg-white px-4 py-4 shadow-[0_10px_28px_rgba(20,55,65,0.04)]">
+          <div className="mt-4 flex items-start gap-3 rounded-[24px] border border-[#dce6e8] dark:border-[#28515a] bg-white dark:bg-[#102d35] px-4 py-4 shadow-[0_10px_28px_rgba(20,55,65,0.04)]">
             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#eef7f6] text-[#168f91]">
               <Info size={15} />
             </div>
@@ -1198,7 +1198,7 @@ export default function ResultatsPage() {
 
         {/* RELIABILITY */}
         <section className="mt-10">
-          <div className="overflow-hidden rounded-[30px] border border-[#dce6e8] bg-white shadow-[0_14px_38px_rgba(20,55,65,0.05)]">
+          <div className="overflow-hidden rounded-[30px] border border-[#dce6e8] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_14px_38px_rgba(20,55,65,0.05)]">
             <div className="flex items-start gap-4 border-b border-[#edf2f2] bg-[linear-gradient(135deg,#fbfdfc_0%,#f5faf9_100%)] px-5 py-5 sm:px-6">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#e8f7f5] text-[#168f91]">
                 <Info size={18} strokeWidth={1.8} />
@@ -1250,7 +1250,7 @@ export default function ResultatsPage() {
                   </div>
                 </div>
 
-                <div className="rounded-[22px] border border-[#e3eaeb] bg-[#f8faf9] px-4 py-3.5 lg:min-w-[230px]">
+                <div className="rounded-[22px] border border-[#e3eaeb] dark:border-[#28515a] bg-[#f8faf9] dark:bg-[#173a43] px-4 py-3.5 lg:min-w-[230px]">
                   <p className="text-[9px] font-bold uppercase tracking-[0.14em] text-[#899a9e]">
                     À retenir
                   </p>
@@ -1266,7 +1266,7 @@ export default function ResultatsPage() {
               </div>
 
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-[20px] bg-[#f7faf9] p-4">
+                <div className="rounded-[20px] bg-[#f7faf9] dark:bg-[#173a43] p-4">
                   <p className="text-[9px] uppercase tracking-[0.14em] text-[#899a9e]">
                     Ce que cela mesure
                   </p>
@@ -1276,7 +1276,7 @@ export default function ResultatsPage() {
                   </p>
                 </div>
 
-                <div className="rounded-[20px] bg-[#f7faf9] p-4">
+                <div className="rounded-[20px] bg-[#f7faf9] dark:bg-[#173a43] p-4">
                   <p className="text-[9px] uppercase tracking-[0.14em] text-[#899a9e]">
                     Ce que cela ne mesure pas
                   </p>
@@ -1335,7 +1335,7 @@ export default function ResultatsPage() {
 
             <Link
               href="/conseils"
-              className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-[20px] bg-white px-5 py-3 text-[10px] font-bold text-[#173f4a] shadow-[0_12px_30px_rgba(0,0,0,0.18)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#f5fffd] lg:min-w-[190px]"
+              className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-[20px] bg-white dark:bg-[#173f47] px-5 py-3 text-[10px] font-bold text-[#173f4a] dark:text-[#d9f4f1] shadow-[0_12px_30px_rgba(0,0,0,0.18)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#f5fffd] lg:min-w-[190px]"
             >
               Voir mes conseils
               <ArrowRight
@@ -1353,7 +1353,7 @@ export default function ResultatsPage() {
       </div>
 
       {/* BOTTOM NAV */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#dce6e8] bg-white/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#28515a] bg-white/95 dark:bg-[#0c252d]/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
         <div className="mx-auto flex max-w-md items-end justify-between">
           <Link
             href="/"
