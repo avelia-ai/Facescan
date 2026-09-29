@@ -258,7 +258,7 @@ function IndicateurContent() {
           <div className="flex items-center gap-3">
             <Link
               href="/resultats"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#dbe6e7] bg-white shadow-[0_6px_20px_rgba(35,55,60,0.05)] transition hover:-translate-y-0.5"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-[#dbe6e7] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_6px_20px_rgba(35,55,60,0.05)] transition hover:-translate-y-0.5"
               aria-label="Retour aux résultats"
             >
               <ArrowLeft size={18} strokeWidth={1.8} />
@@ -383,7 +383,7 @@ function IndicateurContent() {
           </div>
 
           <div className="mt-5 grid gap-4 lg:grid-cols-3">
-            <article className="rounded-[25px] border border-[#dfe8e9] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+            <article className="rounded-[25px] border border-[#dfe8e9] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#e5faf7] text-[#168f91]">
                 <Activity size={19} strokeWidth={1.7} />
               </div>
@@ -397,7 +397,7 @@ function IndicateurContent() {
               </p>
             </article>
 
-            <article className="rounded-[25px] border border-[#dfe8e9] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+            <article className="rounded-[25px] border border-[#dfe8e9] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#eeecff] text-[#756bd4]">
                 <TrendingUp size={19} strokeWidth={1.7} />
               </div>
@@ -433,8 +433,8 @@ function IndicateurContent() {
               </p>
             </article>
 
-            <article className="rounded-[25px] border border-[#dfe8e9] bg-white p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#fff0eb] text-[#d96550]">
+            <article className="rounded-[25px] border border-[#dfe8e9] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#fff0eb] dark:bg-[#4b302b] text-[#d96550] dark:text-[#ff9a86]">
                 <Sparkles size={19} strokeWidth={1.7} />
               </div>
 
@@ -450,7 +450,7 @@ function IndicateurContent() {
         </section>
 
         {/* History */}
-        <section className="mt-10 overflow-hidden rounded-[30px] border border-[#dce6e8] bg-white shadow-[0_16px_42px_rgba(20,55,65,0.055)]">
+        <section className="mt-10 overflow-hidden rounded-[30px] border border-[#dce6e8] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_16px_42px_rgba(20,55,65,0.055)]">
           <div className="border-b border-[#edf2f2] bg-[linear-gradient(135deg,#fbfdfc_0%,#f5faf9_100%)] px-5 py-5 sm:px-6">
             <div className="flex items-center justify-between gap-4">
               <div>
@@ -474,7 +474,7 @@ function IndicateurContent() {
               </div>
             </div>
 
-            <div className="mt-5 flex items-center gap-3 rounded-[20px] border border-[#dfe9e9] bg-white/80 px-4 py-3 shadow-[0_7px_20px_rgba(20,55,65,0.035)]">
+            <div className="mt-5 flex items-center gap-3 rounded-[20px] border border-[#dfe9e9] dark:border-[#28515a] bg-white/80 dark:bg-[#173a43]/80 px-4 py-3 shadow-[0_7px_20px_rgba(20,55,65,0.035)]">
               <div
                 className="h-2.5 w-2.5 shrink-0 rounded-full"
                 style={{ backgroundColor: current.accent }}
@@ -489,7 +489,7 @@ function IndicateurContent() {
                 </p>
               </div>
 
-              <span className="rounded-full bg-[#f2f6f6] px-3 py-1.5 text-[9px] font-semibold text-[#75888d]">
+              <span className="rounded-full bg-[#f2f6f6] dark:bg-[#173a43] px-3 py-1.5 text-[9px] font-semibold text-[#75888d] dark:text-[#b9c9cd]">
                 {currentHistory.length}{" "}
                 {currentHistory.length > 1 ? "scans" : "scan"}
               </span>
@@ -497,7 +497,7 @@ function IndicateurContent() {
           </div>
 
           <div className="p-5 sm:p-6">
-            <div className="rounded-[24px] border border-[#e1e9ea] bg-[#f8faf9] p-4 sm:p-5">
+            <div className="rounded-[24px] border border-[#e1e9ea] dark:border-[#28515a] bg-[#f8faf9] dark:bg-[#173a43] p-4 sm:p-5">
               <div className="flex h-56 items-end gap-2 sm:gap-4">
                 {currentHistory.map((value, index) => {
                   const isLatest = index === currentHistory.length - 1;
@@ -554,7 +554,7 @@ function IndicateurContent() {
 
             {currentHistory.length > 1 ? (
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-[20px] bg-[#f7faf9] p-4">
+                <div className="rounded-[20px] bg-[#f7faf9] dark:bg-[#173a43] p-4">
                   <p className="text-[9px] uppercase tracking-[0.14em] text-[#899a9e]">
                     Première valeur
                   </p>
@@ -563,7 +563,7 @@ function IndicateurContent() {
                   </p>
                 </div>
 
-                <div className="rounded-[20px] bg-[#f7faf9] p-4">
+                <div className="rounded-[20px] bg-[#f7faf9] dark:bg-[#173a43] p-4">
                   <p className="text-[9px] uppercase tracking-[0.14em] text-[#899a9e]">
                     Dernière valeur
                   </p>
@@ -574,7 +574,7 @@ function IndicateurContent() {
               </div>
             ) : (
               <div className="mt-4 flex items-start gap-3 rounded-[20px] bg-[linear-gradient(135deg,#eef9f6_0%,#f3f1ff_100%)] p-4">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white text-[#168f91]">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-white dark:bg-[#173f47] text-[#168f91] dark:text-[#71d8d0]">
                   <Sparkles size={14} />
                 </div>
 
@@ -607,7 +607,7 @@ function IndicateurContent() {
 
             <Link
               href="/conseils"
-              className="inline-flex w-fit items-center gap-2 rounded-full border border-[#dfe5f4] bg-white px-3.5 py-2 text-[9px] font-bold text-[#756bd4] shadow-[0_8px_22px_rgba(20,55,65,0.045)] transition hover:-translate-y-0.5"
+              className="inline-flex w-fit items-center gap-2 rounded-full border border-[#dfe5f4] dark:border-[#3a3a63] bg-white dark:bg-[#29294a] px-3.5 py-2 text-[9px] font-bold text-[#756bd4] dark:text-[#b8b3ff] shadow-[0_8px_22px_rgba(20,55,65,0.045)] transition hover:-translate-y-0.5"
             >
               Tous les conseils
               <ArrowRight size={13} strokeWidth={1.8} />
@@ -636,7 +636,7 @@ function IndicateurContent() {
               return (
                 <article
                   key={action}
-                  className="group relative overflow-hidden rounded-[24px] border border-[#dce6e8] bg-white p-4 shadow-[0_12px_32px_rgba(20,55,65,0.045)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(20,55,65,0.07)] sm:p-5"
+                  className="group relative overflow-hidden rounded-[24px] border border-[#dce6e8] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-4 shadow-[0_12px_32px_rgba(20,55,65,0.045)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(20,55,65,0.07)] sm:p-5"
                 >
                   <div
                     className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full opacity-50 blur-2xl"
@@ -686,7 +686,7 @@ function IndicateurContent() {
         {/* Reminder */}
         <section className="mt-8 overflow-hidden rounded-[25px] border border-[#d8e9e7] bg-gradient-to-br from-[#e8faf7] via-white to-[#f0eeff] p-6">
           <div className="flex items-start gap-4">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-[#168f91] shadow-[0_6px_18px_rgba(35,55,60,0.06)]">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white dark:bg-[#173f47] text-[#168f91] dark:text-[#71d8d0] shadow-[0_6px_18px_rgba(35,55,60,0.06)]">
               <Sparkles size={18} strokeWidth={1.7} />
             </div>
 
@@ -713,7 +713,7 @@ function IndicateurContent() {
       </div>
 
       {/* Bottom navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#dce5e4] bg-white/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#28515a] bg-white/95 dark:bg-[#0c252d]/95 px-5 pb-[max(14px,env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl">
         <div className="mx-auto flex max-w-md items-end justify-between">
           <Link
             href="/"
