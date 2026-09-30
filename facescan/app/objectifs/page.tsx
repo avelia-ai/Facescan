@@ -97,6 +97,8 @@ export default function ObjectifsPage() {
 
   useEffect(() => {
     const loadGoals = async () => {
+      let authenticatedUserId: string | undefined;
+
       const localFallback = (userId?: string) => {
         if (!userId) {
           setSelected(["qualite_peau", "hydratation"]);
@@ -120,7 +122,7 @@ export default function ObjectifsPage() {
                     )
                     .map(normalizeGoalId)
                 )
-              );
+              ).slice(0, 3);
 
               setSelected(normalized);
               return;
@@ -144,6 +146,8 @@ export default function ObjectifsPage() {
           return;
         }
 
+        authenticatedUserId = user.id;
+
         const { data, error: profileError } = await supabase
           .from("profiles")
           .select("goals")
@@ -163,7 +167,7 @@ export default function ObjectifsPage() {
                 )
                 .map(normalizeGoalId)
             )
-          );
+          ).slice(0, 3);
 
           setSelected(
             normalized.length > 0
@@ -183,7 +187,7 @@ export default function ObjectifsPage() {
 
         localFallback(user.id);
       } catch {
-        localFallback();
+        localFallback(authenticatedUserId);
       }
     };
 
@@ -466,7 +470,7 @@ export default function ObjectifsPage() {
                 Enregistrement
               </p>
               <p className="mt-1 text-[12px] text-[#668083]">
-                Vos choix sont conservés sur cet appareil pour le prototype.
+                Vos choix sont conservés pour personnaliser votre accompagnement.
               </p>
             </div>
 
