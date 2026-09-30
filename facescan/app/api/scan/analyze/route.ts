@@ -54,6 +54,12 @@ function clamp(value: number) {
   return Math.max(0, Math.min(100, Math.round(value)));
 }
 
+const analysisCooldowns = new Map<string, number>();
+
+const MAX_SCANS_PER_WINDOW = 5;
+const SCAN_WINDOW_MS = 15 * 60 * 1000;
+const MIN_ANALYSIS_INTERVAL_MS = 20 * 1000;
+
 export async function POST(request: Request) {
   try {
     const cookieStore = await cookies();
@@ -84,6 +90,86 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: "Utilisateur non authentifié." },
         { status: 401 }
+      );
+    }
+
+    const now = Date.now();
+    const lastAnalysisAt = analysisCooldowns.get(user.id);
+
+    if (
+      lastAnalysisAt &&
+      now - lastAnalysisAt < MIN_ANALYSIS_INTERVAL_MS
+    ) {
+      const retryAfter = Math.ceil(
+        (MIN_ANALYSIS_INTERVAL_MS - (now - lastAnalysisAt)) / 1000
+      );
+
+      return NextResponse.json(
+        {
+          error:
+            "Une analyse vient déjà d’être lancée. Réessayez dans quelques secondes.",
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(retryAfter),
+          },
+        }
+      );
+    }
+
+    if (
+      lastAnalysisAt &&
+      now - lastAnalysisAt >= MIN_ANALYSIS_INTERVAL_MS
+    ) {
+      analysisCooldowns.delete(user.id);
+    }
+
+    const windowStart = new Date(
+      now - SCAN_WINDOW_MS
+    ).toISOString();
+
+    const {
+      count: recentScanCount,
+      error: recentScanError,
+    } = await supabase
+      .from("scans")
+      .select("id", {
+        count: "exact",
+        head: true,
+      })
+      .eq("user_id", user.id)
+      .gte("created_at", windowStart);
+
+    if (recentScanError) {
+      console.error(
+        "Scan rate limit lookup error:",
+        recentScanError
+      );
+
+      return NextResponse.json(
+        {
+          error:
+            "Le service d’analyse est temporairement indisponible. Réessayez dans quelques instants.",
+        },
+        { status: 503 }
+      );
+    }
+
+    if ((recentScanCount ?? 0) >= MAX_SCANS_PER_WINDOW) {
+      return NextResponse.json(
+        {
+          error:
+            "La limite temporaire d’analyses a été atteinte. Réessayez dans quelques minutes.",
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(
+              Math.ceil(SCAN_WINDOW_MS / 1000)
+            ),
+          },
+        }
       );
     }
 
@@ -127,6 +213,8 @@ export async function POST(request: Request) {
     }
 
     const openai = new OpenAI({ apiKey });
+
+    analysisCooldowns.set(user.id, Date.now());
 
     const response = await openai.responses.create({
       model: "gpt-5.6-luna",
@@ -204,7 +292,6 @@ Retourne uniquement le JSON demandé par le schéma.
       visualNotes: Array.isArray(parsed.visualNotes)
         ? parsed.visualNotes.slice(0, 5)
         : [],
-      userId: user.id,
     });
   } catch (error) {
     console.error("OpenAI scan analysis error:", error);
