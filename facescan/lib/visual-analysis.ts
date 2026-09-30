@@ -286,7 +286,7 @@ function analyzeFacePixels(
   });
 }
 
-function buildIndicators(
+export function buildIndicators(
   signals: VisualSignals,
   imageQuality: ScanPhotoAnalysis,
   faceDetection: FaceDetectionResult
@@ -332,6 +332,23 @@ function buildIndicators(
     hydratation,
     fatigue,
     equilibre,
+  };
+}
+
+export function buildVisualAnalysisFromSignals(
+  visualSignals: VisualSignals,
+  imageQuality: ScanPhotoAnalysis,
+  faceDetection: FaceDetectionResult
+): VisualAnalysis {
+  return {
+    imageQuality,
+    faceDetection,
+    visualSignals,
+    indicators: buildIndicators(
+      visualSignals,
+      imageQuality,
+      faceDetection
+    ),
   };
 }
 

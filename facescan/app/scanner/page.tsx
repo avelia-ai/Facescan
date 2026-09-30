@@ -14,7 +14,10 @@ import {
 import Link from "next/link";
 import { analyzeScanPhoto } from "@/lib/scan-analysis";
 import { detectFace } from "@/lib/face-detector";
-import { buildVisualAnalysis } from "@/lib/visual-analysis";
+import {
+  buildVisualAnalysisFromSignals,
+  type VisualSignals,
+} from "@/lib/visual-analysis";
 import { createClient } from "@/lib/supabase/client";
 
 export default function ScannerPage() {
@@ -230,8 +233,74 @@ export default function ScannerPage() {
 
       setAnalysisStep(3);
 
-      const visualAnalysis = await buildVisualAnalysis(
-        photo,
+      const analysisResponse = await fetch("/api/scan/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          image: photo,
+        }),
+      });
+
+      const analysisData = await analysisResponse.json().catch(() => null);
+
+      if (!analysisResponse.ok) {
+        throw new Error(
+          analysisData?.error ||
+            "Le service d’analyse visuelle est indisponible pour le moment."
+        );
+      }
+
+      const signals = analysisData?.visualSignals;
+
+      const signalKeys: Array<keyof VisualSignals> = [
+        "skinUniformity",
+        "visibleRedness",
+        "texture",
+        "underEyeAppearance",
+        "apparentHydration",
+      ];
+
+      const hasValidSignals =
+        signals &&
+        signalKeys.every(
+          (key) =>
+            typeof signals[key] === "number" &&
+            Number.isFinite(signals[key])
+        );
+
+      if (!hasValidSignals) {
+        throw new Error(
+          "L’analyse visuelle a renvoyé des données incomplètes."
+        );
+      }
+
+      const visualSignals: VisualSignals = {
+        skinUniformity: Math.max(
+          0,
+          Math.min(100, Math.round(signals.skinUniformity))
+        ),
+        visibleRedness: Math.max(
+          0,
+          Math.min(100, Math.round(signals.visibleRedness))
+        ),
+        texture: Math.max(
+          0,
+          Math.min(100, Math.round(signals.texture))
+        ),
+        underEyeAppearance: Math.max(
+          0,
+          Math.min(100, Math.round(signals.underEyeAppearance))
+        ),
+        apparentHydration: Math.max(
+          0,
+          Math.min(100, Math.round(signals.apparentHydration))
+        ),
+      };
+
+      const visualAnalysis = buildVisualAnalysisFromSignals(
+        visualSignals,
         photoAnalysis,
         faceAnalysis
       );
