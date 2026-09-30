@@ -77,6 +77,12 @@ export default function NotificationsPage() {
   const [userGoals, setUserGoals] = useState<string[]>([]);
   const [readIds, setReadIds] = useState<number[]>([]);
   const [scanFrequency, setScanFrequency] = useState(7);
+  const [notificationPreferences, setNotificationPreferences] = useState({
+    scanReminders: true,
+    tips: true,
+    progress: true,
+    tracking: true,
+  });
 
   useEffect(() => {
     let cancelled = false;
@@ -105,6 +111,39 @@ export default function NotificationsPage() {
           if ([3, 7, 14, 30].includes(frequencyValue) && !cancelled) {
             setScanFrequency(frequencyValue);
           }
+
+            const storedPreferences = localStorage.getItem(
+              `facescan-notification-preferences-${user.id}`
+            );
+
+            if (storedPreferences && !cancelled) {
+              try {
+                const parsed = JSON.parse(storedPreferences);
+
+                if (parsed && typeof parsed === "object") {
+                  setNotificationPreferences((current) => ({
+                    scanReminders:
+                      typeof parsed.scanReminders === "boolean"
+                        ? parsed.scanReminders
+                        : current.scanReminders,
+                    tips:
+                      typeof parsed.tips === "boolean"
+                        ? parsed.tips
+                        : current.tips,
+                    progress:
+                      typeof parsed.progress === "boolean"
+                        ? parsed.progress
+                        : current.progress,
+                    tracking:
+                      typeof parsed.tracking === "boolean"
+                        ? parsed.tracking
+                        : current.tracking,
+                  }));
+                }
+              } catch {
+                // Préférences invalides : valeurs par défaut.
+              }
+            }
 
           const [{ data: scans, error: scansError }, { data: profile, error: profileError }] =
             await Promise.all([
@@ -287,30 +326,60 @@ export default function NotificationsPage() {
       )
     : null;
 
-  const shouldRemindForScan =
-    daysSinceLastScan === null || daysSinceLastScan >= scanFrequency;
+    const shouldRemindForScan =
+      notificationPreferences.scanReminders &&
+      (daysSinceLastScan === null || daysSinceLastScan >= scanFrequency);
 
-  const dynamicNotifications = useMemo(() => {
-    if (!shouldRemindForScan) {
-      return notifications;
-    }
+    const enabledNotifications = useMemo(
+      () =>
+        notifications.filter((item) => {
+          if (item.id === 1) {
+            return notificationPreferences.scanReminders;
+          }
 
-    return [
-      {
-        id: 99,
-        icon: ScanFace,
-        title: "Votre prochain scan",
-        text:
-          daysSinceLastScan === null
-            ? "Effectuez votre premier scan pour commencer votre suivi."
-            : `Cela fait ${daysSinceLastScan} jours depuis votre dernier scan. C’est un bon moment pour comparer votre évolution.`,
-        time: "Aujourd’hui",
-        type: "Suivi",
-        unread: !readIds.includes(99),
-      },
-      ...notifications.filter((item) => item.id !== 1),
-    ];
-  }, [notifications, shouldRemindForScan, daysSinceLastScan, readIds]);
+          if (item.id === 2 || item.id === 5) {
+            return notificationPreferences.tracking;
+          }
+
+          if (item.id === 3) {
+            return notificationPreferences.progress;
+          }
+
+          if (item.id === 4) {
+            return notificationPreferences.tips;
+          }
+
+          return true;
+        }),
+      [notifications, notificationPreferences],
+    );
+
+    const dynamicNotifications = useMemo(() => {
+      if (!shouldRemindForScan) {
+        return enabledNotifications;
+      }
+
+      return [
+        {
+          id: 99,
+          icon: ScanFace,
+          title: "Votre prochain scan",
+          text:
+            daysSinceLastScan === null
+              ? "Effectuez votre premier scan pour commencer votre suivi."
+              : `Cela fait ${daysSinceLastScan} jours depuis votre dernier scan. C’est un bon moment pour comparer votre évolution.`,
+          time: "Aujourd’hui",
+          type: "Suivi",
+          unread: !readIds.includes(99),
+        },
+        ...enabledNotifications.filter((item) => item.id !== 1),
+      ];
+    }, [
+      enabledNotifications,
+      shouldRemindForScan,
+      daysSinceLastScan,
+      readIds,
+    ]);
 
   const unreadCount = dynamicNotifications.filter(
     (item) => item.unread

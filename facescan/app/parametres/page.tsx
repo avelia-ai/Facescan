@@ -35,6 +35,12 @@ const settings = [
 
 export default function ParametresPage() {
   const [scanFrequency, setScanFrequency] = useState(7);
+  const [notificationPreferences, setNotificationPreferences] = useState({
+    scanReminders: true,
+    tips: true,
+    progress: true,
+    tracking: true,
+  });
   const [isSigningOut, setIsSigningOut] = useState(false);
   const { theme, setTheme } = useTheme();
 
@@ -58,6 +64,39 @@ export default function ParametresPage() {
 
         if ([3, 7, 14, 30].includes(value)) {
           setScanFrequency(value);
+        }
+
+        const storedNotifications = localStorage.getItem(
+          `facescan-notification-preferences-${user.id}`
+        );
+
+        if (storedNotifications) {
+          try {
+            const parsed = JSON.parse(storedNotifications);
+
+            if (parsed && typeof parsed === "object") {
+              setNotificationPreferences((current) => ({
+                scanReminders:
+                  typeof parsed.scanReminders === "boolean"
+                    ? parsed.scanReminders
+                    : current.scanReminders,
+                tips:
+                  typeof parsed.tips === "boolean"
+                    ? parsed.tips
+                    : current.tips,
+                progress:
+                  typeof parsed.progress === "boolean"
+                    ? parsed.progress
+                    : current.progress,
+                tracking:
+                  typeof parsed.tracking === "boolean"
+                    ? parsed.tracking
+                    : current.tracking,
+              }));
+            }
+          } catch {
+            // Préférences invalides : conserver les valeurs par défaut.
+          }
         }
       } catch {
         // Conserver la valeur par défaut.
@@ -85,6 +124,31 @@ export default function ParametresPage() {
       .catch(() => {
         // La préférence reste affichée même si la session échoue.
       });
+  };
+
+  const updateNotificationPreference = (
+    key: keyof typeof notificationPreferences,
+  ) => {
+    setNotificationPreferences((current) => {
+      const next = {
+        ...current,
+        [key]: !current[key],
+      };
+
+      void createClient()
+        .auth.getUser()
+        .then(({ data: { user } }) => {
+          if (!user) return;
+
+          localStorage.setItem(
+            `facescan-notification-preferences-${user.id}`,
+            JSON.stringify(next),
+          );
+        })
+        .catch(() => {});
+
+      return next;
+    });
   };
 
   const handleSignOut = async () => {
@@ -237,6 +301,68 @@ export default function ParametresPage() {
               Otavio vous proposera un nouveau scan après {scanFrequency}{" "}
               jour{scanFrequency > 1 ? "s" : ""}.
             </p>
+          </div>
+        </section>
+
+        <section className="mt-8">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#668083] dark:text-[#a9c0c3]">
+            Notifications
+          </p>
+
+          <div className="mt-5 rounded-[24px] border border-[#b9dfe3] bg-[linear-gradient(145deg,#ffffff_0%,#eefafa_100%)] dark:border-[#28515a] dark:bg-[linear-gradient(145deg,#102d35_0%,#0d252d_100%)] p-5 shadow-[0_12px_35px_rgba(35,55,60,0.045)]">
+            <h2 className="text-[14px] font-semibold text-[#17202a] dark:text-[#f3f8f7]">
+              Personnalisez vos alertes
+            </h2>
+
+            <p className="mt-1 text-[11px] leading-5 text-[#587174] dark:text-[#a9c0c3]">
+              Choisissez les informations que vous souhaitez recevoir dans votre suivi Otavio.
+            </p>
+
+            <div className="mt-4 space-y-2">
+              {([
+                ["scanReminders", "Rappels de scan", "Recevoir un rappel lorsque votre prochain scan est dû."],
+                ["tips", "Conseils personnalisés", "Afficher les recommandations adaptées à vos priorités."],
+                ["progress", "Progression", "Recevoir les informations liées à l’évolution de vos scores."],
+                ["tracking", "Indicateurs de suivi", "Afficher les informations liées à vos indicateurs."],
+              ] as const).map(([key, title, description]) => {
+                const active = notificationPreferences[key];
+
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => updateNotificationPreference(key)}
+                    aria-pressed={active}
+                    className={`flex w-full items-center gap-3 rounded-2xl border p-3.5 text-left transition ${
+                      active
+                        ? "border-[#9fd8d0] bg-[#eaf8f5] dark:border-[#28515a] dark:bg-[#173f47]"
+                        : "border-[#dce6e5] bg-white dark:border-[#28515a] dark:bg-[#102d35]"
+                    }`}
+                  >
+                    <span
+                      className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
+                        active
+                          ? "border-[#087ea4] bg-[#087ea4]"
+                          : "border-[#9fb2b4] dark:border-[#587174]"
+                      }`}
+                    >
+                      {active ? (
+                        <span className="h-2 w-2 rounded-full bg-white" />
+                      ) : null}
+                    </span>
+
+                    <span className="min-w-0 flex-1">
+                      <span className="block text-[11px] font-semibold text-[#17202a] dark:text-[#f3f8f7]">
+                        {title}
+                      </span>
+                      <span className="mt-0.5 block text-[10px] leading-5 text-[#718789] dark:text-[#a9c0c3]">
+                        {description}
+                      </span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </section>
 
