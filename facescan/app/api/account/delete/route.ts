@@ -56,7 +56,42 @@ export async function DELETE() {
     }
   );
 
+  const userTables = [
+    "otavio_daily_activity",
+    "otavio_daily_tasks",
+    "otavio_xp_events",
+    "scans",
+  ];
+
+  for (const table of userTables) {
+    const { error: tableDeleteError } = await admin
+      .from(table)
+      .delete()
+      .eq("user_id", user.id);
+
+    if (tableDeleteError) {
+      return NextResponse.json(
+        { error: `La suppression des données ${table} a échoué.` },
+        { status: 500 }
+      );
+    }
+  }
+
+  const { error: profileDeleteError } = await admin
+    .from("profiles")
+    .delete()
+    .eq("id", user.id);
+
+  if (profileDeleteError) {
+    return NextResponse.json(
+      { error: "La suppression du profil a échoué." },
+      { status: 500 }
+    );
+  }
+
   const { error: deleteError } = await admin.auth.admin.deleteUser(user.id);
+
+
 
   if (deleteError) {
     return NextResponse.json(
