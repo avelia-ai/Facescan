@@ -548,8 +548,21 @@ export function buildOtavioDailyTasks(
     new Map(candidates.map((task) => [task.task_key, task])).values()
   );
 
+  const scanVersion = scan?.indicators
+    ? [
+        scan.score ?? 0,
+        scan.indicators.peau ?? 0,
+        scan.indicators.hydratation ?? 0,
+        scan.indicators.fatigue ?? 0,
+        scan.indicators.equilibre ?? 0,
+      ].join("-")
+    : "base";
+
   return unique
     .sort((a, b) => b.score - a.score)
     .slice(0, 4)
-    .map(({ score: _score, ...task }) => task);
+    .map(({ score: _score, ...task }) => ({
+      ...task,
+      task_key: `${task.task_key}_scan-${scanVersion}`,
+    }));
 }
