@@ -67,6 +67,26 @@ export default function ParametresPage() {
     loadScanFrequency();
   }, []);
 
+  const updateScanFrequency = (value: number) => {
+    if (![3, 7, 14, 30].includes(value)) return;
+
+    setScanFrequency(value);
+
+    void createClient()
+      .auth.getUser()
+      .then(({ data: { user } }) => {
+        if (!user) return;
+
+        localStorage.setItem(
+          `facescan-scan-frequency-${user.id}`,
+          String(value)
+        );
+      })
+      .catch(() => {
+        // La préférence reste affichée même si la session échoue.
+      });
+  };
+
   const handleSignOut = async () => {
     setIsSigningOut(true);
 
@@ -173,6 +193,50 @@ export default function ParametresPage() {
                 );
               })}
             </div>
+          </div>
+        </section>
+
+        <section className="mt-8">
+          <div className="rounded-[24px] border border-[#b9dfe3] bg-[linear-gradient(145deg,#ffffff_0%,#eefafa_100%)] dark:border-[#28515a] dark:bg-[linear-gradient(145deg,#102d35_0%,#0d252d_100%)] p-5 shadow-[0_12px_35px_rgba(35,55,60,0.045)]">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#668083] dark:text-[#a9c0c3]">
+              Suivi
+            </p>
+
+            <h2 className="mt-2 text-[15px] font-semibold text-[#17202a] dark:text-[#f3f8f7]">
+              Fréquence des analyses
+            </h2>
+
+            <p className="mt-1 text-[11px] leading-5 text-[#587174] dark:text-[#a9c0c3]">
+              Choisissez à quelle fréquence Otavio vous suggère de refaire un
+              scan.
+            </p>
+
+            <div className="mt-4 grid grid-cols-4 gap-2">
+              {[3, 7, 14, 30].map((days) => {
+                const active = scanFrequency === days;
+
+                return (
+                  <button
+                    key={days}
+                    type="button"
+                    onClick={() => updateScanFrequency(days)}
+                    aria-pressed={active}
+                    className={`rounded-xl border px-2 py-2.5 text-[10px] font-semibold transition ${
+                      active
+                        ? "border-[#087ea4] bg-[#c9f2eb] text-[#087ea4] dark:border-[#35c8c1] dark:bg-[#173f47] dark:text-[#71d8d0]"
+                        : "border-[#b9dfe3] bg-white text-[#557078] hover:bg-[#eefafa] dark:border-[#28515a] dark:bg-[#173a43] dark:text-[#c4d5d9] dark:hover:bg-[#20434b]"
+                    }`}
+                  >
+                    {days} j
+                  </button>
+                );
+              })}
+            </div>
+
+            <p className="mt-3 text-[10px] leading-5 text-[#718789] dark:text-[#8eaaae]">
+              Otavio vous proposera un nouveau scan après {scanFrequency}{" "}
+              jour{scanFrequency > 1 ? "s" : ""}.
+            </p>
           </div>
         </section>
 

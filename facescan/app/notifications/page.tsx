@@ -253,9 +253,16 @@ export default function NotificationsPage() {
       ) {
         const goalNames: Record<string, string> = {
           peau: "Peau",
+          qualite_peau: "Peau",
           hydratation: "Hydratation",
           recuperation: "Récupération",
+          fatigue: "Fatigue",
+          sommeil: "Sommeil",
           equilibre: "Équilibre",
+          bien_etre: "Bien-être",
+          nutrition: "Nutrition",
+          eclat: "Éclat",
+          evolution: "Évolution",
         };
 
         const goalName = goalNames[userGoals[0]];
@@ -337,6 +344,23 @@ export default function NotificationsPage() {
     const updated = Array.from(new Set([...readIds, id]));
     setReadIds(updated);
     void saveReadIds(updated);
+  };
+
+  const getNotificationHref = (id: number) => {
+    switch (id) {
+      case 2:
+        return "/indicateur?type=hydratation";
+      case 3:
+        return "/evolution";
+      case 4:
+        return "/conseils";
+      case 5:
+        return "/indicateur?type=fatigue";
+      case 99:
+      case 1:
+      default:
+        return "/scanner";
+    }
   };
 
   return (
