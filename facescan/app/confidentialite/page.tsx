@@ -276,6 +276,7 @@ export default function ConfidentialitePage() {
         ];
 
         keys.forEach((key) => localStorage.removeItem(key));
+        sessionStorage.removeItem(`facescan-scan-photo-${userId}`);
         sessionStorage.removeItem("facescan-scan-photo");
 
         localStorage.removeItem(`facescan-scans-${userId}`);

@@ -225,6 +225,7 @@ export default function ResultatsPage() {
 
       if (photo && !cancelled) {
         setScanPhoto(photo);
+        sessionStorage.removeItem(`facescan-scan-photo-${user.id}`);
       }
 
       let loadedFromSupabase = false;
