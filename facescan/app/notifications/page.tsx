@@ -494,17 +494,14 @@ export default function NotificationsPage() {
                         {item.text}
                       </p>
 
-                      <button
-                        type="button"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          markRead(item.id);
-                        }}
+                      <Link
+                        href={getNotificationHref(item.id)}
+                        onClick={() => markRead(item.id)}
                         className="mt-3 flex items-center gap-1.5 text-[10px] font-semibold text-[#167b82]"
                       >
                         Voir le détail
                         <ChevronRight size={13} strokeWidth={1.8} />
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </article>
