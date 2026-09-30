@@ -563,7 +563,7 @@ export default function NotificationsPage() {
             </p>
 
             <Link
-              href="/profil"
+              href="/parametres"
               className="mt-5 flex items-center gap-2 text-[11px] font-semibold"
             >
               Gérer mes préférences
