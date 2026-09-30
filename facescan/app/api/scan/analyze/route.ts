@@ -277,21 +277,72 @@ Retourne uniquement le JSON demandé par le schéma.
       );
     }
 
-    const parsed = JSON.parse(raw);
+    let parsed: unknown;
+
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      console.error("OpenAI returned invalid JSON.");
+
+      return NextResponse.json(
+        { error: "L’analyse visuelle a renvoyé une réponse invalide." },
+        { status: 502 }
+      );
+    }
+
+    if (
+      typeof parsed !== "object" ||
+      parsed === null
+    ) {
+      return NextResponse.json(
+        { error: "L’analyse visuelle a renvoyé des données invalides." },
+        { status: 502 }
+      );
+    }
+
+    const data = parsed as Record<string, unknown>;
+
+    const signalKeys = [
+      "skinUniformity",
+      "visibleRedness",
+      "texture",
+      "underEyeAppearance",
+      "apparentHydration",
+    ] as const;
+
+    const hasValidSignals = signalKeys.every(
+      (key) =>
+        typeof data[key] === "number" &&
+        Number.isFinite(data[key])
+    );
+
+    if (!hasValidSignals) {
+      return NextResponse.json(
+        { error: "L’analyse visuelle a renvoyé des signaux incomplets." },
+        { status: 502 }
+      );
+    }
 
     const visualSignals = {
-      skinUniformity: clamp(parsed.skinUniformity),
-      visibleRedness: clamp(parsed.visibleRedness),
-      texture: clamp(parsed.texture),
-      underEyeAppearance: clamp(parsed.underEyeAppearance),
-      apparentHydration: clamp(parsed.apparentHydration),
+      skinUniformity: clamp(data.skinUniformity as number),
+      visibleRedness: clamp(data.visibleRedness as number),
+      texture: clamp(data.texture as number),
+      underEyeAppearance: clamp(data.underEyeAppearance as number),
+      apparentHydration: clamp(data.apparentHydration as number),
     };
+
+    const visualNotes = Array.isArray(data.visualNotes)
+      ? data.visualNotes
+          .filter(
+            (note): note is string =>
+              typeof note === "string" && note.trim().length > 0
+          )
+          .slice(0, 5)
+      : [];
 
     return NextResponse.json({
       visualSignals,
-      visualNotes: Array.isArray(parsed.visualNotes)
-        ? parsed.visualNotes.slice(0, 5)
-        : [],
+      visualNotes,
     });
   } catch (error) {
     console.error("OpenAI scan analysis error:", error);
