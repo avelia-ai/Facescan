@@ -244,27 +244,18 @@ export default function ConfidentialitePage() {
     setActionMessage("Vos données ont été préparées et téléchargées.");
   };
 
-  const deleteData = async () => {
-    setIsDeleting(true);
-    setActionMessage("");
+    const deleteData = async () => {
+      setIsDeleting(true);
+      setActionMessage("");
 
-    try {
-      const supabase = createClient();
-      const { data: authData } = await supabase.auth.getUser();
+      try {
+        const supabase = createClient();
+        const { data: authData } = await supabase.auth.getUser();
 
-    const keys = [
-      "facescan-scans",
-      "facescan-goals",
-      "facescan-hydration-actions",
-      "facescan-scan-frequency",
-      "facescan-read-notifications",
-      "otavio-nutrition-feedback",
-    ];
+        if (!authData.user) {
+          throw new Error("Utilisateur non authentifié.");
+        }
 
-    keys.forEach((key) => localStorage.removeItem(key));
-    sessionStorage.removeItem("facescan-scan-photo");
-
-      if (authData.user) {
         const response = await fetch("/api/account/delete", {
           method: "DELETE",
         });
@@ -274,42 +265,36 @@ export default function ConfidentialitePage() {
         }
 
         const userId = authData.user.id;
+
+        const keys = [
+          "facescan-scans",
+          "facescan-goals",
+          "facescan-hydration-actions",
+          "facescan-scan-frequency",
+          "facescan-read-notifications",
+          "otavio-nutrition-feedback",
+        ];
+
+        keys.forEach((key) => localStorage.removeItem(key));
+        sessionStorage.removeItem("facescan-scan-photo");
+
         localStorage.removeItem(`facescan-scans-${userId}`);
         localStorage.removeItem(`facescan-goals-${userId}`);
         localStorage.removeItem(`facescan-hydration-actions-${userId}`);
         localStorage.removeItem(`facescan-scan-frequency-${userId}`);
         localStorage.removeItem(`facescan-read-notifications-${userId}`);
         localStorage.removeItem(`otavio-nutrition-feedback-${userId}`);
+
+        void supabase.auth.signOut({ scope: "local" }).catch(() => {});
+
+      } catch {
+        setActionMessage(
+          "La suppression n'a pas pu être terminée. Réessayez.",
+        );
+      } finally {
+        setIsDeleting(false);
       }
-      setData({
-        profile: null,
-        goals: [],
-        scans: [],
-        otavioDailyTasks: [],
-        otavioXpEvents: [],
-        otavioDailyActivity: [],
-        preferences: {
-          scanFrequency: null,
-          readNotifications: [],
-        },
-      });
-
-      setShowDeleteConfirm(false);
-      setActionMessage(
-        "Votre compte FaceScan et les données associées ont été supprimés. Vous allez être redirigé.",
-      );
-
-      window.setTimeout(() => {
-        window.location.href = "/connexion";
-      }, 1200);
-    } catch {
-      setActionMessage(
-        "La suppression n'a pas pu être terminée. Réessayez.",
-      );
-    } finally {
-      setIsDeleting(false);
-    }
-  };
+    };
 
   return (
     <main className="app-background min-h-screen text-[#17202a] pb-28">
