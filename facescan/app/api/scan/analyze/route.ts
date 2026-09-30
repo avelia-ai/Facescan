@@ -32,13 +32,6 @@ const analysisSchema = {
       minimum: 0,
       maximum: 100,
     },
-    visualNotes: {
-      type: "array",
-      items: {
-        type: "string",
-      },
-      maxItems: 5,
-    },
   },
   required: [
     "skinUniformity",
@@ -46,7 +39,6 @@ const analysisSchema = {
     "texture",
     "underEyeAppearance",
     "apparentHydration",
-    "visualNotes",
   ],
 };
 
@@ -246,7 +238,7 @@ Pour uniformité, texture, contour sous les yeux et apparence d'hydratation,
 Pour visibleRedness, 0 signifie très peu de rougeur visible et 100 beaucoup
 de rougeur visible.
 
-Retourne uniquement le JSON demandé par le schéma.
+Retourne uniquement les cinq scores demandés par le schéma.
               `.trim(),
             },
             {
@@ -331,18 +323,8 @@ Retourne uniquement le JSON demandé par le schéma.
       apparentHydration: clamp(data.apparentHydration as number),
     };
 
-    const visualNotes = Array.isArray(data.visualNotes)
-      ? data.visualNotes
-          .filter(
-            (note): note is string =>
-              typeof note === "string" && note.trim().length > 0
-          )
-          .slice(0, 5)
-      : [];
-
     return NextResponse.json({
       visualSignals,
-      visualNotes,
     });
   } catch (error) {
     console.error("OpenAI scan analysis error:", error);
