@@ -1532,18 +1532,41 @@ function scoreRecipe(
     }
   }
 
-  // Équilibre faible : repas complets et structurés.
+  // Équilibre faible : favoriser les repas réellement structurés.
   if (
     typeof scan?.equilibre === "number" &&
     scan.equilibre < 70
   ) {
-    if (
-      recipe.goals.some((goal) =>
-        normalize(goal).includes("equilibre")
+    const equilibriumNeed = Math.min(
+      8,
+      Math.max(0, Math.round((70 - scan.equilibre) / 5))
+    );
+
+    const equilibriumSupport =
+      (recipe.tags.some((tag) =>
+        normalize(tag).includes("complet")
       )
-    ) {
-      score += 5;
-    }
+        ? 3
+        : 0) +
+      (recipe.tags.some((tag) =>
+        normalize(tag).includes("fibre")
+      )
+        ? 2
+        : 0) +
+      (recipe.tags.some((tag) =>
+        normalize(tag).includes("vegetal")
+      )
+        ? 2
+        : 0) +
+      (recipe.tags.some((tag) =>
+        normalize(tag).includes("omega3")
+      )
+        ? 1
+        : 0);
+
+    score += Math.round(
+      (equilibriumSupport * equilibriumNeed) / 4
+    );
   }
 
   // Hydratation faible : aliments riches en eau.

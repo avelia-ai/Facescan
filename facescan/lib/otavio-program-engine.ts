@@ -186,7 +186,21 @@ function calculateRelevance(
   }
 
   if (item.category === "alimentation") {
+    // Le moteur nutritionnel exploite les quatre indicateurs du scan.
+    // L’équilibre reste le signal principal de la carte Alimentation,
+    // mais les autres indicateurs peuvent aussi renforcer sa pertinence.
     relevance += scanNeed(scan.equilibre);
+
+    const crossNutritionNeed = Math.min(
+      2,
+      Math.max(
+        scanNeed(scan.peau),
+        scanNeed(scan.hydratation),
+        scanNeed(scan.fatigue)
+      )
+    );
+
+    relevance += crossNutritionNeed;
   }
 
   return relevance;
