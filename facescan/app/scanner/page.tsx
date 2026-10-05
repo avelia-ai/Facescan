@@ -209,6 +209,15 @@ export default function ScannerPage() {
     try {
       const photoAnalysis = await analyzeScanPhoto(photo);
 
+      if (photoAnalysis.qualityScore < 50) {
+        setIsAnalyzing(false);
+        setAnalysisStep(0);
+        setError(
+          `Qualité de photo insuffisante (${photoAnalysis.qualityScore}/100). ${photoAnalysis.recommendations[0]}`
+        );
+        return;
+      }
+
       setAnalysisStep(2);
 
       const faceAnalysis = await detectFace(photo);
