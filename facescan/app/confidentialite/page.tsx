@@ -298,7 +298,7 @@ export default function ConfidentialitePage() {
     };
 
   return (
-    <main className="app-background min-h-screen text-[#17202a] pb-28">
+    <main className="app-background min-h-screen text-[#17202a] dark:text-[#e4f1f3] pb-28">
       <div className="mx-auto w-full max-w-5xl px-5 sm:px-8">
         <header className="flex items-center justify-between pt-7 sm:pt-9">
           <div className="flex items-center gap-3">
@@ -311,7 +311,7 @@ export default function ConfidentialitePage() {
             </Link>
 
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6f8587]">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#6f8587] dark:text-[#9db2b7]">
                 Otavio
               </p>
               <h1 className="mt-1 text-2xl font-semibold tracking-[-0.03em]">
@@ -352,7 +352,7 @@ export default function ConfidentialitePage() {
         </section>
 
         <section className="mt-8">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#668083]">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#668083] dark:text-[#9db2b7]">
             Vos données
           </p>
 
@@ -390,13 +390,13 @@ export default function ConfidentialitePage() {
                   key={item.title}
                   className="flex items-center gap-4 rounded-[22px] border border-[#e0e9e7] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 shadow-[0_10px_30px_rgba(35,55,60,0.045)]"
                 >
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#e9f8f5]">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#e9f8f5] dark:bg-[#234a4a]">
                     <Icon size={19} strokeWidth={1.7} />
                   </div>
 
                   <div>
                     <h3 className="text-[14px] font-semibold">{item.title}</h3>
-                    <p className="mt-1 text-[11px] leading-5 text-[#587174]">
+                    <p className="mt-1 text-[11px] leading-5 text-[#587174] dark:text-[#a6b9bd]">
                       {item.text}
                     </p>
                   </div>
@@ -413,9 +413,9 @@ export default function ConfidentialitePage() {
               setShowData((current) => !current);
               setActionMessage("");
             }}
-            className="group flex w-full items-center gap-4 rounded-[22px] border border-[#e0e9e7] bg-white p-5 text-left shadow-[0_10px_30px_rgba(35,55,60,0.045)]"
+            className="group flex w-full items-center gap-4 rounded-[22px] border border-[#e0e9e7] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 text-left shadow-[0_10px_30px_rgba(35,55,60,0.045)]"
           >
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#e9f8f5]">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#e9f8f5] dark:bg-[#234a4a]">
               <Database size={19} strokeWidth={1.7} />
             </div>
 
@@ -423,18 +423,18 @@ export default function ConfidentialitePage() {
               <h3 className="text-[14px] font-semibold">
                 Gérer mes données
               </h3>
-              <p className="mt-1 text-[11px] leading-5 text-[#587174]">
+              <p className="mt-1 text-[11px] leading-5 text-[#587174] dark:text-[#a6b9bd]">
                 Consulter les informations conservées pour votre compte.
               </p>
             </div>
 
             {showData ? (
-              <X size={16} strokeWidth={1.8} className="text-[#718789]" />
+              <X size={16} strokeWidth={1.8} className="text-[#718789] dark:text-[#9db2b7]" />
             ) : (
               <ChevronRight
                 size={16}
                 strokeWidth={1.8}
-                className="text-[#718789]"
+                className="text-[#718789] dark:text-[#9db2b7]"
               />
             )}
           </button>
@@ -443,7 +443,7 @@ export default function ConfidentialitePage() {
             <div className="rounded-[22px] border border-[#e0e9e7] dark:border-[#28515a] bg-[#f8fbfa] dark:bg-[#173a43] p-5">
               <div className="grid gap-3 sm:grid-cols-2">
                 <div className="rounded-2xl bg-white dark:bg-[#102d35] p-4">
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-[#718789]">
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-[#718789] dark:text-[#9db2b7]">
                     Profil
                   </p>
                   <p className="mt-1 text-sm font-semibold">
@@ -452,7 +452,7 @@ export default function ConfidentialitePage() {
                 </div>
 
                 <div className="rounded-2xl bg-white dark:bg-[#102d35] p-4">
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-[#718789]">
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-[#718789] dark:text-[#9db2b7]">
                     Scans
                   </p>
                   <p className="mt-1 text-sm font-semibold">
@@ -461,7 +461,7 @@ export default function ConfidentialitePage() {
                 </div>
 
                 <div className="rounded-2xl bg-white dark:bg-[#102d35] p-4">
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-[#718789]">
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-[#718789] dark:text-[#9db2b7]">
                     Objectifs
                   </p>
                   <p className="mt-1 text-sm font-semibold">
@@ -470,7 +470,7 @@ export default function ConfidentialitePage() {
                 </div>
 
                 <div className="rounded-2xl bg-white dark:bg-[#102d35] p-4">
-                  <p className="text-[10px] uppercase tracking-[0.14em] text-[#718789]">
+                  <p className="text-[10px] uppercase tracking-[0.14em] text-[#718789] dark:text-[#9db2b7]">
                     Préférences
                   </p>
                   <p className="mt-1 text-sm font-semibold">
@@ -486,9 +486,9 @@ export default function ConfidentialitePage() {
           <button
             type="button"
             onClick={buildExportData}
-            className="flex w-full items-center gap-4 rounded-[22px] border border-[#e0e9e7] bg-white p-5 text-left shadow-[0_10px_30px_rgba(35,55,60,0.045)]"
+            className="flex w-full items-center gap-4 rounded-[22px] border border-[#e0e9e7] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 text-left shadow-[0_10px_30px_rgba(35,55,60,0.045)]"
           >
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#e9f8f5]">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[#e9f8f5] dark:bg-[#234a4a]">
               <Download size={19} strokeWidth={1.7} />
             </div>
 
@@ -496,7 +496,7 @@ export default function ConfidentialitePage() {
               <h3 className="text-[14px] font-semibold">
                 Télécharger mes données
               </h3>
-              <p className="mt-1 text-[11px] leading-5 text-[#587174]">
+              <p className="mt-1 text-[11px] leading-5 text-[#587174] dark:text-[#a6b9bd]">
                 Télécharger une copie de vos données disponibles.
               </p>
             </div>
@@ -504,7 +504,7 @@ export default function ConfidentialitePage() {
             <ChevronRight
               size={16}
               strokeWidth={1.8}
-              className="text-[#718789]"
+              className="text-[#718789] dark:text-[#9db2b7]"
             />
           </button>
 
@@ -513,7 +513,7 @@ export default function ConfidentialitePage() {
             onClick={() => setShowDeleteConfirm(true)}
             className="flex w-full items-center gap-4 rounded-[22px] border border-[#ead6d1] dark:border-[#614238] bg-[#fff4f1] dark:bg-[#40302c] p-5 text-left"
           >
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/85">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-white/85 dark:bg-[#4b302b]">
               <Trash2 size={19} strokeWidth={1.7} />
             </div>
 
@@ -521,7 +521,7 @@ export default function ConfidentialitePage() {
               <h3 className="text-[14px] font-semibold">
                 Supprimer mes données
               </h3>
-              <p className="mt-1 text-[11px] leading-5 text-[#755f5a]">
+              <p className="mt-1 text-[11px] leading-5 text-[#755f5a] dark:text-[#d2aaa1]">
                 Supprimer votre compte et les données FaceScan associées.
               </p>
             </div>
@@ -529,13 +529,13 @@ export default function ConfidentialitePage() {
             <ChevronRight
               size={16}
               strokeWidth={1.8}
-              className="text-[#9a7770]"
+              className="text-[#9a7770] dark:text-[#d59b90]"
             />
           </button>
         </section>
 
         {actionMessage && (
-          <div className="mt-5 flex items-center gap-3 rounded-[20px] border border-[#cfe7df] bg-[#effaf6] p-4 text-[12px] text-[#3f6860]">
+          <div className="mt-5 flex items-center gap-3 rounded-[20px] border border-[#cfe7df] dark:border-[#28515a] bg-[#effaf6] dark:bg-[#173a43] p-4 text-[12px] text-[#3f6860] dark:text-[#a6b9bd]">
             <Check size={17} strokeWidth={2} />
             <span>{actionMessage}</span>
           </div>
@@ -552,7 +552,7 @@ export default function ConfidentialitePage() {
                 <h3 className="text-[15px] font-semibold">
                   Confirmer la suppression
                 </h3>
-                <p className="mt-2 text-[12px] leading-5 text-[#755f5a]">
+                <p className="mt-2 text-[12px] leading-5 text-[#755f5a] dark:text-[#d2aaa1]">
                   Votre compte FaceScan ainsi que les données qui lui sont
                   associées seront supprimés. Les données locales de cet appareil
                   seront également effacées et vous serez déconnecté.
@@ -589,7 +589,7 @@ export default function ConfidentialitePage() {
             </div>
 
             <div>
-              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#668083]">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[#668083] dark:text-[#9db2b7]">
                 Principe
               </p>
 
@@ -597,7 +597,7 @@ export default function ConfidentialitePage() {
                 Transparence avant tout
               </h3>
 
-              <p className="mt-2 text-[12px] leading-6 text-[#587174]">
+              <p className="mt-2 text-[12px] leading-6 text-[#587174] dark:text-[#a6b9bd]">
                 Vous pouvez consulter les données disponibles, en télécharger
                 une copie et supprimer les données associées à
                 l’expérience FaceScan.
@@ -606,7 +606,7 @@ export default function ConfidentialitePage() {
           </div>
         </section>
 
-        <p className="mt-8 max-w-3xl text-[10px] leading-5 text-[#718789]">
+        <p className="mt-8 max-w-3xl text-[10px] leading-5 text-[#718789] dark:text-[#9db2b7]">
           L’export concerne les données actuellement accessibles depuis cette
           interface. La suppression du compte déclenche également la suppression
           des données associées stockées côté serveur.
@@ -617,7 +617,7 @@ export default function ConfidentialitePage() {
         <div className="mx-auto flex max-w-md items-end justify-between">
           <Link
             href="/"
-            className="flex w-16 flex-col items-center gap-1.5 text-[#668083]"
+            className="flex w-16 flex-col items-center gap-1.5 text-[#668083] dark:text-[#9db2b7]"
           >
             <Activity size={18} strokeWidth={1.8} />
             <span className="text-[9px]">Accueil</span>
@@ -625,7 +625,7 @@ export default function ConfidentialitePage() {
 
           <Link
             href="/conseils"
-            className="flex w-16 flex-col items-center gap-1.5 text-[#668083]"
+            className="flex w-16 flex-col items-center gap-1.5 text-[#668083] dark:text-[#9db2b7]"
           >
             <Sparkles size={18} strokeWidth={1.8} />
             <span className="text-[9px]">Conseils</span>
@@ -644,7 +644,7 @@ export default function ConfidentialitePage() {
 
           <Link
             href="/evolution"
-            className="flex w-16 flex-col items-center gap-1.5 text-[#668083]"
+            className="flex w-16 flex-col items-center gap-1.5 text-[#668083] dark:text-[#9db2b7]"
           >
             <TrendingUp size={18} strokeWidth={1.8} />
             <span className="text-[9px]">Évolution</span>
@@ -652,7 +652,7 @@ export default function ConfidentialitePage() {
 
           <Link
             href="/profil"
-            className="flex w-16 flex-col items-center gap-1.5 text-[#171717]"
+            className="flex w-16 flex-col items-center gap-1.5 text-[#171717] dark:text-[#e4f1f3]"
           >
             <UserRound size={18} strokeWidth={2} />
             <span className="text-[9px] font-medium">Profil</span>
