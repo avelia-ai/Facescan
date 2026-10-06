@@ -176,7 +176,7 @@ export default function SommeilPage() {
   }
 
   return (
-    <main className="app-background min-h-screen text-[#171717] pb-12">
+    <main className="app-background min-h-screen text-[#171717] dark:text-[#e4f1f3] pb-12">
       <div className="mx-auto max-w-3xl px-5 pt-6">
 
         <header className="flex items-center justify-between mb-7">
@@ -188,14 +188,14 @@ export default function SommeilPage() {
           </Link>
 
           <div className="text-center">
-            <p className="text-[11px] uppercase tracking-[0.18em] text-[#7b8580]">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[#7b8580] dark:text-[#a2b5b9]">
               Otavio
             </p>
             <h1 className="text-xl font-semibold text-white">Sommeil</h1>
           </div>
 
-          <div className="h-10 w-10 rounded-full bg-[#dff3f1] flex items-center justify-center">
-            <Moon size={18} className="text-[#39715f]" />
+          <div className="h-10 w-10 rounded-full bg-[#dff3f1] dark:bg-[#234a4a] flex items-center justify-center">
+            <Moon size={18} className="text-[#39715f] dark:text-[#7dd9a5]" />
           </div>
         </header>
 
@@ -262,12 +262,12 @@ export default function SommeilPage() {
 
         <section className="mt-5 grid grid-cols-2 gap-3">
           <div className="rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-4">
-            <p className="text-xs text-[#8a928e] mb-1">Programme</p>
+            <p className="text-xs text-[#8a928e] dark:text-[#9db2b7] mb-1">Programme</p>
             <p className="font-semibold">7 jours</p>
           </div>
 
           <div className="rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-4">
-            <p className="text-xs text-[#8a928e] mb-1">Objectif</p>
+            <p className="text-xs text-[#8a928e] dark:text-[#9db2b7] mb-1">Objectif</p>
             <p className="font-semibold">Régularité</p>
           </div>
         </section>
@@ -275,7 +275,7 @@ export default function SommeilPage() {
         <section className="mt-7">
           <div className="flex items-end justify-between mb-3">
             <div>
-              <p className="text-xs uppercase tracking-wider text-[#89918d]">
+              <p className="text-xs uppercase tracking-wider text-[#89918d] dark:text-[#9db2b7]">
                 Aujourd’hui
               </p>
               <h2 className="text-xl font-semibold mt-1">
@@ -283,7 +283,7 @@ export default function SommeilPage() {
               </h2>
             </div>
 
-            <div className="text-xs text-[#89918d]">
+            <div className="text-xs text-[#89918d] dark:text-[#9db2b7]">
               Jour {selectedDay}/7
             </div>
           </div>
@@ -295,13 +295,13 @@ export default function SommeilPage() {
                 className="rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-4"
               >
                 <div className="flex items-start gap-4">
-                  <div className="h-10 w-10 shrink-0 rounded-xl bg-[#e8e3ff] flex items-center justify-center">
+                  <div className="h-10 w-10 shrink-0 rounded-xl bg-[#e8e3ff] dark:bg-[#302f55] flex items-center justify-center">
                     {action.category === "matin" ? (
-                      <Sun size={18} className="text-[#39715f]" />
+                      <Sun size={18} className="text-[#39715f] dark:text-[#7dd9a5]" />
                     ) : action.category === "soir" ? (
-                      <Moon size={18} className="text-[#39715f]" />
+                      <Moon size={18} className="text-[#39715f] dark:text-[#7dd9a5]" />
                     ) : (
-                      <Clock3 size={18} className="text-[#39715f]" />
+                      <Clock3 size={18} className="text-[#39715f] dark:text-[#7dd9a5]" />
                     )}
                   </div>
 
@@ -311,12 +311,12 @@ export default function SommeilPage() {
                         {action.title}
                       </h3>
 
-                      <span className="text-xs font-medium text-[#39715f] whitespace-nowrap">
+                      <span className="text-xs font-medium text-[#39715f] dark:text-[#7dd9a5] whitespace-nowrap">
                         {action.time}
                       </span>
                     </div>
 
-                    <p className="text-sm leading-5 text-[#737a76] mt-1.5">
+                    <p className="text-sm leading-5 text-[#737a76] dark:text-[#a6b9bd] mt-1.5">
                       {action.description}
                     </p>
                   </div>
@@ -331,7 +331,7 @@ export default function SommeilPage() {
             disabled={completedToday || completingToday || selectedDay !== 1}
             className={`mt-4 flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-3.5 text-sm font-semibold transition ${
               completedToday
-                ? "border border-[#78d2c8] bg-[#dff8f2] text-[#087ea4]"
+                ? "border border-[#78d2c8] dark:border-[#3f8b82] bg-[#dff8f2] dark:bg-[#234a4a] text-[#087ea4] dark:text-[#72d7e3]"
                 : "bg-[linear-gradient(135deg,#173d69_0%,#087ea4_48%,#7767e8_100%)] text-white shadow-[0_10px_26px_rgba(8,126,164,0.16)] hover:-translate-y-0.5"
             } disabled:cursor-default disabled:opacity-90`}
           >
@@ -348,7 +348,7 @@ export default function SommeilPage() {
 
         <section className="mt-7">
           <div className="mb-3">
-            <p className="text-xs uppercase tracking-wider text-[#89918d]">
+            <p className="text-xs uppercase tracking-wider text-[#89918d] dark:text-[#9db2b7]">
               Votre progression
             </p>
             <h2 className="text-xl font-semibold mt-1">
@@ -380,13 +380,13 @@ export default function SommeilPage() {
 
         <section className="mt-7 rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-5">
           <div className="flex items-center gap-3 mb-4">
-            <div className="h-10 w-10 rounded-xl bg-[#e8e3ff] flex items-center justify-center">
-              <CheckCircle2 size={18} className="text-[#39715f]" />
+            <div className="h-10 w-10 rounded-xl bg-[#e8e3ff] dark:bg-[#302f55] flex items-center justify-center">
+              <CheckCircle2 size={18} className="text-[#39715f] dark:text-[#7dd9a5]" />
             </div>
 
             <div>
               <h2 className="font-semibold">Pourquoi ce programme ?</h2>
-              <p className="text-xs text-[#8a928e]">
+              <p className="text-xs text-[#8a928e] dark:text-[#9db2b7]">
                 Personnalisation Otavio
               </p>
             </div>
@@ -396,7 +396,7 @@ export default function SommeilPage() {
             {sleepPlan.personalization.map((item, index) => (
               <div
                 key={index}
-                className="flex items-start gap-2 text-sm text-[#666d69]"
+                className="flex items-start gap-2 text-sm text-[#666d69] dark:text-[#a6b9bd]"
               >
                 <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#7767e8] shrink-0" />
                 <span>{item}</span>
