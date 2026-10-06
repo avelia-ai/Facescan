@@ -338,7 +338,7 @@ export default function HydratationPage() {
   if (loading) {
     return (
       <main className="app-background flex min-h-screen items-center justify-center">
-        <div className="text-sm text-[#777]">
+        <div className="text-sm text-[#777] dark:text-[#a6b9bd]">
           Préparation de votre programme…
         </div>
       </main>
@@ -350,7 +350,7 @@ export default function HydratationPage() {
   );
 
   return (
-    <main className="app-background min-h-screen pb-12 text-[#171717]">
+    <main className="app-background min-h-screen pb-12 text-[#171717] dark:text-[#e4f1f3]">
       <div className="mx-auto max-w-3xl px-5 pt-6">
         <header className="mb-7 flex items-center justify-between">
           <Link
@@ -362,7 +362,7 @@ export default function HydratationPage() {
           </Link>
 
           <div className="text-center">
-            <p className="text-[11px] uppercase tracking-[0.18em] text-[#7b8580]">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[#7b8580] dark:text-[#a2b5b9]">
               Otavio
             </p>
             <h1 className="text-xl font-semibold text-white">
@@ -370,8 +370,8 @@ export default function HydratationPage() {
             </h1>
           </div>
 
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#cef3eb]">
-            <Droplets size={18} className="text-[#087ea4]" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#cef3eb] dark:bg-[#234a4a]">
+            <Droplets size={18} className="text-[#087ea4] dark:text-[#72d7e3]" />
           </div>
         </header>
 
@@ -438,21 +438,21 @@ export default function HydratationPage() {
         </section>
 
         <section className="mt-5 grid grid-cols-3 gap-3">
-          <div className="rounded-2xl border border-[#9ed7d9] bg-[linear-gradient(145deg,#ffffff_0%,#e8f9f8_100%)] p-4 shadow-[0_8px_22px_rgba(35,70,75,0.035)]">
-            <Droplets size={18} className="mb-3 text-[#087ea4]" />
-            <p className="text-xs text-[#8a928e]">Routine</p>
+          <div className="rounded-2xl border border-[#9ed7d9] dark:border-[#28515a] bg-[linear-gradient(145deg,#ffffff_0%,#e8f9f8_100%)] dark:bg-[linear-gradient(145deg,#102d35_0%,#173d46_100%)] p-4 shadow-[0_8px_22px_rgba(35,70,75,0.035)]">
+            <Droplets size={18} className="mb-3 text-[#087ea4] dark:text-[#72d7e3]" />
+            <p className="text-xs text-[#8a928e] dark:text-[#9db2b7]">Routine</p>
             <p className="mt-1 font-semibold">Toute la journée</p>
           </div>
 
-          <div className="rounded-2xl border border-[#9ed7d9] bg-[linear-gradient(145deg,#ffffff_0%,#e8f9f8_100%)] p-4 shadow-[0_8px_22px_rgba(35,70,75,0.035)]">
-            <Clock3 size={18} className="mb-3 text-[#087ea4]" />
-            <p className="text-xs text-[#8a928e]">Approche</p>
+          <div className="rounded-2xl border border-[#9ed7d9] dark:border-[#28515a] bg-[linear-gradient(145deg,#ffffff_0%,#e8f9f8_100%)] dark:bg-[linear-gradient(145deg,#102d35_0%,#173d46_100%)] p-4 shadow-[0_8px_22px_rgba(35,70,75,0.035)]">
+            <Clock3 size={18} className="mb-3 text-[#087ea4] dark:text-[#72d7e3]" />
+            <p className="text-xs text-[#8a928e] dark:text-[#9db2b7]">Approche</p>
             <p className="mt-1 font-semibold">Progressive</p>
           </div>
 
-          <div className="rounded-2xl border border-[#9ed7d9] bg-[linear-gradient(145deg,#ffffff_0%,#e8f9f8_100%)] p-4 shadow-[0_8px_22px_rgba(35,70,75,0.035)]">
-            <SunMedium size={18} className="mb-3 text-[#087ea4]" />
-            <p className="text-xs text-[#8a928e]">Programme</p>
+          <div className="rounded-2xl border border-[#9ed7d9] dark:border-[#28515a] bg-[linear-gradient(145deg,#ffffff_0%,#e8f9f8_100%)] dark:bg-[linear-gradient(145deg,#102d35_0%,#173d46_100%)] p-4 shadow-[0_8px_22px_rgba(35,70,75,0.035)]">
+            <SunMedium size={18} className="mb-3 text-[#087ea4] dark:text-[#72d7e3]" />
+            <p className="text-xs text-[#8a928e] dark:text-[#9db2b7]">Programme</p>
             <p className="mt-1 font-semibold">7 jours</p>
           </div>
         </section>
@@ -460,7 +460,7 @@ export default function HydratationPage() {
         <section className="mt-7">
           <div className="mb-3 flex items-end justify-between">
             <div>
-              <p className="text-xs uppercase tracking-wider text-[#89918d]">
+              <p className="text-xs uppercase tracking-wider text-[#89918d] dark:text-[#9db2b7]">
                 Programme du jour
               </p>
               <h2 className="mt-1 text-xl font-semibold">
@@ -468,7 +468,7 @@ export default function HydratationPage() {
               </h2>
             </div>
 
-            <div className="text-xs text-[#89918d]">
+            <div className="text-xs text-[#89918d] dark:text-[#9db2b7]">
               Jour {selectedDay}/7
             </div>
           </div>
@@ -478,20 +478,20 @@ export default function HydratationPage() {
             onClick={() => toggleAction(today)}
             className={`group w-full rounded-[24px] border p-5 text-left transition ${
               currentDone
-                ? "border-[#73d1c6] bg-[#dff8f2]"
+                ? "border-[#73d1c6] dark:border-[#3f8b82] bg-[#dff8f2] dark:bg-[#234a4a]"
                 : "border-[#dfe8e7] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_12px_30px_rgba(35,70,75,0.05)] hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(35,70,75,0.07)]"
             }`}
           >
             <div className="flex items-start gap-4">
               <div
                 className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl ${
-                  currentDone ? "bg-[#c6efe5]" : "bg-[#d8f6f0]"
+                  currentDone ? "bg-[#c6efe5] dark:bg-[#28564b]" : "bg-[#d8f6f0] dark:bg-[#234a4a]"
                 }`}
               >
                 {currentDone ? (
-                  <Check size={19} className="text-[#087ea4]" />
+                  <Check size={19} className="text-[#087ea4] dark:text-[#72d7e3]" />
                 ) : (
-                  <Droplets size={19} className="text-[#087ea4]" />
+                  <Droplets size={19} className="text-[#087ea4] dark:text-[#72d7e3]" />
                 )}
               </div>
 
@@ -503,14 +503,14 @@ export default function HydratationPage() {
                     </p>
                     <h3
                       className={`mt-1 text-[16px] font-semibold ${
-                        currentDone ? "text-[#287f72]" : "text-[#171717]"
+                        currentDone ? "text-[#287f72] dark:text-[#7dd9a5]" : "text-[#171717] dark:text-[#e4f1f3]"
                       }`}
                     >
                       {today.task.title}
                     </h3>
                   </div>
 
-                  <span className="shrink-0 rounded-full bg-[#d9f5f8] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.08em] text-[#087ea4]">
+                  <span className="shrink-0 rounded-full bg-[#d9f5f8] dark:bg-[#234a4a] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.08em] text-[#087ea4] dark:text-[#72d7e3]">
                     {today.task.priority === "high"
                       ? "Priorité"
                       : today.task.priority === "medium"
@@ -519,11 +519,11 @@ export default function HydratationPage() {
                   </span>
                 </div>
 
-                <p className="mt-2 text-sm leading-6 text-[#737a76]">
+                <p className="mt-2 text-sm leading-6 text-[#737a76] dark:text-[#a6b9bd]">
                   {today.task.description}
                 </p>
 
-                <p className="mt-4 text-[10px] font-medium text-[#89918d]">
+                <p className="mt-4 text-[10px] font-medium text-[#89918d] dark:text-[#9db2b7]">
                   Appuyez pour marquer cette action comme suivie
                 </p>
               </div>
@@ -533,7 +533,7 @@ export default function HydratationPage() {
 
         <section className="mt-7">
           <div className="mb-3 flex items-center justify-between">
-            <p className="text-xs uppercase tracking-wider text-[#89918d]">
+            <p className="text-xs uppercase tracking-wider text-[#89918d] dark:text-[#9db2b7]">
               Votre semaine
             </p>
 
@@ -577,19 +577,19 @@ export default function HydratationPage() {
 
         <section className="mt-7 rounded-[24px] border border-[#e1ebeb] dark:border-[#28515a] bg-white dark:bg-[#102d35] p-5 shadow-[0_10px_28px_rgba(35,70,75,0.04)]">
           <div className="mb-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#d8f6f0]">
-              <Sparkles size={18} className="text-[#087ea4]" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#d8f6f0] dark:bg-[#234a4a]">
+              <Sparkles size={18} className="text-[#087ea4] dark:text-[#72d7e3]" />
             </div>
 
             <div>
               <h2 className="font-semibold">Personnalisation Otavio</h2>
-              <p className="text-xs text-[#8a928e]">
+              <p className="text-xs text-[#8a928e] dark:text-[#9db2b7]">
                 Pourquoi cette recommandation vous est proposée
               </p>
             </div>
           </div>
 
-          <div className="space-y-2 text-sm leading-6 text-[#666d69]">
+          <div className="space-y-2 text-sm leading-6 text-[#666d69] dark:text-[#a6b9bd]">
             {hydrationScore !== null && (
               <div className="flex items-start gap-2">
                 <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#12a6a6]" />
@@ -641,7 +641,7 @@ export default function HydratationPage() {
           </div>
         </section>
 
-        <p className="mt-5 px-2 text-[11px] leading-5 text-[#8a928e]">
+        <p className="mt-5 px-2 text-[11px] leading-5 text-[#8a928e] dark:text-[#9db2b7]">
           L’indicateur d’hydratation de FaceScan correspond à une observation
           visuelle et ne mesure pas directement l’hydratation corporelle. Les
           recommandations proposées sont des conseils de bien-être.
