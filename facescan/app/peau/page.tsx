@@ -195,7 +195,7 @@ export default function PeauPage() {
   }
 
   return (
-    <main className="app-background min-h-screen text-[#171717] pb-12">
+    <main className="app-background min-h-screen text-[#171717] dark:text-[#e4f1f3] pb-12">
       <div className="mx-auto max-w-3xl px-5 pt-6">
 
         <header className="flex items-center justify-between mb-7">
@@ -207,14 +207,14 @@ export default function PeauPage() {
           </Link>
 
           <div className="text-center">
-            <p className="text-[11px] uppercase tracking-[0.18em] text-[#7b8580]">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[#7b8580] dark:text-[#a2b5b9]">
               Otavio
             </p>
             <h1 className="text-xl font-semibold text-white">Peau</h1>
           </div>
 
-          <div className="h-10 w-10 rounded-full bg-[#dff3f1] flex items-center justify-center">
-            <Sparkles size={18} className="text-[#39715f]" />
+          <div className="h-10 w-10 rounded-full bg-[#dff3f1] dark:bg-[#234a4a] flex items-center justify-center">
+            <Sparkles size={18} className="text-[#39715f] dark:text-[#7dd9a5]" />
           </div>
         </header>
 
@@ -267,20 +267,20 @@ export default function PeauPage() {
 
         <section className="mt-5 grid grid-cols-3 gap-3">
           <div className="rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-4">
-            <Droplets size={18} className="text-[#39715f] mb-3" />
-            <p className="text-xs text-[#8a928e]">Routine</p>
+            <Droplets size={18} className="text-[#39715f] dark:text-[#7dd9a5] mb-3" />
+            <p className="text-xs text-[#8a928e] dark:text-[#9db2b7]">Routine</p>
             <p className="font-semibold mt-1">Matin + soir</p>
           </div>
 
           <div className="rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-4">
-            <ShieldCheck size={18} className="text-[#39715f] mb-3" />
-            <p className="text-xs text-[#8a928e]">Approche</p>
+            <ShieldCheck size={18} className="text-[#39715f] dark:text-[#7dd9a5] mb-3" />
+            <p className="text-xs text-[#8a928e] dark:text-[#9db2b7]">Approche</p>
             <p className="font-semibold mt-1">Progressive</p>
           </div>
 
           <div className="rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-4">
-            <Sun size={18} className="text-[#39715f] mb-3" />
-            <p className="text-xs text-[#8a928e]">Programme</p>
+            <Sun size={18} className="text-[#39715f] dark:text-[#7dd9a5] mb-3" />
+            <p className="text-xs text-[#8a928e] dark:text-[#9db2b7]">Programme</p>
             <p className="font-semibold mt-1">7 jours</p>
           </div>
         </section>
@@ -288,7 +288,7 @@ export default function PeauPage() {
         <section className="mt-7">
           <div className="flex items-end justify-between mb-3">
             <div>
-              <p className="text-xs uppercase tracking-wider text-[#89918d]">
+              <p className="text-xs uppercase tracking-wider text-[#89918d] dark:text-[#9db2b7]">
                 Programme du jour
               </p>
               <h2 className="text-xl font-semibold mt-1">
@@ -296,7 +296,7 @@ export default function PeauPage() {
               </h2>
             </div>
 
-            <div className="text-xs text-[#89918d]">
+            <div className="text-xs text-[#89918d] dark:text-[#9db2b7]">
               Jour {selectedDay}/7
             </div>
           </div>
@@ -308,9 +308,9 @@ export default function PeauPage() {
                 className="rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-4"
               >
                 <div className="flex items-start gap-4">
-                  <div className="h-10 w-10 shrink-0 rounded-xl bg-[#dff3f1] flex items-center justify-center">
+                  <div className="h-10 w-10 shrink-0 rounded-xl bg-[#dff3f1] dark:bg-[#234a4a] flex items-center justify-center">
                     {action.moment === "matin" ? (
-                      <Sun size={18} className="text-[#39715f]" />
+                      <Sun size={18} className="text-[#39715f] dark:text-[#7dd9a5]" />
                     ) : (
                       <MoonIcon />
                     )}
@@ -322,7 +322,7 @@ export default function PeauPage() {
                         <h3 className="font-semibold text-[15px]">
                           {action.title}
                         </h3>
-                        <p className="text-[11px] text-[#8a928e] mt-1 uppercase tracking-wider">
+                        <p className="text-[11px] text-[#8a928e] dark:text-[#9db2b7] mt-1 uppercase tracking-wider">
                           {action.moment}
                         </p>
                       </div>
@@ -332,7 +332,7 @@ export default function PeauPage() {
                       </span>
                     </div>
 
-                    <p className="text-sm leading-5 text-[#737a76] mt-2">
+                    <p className="text-sm leading-5 text-[#737a76] dark:text-[#a6b9bd] mt-2">
                       {action.description}
                     </p>
                   </div>
@@ -342,24 +342,24 @@ export default function PeauPage() {
           </div>
         </section>
 
-        <section className="mt-7 rounded-[26px] bg-white border border-[#c9dfe4] p-5 shadow-[0_12px_30px_rgba(35,70,75,0.045)]">
+        <section className="mt-7 rounded-[26px] bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-5 shadow-[0_12px_30px_rgba(35,70,75,0.045)]">
           <div className="flex items-start gap-3">
             <div
               className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl ${
-                completedToday ? "bg-[#c6efe5]" : "bg-[#dff3f1]"
+                completedToday ? "bg-[#c6efe5] dark:bg-[#28564b]" : "bg-[#dff3f1] dark:bg-[#234a4a]"
               }`}
             >
-              <CheckCircle2 size={18} className="text-[#39715f]" />
+              <CheckCircle2 size={18} className="text-[#39715f] dark:text-[#7dd9a5]" />
             </div>
 
             <div className="min-w-0 flex-1">
-              <p className="text-[10px] uppercase tracking-[0.14em] text-[#89918d]">
+              <p className="text-[10px] uppercase tracking-[0.14em] text-[#89918d] dark:text-[#9db2b7]">
                 Routine du jour
               </p>
               <h2 className="mt-1 text-lg font-semibold">
                 {today?.objective}
               </h2>
-              <p className="mt-2 text-sm leading-6 text-[#737a76]">
+              <p className="mt-2 text-sm leading-6 text-[#737a76] dark:text-[#a6b9bd]">
                 Validez votre routine après avoir réalisé les actions prévues aujourd’hui.
               </p>
             </div>
@@ -375,7 +375,7 @@ export default function PeauPage() {
             }
             className={`mt-4 flex w-full items-center justify-center gap-2 rounded-2xl px-4 py-3.5 text-sm font-semibold transition ${
               completedToday
-                ? "border border-[#78d2c8] bg-[#dff8f2] text-[#39715f]"
+                ? "border border-[#78d2c8] dark:border-[#3f8b82] bg-[#dff8f2] dark:bg-[#234a4a] text-[#39715f] dark:text-[#7dd9a5]"
                 : "bg-[linear-gradient(135deg,#0b5876_0%,#087ea4_48%,#12a6a6_72%,#7767e8_100%)] text-white shadow-[0_10px_26px_rgba(8,126,164,0.16)] hover:-translate-y-0.5"
             } disabled:cursor-default disabled:opacity-90`}
           >
@@ -391,7 +391,7 @@ export default function PeauPage() {
         </section>
 
         <section className="mt-7">
-          <p className="text-xs uppercase tracking-wider text-[#89918d] mb-3">
+          <p className="text-xs uppercase tracking-wider text-[#89918d] dark:text-[#9db2b7] mb-3">
             Votre semaine
           </p>
 
@@ -417,15 +417,15 @@ export default function PeauPage() {
           </div>
         </section>
 
-        <section className="mt-7 rounded-2xl bg-white border border-[#c9dfe4] p-5">
+        <section className="mt-7 rounded-2xl bg-white dark:bg-[#102d35] border border-[#c9dfe4] dark:border-[#28515a] p-5">
           <div className="flex items-center gap-3 mb-4">
-            <div className="h-10 w-10 rounded-xl bg-[#dff3f1] flex items-center justify-center">
-              <Droplets size={18} className="text-[#39715f]" />
+            <div className="h-10 w-10 rounded-xl bg-[#dff3f1] dark:bg-[#234a4a] flex items-center justify-center">
+              <Droplets size={18} className="text-[#39715f] dark:text-[#7dd9a5]" />
             </div>
 
             <div>
               <h2 className="font-semibold">Personnalisation Otavio</h2>
-              <p className="text-xs text-[#8a928e]">
+              <p className="text-xs text-[#8a928e] dark:text-[#9db2b7]">
                 Ce qui influence votre programme
               </p>
             </div>
@@ -436,7 +436,7 @@ export default function PeauPage() {
               {skinPlan.personalization.map((item, index) => (
                 <div
                   key={index}
-                  className="flex items-start gap-2 text-sm text-[#666d69]"
+                  className="flex items-start gap-2 text-sm text-[#666d69] dark:text-[#a6b9bd]"
                 >
                   <span className="mt-2 h-1.5 w-1.5 rounded-full bg-[#ff8066] shrink-0" />
                   <span>{item}</span>
@@ -444,14 +444,14 @@ export default function PeauPage() {
               ))}
             </div>
           ) : (
-            <p className="text-sm leading-6 text-[#737a76]">
+            <p className="text-sm leading-6 text-[#737a76] dark:text-[#a6b9bd]">
               Complétez votre profil pour permettre à Otavio de rendre votre
               routine plus précise.
             </p>
           )}
         </section>
 
-        <p className="text-[11px] leading-5 text-[#8a928e] mt-5 px-2">
+        <p className="text-[11px] leading-5 text-[#8a928e] dark:text-[#9db2b7] mt-5 px-2">
           Les observations cutanées proposées par Otavio sont des observations
           visuelles et des recommandations de bien-être. Elles ne constituent
           pas un diagnostic médical.
@@ -463,5 +463,5 @@ export default function PeauPage() {
 }
 
 function MoonIcon() {
-  return <span className="text-[#39715f] text-lg">☾</span>;
+  return <span className="text-[#39715f] dark:text-[#7dd9a5] text-lg">☾</span>;
 }
