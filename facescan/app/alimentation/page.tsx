@@ -303,7 +303,7 @@ export default function AlimentationPage() {
           </Link>
 
           <div className="text-center">
-            <p className="text-[11px] uppercase tracking-[0.18em] text-[#7b8580]">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-[#7b8580] dark:text-[#a2b5b9]">
               Otavio
             </p>
             <h1 className="text-xl font-semibold text-white">
@@ -311,13 +311,13 @@ export default function AlimentationPage() {
             </h1>
           </div>
 
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#d9f5ed]">
-            <Utensils size={18} className="text-[#39775b]" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#d9f5ed] dark:bg-[#234a4a]">
+            <Utensils size={18} className="text-[#39775b] dark:text-[#7dd9a5]" />
           </div>
         </header>
 
         {loading ? (
-          <div className="mt-8 rounded-[28px] border border-[#8fd2cc] bg-[linear-gradient(145deg,#ffffff_0%,#e7f8f4_100%)] p-6 text-[12px] text-[#668083] shadow-[0_12px_30px_rgba(40,90,75,0.05)]">
+          <div className="mt-8 rounded-[28px] border border-[#8fd2cc] dark:border-[#28515a] bg-[linear-gradient(145deg,#ffffff_0%,#e7f8f4_100%)] dark:bg-[linear-gradient(145deg,#102d35_0%,#173d46_100%)] p-6 text-[12px] text-[#668083] dark:text-[#a6b9bd] shadow-[0_12px_30px_rgba(40,90,75,0.05)]">
             Préparation de votre programme…
           </div>
         ) : (
@@ -381,8 +381,8 @@ export default function AlimentationPage() {
             </section>
 
             {feedback.length > 0 && (
-              <section className="mt-6 overflow-hidden rounded-[28px] border border-[#8fd2cc] bg-[linear-gradient(145deg,#ffffff_0%,#e7f8f4_100%)] p-5 shadow-[0_14px_36px_rgba(40,90,75,0.055)] sm:p-6">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#668083]">
+              <section className="mt-6 overflow-hidden rounded-[28px] border border-[#8fd2cc] dark:border-[#28515a] bg-[linear-gradient(145deg,#ffffff_0%,#e7f8f4_100%)] dark:bg-[linear-gradient(145deg,#102d35_0%,#173d46_100%)] p-5 shadow-[0_14px_36px_rgba(40,90,75,0.055)] sm:p-6">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-[#668083] dark:text-[#9db2b7]">
                   Otavio apprend
                 </p>
 
@@ -426,35 +426,35 @@ export default function AlimentationPage() {
                   Votre programme évolue avec vous
                 </h2>
 
-                <p className="mt-2 text-[11px] leading-5 text-[#668083]">
+                <p className="mt-2 text-[11px] leading-5 text-[#668083] dark:text-[#a6b9bd]">
                   Vos retours permettent à Otavio d'ajuster progressivement
                   les prochaines recommandations.
                 </p>
 
                 <div className="mt-4 grid gap-2 sm:grid-cols-3">
-                  <div className="rounded-[20px] border border-[#d3e6df] bg-[linear-gradient(145deg,#e9fbf6_0%,#d8f3ec_100%)] p-3 shadow-[0_5px_14px_rgba(40,90,75,0.035)]">
-                    <p className="text-[9px] uppercase tracking-[0.12em] text-[#7b8e90]">
+                  <div className="rounded-[20px] border border-[#d3e6df] dark:border-[#28515a] bg-[linear-gradient(145deg,#e9fbf6_0%,#d8f3ec_100%)] dark:bg-[linear-gradient(145deg,#173a43_0%,#102d35_100%)] p-3 shadow-[0_5px_14px_rgba(40,90,75,0.035)]">
+                    <p className="text-[9px] uppercase tracking-[0.12em] text-[#7b8e90] dark:text-[#9fb2b6]">
                       Repas suivis
                     </p>
-                    <p className="mt-1 text-lg font-semibold text-[#176678]">
+                    <p className="mt-1 text-lg font-semibold text-[#176678] dark:text-[#71d8d0]">
                       {feedback.length}
                     </p>
                   </div>
 
-                  <div className="rounded-[20px] border border-[#d3e6df] bg-[linear-gradient(145deg,#e9fbf6_0%,#d8f3ec_100%)] p-3 shadow-[0_5px_14px_rgba(40,90,75,0.035)]">
-                    <p className="text-[9px] uppercase tracking-[0.12em] text-[#7b8e90]">
+                  <div className="rounded-[20px] border border-[#d3e6df] dark:border-[#28515a] bg-[linear-gradient(145deg,#e9fbf6_0%,#d8f3ec_100%)] dark:bg-[linear-gradient(145deg,#173a43_0%,#102d35_100%)] p-3 shadow-[0_5px_14px_rgba(40,90,75,0.035)]">
+                    <p className="text-[9px] uppercase tracking-[0.12em] text-[#7b8e90] dark:text-[#9fb2b6]">
                       Réalisés
                     </p>
-                    <p className="mt-1 text-lg font-semibold text-[#176678]">
+                    <p className="mt-1 text-lg font-semibold text-[#176678] dark:text-[#71d8d0]">
                       {feedback.filter((item) => item.status === "realise").length}
                     </p>
                   </div>
 
-                  <div className="rounded-[20px] border border-[#d3e6df] bg-[linear-gradient(145deg,#e9fbf6_0%,#d8f3ec_100%)] p-3 shadow-[0_5px_14px_rgba(40,90,75,0.035)]">
-                    <p className="text-[9px] uppercase tracking-[0.12em] text-[#7b8e90]">
+                  <div className="rounded-[20px] border border-[#d3e6df] dark:border-[#28515a] bg-[linear-gradient(145deg,#e9fbf6_0%,#d8f3ec_100%)] dark:bg-[linear-gradient(145deg,#173a43_0%,#102d35_100%)] p-3 shadow-[0_5px_14px_rgba(40,90,75,0.035)]">
+                    <p className="text-[9px] uppercase tracking-[0.12em] text-[#7b8e90] dark:text-[#9fb2b6]">
                       Satisfaction
                     </p>
-                    <p className="mt-1 text-lg font-semibold text-[#176678]">
+                    <p className="mt-1 text-lg font-semibold text-[#176678] dark:text-[#71d8d0]">
                       {(() => {
                         const scores = feedback
                           .map((item) => item.satisfaction)
@@ -493,7 +493,7 @@ export default function AlimentationPage() {
                                 ? "bg-[#ffd9cf] dark:bg-[#4b302b] text-[#d96550] dark:text-[#ff9a86]"
                                 : adaptation.priority === "moderee"
                                   ? "bg-[#ffe7af] dark:bg-[#4b4327] text-[#a66f00] dark:text-[#f2ca72]"
-                                  : "bg-[#cef3eb] text-[#087ea4]"
+                                  : "bg-[#cef3eb] dark:bg-[#234a4a] text-[#087ea4] dark:text-[#72d7e3]"
                             }`}
                           >
                             {adaptation.priority}
@@ -506,7 +506,7 @@ export default function AlimentationPage() {
               </section>
             )}
 
-            <section className="mt-2 overflow-hidden rounded-[30px] border border-[#78d2c8] bg-[linear-gradient(145deg,#ffffff_0%,#e8f9f5_100%)] shadow-[0_16px_34px_rgba(35,70,60,0.07),0_28px_62px_rgba(35,70,60,0.055),inset_0_1px_0_rgba(255,255,255,0.98)]">
+            <section className="mt-2 overflow-hidden rounded-[30px] border border-[#78d2c8] dark:border-[#28515a] bg-[linear-gradient(145deg,#ffffff_0%,#e8f9f5_100%)] dark:bg-[linear-gradient(145deg,#102d35_0%,#173d46_100%)] shadow-[0_16px_34px_rgba(35,70,60,0.07),0_28px_62px_rgba(35,70,60,0.055),inset_0_1px_0_rgba(255,255,255,0.98)]">
               <button
                 type="button"
                 onClick={() => setShoppingListOpen((open) => !open)}
@@ -517,13 +517,13 @@ export default function AlimentationPage() {
                 <div className="pointer-events-none absolute -bottom-10 left-16 h-20 w-24 rounded-full bg-[#7e9ff2]/8 blur-2xl" />
 
                 <div className="relative flex min-w-0 items-center gap-3.5">
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] border border-white/80 dark:border-[#28515a] bg-[linear-gradient(145deg,#d8f8f1_0%,#b7eadd_100%)] dark:bg-[linear-gradient(145deg,#183d3f_0%,#245650_100%)] text-[#287b78] shadow-[0_5px_10px_rgba(40,127,114,0.08),0_10px_22px_rgba(40,127,114,0.07),inset_0_1px_0_rgba(255,255,255,1)]">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] border border-white/80 dark:border-[#28515a] bg-[linear-gradient(145deg,#d8f8f1_0%,#b7eadd_100%)] dark:bg-[linear-gradient(145deg,#183d3f_0%,#245650_100%)] text-[#287b78] dark:text-[#71d8d0] shadow-[0_5px_10px_rgba(40,127,114,0.08),0_10px_22px_rgba(40,127,114,0.07),inset_0_1px_0_rgba(255,255,255,1)]">
                     <ShoppingBasket size={19} strokeWidth={1.7} />
                   </div>
 
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#287b78]">
+                      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#287b78] dark:text-[#71d8d0]">
                         Courses
                       </p>
 
@@ -536,7 +536,7 @@ export default function AlimentationPage() {
                       Ma liste de courses
                     </h2>
 
-                    <p className="mt-1.5 max-w-xl text-[11px] leading-5 text-[#668083]">
+                    <p className="mt-1.5 max-w-xl text-[11px] leading-5 text-[#668083] dark:text-[#a6b9bd]">
                       Tous les ingrédients nécessaires pour préparer votre programme de la semaine.
                     </p>
                   </div>
@@ -545,7 +545,7 @@ export default function AlimentationPage() {
 <span
                   className={`relative flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#d6e5df] dark:border-[#28515a] bg-white dark:bg-[#173f47] text-[#287b78] dark:text-[#71d8d0] shadow-[0_6px_14px_rgba(40,90,75,0.055)] transition-all duration-300 ${
                     shoppingListOpen
-                      ? "rotate-180 bg-[#dff6f0]"
+                      ? "rotate-180 bg-[#dff6f0] dark:bg-[#234a4a]"
                       : "group-hover:scale-105"
                   }`}
                   aria-hidden="true"
@@ -562,18 +562,18 @@ export default function AlimentationPage() {
                 }`}
               >
                 <div className="min-h-0 overflow-hidden">
-                  <div className="border-t border-[#e0ebe7] bg-[linear-gradient(180deg,#e8f8f5_0%,#f2edff_100%)] px-5 pb-5 pt-5 sm:px-6">
+                  <div className="border-t border-[#e0ebe7] dark:border-[#28515a] bg-[linear-gradient(180deg,#e8f8f5_0%,#f2edff_100%)] dark:bg-[linear-gradient(180deg,#173a43_0%,#1d2340_100%)] px-5 pb-5 pt-5 sm:px-6">
                     <div className="mb-4 flex items-center justify-between gap-3">
                       <div>
-                        <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-[#7d918f]">
+                        <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-[#7d918f] dark:text-[#9fb2b6]">
                           Organisation
                         </p>
-                        <p className="mt-1 text-[11px] text-[#668083]">
+                        <p className="mt-1 text-[11px] text-[#668083] dark:text-[#a6b9bd]">
                           Les ingrédients sont regroupés pour simplifier vos achats.
                         </p>
                       </div>
 
-                      <span className="hidden rounded-full border border-[#d2e3dc] dark:border-[#28515a] bg-white dark:bg-[#173f47] px-3 py-1.5 text-[9px] font-semibold text-[#39775b] shadow-[0_5px_12px_rgba(40,90,75,0.04)] sm:inline-flex">
+                      <span className="hidden rounded-full border border-[#d2e3dc] dark:border-[#28515a] bg-white dark:bg-[#173f47] px-3 py-1.5 text-[9px] font-semibold text-[#39775b] dark:text-[#7dd9a5] shadow-[0_5px_12px_rgba(40,90,75,0.04)] sm:inline-flex">
                         Programme Otavio
                       </span>
                     </div>
@@ -586,7 +586,7 @@ export default function AlimentationPage() {
                         >
                           <div className="flex items-center justify-between gap-3">
                             <div className="flex min-w-0 items-center gap-2.5">
-                              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#edf8f4_0%,#dff0e8_100%)] text-[#287b78] shadow-[0_4px_10px_rgba(40,127,114,0.06)]">
+                              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#edf8f4_0%,#dff0e8_100%)] dark:bg-[linear-gradient(135deg,#183d3f_0%,#245650_100%)] text-[#287b78] dark:text-[#71d8d0] shadow-[0_4px_10px_rgba(40,127,114,0.06)]">
                                 <span className="text-[10px] font-bold">
                                   {String(index + 1).padStart(2, "0")}
                                 </span>
@@ -597,7 +597,7 @@ export default function AlimentationPage() {
                               </h3>
                             </div>
 
-                            <span className="rounded-full bg-[#eef7f3] px-2 py-1 text-[9px] font-semibold text-[#39775b]">
+                            <span className="rounded-full bg-[#eef7f3] dark:bg-[#173f47] px-2 py-1 text-[9px] font-semibold text-[#39775b] dark:text-[#7dd9a5]">
                               {category.items.length}{" "}
                               {category.items.length > 1 ? "articles" : "article"}
                             </span>
@@ -607,9 +607,9 @@ export default function AlimentationPage() {
                             {category.items.map((item) => (
                               <div
                                 key={`${category.name}-${item.name}-${item.unit}`}
-                                className="flex items-center justify-between gap-4 border-b border-[#edf1f0] pb-2.5 last:border-0 last:pb-0"
+                                className="flex items-center justify-between gap-4 border-b border-[#edf1f0] dark:border-[#28515a] pb-2.5 last:border-0 last:pb-0"
                               >
-                                <span className="text-[10px] leading-4 text-[#587174]">
+                                <span className="text-[10px] leading-4 text-[#587174] dark:text-[#a6b9bd]">
                                   {item.name}
                                 </span>
 
@@ -715,7 +715,7 @@ export default function AlimentationPage() {
                           key={`${day.day}-${meal.type}`}
                           className="group overflow-hidden rounded-[26px] border border-[#d2e1dc] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_8px_20px_rgba(40,90,75,0.04),0_16px_32px_rgba(40,90,75,0.035)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_26px_rgba(40,90,75,0.06),0_20px_38px_rgba(40,90,75,0.05)]"
                         >
-                          <div className="relative h-[170px] overflow-hidden bg-[#dff4f3]">
+                          <div className="relative h-[170px] overflow-hidden bg-[#dff4f3] dark:bg-[#173a43]">
                             <img
                               src={meal.recipe.image ?? "/recipes/placeholder.svg"}
                               alt={meal.recipe.name}
@@ -733,12 +733,12 @@ export default function AlimentationPage() {
                           <div
                             className={`relative overflow-hidden px-4 py-4 ${
                               meal.type === "petit_dejeuner"
-                                ? "bg-[linear-gradient(135deg,#fff5d8_0%,#ffe6a8_100%)]"
+                                ? "bg-[linear-gradient(135deg,#fff5d8_0%,#ffe6a8_100%)] dark:bg-[linear-gradient(135deg,#4a4025_0%,#5a4525_100%)]"
                                 : meal.type === "dejeuner"
-                                  ? "bg-[linear-gradient(135deg,#e1f8eb_0%,#bdeccf_100%)]"
+                                  ? "bg-[linear-gradient(135deg,#e1f8eb_0%,#bdeccf_100%)] dark:bg-[linear-gradient(135deg,#214637_0%,#275b45_100%)]"
                                   : meal.type === "diner"
-                                    ? "bg-[linear-gradient(135deg,#fff0eb_0%,#ffc9bb_100%)]"
-                                    : "bg-[linear-gradient(135deg,#f0edff_0%,#d9d2ff_100%)]"
+                                    ? "bg-[linear-gradient(135deg,#fff0eb_0%,#ffc9bb_100%)] dark:bg-[linear-gradient(135deg,#4b302b_0%,#5b3630_100%)]"
+                                    : "bg-[linear-gradient(135deg,#f0edff_0%,#d9d2ff_100%)] dark:bg-[linear-gradient(135deg,#302f55_0%,#3c3762_100%)]"
                             }`}
                           >
                             <div className="flex items-center justify-between gap-3">
@@ -749,12 +749,12 @@ export default function AlimentationPage() {
                                     strokeWidth={1.7}
                                     className={
                                       meal.type === "petit_dejeuner"
-                                        ? "text-[#9a7818]"
+                                        ? "text-[#9a7818] dark:text-[#f2ca72]"
                                         : meal.type === "dejeuner"
-                                          ? "text-[#39775b]"
+                                          ? "text-[#39775b] dark:text-[#7dd9a5]"
                                           : meal.type === "diner"
-                                            ? "text-[#b45d4b]"
-                                            : "text-[#655f9e]"
+                                            ? "text-[#b45d4b] dark:text-[#ff9a86]"
+                                            : "text-[#655f9e] dark:text-[#b8adff]"
                                     }
                                   />
                                 </div>
@@ -763,12 +763,12 @@ export default function AlimentationPage() {
                                   <p
                                     className={`text-[9px] font-bold uppercase tracking-[0.16em] ${
                                       meal.type === "petit_dejeuner"
-                                        ? "text-[#9a7818]"
+                                        ? "text-[#9a7818] dark:text-[#f2ca72]"
                                         : meal.type === "dejeuner"
-                                          ? "text-[#39775b]"
+                                          ? "text-[#39775b] dark:text-[#7dd9a5]"
                                           : meal.type === "diner"
-                                            ? "text-[#b45d4b]"
-                                            : "text-[#655f9e]"
+                                            ? "text-[#b45d4b] dark:text-[#ff9a86]"
+                                            : "text-[#655f9e] dark:text-[#b8adff]"
                                     }`}
                                   >
                                     {meal.type === "petit_dejeuner"
@@ -780,13 +780,13 @@ export default function AlimentationPage() {
                                           : "Collation"}
                                   </p>
 
-                                  <p className="mt-0.5 text-[9px] text-[#7b8988]">
+                                  <p className="mt-0.5 text-[9px] text-[#7b8988] dark:text-[#9fb2b6]">
                                     Repas du programme
                                   </p>
                                 </div>
                               </div>
 
-                              <span className="shrink-0 rounded-full border border-white/80 dark:border-[#28515a] bg-white/70 dark:bg-[#173a43] px-2.5 py-1 text-[9px] font-semibold text-[#587174] shadow-[0_4px_10px_rgba(35,55,60,0.04)]">
+                              <span className="shrink-0 rounded-full border border-white/80 dark:border-[#28515a] bg-white/70 dark:bg-[#173a43] px-2.5 py-1 text-[9px] font-semibold text-[#587174] dark:text-[#a6b9bd] shadow-[0_4px_10px_rgba(35,55,60,0.04)]">
                                 {meal.recipe.prepTime} min
                               </span>
                             </div>
@@ -799,35 +799,35 @@ export default function AlimentationPage() {
 
                             <div className="mt-3 flex flex-wrap items-center gap-2">
                               {meal.portion && (
-                                <span className="rounded-full border border-[#dce8e3] bg-[#f6faf8] px-2.5 py-1.5 text-[9px] font-medium text-[#587174]">
+                                <span className="rounded-full border border-[#dce8e3] dark:border-[#28515a] bg-[#f6faf8] dark:bg-[#173a43] px-2.5 py-1.5 text-[9px] font-medium text-[#587174] dark:text-[#a6b9bd]">
                                   {meal.portion}
                                 </span>
                               )}
 
-                              <span className="rounded-full border border-[#cae3dc] bg-[#dff6f0] px-2.5 py-1.5 text-[9px] font-semibold text-[#287b78]">
+                              <span className="rounded-full border border-[#cae3dc] dark:border-[#28515a] bg-[#dff6f0] dark:bg-[#234a4a] px-2.5 py-1.5 text-[9px] font-semibold text-[#287b78] dark:text-[#71d8d0]">
                                 Préparation {meal.recipe.prepTime} min
                               </span>
                             </div>
 
-                            <div className="mt-5 rounded-[20px] border border-[#dfeae6] bg-[linear-gradient(145deg,#fbfdfc_0%,#f4f9f7_100%)] p-3.5">
+                            <div className="mt-5 rounded-[20px] border border-[#dfeae6] dark:border-[#28515a] bg-[linear-gradient(145deg,#fbfdfc_0%,#f4f9f7_100%)] dark:bg-[linear-gradient(145deg,#173a43_0%,#102d35_100%)] p-3.5">
                               <div className="flex items-center justify-between gap-3">
                                 <div>
-                                  <p className="text-[9px] font-semibold uppercase tracking-[0.13em] text-[#7b8e90]">
+                                  <p className="text-[9px] font-semibold uppercase tracking-[0.13em] text-[#7b8e90] dark:text-[#9fb2b6]">
                                     Suivi du repas
                                   </p>
-                                  <p className="mt-1 text-[10px] text-[#9aa8a7]">
+                                  <p className="mt-1 text-[10px] text-[#9aa8a7] dark:text-[#9fb2b6]">
                                     Votre retour aide Otavio à ajuster vos prochains repas.
                                   </p>
                                 </div>
 
                                 {feedback && (
-                                  <span className="shrink-0 rounded-full bg-[#eaf7f3] px-2.5 py-1 text-[8px] font-semibold text-[#287b78]">
+                                  <span className="shrink-0 rounded-full bg-[#eaf7f3] dark:bg-[#234a4a] px-2.5 py-1 text-[8px] font-semibold text-[#287b78] dark:text-[#71d8d0]">
                                     Enregistré
                                   </span>
                                 )}
                               </div>
 
-                              <div className="mt-3 grid grid-cols-3 gap-1.5 rounded-[16px] bg-[#dff2ef] p-1">
+                              <div className="mt-3 grid grid-cols-3 gap-1.5 rounded-[16px] bg-[#dff2ef] dark:bg-[#183d43] p-1">
                                 {[
                                   ["realise", "✓ Réalisé"],
                                   ["remplace", "↻ Remplacé"],
@@ -846,7 +846,7 @@ export default function AlimentationPage() {
                                     }
                                     className={`rounded-[12px] px-2 py-2 text-[8px] font-semibold transition ${
                                       feedback?.status === status
-                                        ? "bg-white text-[#176678] shadow-[0_4px_12px_rgba(40,90,75,0.08)]"
+                                        ? "bg-white dark:bg-[#173a43] text-[#176678] dark:text-[#71d8d0] shadow-[0_4px_12px_rgba(40,90,75,0.08)]"
                                         : "text-[#7b8e90] dark:text-[#9fb2b6] hover:bg-white/80 dark:hover:bg-[#173a43] hover:text-[#587174] dark:hover:text-[#d0dfe2]"
                                     }`}
                                   >
@@ -858,11 +858,11 @@ export default function AlimentationPage() {
                               {feedback && (
                                 <div className="mt-3 rounded-[16px] border border-[#e2ebe8] dark:border-[#28515a] bg-white/80 dark:bg-[#173a43]/80 p-3">
                                   <div className="flex items-center justify-between gap-3">
-                                    <p className="text-[9px] font-medium text-[#668083]">
+                                    <p className="text-[9px] font-medium text-[#668083] dark:text-[#9db2b7]">
                                       Votre satisfaction
                                     </p>
 
-                                    <span className="text-[8px] text-[#9aa9aa]">
+                                    <span className="text-[8px] text-[#9aa9aa] dark:text-[#9fb2b6]">
                                       sur 5
                                     </span>
                                   </div>
@@ -882,7 +882,7 @@ export default function AlimentationPage() {
                                         className={`flex h-7 w-7 items-center justify-center rounded-full text-[9px] font-semibold transition ${
                                           feedback?.satisfaction === value
                                             ? "bg-[#287b78] text-white shadow-[0_4px_10px_rgba(40,127,114,0.16)]"
-                                            : "bg-[#edf8f6] text-[#7b8e90] ring-1 ring-[#e1ebe7] hover:bg-[#edf7f4]"
+                                            : "bg-[#edf8f6] dark:bg-[#173a43] text-[#7b8e90] dark:text-[#9fb2b6] ring-1 ring-[#e1ebe7] dark:ring-[#28515a] hover:bg-[#edf7f4] dark:hover:bg-[#234a4a]"
                                         }`}
                                         aria-label={`Satisfaction ${value} sur 5`}
                                       >
@@ -902,15 +902,15 @@ export default function AlimentationPage() {
                                 </span>
                               </summary>
 
-                              <div className="mt-3 space-y-4 rounded-[20px] border border-[#e1eae7] bg-[linear-gradient(145deg,#f9fcfa_0%,#f1f7f4_100%)] p-4">
+                              <div className="mt-3 space-y-4 rounded-[20px] border border-[#e1eae7] dark:border-[#28515a] bg-[linear-gradient(145deg,#f9fcfa_0%,#f1f7f4_100%)] dark:bg-[linear-gradient(145deg,#173a43_0%,#102d35_100%)] p-4">
                                 <div className="rounded-[16px] border border-white/80 dark:border-[#28515a] bg-white/75 dark:bg-[#173a43] p-3.5">
                                   <div className="flex items-start justify-between gap-3">
                                     <div>
-                                      <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#7b8e90]">
+                                      <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#7b8e90] dark:text-[#9fb2b6]">
                                         Ingrédients
                                       </p>
 
-                                      <p className="mt-1 text-[10px] text-[#93a0a0]">
+                                      <p className="mt-1 text-[10px] text-[#93a0a0] dark:text-[#9fb2b6]">
                                         Quantités adaptées automatiquement
                                       </p>
                                     </div>
@@ -918,7 +918,7 @@ export default function AlimentationPage() {
                                     <div className="shrink-0">
                                       <label
                                         htmlFor={`recipe-people-${meal.recipe.id}`}
-                                        className="mb-1 block text-[8px] font-semibold uppercase tracking-[0.1em] text-[#7b8e90]"
+                                        className="mb-1 block text-[8px] font-semibold uppercase tracking-[0.1em] text-[#7b8e90] dark:text-[#9fb2b6]"
                                       >
                                         Nombre de personnes
                                       </label>
@@ -948,7 +948,7 @@ export default function AlimentationPage() {
                                           )}
                                         </select>
 
-                                        <div className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-[#287b78]">
+                                        <div className="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-[#287b78] dark:text-[#71d8d0]">
                                           <svg
                                             viewBox="0 0 24 24"
                                             className="h-3.5 w-3.5"
@@ -963,18 +963,18 @@ export default function AlimentationPage() {
                                         </div>
                                       </div>
 
-                                      <p className="mt-1 text-[8px] text-[#96a5a5]">
+                                      <p className="mt-1 text-[8px] text-[#96a5a5] dark:text-[#9fb2b6]">
                                         Quantités ajustées
                                       </p>
                                     </div>
                                   </div>
 
                                   <div className="mt-2 flex items-center justify-between rounded-xl bg-[#dcf5ef] px-3 py-2">
-                                    <span className="text-[9px] font-medium text-[#6b8280]">
+                                    <span className="text-[9px] font-medium text-[#6b8280] dark:text-[#a6b9bd]">
                                       Recette de base
                                     </span>
 
-                                    <span className="text-[9px] font-semibold text-[#287b78]">
+                                    <span className="text-[9px] font-semibold text-[#287b78] dark:text-[#71d8d0]">
                                       {meal.recipe.servings ?? 1}{" "}
                                       {(meal.recipe.servings ?? 1) > 1
                                         ? "personnes"
@@ -998,13 +998,13 @@ export default function AlimentationPage() {
                                       return (
                                         <div
                                           key={`${ingredient.name}-${ingredient.quantity ?? ""}-${ingredient.unit ?? ""}`}
-                                          className="flex items-start justify-between gap-4 border-b border-[#edf1f0] pb-1.5 last:border-0 last:pb-0"
+                                          className="flex items-start justify-between gap-4 border-b border-[#edf1f0] dark:border-[#28515a] pb-1.5 last:border-0 last:pb-0"
                                         >
-                                          <span className="text-[10px] leading-4 text-[#587174]">
+                                          <span className="text-[10px] leading-4 text-[#587174] dark:text-[#a6b9bd]">
                                             {ingredient.name}
                                           </span>
 
-                                          <span className="shrink-0 text-[9px] font-semibold text-[#287b78]">
+                                          <span className="shrink-0 text-[9px] font-semibold text-[#287b78] dark:text-[#71d8d0]">
                                             {scaledQuantity
                                               ? `${scaledQuantity} ${ingredient.unit ?? ""}`
                                               : ""}
@@ -1016,7 +1016,7 @@ export default function AlimentationPage() {
                                 </div>
 
                                 <div className="rounded-[16px] border border-white/80 dark:border-[#28515a] bg-white/75 dark:bg-[#173a43] p-3.5">
-                                  <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#7b8e90]">
+                                  <p className="text-[9px] font-semibold uppercase tracking-[0.12em] text-[#7b8e90] dark:text-[#9fb2b6]">
                                     Préparation
                                   </p>
 
@@ -1027,11 +1027,11 @@ export default function AlimentationPage() {
                                           key={instruction}
                                           className="flex items-start gap-2.5"
                                         >
-                                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#d6f3e8] text-[8px] font-bold text-[#287b78]">
+                                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#d6f3e8] dark:bg-[#234a4a] text-[8px] font-bold text-[#287b78] dark:text-[#71d8d0]">
                                             {index + 1}
                                           </span>
 
-                                          <p className="pt-0.5 text-[10px] leading-4 text-[#587174]">
+                                          <p className="pt-0.5 text-[10px] leading-4 text-[#587174] dark:text-[#a6b9bd]">
                                             {instruction}
                                           </p>
                                         </div>
