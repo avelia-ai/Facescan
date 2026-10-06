@@ -70,7 +70,7 @@ const indicatorConfig = [
     description: "Aspect hydrique",
     icon: Droplets,
     accent: "text-[#168f91]",
-    iconBg: "bg-[#c9f2eb]",
+    iconBg: "bg-[#c9f2eb] dark:bg-[#234a4a]",
     bar: "from-[#42cfc2] to-[#087ea4]",
   },
   {
@@ -79,7 +79,7 @@ const indicatorConfig = [
     description: "Signes apparents",
     icon: Moon,
     accent: "text-[#756bd4]",
-    iconBg: "bg-[#e1dcff]",
+    iconBg: "bg-[#e1dcff] dark:bg-[#35345e]",
     bar: "from-[#9b8cff] to-[#6f5ee8]",
   },
   {
@@ -88,7 +88,7 @@ const indicatorConfig = [
     description: "Harmonie générale",
     icon: Activity,
     accent: "text-[#3f9864]",
-    iconBg: "bg-[#d6f3e3]",
+    iconBg: "bg-[#d6f3e3] dark:bg-[#254c3b]",
     bar: "from-[#65c991] to-[#35a56d]",
   },
 ] as const;
@@ -118,7 +118,7 @@ function buildDailyActions(
       score: indicators.hydratation,
       priority:
         100 - indicators.hydratation + goalBoost(["hydratation"]),
-      tone: "bg-[#c9f2eb] text-[#087ea4]",
+      tone: "bg-[#c9f2eb] dark:bg-[#234a4a] text-[#087ea4] dark:text-[#6fd4cb]",
     },
     {
       key: "recuperation",
@@ -138,7 +138,7 @@ function buildDailyActions(
       priority:
         100 - indicators.fatigue +
         goalBoost(["recuperation", "fatigue", "sommeil"]),
-      tone: "bg-[#e1dcff] text-[#6f5ee8]",
+      tone: "bg-[#e1dcff] dark:bg-[#35345e] text-[#6f5ee8] dark:text-[#b8b3ff]",
     },
     {
       key: "peau",
@@ -178,7 +178,7 @@ function buildDailyActions(
       priority:
         100 - indicators.equilibre +
         goalBoost(["equilibre"]),
-      tone: "bg-[#d6f3e3] text-[#35a56d]",
+      tone: "bg-[#d6f3e3] dark:bg-[#254c3b] text-[#35a56d] dark:text-[#7dd99a]",
     },
   ];
 
@@ -757,10 +757,10 @@ export default function ResultatsPage() {
               <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-[#168f91]">
                 Vos indicateurs
               </p>
-              <h2 className="mt-1.5 text-2xl font-semibold tracking-[-0.045em] text-[#172a32]">
+              <h2 className="mt-1.5 text-2xl font-semibold tracking-[-0.045em] text-[#172a32] dark:text-[#e4f1f3]">
                 Ce que votre scan révèle
               </h2>
-              <p className="mt-2 max-w-xl text-[12px] leading-5 text-[#71858a]">
+              <p className="mt-2 max-w-xl text-[12px] leading-5 text-[#71858a] dark:text-[#9db2b7]">
                 Quatre indicateurs visuels pour comprendre votre lecture du jour
                 et suivre leur évolution au fil des scans.
               </p>
@@ -783,7 +783,7 @@ export default function ResultatsPage() {
                 <Link
                   key={item.key}
                   href={`/indicateur?type=${item.key === "fatigue" ? "fatigue" : item.key}`}
-                  className="group relative overflow-hidden rounded-[28px] border border-[#b8dfe0] bg-[linear-gradient(145deg,#ffffff_0%,#eefafa_100%)] p-5 shadow-[0_14px_38px_rgba(20,55,65,0.055),0_3px_8px_rgba(20,55,65,0.025)] transition duration-300 hover:-translate-y-1 hover:border-[#cfdedf] hover:shadow-[0_20px_48px_rgba(20,55,65,0.09)]"
+                  className="group relative overflow-hidden rounded-[28px] border border-[#b8dfe0] dark:border-[#28515a] bg-[linear-gradient(145deg,#ffffff_0%,#eefafa_100%)] dark:bg-[linear-gradient(145deg,#102d35_0%,#173a43_100%)] p-5 shadow-[0_14px_38px_rgba(20,55,65,0.055),0_3px_8px_rgba(20,55,65,0.025)] transition duration-300 hover:-translate-y-1 hover:border-[#cfdedf] dark:hover:border-[#39707a] hover:shadow-[0_20px_48px_rgba(20,55,65,0.09)]"
                 >
                   <div className={`pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full ${item.iconBg} opacity-60 blur-2xl`} />
 
@@ -798,7 +798,7 @@ export default function ResultatsPage() {
                       <span
                         className={`rounded-full px-2.5 py-1.5 text-[9px] font-bold ${
                           positive
-                            ? "bg-[#e8f8f5] text-[#168f91]"
+                            ? "bg-[#d9f4ef] dark:bg-[#234a4a] text-[#168f91] dark:text-[#71d8d0]"
                             : "bg-[#fff0ec] dark:bg-[#4b302b] text-[#d96550] dark:text-[#ff9a86]"
                         }`}
                       >
@@ -806,33 +806,33 @@ export default function ResultatsPage() {
                         {item.change} pts
                       </span>
                     ) : (
-                      <span className="rounded-full bg-[#e9f7f6] px-2.5 py-1.5 text-[9px] font-semibold text-[#87979b]">
+                      <span className="rounded-full bg-[#e9f7f6] dark:bg-[#173f47] px-2.5 py-1.5 text-[9px] font-semibold text-[#87979b] dark:text-[#afc0c4]">
                         Référence
                       </span>
                     )}
                   </div>
 
                   <div className="relative mt-6">
-                    <p className="text-[10px] font-semibold text-[#7b8d92]">
+                    <p className="text-[10px] font-semibold text-[#7b8d92] dark:text-[#afc0c4]">
                       {item.label}
                     </p>
 
                     <div className="mt-1 flex items-end gap-1">
-                      <span className="text-[38px] font-semibold leading-none tracking-[-0.07em] text-[#162a32]">
+                      <span className="text-[38px] font-semibold leading-none tracking-[-0.07em] text-[#162a32] dark:text-[#e4f1f3]">
                         {item.value}
                       </span>
-                      <span className="mb-1 text-[9px] font-medium text-[#9aabad]">
+                      <span className="mb-1 text-[9px] font-medium text-[#9aabad] dark:text-[#8fa8ae]">
                         /100
                       </span>
                     </div>
 
-                    <p className="mt-2 text-[10px] text-[#839397]">
+                    <p className="mt-2 text-[10px] text-[#839397] dark:text-[#93a9ae]">
                       {item.description}
                     </p>
                   </div>
 
                   <div className="relative mt-5">
-                    <div className="h-2 overflow-hidden rounded-full bg-[#edf2f3]">
+                    <div className="h-2 overflow-hidden rounded-full bg-[#edf2f3] dark:bg-[#24434b]">
                       <div
                         className={`h-full rounded-full bg-gradient-to-r ${item.bar} transition-all duration-700`}
                         style={{ width: `${item.value}%` }}
@@ -840,7 +840,7 @@ export default function ResultatsPage() {
                     </div>
 
                     <div className="mt-3 flex items-center justify-between">
-                      <span className="text-[9px] font-semibold text-[#536b72]">
+                      <span className="text-[9px] font-semibold text-[#536b72] dark:text-[#b2c5c9]">
                         {item.status}
                       </span>
 
@@ -866,10 +866,10 @@ export default function ResultatsPage() {
               <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-[#756bd4]">
                 Aujourd’hui
               </p>
-              <h2 className="mt-1.5 text-2xl font-semibold tracking-[-0.045em] text-[#172a32]">
+              <h2 className="mt-1.5 text-2xl font-semibold tracking-[-0.045em] text-[#172a32] dark:text-[#e4f1f3]">
                 Votre plan du jour
               </h2>
-              <p className="mt-2 max-w-xl text-[12px] leading-5 text-[#71858a]">
+              <p className="mt-2 max-w-xl text-[12px] leading-5 text-[#71858a] dark:text-[#9db2b7]">
                 Trois actions ciblées à partir de votre lecture du jour et de vos priorités.
               </p>
             </div>
@@ -886,7 +886,7 @@ export default function ResultatsPage() {
                 key={action.title}
                 className="group relative overflow-hidden rounded-[28px] border border-[#b8dfe0] bg-[linear-gradient(145deg,#ffffff_0%,#eefafa_100%)] p-5 shadow-[0_14px_38px_rgba(20,55,65,0.055),0_3px_8px_rgba(20,55,65,0.025)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_rgba(20,55,65,0.09)]"
               >
-                <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-[#eef4ff] opacity-70 blur-2xl" />
+                <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-[#eef4ff] dark:bg-[#252b4b] opacity-70 blur-2xl" />
 
                 <div className="relative flex items-start justify-between gap-3">
                   <div
@@ -903,22 +903,22 @@ export default function ResultatsPage() {
                 </div>
 
                 <div className="relative mt-6">
-                  <h3 className="text-[15px] font-semibold tracking-[-0.02em] text-[#162a32]">
+                  <h3 className="text-[15px] font-semibold tracking-[-0.02em] text-[#162a32] dark:text-[#e4f1f3]">
                     {action.title}
                   </h3>
 
-                  <p className="mt-2 text-[11px] leading-5 text-[#71858a]">
+                  <p className="mt-2 text-[11px] leading-5 text-[#71858a] dark:text-[#9db2b7]">
                     {action.text}
                   </p>
                 </div>
 
-                <div className="relative mt-6 flex items-center justify-between border-t border-[#edf2f2] pt-4">
+                <div className="relative mt-6 flex items-center justify-between border-t border-[#edf2f2] dark:border-[#28515a] pt-4">
                   <div className="flex items-center gap-2 text-[9px] font-bold text-[#168f91]">
                     <CheckCircle2 size={13} />
                     À faire aujourd’hui
                   </div>
 
-                  <span className="text-[9px] font-semibold text-[#a0afb2]">
+                  <span className="text-[9px] font-semibold text-[#a0afb2] dark:text-[#8fa8ae]">
                     Indicateur {action.score}/100
                   </span>
                 </div>
@@ -934,10 +934,10 @@ export default function ResultatsPage() {
               <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-[#3f9864]">
                 Votre progression
               </p>
-              <h2 className="mt-1.5 text-2xl font-semibold tracking-[-0.045em] text-[#172a32]">
+              <h2 className="mt-1.5 text-2xl font-semibold tracking-[-0.045em] text-[#172a32] dark:text-[#e4f1f3]">
                 Votre évolution
               </h2>
-              <p className="mt-2 max-w-xl text-[12px] leading-5 text-[#71858a]">
+              <p className="mt-2 max-w-xl text-[12px] leading-5 text-[#71858a] dark:text-[#9db2b7]">
                 Otavio compare vos scans au fil du temps pour faire apparaître les tendances.
               </p>
             </div>
@@ -952,21 +952,21 @@ export default function ResultatsPage() {
           </div>
 
           <div className="mt-6 overflow-hidden rounded-[30px] border border-[#dce6e8] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_16px_42px_rgba(20,55,65,0.055)]">
-            <div className="border-b border-[#edf2f2] bg-[linear-gradient(135deg,#e2faf5_0%,#eef0ff_100%)] px-5 py-5 sm:px-6">
+            <div className="border-b border-[#edf2f2] dark:border-[#28515a] bg-[linear-gradient(135deg,#e2faf5_0%,#eef0ff_100%)] dark:bg-[linear-gradient(135deg,#173c35_0%,#29294a_100%)] px-5 py-5 sm:px-6">
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3f9864]">
                     Lecture de tendance
                   </p>
 
-                  <h3 className="mt-1.5 text-[16px] font-semibold tracking-[-0.02em] text-[#20343c]">
+                  <h3 className="mt-1.5 text-[16px] font-semibold tracking-[-0.02em] text-[#20343c] dark:text-[#e4f1f3]">
                     {previousScan
                       ? "Votre dernière évolution"
                       : "Votre point de départ"}
                   </h3>
                 </div>
 
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#d6f3e3] text-[#35a56d]">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#d6f3e3] dark:bg-[#254c3b] text-[#35a56d] dark:text-[#7dd99a]">
                   <TrendingUp size={19} strokeWidth={1.8} />
                 </div>
               </div>
@@ -975,12 +975,12 @@ export default function ResultatsPage() {
                 {previousScan ? (
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <p className="text-[9px] uppercase tracking-[0.14em] text-[#88999d]">
+                      <p className="text-[9px] uppercase tracking-[0.14em] text-[#88999d] dark:text-[#91a8ad]">
                         Score global
                       </p>
 
                       <div className="mt-1 flex items-end gap-2">
-                        <span className="text-[30px] font-semibold leading-none tracking-[-0.06em] text-[#17313a]">
+                        <span className="text-[30px] font-semibold leading-none tracking-[-0.06em] text-[#17313a] dark:text-[#e4f1f3]">
                           {currentScore}
                         </span>
 
@@ -999,25 +999,25 @@ export default function ResultatsPage() {
                     </div>
 
                     <div className="text-left sm:text-right">
-                      <p className="text-[9px] uppercase tracking-[0.14em] text-[#88999d]">
+                      <p className="text-[9px] uppercase tracking-[0.14em] text-[#88999d] dark:text-[#91a8ad]">
                         Scan précédent
                       </p>
-                      <p className="mt-1 text-[14px] font-semibold text-[#304951]">
+                      <p className="mt-1 text-[14px] font-semibold text-[#304951] dark:text-[#c8d9dd]">
                         {previousScan.score}/100
                       </p>
                     </div>
                   </div>
                 ) : (
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-[#d9f4e5] text-[#35a56d]">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[13px] bg-[#d9f4e5] dark:bg-[#254c3b] text-[#35a56d] dark:text-[#7dd99a]">
                       <Sparkles size={17} />
                     </div>
 
                     <div>
-                      <p className="text-[11px] font-semibold text-[#304951]">
+                      <p className="text-[11px] font-semibold text-[#304951] dark:text-[#c8d9dd]">
                         Votre premier scan est enregistré
                       </p>
-                      <p className="mt-1 text-[10px] leading-5 text-[#7b8e93]">
+                      <p className="mt-1 text-[10px] leading-5 text-[#7b8e93] dark:text-[#91a8ad]">
                         Le prochain scan permettra à Otavio de mesurer vos évolutions.
                       </p>
                     </div>
@@ -1034,14 +1034,14 @@ export default function ResultatsPage() {
                 return (
                   <div
                     key={item.key}
-                    className="rounded-[22px] border border-[#e2e9ea] bg-[#edf8f6] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
+                    className="rounded-[22px] border border-[#e2e9ea] dark:border-[#28515a] bg-[#edf8f6] dark:bg-[#173a43] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <p className="text-[11px] font-semibold text-[#304951]">
+                        <p className="text-[11px] font-semibold text-[#304951] dark:text-[#c8d9dd]">
                           {item.label}
                         </p>
-                        <p className="mt-1 text-[9px] text-[#899a9e]">
+                        <p className="mt-1 text-[9px] text-[#899a9e] dark:text-[#91a8ad]">
                           {hasChange
                             ? `Avant ${previousScan?.indicators[item.key]}`
                             : "Première mesure"}
@@ -1049,7 +1049,7 @@ export default function ResultatsPage() {
                       </div>
 
                       <div className="text-right">
-                        <span className="text-[22px] font-semibold leading-none tracking-[-0.05em] text-[#17313a]">
+                        <span className="text-[22px] font-semibold leading-none tracking-[-0.05em] text-[#17313a] dark:text-[#e4f1f3]">
                           {item.value}
                         </span>
 
@@ -1065,18 +1065,18 @@ export default function ResultatsPage() {
                             {item.change} pts
                           </p>
                         ) : (
-                          <p className="mt-1 text-[9px] font-semibold text-[#8d9ca0]">
+                          <p className="mt-1 text-[9px] font-semibold text-[#8d9ca0] dark:text-[#9bb0b5]">
                             Référence
                           </p>
                         )}
                       </div>
                     </div>
 
-                    <div className="mt-4 h-2 overflow-hidden rounded-full bg-[#e7edef]">
+                    <div className="mt-4 h-2 overflow-hidden rounded-full bg-[#e7edef] dark:bg-[#24434b]">
                       {hasChange && previousScan ? (
                         <div className="relative h-full">
                           <div
-                            className="absolute inset-y-0 left-0 rounded-full bg-[#d9e3e5]"
+                            className="absolute inset-y-0 left-0 rounded-full bg-[#d9e3e5] dark:bg-[#38545b]"
                             style={{
                               width: `${previousScan.indicators[item.key]}%`,
                             }}
@@ -1100,13 +1100,13 @@ export default function ResultatsPage() {
               })}
             </div>
 
-            <div className="border-t border-[#edf2f2] px-5 py-4 sm:px-6">
+            <div className="border-t border-[#edf2f2] dark:border-[#28515a] px-5 py-4 sm:px-6">
               <div className="flex items-start gap-3">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#edf7f1] text-[#3f9864]">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-[#edf7f1] dark:bg-[#254c3b] text-[#3f9864] dark:text-[#7dd99a]">
                   <Info size={14} />
                 </div>
 
-                <p className="text-[10px] leading-5 text-[#75878c]">
+                <p className="text-[10px] leading-5 text-[#75878c] dark:text-[#96acb1]">
                   Les variations sont calculées uniquement à partir de vos scans
                   enregistrés. Un seul scan constitue une référence initiale.
                 </p>
@@ -1121,10 +1121,10 @@ export default function ResultatsPage() {
             <p className="text-[9px] font-bold uppercase tracking-[0.22em] text-[#756bd4]">
               Interprétation Otavio
             </p>
-            <h2 className="text-2xl font-semibold tracking-[-0.045em] text-[#172a32]">
+            <h2 className="text-2xl font-semibold tracking-[-0.045em] text-[#172a32] dark:text-[#e4f1f3]">
               Ce que votre scan signifie
             </h2>
-            <p className="max-w-2xl text-[12px] leading-5 text-[#71858a]">
+            <p className="max-w-2xl text-[12px] leading-5 text-[#71858a] dark:text-[#9db2b7]">
               Otavio met en perspective vos observations visuelles pour vous aider à
               comprendre les principaux points à retenir aujourd’hui.
             </p>
@@ -1132,10 +1132,10 @@ export default function ResultatsPage() {
 
           <div className="mt-6 grid gap-4 lg:grid-cols-2">
             <article className="relative overflow-hidden rounded-[30px] border border-[#dce9e2] dark:border-[#294b3c] bg-white dark:bg-[#102d35] p-5 shadow-[0_16px_42px_rgba(20,55,65,0.055)] sm:p-6">
-              <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#e8f7ee] opacity-70 blur-3xl" />
+              <div className="pointer-events-none absolute -right-12 -top-12 h-32 w-32 rounded-full bg-[#e8f7ee] dark:bg-[#254c3b] opacity-70 blur-3xl" />
 
               <div className="relative flex items-start gap-4">
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#d6f3e3] text-[#35a56d] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#d6f3e3] dark:bg-[#254c3b] text-[#35a56d] dark:text-[#7dd99a] shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
                   <CheckCircle2 size={19} strokeWidth={1.8} />
                 </div>
 
@@ -1143,21 +1143,21 @@ export default function ResultatsPage() {
                   <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#3f9864]">
                     Point positif
                   </p>
-                  <h3 className="mt-1.5 text-[17px] font-semibold tracking-[-0.025em] text-[#20343c]">
+                  <h3 className="mt-1.5 text-[17px] font-semibold tracking-[-0.025em] text-[#20343c] dark:text-[#e4f1f3]">
                     {positiveInsight?.title ?? "Une dynamique positive"}
                   </h3>
                 </div>
               </div>
 
-              <div className="relative mt-5 rounded-[22px] bg-[linear-gradient(145deg,#e3faef_0%,#d5f3e6_100%)] px-4 py-4">
-                <p className="text-[11px] leading-5 text-[#5f757b]">
+              <div className="relative mt-5 rounded-[22px] bg-[linear-gradient(145deg,#e3faef_0%,#d5f3e6_100%)] dark:bg-[linear-gradient(145deg,#173c35_0%,#254c3b_100%)] px-4 py-4">
+                <p className="text-[11px] leading-5 text-[#5f757b] dark:text-[#b2c5c9]">
                   {positiveInsight?.text ??
                     "Aucun indicateur ne se situe encore dans une zone favorable. Otavio continuera à suivre votre évolution au fil des prochains scans."}
                 </p>
               </div>
             </article>
 
-            <article className="relative overflow-hidden rounded-[30px] border border-[#e2defb] bg-[linear-gradient(145deg,#f0edff_0%,#ddd7ff_100%)] p-5 shadow-[0_16px_42px_rgba(71,64,130,0.055)] sm:p-6">
+            <article className="relative overflow-hidden rounded-[30px] border border-[#e2defb] dark:border-[#3a3a63] bg-[linear-gradient(145deg,#f0edff_0%,#ddd7ff_100%)] dark:bg-[linear-gradient(145deg,#29294a_0%,#35345e_100%)] p-5 shadow-[0_16px_42px_rgba(71,64,130,0.055)] sm:p-6">
               <div className="pointer-events-none absolute -bottom-16 -right-10 h-36 w-36 rounded-full bg-[#9b8cff]/30 blur-3xl" />
 
               <div className="relative flex items-start gap-4">
@@ -1169,14 +1169,14 @@ export default function ResultatsPage() {
                   <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#756bd4]">
                     À surveiller
                   </p>
-                  <h3 className="mt-1.5 text-[17px] font-semibold tracking-[-0.025em] text-[#24363e]">
+                  <h3 className="mt-1.5 text-[17px] font-semibold tracking-[-0.025em] text-[#24363e] dark:text-[#e4f1f3]">
                     {surveillanceTitle}
                   </h3>
                 </div>
               </div>
 
-              <div className="relative mt-5 rounded-[22px] border border-white/70 dark:border-[#28515a] bg-white/65 dark:bg-[#173a43]/75 px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
-                <p className="text-[11px] leading-5 text-[#61767c]">
+              <div className="relative mt-5 rounded-[22px] border border-white/70 dark:border-[#3b466a] bg-white/65 dark:bg-[#173a43]/75 px-4 py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.8)]">
+                <p className="text-[11px] leading-5 text-[#61767c] dark:text-[#b2c5c9]">
                   {attentionInsight?.text ??
                     "Les prochains scans permettront à Otavio de suivre vos quatre indicateurs dans le temps et d’identifier les évolutions qui méritent votre attention."}
                 </p>
@@ -1185,11 +1185,11 @@ export default function ResultatsPage() {
           </div>
 
           <div className="mt-4 flex items-start gap-3 rounded-[24px] border border-[#dce6e8] dark:border-[#28515a] bg-white dark:bg-[#102d35] px-4 py-4 shadow-[0_10px_28px_rgba(20,55,65,0.04)]">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#eef7f6] text-[#168f91]">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#eef7f6] dark:bg-[#234a4a] text-[#168f91] dark:text-[#71d8d0]">
               <Info size={15} />
             </div>
 
-            <p className="text-[10px] leading-5 text-[#75878c]">
+            <p className="text-[10px] leading-5 text-[#75878c] dark:text-[#96acb1]">
               Cette interprétation met en perspective des observations visuelles.
               Elle ne constitue pas une évaluation médicale et doit être lue comme
               un repère de suivi personnel.
@@ -1200,8 +1200,8 @@ export default function ResultatsPage() {
         {/* RELIABILITY */}
         <section className="mt-10">
           <div className="overflow-hidden rounded-[30px] border border-[#dce6e8] dark:border-[#28515a] bg-white dark:bg-[#102d35] shadow-[0_14px_38px_rgba(20,55,65,0.05)]">
-            <div className="flex items-start gap-4 border-b border-[#edf2f2] bg-[linear-gradient(135deg,#fbfdfc_0%,#f5faf9_100%)] px-5 py-5 sm:px-6">
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#e8f7f5] text-[#168f91]">
+            <div className="flex items-start gap-4 border-b border-[#edf2f2] dark:border-[#28515a] bg-[linear-gradient(135deg,#fbfdfc_0%,#f5faf9_100%)] dark:bg-[linear-gradient(135deg,#102d35_0%,#173a43_100%)] px-5 py-5 sm:px-6">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[15px] bg-[#e8f7f5] dark:bg-[#234a4a] text-[#168f91] dark:text-[#71d8d0]">
                 <Info size={18} strokeWidth={1.8} />
               </div>
 
@@ -1209,16 +1209,16 @@ export default function ResultatsPage() {
                 <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-[#168f91]">
                   Qualité de l’analyse
                 </p>
-                <h2 className="mt-1.5 text-[17px] font-semibold tracking-[-0.025em] text-[#20343c]">
+                <h2 className="mt-1.5 text-[17px] font-semibold tracking-[-0.025em] text-[#20343c] dark:text-[#e4f1f3]">
                   La qualité de votre scan
                 </h2>
-                <p className="mt-2 max-w-2xl text-[11px] leading-5 text-[#71858a]">
+                <p className="mt-2 max-w-2xl text-[11px] leading-5 text-[#71858a] dark:text-[#9db2b7]">
                   Ce niveau reflète les conditions visuelles de la photo utilisée
                   pour produire les observations présentées ci-dessus.
                 </p>
               </div>
 
-              <div className="hidden shrink-0 rounded-full bg-[#e8f7f5] px-3 py-1.5 text-[9px] font-bold text-[#168f91] sm:block">
+              <div className="hidden shrink-0 rounded-full bg-[#e8f7f5] dark:bg-[#234a4a] px-3 py-1.5 text-[9px] font-bold text-[#168f91] dark:text-[#71d8d0] sm:block">
                 {scanQualityScore !== null ? `${scanQualityScore} %` : "—"}
               </div>
             </div>
@@ -1228,20 +1228,20 @@ export default function ResultatsPage() {
                 <div>
                   <div className="flex items-end justify-between gap-4">
                     <div>
-                      <p className="text-[10px] uppercase tracking-[0.14em] text-[#8a9b9f]">
+                      <p className="text-[10px] uppercase tracking-[0.14em] text-[#8a9b9f] dark:text-[#91a8ad]">
                         Conditions du scan
                       </p>
-                      <p className="mt-1 text-[18px] font-semibold tracking-[-0.025em] text-[#20343c]">
+                      <p className="mt-1 text-[18px] font-semibold tracking-[-0.025em] text-[#20343c] dark:text-[#e4f1f3]">
                         {scanQualityLabel ?? "—"}
                       </p>
                     </div>
 
-                    <span className="text-[22px] font-semibold tracking-[-0.05em] text-[#168f91]">
+                    <span className="text-[22px] font-semibold tracking-[-0.05em] text-[#168f91] dark:text-[#71d8d0]">
                       {scanQualityScore !== null ? `${scanQualityScore}%` : "—"}
                     </span>
                   </div>
 
-                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-[#e8eff0]">
+                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-[#e8eff0] dark:bg-[#24434b]">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-[#42c9bd] via-[#63d9d4] to-[#756bd4] transition-all duration-700"
                       style={{
@@ -1252,11 +1252,11 @@ export default function ResultatsPage() {
                 </div>
 
                 <div className="rounded-[22px] border border-[#e3eaeb] dark:border-[#28515a] bg-[#f8faf9] dark:bg-[#173a43] px-4 py-3.5 lg:min-w-[230px]">
-                  <p className="text-[9px] font-bold uppercase tracking-[0.14em] text-[#899a9e]">
+                  <p className="text-[9px] font-bold uppercase tracking-[0.14em] text-[#899a9e] dark:text-[#91a8ad]">
                     À retenir
                   </p>
 
-                  <p className="mt-1.5 text-[10px] leading-5 text-[#63787e]">
+                  <p className="mt-1.5 text-[10px] leading-5 text-[#63787e] dark:text-[#a8bcc1]">
                     {scanQualityScore !== null && scanQualityScore >= 80
                       ? "Les conditions de prise de vue sont favorables."
                       : scanQualityScore !== null && scanQualityScore >= 65
@@ -1271,7 +1271,7 @@ export default function ResultatsPage() {
                   <p className="text-[9px] uppercase tracking-[0.14em] text-[#899a9e]">
                     Ce que cela mesure
                   </p>
-                  <p className="mt-1.5 text-[10px] leading-5 text-[#63787e]">
+                  <p className="mt-1.5 text-[10px] leading-5 text-[#63787e] dark:text-[#a8bcc1]">
                     Lumière, contraste et conditions visuelles nécessaires à
                     l’analyse de l’image.
                   </p>
@@ -1281,7 +1281,7 @@ export default function ResultatsPage() {
                   <p className="text-[9px] uppercase tracking-[0.14em] text-[#899a9e]">
                     Ce que cela ne mesure pas
                   </p>
-                  <p className="mt-1.5 text-[10px] leading-5 text-[#63787e]">
+                  <p className="mt-1.5 text-[10px] leading-5 text-[#63787e] dark:text-[#a8bcc1]">
                     Ce score ne représente ni une certitude médicale ni une
                     mesure clinique de votre état de santé.
                   </p>
